@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:DialogBox modal="true" styleName="modal" glassEnabled="true" width="100%"
+		ui:field="popUpPanel">
+		<g:HTMLPanel>
+			<g:HTMLPanel styleName="modal-header">
+				<span>An Error Occured</span>
+			</g:HTMLPanel>
+			<g:HTMLPanel styleName="modal-body">
+				<span class="icon-warning-sign helper-font-24"></span>
+				<span ui:field="spnError"></span>
+				<g:Hyperlink ui:field="lnkError" targetHistoryToken="#"></g:Hyperlink>
+			</g:HTMLPanel>
+
+			<g:FlowPanel styleName="button-group reportbutton">
+				<g:Button ui:field="btnOk" text="Ok" styleName="btn btn-default"></g:Button>
+			</g:FlowPanel>
+		</g:HTMLPanel>
+	</g:DialogBox>
+
+</ui:UiBinder>

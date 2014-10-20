@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+		<button class="btn dropdown-toggle" data-toggle="dropdown">
+			<span class="caret"></span>
+		</button>
+
+		<d:BulletListPanel styleName="dropdown-menu" ui:field="ulMenu">
+			<!-- <li>
+				<d:ActionLink ui:field="aRevoke" styleName="" title="Revoke this task so that its re-assignable to other users in your group">
+					<i class="icon-minus"></i>
+					Revoke
+				</d:ActionLink>
+			</li> -->	
+		</d:BulletListPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

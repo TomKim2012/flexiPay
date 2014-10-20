@@ -1,0 +1,71 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
+		<div class="navbar-header visible-phone">
+			<d:ActionLink styleName="btn btn-navbar navbar-toggle pull-left"
+				ui:field="aNavbarToggle" dataToggle="collapse" dataTarget=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</d:ActionLink>
+		</div>
+
+		<div class="navbar-inner">
+			<g:Anchor styleName="brand hidden" href="#home" ui:field="aBrand">
+				iConserve |&nbsp;
+				<span ui:field="spnCompanyName">LWF</span>
+			</g:Anchor>
+			<a href="#home" class="brand">
+				<g:Image ui:field="imgLogo" url="img/logo.png"></g:Image>
+			</a>
+
+			<ul class="nav pull-right">
+				<li class="home">
+					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand active">
+						<i class="icon-home hidden-phone">&nbsp;Home</i>
+						<i class="icon-home visible-phone helper-font-26"></i>
+					</g:Anchor>
+				</li>
+				<li class="home hidden-phone">
+					<g:Anchor href="#adminhome" ui:field="aAdmin" styleName="close-icon hand">
+						<i class="icon-bar-chart hidden-phone">&nbsp;Admin</i>
+						<i class="icon-bar-chart visible-phone helper-font-26"></i>
+					</g:Anchor>
+				</li>
+				<li class="notification-dropdown">
+					<d:ActionLink ui:field="aNotifications"
+						styleName="close-icon hand dropdown-toggle" title="Notifications"
+						dataToggle="tooltip" dataPlacement="bottom">
+						<i class="icon-bell"></i>
+						<span ui:field="lblCount" class="label label-important"></span>
+					</d:ActionLink>
+
+					<g:FocusPanel ui:field="popupContainer"
+						styleName="notification-dialog dropdown-menu">
+						<g:HTMLPanel ui:field="notificationsContainer">
+						</g:HTMLPanel>
+					</g:FocusPanel>
+
+				</li>
+
+				<li class="user-dropdown dropdown">
+					<a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
+						<span ui:field="spnUser" class="name"></span>
+						<g:Image styleName="avatar-small hidden" ui:field="imgSmall"
+							width="30px" height="50px" />
+						<!-- img src="img/blueman(small).png" width="30px" height="50px"/ -->
+						<b class="caret"></b>
+					</a>
+
+					<d:UserWidget ui:field="divUserContainer" mobile="false"></d:UserWidget>
+				</li>
+			</ul>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>
