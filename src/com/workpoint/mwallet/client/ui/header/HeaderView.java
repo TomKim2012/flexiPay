@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -21,7 +20,6 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.UserWidget;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
-import com.workpoint.mwallet.client.util.AppContext;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView {
 
@@ -34,8 +32,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	Anchor aHome;
 	@UiField
 	Anchor aNavbarToggle;
-	@UiField
-	SpanElement spnCompanyName;
+	// @UiField
+	// SpanElement spnCompanyName;
 	@UiField
 	Image imgSmall;
 	@UiField
@@ -70,7 +68,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		aNotifications.getElement().setAttribute("data-toggle", "dropdown");
 		UIObject.setVisible(aAdmin.getElement(), false);
 
-		UIObject.setVisible(aBrand.getElement(), false);
+		// UIObject.setVisible(aBrand.getElement(), false);
 
 		imgSmall.addErrorHandler(new ErrorHandler() {
 			@Override
@@ -86,13 +84,12 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		aNavbarToggle.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				/*AppContext.fireEvent(new NavbarToggleEvent(isToggleClicked));
-
-				if (isToggleClicked) {
-					isToggleClicked = false;
-				} else {
-					isToggleClicked = true;
-				}*/
+				/*
+				 * AppContext.fireEvent(new NavbarToggleEvent(isToggleClicked));
+				 * 
+				 * if (isToggleClicked) { isToggleClicked = false; } else {
+				 * isToggleClicked = true; }
+				 */
 			}
 		});
 
@@ -118,7 +115,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		return widget;
 	}
 
-
 	public Anchor getNotificationsButton() {
 		return aNotifications;
 	}
@@ -139,22 +135,17 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	}
 
 	public void setValues(String user_names, String userGroups, String orgName) {
-		setValues(user_names, userGroups); //Values to user Widget
+		setValues(user_names, userGroups); // Values to user Widget
 		if (user_names != null) {
 			spnUser.setInnerText(user_names);
 		} else {
 			spnUser.setInnerText("");
 		}
-		if (orgName != null) {
-			spnCompanyName.setInnerText(orgName);
-		}
 	}
-	
+
 	public void setValues(String user_names, String userGroups) {
 		divUserContainer.setValues(user_names, userGroups);
 	}
-	
-	
 
 	public void removePopup() {
 		popupContainer.removeStyleName("is-visible");
@@ -221,8 +212,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		divUserContainer.setVersion(versionDate, version);
 	}
 
-	/*public void setImage(HTUser user) {
-		imgSmall.setUrl(AppContext.getUserImageUrl(user, 48.0, 48.0));
-		divUserContainer.setImage(user);
-	}*/
+	/*
+	 * public void setImage(HTUser user) {
+	 * imgSmall.setUrl(AppContext.getUserImageUrl(user, 48.0, 48.0));
+	 * divUserContainer.setImage(user); }
+	 */
 }

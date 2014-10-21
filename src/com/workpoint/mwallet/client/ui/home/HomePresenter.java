@@ -3,7 +3,11 @@ package com.workpoint.mwallet.client.ui.home;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -17,7 +21,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.place.NameTokens;
+import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
+import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
@@ -28,7 +34,8 @@ public class HomePresenter extends
 		ContextLoadedHandler {
 
 	/*
-	 * Other Handlers -->AfterSaveHandler, DocumentSelectionHandler,
+	 * Other Handlers -->
+	 * AfterSaveHandler, DocumentSelectionHandler,
 	 * ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler,
 	 * ProcessingHandler, ProcessingCompletedHandler, SearchHandler,
 	 * CreateProgramHandler,
@@ -70,15 +77,18 @@ public class HomePresenter extends
 	DispatchAsync dispatcher;
 	@Inject
 	PlaceManager placeManager;
-
+	
+	
+	private IndirectProvider<DashboardPresenter> dashboardFactory;
+	//private IndirectProvider<ProgramsPresenter> activitiesFactory;
+	
 	/*
 	 * private IndirectProvider<CreateProgramPresenter> createDocProvider;
 	 * private IndirectProvider<GenericDocumentPresenter> docViewFactory;
-	 * private IndirectProvider<HomeReportsPresenter> reportFactory; private
+	 * 
 	 * IndirectProvider<DateGroupPresenter> dateGroupFactory; private
 	 * IndirectProvider<NewsFeedPresenter> newsFeedFactory; private
-	 * IndirectProvider<ProgramsPresenter> activitiesFactory; private
-	 * IndirectProvider<ProfilePresenter> profileFactory;
+	 * private IndirectProvider<ProfilePresenter> profileFactory;
 	 */
 
 	/**
@@ -103,25 +113,25 @@ public class HomePresenter extends
 
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy
+			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider
 	/*
 	 * Provider<CreateProgramPresenter> docProvider,
 	 * Provider<GenericFormPresenter> formProvider,
 	 * Provider<GenericDocumentPresenter> docViewProvider,
-	 * Provider<HomeReportsPresenter> reportsProvider,
+	 * 
 	 * Provider<DateGroupPresenter> dateGroupProvider,
 	 * Provider<NewsFeedPresenter> newsfeedProvider, Provider<ProfilePresenter>
 	 * profileProvider, Provider<ProgramsPresenter> activitiesProvider
 	 */
 	) {
 		super(eventBus, view, proxy);
-
+		dashboardFactory = new StandardProvider<DashboardPresenter>(dashboardProvider);
+		
 		/*
 		 * createDocProvider = new StandardProvider<CreateProgramPresenter>(
 		 * docProvider); docViewFactory = new
 		 * StandardProvider<GenericDocumentPresenter>( docViewProvider);
-		 * reportFactory = new
-		 * StandardProvider<HomeReportsPresenter>(reportsProvider);
+		 * 
 		 * dateGroupFactory = new StandardProvider<DateGroupPresenter>(
 		 * dateGroupProvider); newsFeedFactory = new
 		 * StandardProvider<NewsFeedPresenter>( newsfeedProvider);
@@ -195,33 +205,76 @@ public class HomePresenter extends
 		super.prepareFromRequest(request);
 
 		//fireEvent(new LoadAlertsEvent());
-		//clear();
-		processInstanceId = null;
+		clear();
+		//processInstanceId = null;
 		documentId = null;
 
 		final String name = request.getParameter("type", null);
-		String processInstID = request.getParameter("pid", null);
+		/*String processInstID = request.getParameter("pid", null);
 		String documentSearchID = request.getParameter("did", null);
 		if (processInstID != null) {
 			processInstanceId = Long.parseLong(processInstID);
 		}
 		if (documentSearchID != null) {
 			documentId = Long.parseLong(documentSearchID);
-		}
+		}*/
 
 		final String page = request.getParameter("page", null);
 
-		/*if (page != null && page.equals("profile")) {
-			Window.setTitle("Profile");
-			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
+		if (page != null && page.equals("dashboard")) {
+			Window.setTitle("Dashboard");
+			dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
 				@Override
-				public void processResult(ProfilePresenter aResponse) {
+				public void processResult(DashboardPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
-					getView().setSelectedTab("Profile");
+					getView().setSelectedTab("Dashboard");
 				}
 			});
 
-		} */
+		}else if (page != null && page.equals("tills")) {
+			Window.setTitle("Tills");
+			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+				@Override
+				public void processResult(DashboardPresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			*/
+			getView().setSelectedTab("Tills");
+		}  
+		
+		else if (page != null && page.equals("transactions")) {
+			Window.setTitle("Transactions");
+			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+				@Override
+				public void processResult(DashboardPresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			*/
+			getView().setSelectedTab("Transactions");
+		} else if (page != null && page.equals("users")) {
+			Window.setTitle("Users");
+			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+				@Override
+				public void processResult(DashboardPresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			*/
+			getView().setSelectedTab("Users");
+		}else if (page != null && page.equals("settings")) {
+			Window.setTitle("Settings");
+			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+				@Override
+				public void processResult(DashboardPresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			*/
+			getView().setSelectedTab("Settings");
+		}
+		
 
 	}
 

@@ -17,17 +17,16 @@
 		</div>
 
 		<div class="navbar-inner">
-			<g:Anchor styleName="brand hidden" href="#home" ui:field="aBrand">
-				iConserve |&nbsp;
-				<span ui:field="spnCompanyName">LWF</span>
+			<g:Anchor styleName="brand" href="#home" ui:field="aBrand">
+				M-Wallet
 			</g:Anchor>
-			<a href="#home" class="brand">
+			<a href="#home" class="brand hide">
 				<g:Image ui:field="imgLogo" url="img/logo.png"></g:Image>
 			</a>
 
 			<ul class="nav pull-right">
 				<li class="home">
-					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand active">
+					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand active hide">
 						<i class="icon-home hidden-phone">&nbsp;Home</i>
 						<i class="icon-home visible-phone helper-font-26"></i>
 					</g:Anchor>
@@ -56,7 +55,7 @@
 
 				<li class="user-dropdown dropdown">
 					<a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
-						<span ui:field="spnUser" class="name"></span>
+						<span ui:field="spnUser" class="name">Tom Kimani</span>
 						<g:Image styleName="avatar-small hidden" ui:field="imgSmall"
 							width="30px" height="50px" />
 						<!-- img src="img/blueman(small).png" width="30px" height="50px"/ -->

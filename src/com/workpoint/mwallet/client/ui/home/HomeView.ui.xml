@@ -10,7 +10,7 @@
 			
 			<div class="span2 sidebar-nav hidden-phone" id="sidebar-nav">
 				<ul class="nav nav-tabs nav-stacked" id="dashboard-menu">
-					<li class="side-user">
+					<li class="side-user hide">
 						<g:Image styleName="img-circle" ui:field="imgUser"></g:Image>
 						<!-- img class="img-circle" src="img/me.jpg" alt=""/ -->
 						<!--p class="welcome"> <i class="fa fa-key"></i> Logged in as </p -->
@@ -26,22 +26,36 @@
 						<div class="clearfix"></div>
 					</li>
 					<li class="active" ui:field="liDashboard">
-						<g:Anchor href='#home;page=home' ui:field='aHome'>
-							<i class="icon-home"></i>
-							My Dashboard
+						<g:Anchor href='#home;page=dashboard' ui:field='aHome'>
+							<i class="icon-dashboard"></i>
+							Dashboard
 						</g:Anchor>
 					</li>
 
-					<li ui:field="liActivities" title="Programs Management">
-						<g:Anchor href='#home;page=objectives' ui:field='aActivities'>
+					<li ui:field="liTills">
+						<g:Anchor href='#home;page=tills' ui:field='aActivities'>
 							<i class="icon-tasks"></i>
-							Programs Man.
+							Tills
 						</g:Anchor>
 					</li>
-					<li ui:field="liReports">
-						<a href='#home;page=reports'>
-							<i class="icon-bar-chart"></i>
-							Reports
+					<li ui:field="liTransactions">
+						<a href='#home;page=transactions'>
+							<i class="icon-money"></i>
+							Transactions
+						</a>
+					</li>
+					
+					<li ui:field="liUsers">
+						<a href='#home;page=users'>
+							<i class="icon-group"></i>
+							Users
+						</a>
+					</li>
+					
+					<li ui:field="liSettings">
+						<a href='#home;page=settings'>
+							<i class="icon-cogs"></i>
+							Settings
 						</a>
 					</li>
 				</ul>
@@ -52,7 +66,7 @@
 			</g:HTMLPanel>
 
 			<g:HTMLPanel ui:field="taskContainer"
-				styleName="content-right span10 no-overflow-y no-overflow-x">
+				styleName="content-right span10 no-overflow-y no-overflow-x hide">
 				<!--middle navigation -->
 				<div class="span2 hidden-phone" id="middle-nav">
 					<div class="nav-top">

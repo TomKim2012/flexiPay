@@ -73,11 +73,13 @@ public class LoginPresenter extends
 		
 		if(AppContext.isValid()){
 			
-			if(AppContext.isCurrentUserAdmin()){
-				//History.newItem(NameTokens.adminhome);
-			}else{
-				placeManager.revealDefaultPlace();
-			}
+			History.newItem(NameTokens.login);
+			
+			// if(AppContext.isCurrentUserAdmin()){
+			// //History.newItem(NameTokens.adminhome);
+			// }else{
+			// //placeManager.revealDefaultPlace();
+			// }
 			
 			return;
 		}

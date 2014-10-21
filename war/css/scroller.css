@@ -1,0 +1,15 @@
+/* this targets the default scrollbar (compulsory) */
+.activities-page .tabs-container ::-webkit-scrollbar {
+	position:relative;
+	top:10px;
+} 
+
+::-webkit-scrollbar-track {
+}
+::-webkit-scrollbar-thumb {
+   
+}
+
+::-webkit-scrollbar-button {
+	background-color: #ccc;
+}

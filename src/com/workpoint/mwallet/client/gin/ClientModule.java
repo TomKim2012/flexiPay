@@ -7,6 +7,8 @@ import com.workpoint.mwallet.client.place.DefaultPlace;
 import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.MainPageView;
+import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
+import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
 import com.workpoint.mwallet.client.ui.header.HeaderPresenter;
 import com.workpoint.mwallet.client.ui.header.HeaderView;
 import com.workpoint.mwallet.client.ui.home.HomePresenter;
@@ -33,6 +35,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(LoginPresenter.class, LoginPresenter.ILoginView.class,
 				LoginView.class, LoginPresenter.MyProxy.class);
-
+		
+		bindPresenterWidget(DashboardPresenter.class, DashboardPresenter.MyView.class,
+				DashboardView.class);
 	}
 }

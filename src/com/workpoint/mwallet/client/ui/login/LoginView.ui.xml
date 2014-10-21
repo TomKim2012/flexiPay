@@ -9,8 +9,8 @@
 	<g:HTMLPanel styleName="login-bg">
 		<g:HTMLPanel styleName="row-fluid login-wrapper">
 			<a href="#" class="brand">
-				<g:Image ui:field="imgLogo" url="img/logo.png"></g:Image>
-				<!-- <a class="brand" href="#">iConserve |&nbsp;<span ui:field="spnCompanyName">LWF</span></a> -->
+				<!-- <g:Image ui:field="imgLogo" url="img/logo.png"></g:Image> -->
+				<a class="brand" href="#">M-Wallet</a>
 			</a>
 			<g:HTMLPanel styleName="span4 box" ui:field="loadingbox">
 				<div class="content-wrap">

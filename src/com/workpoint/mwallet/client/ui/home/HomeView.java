@@ -41,10 +41,16 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	LIElement liDashboard;
 
 	@UiField
-	LIElement liActivities;
+	LIElement liTills;
 
 	@UiField
-	LIElement liReports;
+	LIElement liTransactions;
+	
+	@UiField
+	LIElement liUsers;
+	
+	@UiField
+	LIElement liSettings;
 
 	@UiField
 	BulletListPanel ulTaskGroups;
@@ -61,8 +67,8 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		//docContainer.getElement().setAttribute("id", "detailed-info");
-		
+		// docContainer.getElement().setAttribute("id", "detailed-info");
+
 		imgUser.addErrorHandler(new ErrorHandler() {
 
 			@Override
@@ -70,8 +76,8 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 				imgUser.setUrl("img/blueman.png");
 			}
 		});
-		
-		if(AppContext.getContextUser()!=null){
+
+		if (AppContext.getContextUser() != null) {
 			showUserImg(AppContext.getContextUser());
 		}
 	}
@@ -153,7 +159,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	}
 
-
 	private void setActive(LIElement element, Boolean status) {
 		if (status) {
 			element.addClassName("active");
@@ -164,23 +169,25 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	public void setSelectedTab(String page) {
 		setActive(liDashboard, false);
-		setActive(liActivities, false);
-		setActive(liReports, false);
-		if (page.equals("Home")) {
+		setActive(liTills, false);
+		setActive(liTransactions, false);
+		setActive(liUsers, false);
+		setActive(liSettings, false);
+		if (page.equals("Dashboard")) {
 			setActive(liDashboard, true);
-		} else if (page.equals("Activities")) {
-			setActive(liActivities, true);
-		} else if (page.equals("Reports")) {
-			setActive(liReports, true);
-		} else if (page.equals("Profile")) {
-			setActive(liDashboard, false);
-			setActive(liActivities, false);
-			setActive(liReports, false);
+		} else if (page.equals("Tills")) {
+			setActive(liTills, true);
+		} else if (page.equals("Transactions")) {
+			setActive(liTransactions, true);
+		} else if (page.equals("Users")) {
+			setActive(liUsers, true);
+		} else if (page.equals("Settings")) {
+			setActive(liSettings, true);
 		}
 	}
 
 	public void showUserImg(HTUser currentUser) {
-		//System.err.println(currentUser.getFullName());
+		// System.err.println(currentUser.getFullName());
 		imgUser.setUrl(AppContext.getUserImageUrl(currentUser, 175.0, 175.0));
 		spnUser.setInnerText(currentUser.getFullName());
 	}
