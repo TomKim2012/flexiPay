@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component">
+	<g:HTMLPanel styleName="tr" ui:field="row">
+		<g:HTMLPanel styleName="td title" ui:field="divCheckbox"
+			width="20%">
+			<span class="">Tom Kimani</span>
+		</g:HTMLPanel>
+
+		<g:HTMLPanel styleName="td" ui:field="divTimelines">
+			0729472421
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divStatus">
+			10
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divProgress">
+			FQWRETMV
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divBudget">
+			
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td">
+		</g:HTMLPanel>
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 

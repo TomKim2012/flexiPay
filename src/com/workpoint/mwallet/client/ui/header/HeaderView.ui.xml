@@ -25,13 +25,14 @@
 			</a>
 
 			<ul class="nav pull-right">
-				<li class="home">
-					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand active hide">
+				<li class="home hide">
+					<g:Anchor href="#home" ui:field="aHome"
+						styleName="close-icon hand active ">
 						<i class="icon-home hidden-phone">&nbsp;Home</i>
 						<i class="icon-home visible-phone helper-font-26"></i>
 					</g:Anchor>
 				</li>
-				<li class="home hidden-phone">
+				<li class="home hidden-phone hide">
 					<g:Anchor href="#adminhome" ui:field="aAdmin" styleName="close-icon hand">
 						<i class="icon-bar-chart hidden-phone">&nbsp;Admin</i>
 						<i class="icon-bar-chart visible-phone helper-font-26"></i>

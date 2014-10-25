@@ -27,6 +27,7 @@ import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
+import com.workpoint.mwallet.client.ui.programs.ProgramsPresenter;
 import com.workpoint.mwallet.shared.model.HTUser;
 
 public class HomePresenter extends
@@ -80,6 +81,8 @@ public class HomePresenter extends
 	
 	
 	private IndirectProvider<DashboardPresenter> dashboardFactory;
+	private IndirectProvider<ProgramsPresenter> transactionsFactory;
+	
 	//private IndirectProvider<ProgramsPresenter> activitiesFactory;
 	
 	/*
@@ -113,7 +116,8 @@ public class HomePresenter extends
 
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider
+			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider, 
+			Provider<ProgramsPresenter> transactionsProvider
 	/*
 	 * Provider<CreateProgramPresenter> docProvider,
 	 * Provider<GenericFormPresenter> formProvider,
@@ -126,6 +130,7 @@ public class HomePresenter extends
 	) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(dashboardProvider);
+		transactionsFactory = new StandardProvider<ProgramsPresenter>(transactionsProvider);
 		
 		/*
 		 * createDocProvider = new StandardProvider<CreateProgramPresenter>(
@@ -245,13 +250,13 @@ public class HomePresenter extends
 		
 		else if (page != null && page.equals("transactions")) {
 			Window.setTitle("Transactions");
-			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+			transactionsFactory.get(new ServiceCallback<ProgramsPresenter>() {
 				@Override
-				public void processResult(DashboardPresenter aResponse) {
+				public void processResult(ProgramsPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
-			*/
+			
 			getView().setSelectedTab("Transactions");
 		} else if (page != null && page.equals("users")) {
 			Window.setTitle("Users");

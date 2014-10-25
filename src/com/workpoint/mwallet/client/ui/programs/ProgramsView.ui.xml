@@ -1,0 +1,187 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'
+	xmlns:programs='urn:import:com.workpoint.mwallet.client.ui.programs'
+	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.programs.table'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="activities-page">
+		<g:HTMLPanel styleName="full-page" ui:field="divMainContainer">
+
+			<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
+				<!--Action Buttons -->
+				<div class="action-buttons row-fluid">
+					<div class="span9">
+						<div class="span3">
+							<d:ActionLink ui:field="aProgram" styleName="btn btn-primary hide"
+								dataToggle="tooltip">
+								Create Program
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aBack" styleName="btn btn-default"
+								dataToggle="tooltip" dataPlacement="bottom" title="Back">
+								<i class="icon-google-back icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aNewOutcome" styleName="btn btn-primary"
+								dataToggle="tooltip" dataPlacement="bottom" title="Create outcome">
+								<i class="icon-plus"></i>
+								Create Outcome
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aNewObjective" styleName="btn btn-primary"
+								dataToggle="tooltip" dataPlacement="bottom" title="Create objective">
+								<i class="icon-plus-sign"></i>
+								Create Objective
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aNewActivity" styleName="btn btn-primary"
+								dataToggle="tooltip" dataPlacement="bottom" title="Create activity">
+								<i class="icon-plus"></i>
+								Create Activity
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aNewTask" styleName="btn btn-primary"
+								dataToggle="tooltip" dataPlacement="bottom" title="Create Task">
+								<i class="icon-plus"></i>
+								Create Task
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
+								dataToggle="tooltip" dataPlacement="bottom" title="Edit">
+								<i class="icon-pencil icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aDetail" styleName="btn btn-default hide"
+								dataToggle="tooltip" dataPlacement="bottom" title="Detailed view">
+								<i class="icon-tasks icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aDeleteProgram" styleName="btn btn-default"
+								dataToggle="tooltip" dataPlacement="bottom" title="Delete">
+								<i class="icon-trash icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aMove" styleName="btn btn-default"
+								dataToggle="tooltip" dataPlacement="bottom" title="Move">
+								<i class="icon-folder-open icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3 hide">
+							<d:ActionLink ui:field="aAssign" styleName="btn btn-default"
+								dataToggle="tooltip" dataPlacement="bottom" title="Assign to Individual/Group">
+								<i class="icon-google-share icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3">
+							<d:ActionLink ui:field="aExport" styleName="btn btn-default hide"
+								dataToggle="tooltip">Export</d:ActionLink>
+						</div>
+
+					</div>
+					<div class="span3 right-side hide">
+						<div class="program-search">
+							<div class="input-append">
+								<input type="text" styleName="search-query" placeholder="Search here">
+								</input>
+								<g:Anchor styleName="icon-caret-down muted" ui:field="iFilterdropdown"></g:Anchor>
+								<button type="submit" class="btn">
+									<i class="icon-search"></i>
+								</button>
+							</div>
+
+							<g:HTMLPanel ui:field="divFilterBox" styleName="hide search-box">
+							</g:HTMLPanel>
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row-fluid">
+					<programs:ProgramHeader ui:field="headerContainer"
+						leftMargin="true"></programs:ProgramHeader>
+				</div>
+
+				<!-- BreadCrumb Panel -->
+				<g:HTMLPanel styleName="row-fluid" ui:field="panelCrumbs">
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+
+
+			<div class="row-fluid full-page content-body">
+
+				<g:HTMLPanel ui:field="divNoContent" styleName="hidden">
+					<i class="icon-warning-sign helper-font-16"></i>
+					<span class="helper-font-16">
+						No Programs Added. Click
+						<a>Create Program</a>
+						to get started
+					</span>
+				</g:HTMLPanel>
+
+
+				<g:HTMLPanel ui:field="divMiddleContent"
+					styleName="tabbable tabs-below full-page">
+
+					<d:MyHTMLPanel styleName="tab-content" ui:field="divProgramsTable">
+						<g:HTMLPanel>
+							<div ui:field="divTab1Content" class="tab-pane fade in active">
+								<table:ProgramsTable ui:field="tblView">
+								</table:ProgramsTable>
+							</div>
+						</g:HTMLPanel>
+					</d:MyHTMLPanel>
+
+					<g:HTMLPanel styleName="row-fluid tab-body hide" ui:field="divContentBottom">
+						<div class="span2 controllers hide">
+							<d:ActionLink ui:field="aShow" styleName="span3">
+								<span class="icon-align-justify helper-font-16"></span>
+							</d:ActionLink>
+						</div>
+
+						<div class="span10 tabs-container">
+							<d:BulletListPanel ui:field="listPanel"
+								styleName="nav nav-tabs">
+							</d:BulletListPanel>
+						</div>
+						<div class="span2 controllers">
+							<d:ActionLink ui:field="aLeft" styleName="span3"
+								dataPlacement="top" title="Scroll Left">
+								<span class="icon-caret-left helper-font-16"></span>
+							</d:ActionLink>
+							<d:ActionLink ui:field="aRight" styleName="span3"
+								dataPlacement="top" title="Scroll Right">
+								<span class="icon-caret-right helper-font-16"></span>
+							</d:ActionLink>
+						</div>
+					</g:HTMLPanel>
+				</g:HTMLPanel>
+			</div>
+
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

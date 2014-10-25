@@ -1,0 +1,29 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'>
+
+	<g:HTMLPanel>
+		<div class="header row-fluid">
+			<div class="span9 title" ui:field="divHeader">
+				<g:FocusPanel ui:field='panelTitle'>
+					<g:HTMLPanel styleName="row-fluid">
+						<g:HTMLPanel styleName="title-container span3">
+							<h4 ui:field="spnTitle" class="title">Transactions</h4>
+						</g:HTMLPanel>
+						<g:HTMLPanel styleName="edit span1 btn-group"
+							ui:field="divPopup">
+							<g:InlineLabel ui:field="spnDates"
+								styleName="text-info helper-font-small dropdown-toggle"></g:InlineLabel>
+
+							<d:ActionLink styleName="icon-caret-down dropdown-toggle"
+								title="Select Period" ui:field="aProgramEdit" dataToggle="dropdown"></d:ActionLink>
+
+							<d:Dropdown ui:field="periodDropdown"></d:Dropdown>
+						</g:HTMLPanel>
+
+					</g:HTMLPanel>
+				</g:FocusPanel>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

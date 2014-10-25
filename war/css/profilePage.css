@@ -184,6 +184,7 @@
 .activities-page .content-body{
 	/* position:absolute; */
 	/* top: 118px; */
+	padding: 23px;
 }
 
 .activities-page .action-buttons{
@@ -487,7 +488,7 @@ body .GWTUpld .gwt-FileUpload{
 
 .home-reports .content-header{
 	padding-top:5px;
-	font-family: ProximaNovaRegular,Helvetica,Arial,sans-serif;
+	/* font-family: ProximaNovaRegular,Helvetica,Arial,sans-serif; */
 	font-size: 14px;  line-height: 1.42857143;  color: #222;
 }
 

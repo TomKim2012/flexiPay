@@ -15,6 +15,8 @@ import com.workpoint.mwallet.client.ui.home.HomePresenter;
 import com.workpoint.mwallet.client.ui.home.HomeView;
 import com.workpoint.mwallet.client.ui.login.LoginPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginView;
+import com.workpoint.mwallet.client.ui.programs.ProgramsPresenter;
+import com.workpoint.mwallet.client.ui.programs.ProgramsView;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -29,6 +31,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class, HomePresenter.MyProxy.class);
+		
+		bindPresenterWidget(ProgramsPresenter.class, ProgramsPresenter.IActivitiesView.class,
+				ProgramsView.class);
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);
