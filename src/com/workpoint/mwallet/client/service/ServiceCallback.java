@@ -5,7 +5,6 @@ import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.InvocationException;
 import com.gwtplatform.dispatch.shared.ServiceException;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.workpoint.mwallet.client.ui.events.ClientDisconnectionEvent;
 import com.workpoint.mwallet.client.ui.events.ErrorEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;

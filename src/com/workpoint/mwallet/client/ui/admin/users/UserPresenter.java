@@ -14,6 +14,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.workpoint.mwallet.client.service.ServiceCallback;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.admin.users.groups.GroupPresenter;
 import com.workpoint.mwallet.client.ui.admin.users.item.UserItemPresenter;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter;
@@ -26,8 +27,14 @@ import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent.LoadGroupsHandler;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent.LoadUsersHandler;
+import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
+import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.HTUser;
 import com.workpoint.mwallet.shared.model.UserGroup;
+import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
+import com.workpoint.mwallet.shared.requests.GetUsersRequest;
+import com.workpoint.mwallet.shared.responses.GetGroupsResponse;
+import com.workpoint.mwallet.shared.responses.GetUsersResponse;
 
 public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 		implements EditUserHandler, LoadUsersHandler, LoadGroupsHandler,
@@ -112,15 +119,19 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 	}
 
 	private void loadGroups() {
-		/*
-		 * GetGroupsRequest request = new GetGroupsRequest(); fireEvent(new
-		 * ProcessingEvent()); requestHelper.execute(request, new
-		 * TaskServiceCallback<GetGroupsResponse>() {
-		 * 
-		 * @Override public void processResult(GetGroupsResponse result) {
-		 * List<UserGroup> groups = result.getGroups(); loadGroups(groups);
-		 * fireEvent(new ProcessingCompletedEvent()); } });
-		 */
+
+		GetGroupsRequest request = new GetGroupsRequest();
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(request,
+				new TaskServiceCallback<GetGroupsResponse>() {
+					@Override
+					public void processResult(GetGroupsResponse result) {
+						List<UserGroup> groups = result.getGroups();
+						loadGroups(groups);
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
+
 	}
 
 	protected void loadGroups(List<UserGroup> groups) {
@@ -138,15 +149,19 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 	}
 
 	private void loadUsers() {
-		/*
-		 * GetUsersRequest request = new GetUsersRequest(); fireEvent(new
-		 * ProcessingEvent()); requestHelper.execute(request, new
-		 * TaskServiceCallback<GetUsersResponse>() {
-		 * 
-		 * @Override public void processResult(GetUsersResponse result) {
-		 * List<HTUser> users = result.getUsers(); loadUsers(users);
-		 * fireEvent(new ProcessingCompletedEvent()); } });
-		 */
+		GetUsersRequest request = new GetUsersRequest();
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(request,
+				new TaskServiceCallback<GetUsersResponse>() {
+
+					@Override
+					public void processResult(GetUsersResponse result) {
+						List<HTUser> users = result.getUsers();
+						loadUsers(users);
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
+
 	}
 
 	protected void loadUsers(List<HTUser> users) {

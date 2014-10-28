@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DTO for {@link com.wira.pmgt.server.dao.model.DocumentModel}
+ * DTO for {@link com.workpoint.mwallet.server.dao.model.DocumentModel}
  * @author duggan
  *
  */

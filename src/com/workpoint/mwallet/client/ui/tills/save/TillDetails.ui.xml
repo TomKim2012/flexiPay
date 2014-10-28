@@ -6,7 +6,7 @@
 			<div class="control-group">
 				<div class="control-label" ui:field="divActivityName">Business Name:</div>
 				<div class="controls">
-					<g:TextArea ui:field="txtActivity" width="90%" />
+					<g:TextBox ui:field="txtBusinessName" styleName="input-xlarge"></g:TextBox>
 					<span class="mandatory" title="Required Field">*</span>
 				</div>
 			</div>
@@ -14,7 +14,7 @@
 			<div class="control-group">
 				<div class="control-label" ui:field="divTill">Till Code:</div>
 				<div class="controls">
-					<g:TextBox ui:field="txtTill" styleName="input-xlarge"></g:TextBox>
+					<g:TextBox ui:field="txtTillCode" styleName="input-xlarge"></g:TextBox>
 					<span class="mandatory" title="Required Field">*</span>
 				</div>
 			</div>
