@@ -135,7 +135,7 @@
 	width: 100%;
 	/* position:absolute; */
 	top:0px;
-	min-height: 118px;
+	min-height: 90px;
 }
 
 .activities-page .content-top .breadcrumb{
@@ -184,7 +184,7 @@
 .activities-page .content-body{
 	/* position:absolute; */
 	/* top: 118px; */
-	padding: 23px;
+	padding: 10px;
 }
 
 .activities-page .action-buttons{

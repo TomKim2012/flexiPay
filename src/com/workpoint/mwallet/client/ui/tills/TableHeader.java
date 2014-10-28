@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.programs;
+package com.workpoint.mwallet.client.ui.tills;
 
 public class TableHeader {
 	String titleName;

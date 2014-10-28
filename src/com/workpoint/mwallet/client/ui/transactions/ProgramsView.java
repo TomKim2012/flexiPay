@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.programs;
+package com.workpoint.mwallet.client.ui.transactions;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,23 +15,15 @@ import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.BulletListPanel;
 import com.workpoint.mwallet.client.ui.component.BulletPanel;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
-import com.workpoint.mwallet.client.ui.programs.table.ProgramsTable;
+import com.workpoint.mwallet.client.ui.transactions.table.ProgramsTable;
 
 public class ProgramsView extends ViewImpl implements
 		ProgramsPresenter.IActivitiesView {
 
 	private final Widget widget;
 
-	@UiField ActionLink aExport;
-	
 	@UiField
 	ActionLink aProgram;
-
-	@UiField
-	ActionLink aDeleteProgram;
-
-	@UiField
-	ActionLink aMove;
 
 	@UiField
 	HTMLPanel divMainContainer;
@@ -55,28 +47,10 @@ public class ProgramsView extends ViewImpl implements
 
 	@UiField
 	Anchor iFilterdropdown;
-
 	@UiField
 	MyHTMLPanel divProgramsTable;
-
-	@UiField
-	ActionLink aNewOutcome;
-	@UiField
-	HTMLPanel panelCrumbs;
-	@UiField
-	ActionLink aNewActivity;
-	@UiField
-	ActionLink aNewObjective;
-	@UiField
-	ActionLink aNewTask;
-	@UiField
-	ActionLink aEdit;
 	@UiField
 	ActionLink aBack;
-	@UiField
-	ActionLink aAssign;
-	@UiField
-	ActionLink aDetail;
 
 	@UiField
 	ProgramHeader headerContainer;
@@ -139,14 +113,6 @@ public class ProgramsView extends ViewImpl implements
 		return widget;
 	}
 
-	public HasClickHandlers getNewOutcome() {
-		return aNewOutcome;
-	}
-
-	public HasClickHandlers getNewActivityLink() {
-		return aNewActivity;
-	}
-
 	private void showContent(boolean status) {
 		if (status) {
 			divMiddleContent.removeStyleName("hidden");
@@ -183,29 +149,6 @@ public class ProgramsView extends ViewImpl implements
 		listPanel.add(li);
 	}
 
-	@Override
-	public HasClickHandlers getNewObjectiveLink() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HasClickHandlers getNewTaskLink() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HasClickHandlers getEditLink() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HasClickHandlers getDeleteButton() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void setLastUpdatedId(Long id) {

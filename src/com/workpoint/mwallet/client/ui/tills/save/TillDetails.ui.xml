@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+		<fieldset>
+			<div class="control-group">
+				<div class="control-label" ui:field="divActivityName">Business Name:</div>
+				<div class="controls">
+					<g:TextArea ui:field="txtActivity" width="90%" />
+					<span class="mandatory" title="Required Field">*</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label" ui:field="divTill">Till Code:</div>
+				<div class="controls">
+					<g:TextBox ui:field="txtTill" styleName="input-xlarge"></g:TextBox>
+					<span class="mandatory" title="Required Field">*</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label" ui:field="divPhone">Till Phone:</div>
+				<div class="controls">
+					<g:TextBox ui:field="txtPhone" styleName="input-xlarge"></g:TextBox>
+					<span class="mandatory" title="Required Field">*</span>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<div class="control-label" ui:field="divEnabled">Enabled:</div>
+				<div class="controls">
+					<g:CheckBox ui:field="chckEnable" styleName="input-xlarge"></g:CheckBox>
+				</div>
+			</div>
+		</fieldset>
+	</g:HTMLPanel>
+</ui:UiBinder> 

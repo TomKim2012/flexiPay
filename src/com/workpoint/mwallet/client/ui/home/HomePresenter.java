@@ -23,11 +23,13 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
+import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
-import com.workpoint.mwallet.client.ui.programs.ProgramsPresenter;
+import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
+import com.workpoint.mwallet.client.ui.transactions.ProgramsPresenter;
 import com.workpoint.mwallet.shared.model.HTUser;
 
 public class HomePresenter extends
@@ -82,6 +84,8 @@ public class HomePresenter extends
 	
 	private IndirectProvider<DashboardPresenter> dashboardFactory;
 	private IndirectProvider<ProgramsPresenter> transactionsFactory;
+	private IndirectProvider<UserPresenter> usersFactory;
+	private IndirectProvider<TillsPresenter> tillFactory;
 	
 	//private IndirectProvider<ProgramsPresenter> activitiesFactory;
 	
@@ -94,15 +98,6 @@ public class HomePresenter extends
 	 * private IndirectProvider<ProfilePresenter> profileFactory;
 	 */
 
-	/**
-	 * Url processInstanceId (pid) - required incase the use hits refresh
-	 */
-	private Long processInstanceId = null;
-
-	/**
-	 * Url documentId (did) - required incase the use hits refresh
-	 */
-	private Long documentId = null;
 
 	// @Inject
 	// FilterPresenter filterPresenter;
@@ -117,12 +112,13 @@ public class HomePresenter extends
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider, 
-			Provider<ProgramsPresenter> transactionsProvider
+			Provider<ProgramsPresenter> transactionsProvider,
+			Provider<UserPresenter> userProvider,
+			Provider<TillsPresenter> tillProvider
 	/*
 	 * Provider<CreateProgramPresenter> docProvider,
 	 * Provider<GenericFormPresenter> formProvider,
 	 * Provider<GenericDocumentPresenter> docViewProvider,
-	 * 
 	 * Provider<DateGroupPresenter> dateGroupProvider,
 	 * Provider<NewsFeedPresenter> newsfeedProvider, Provider<ProfilePresenter>
 	 * profileProvider, Provider<ProgramsPresenter> activitiesProvider
@@ -131,7 +127,8 @@ public class HomePresenter extends
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(dashboardProvider);
 		transactionsFactory = new StandardProvider<ProgramsPresenter>(transactionsProvider);
-		
+		usersFactory = new StandardProvider<UserPresenter>(userProvider);
+		tillFactory =  new StandardProvider<TillsPresenter>(tillProvider);
 		/*
 		 * createDocProvider = new StandardProvider<CreateProgramPresenter>(
 		 * docProvider); docViewFactory = new
@@ -211,18 +208,6 @@ public class HomePresenter extends
 
 		//fireEvent(new LoadAlertsEvent());
 		clear();
-		//processInstanceId = null;
-		documentId = null;
-
-		final String name = request.getParameter("type", null);
-		/*String processInstID = request.getParameter("pid", null);
-		String documentSearchID = request.getParameter("did", null);
-		if (processInstID != null) {
-			processInstanceId = Long.parseLong(processInstID);
-		}
-		if (documentSearchID != null) {
-			documentId = Long.parseLong(documentSearchID);
-		}*/
 
 		final String page = request.getParameter("page", null);
 
@@ -238,13 +223,13 @@ public class HomePresenter extends
 
 		}else if (page != null && page.equals("tills")) {
 			Window.setTitle("Tills");
-			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+			tillFactory.get(new ServiceCallback<TillsPresenter>() {
 				@Override
-				public void processResult(DashboardPresenter aResponse) {
+				public void processResult(TillsPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
-			*/
+			
 			getView().setSelectedTab("Tills");
 		}  
 		
@@ -260,13 +245,13 @@ public class HomePresenter extends
 			getView().setSelectedTab("Transactions");
 		} else if (page != null && page.equals("users")) {
 			Window.setTitle("Users");
-			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+			usersFactory.get(new ServiceCallback<UserPresenter>() {
 				@Override
-				public void processResult(DashboardPresenter aResponse) {
+				public void processResult(UserPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
-			*/
+			
 			getView().setSelectedTab("Users");
 		}else if (page != null && page.equals("settings")) {
 			Window.setTitle("Settings");

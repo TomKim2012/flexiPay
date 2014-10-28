@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.programs;
+package com.workpoint.mwallet.client.ui.transactions;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;

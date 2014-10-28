@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.programs.table;
+package com.workpoint.mwallet.client.ui.transactions.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +27,6 @@ public class ProgramsTableRow extends RowWidget {
 	// @UiField HTMLPanel divRowNo;
 	@UiField
 	HTMLPanel divStatus;
-	@UiField
-	HTMLPanel divProgress;
-
-	@UiField
-	HTMLPanel divTimelines;
-
-	@UiField
-	HTMLPanel divBudget;
-	@UiField
-	HTMLPanel divCheckbox;
 
 
 	// @UiField SpanElement spnProgress;

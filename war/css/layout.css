@@ -39,6 +39,9 @@
 	width: 84%;
 	height: 100%;
 }
+.main-container .content-right .content-body{
+	padding:10px;	
+}
 
 /*Uploader Modal */
 .modal {

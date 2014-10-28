@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.programs.table;
+package com.workpoint.mwallet.client.ui.tills.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +10,14 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.programs.TableHeader;
+import com.workpoint.mwallet.client.ui.transactions.TableHeader;
 
-public class ProgramsTable extends Composite {
+public class TillsTable extends Composite {
 
 	private static ActivitiesTableUiBinder uiBinder = GWT
 			.create(ActivitiesTableUiBinder.class);
 
-	interface ActivitiesTableUiBinder extends UiBinder<Widget, ProgramsTable> {
+	interface ActivitiesTableUiBinder extends UiBinder<Widget, TillsTable> {
 	}
 
 	@UiField
@@ -28,7 +28,7 @@ public class ProgramsTable extends Composite {
 	Long lastUpdatedId = null;
 	private Long programId = null;
 
-	public ProgramsTable() {
+	public TillsTable() {
 		initWidget(uiBinder.createAndBindUi(this));
 		createHeader();
 		createRow(new Transaction());
@@ -39,13 +39,13 @@ public class ProgramsTable extends Composite {
 		System.err.println(">>>Created Header");
 		
 		List<TableHeader> th = new ArrayList<TableHeader>();
-		th.add(new TableHeader("Customer Names"));
-		th.add(new TableHeader("Phone Number"));
-		th.add(new TableHeader("Amount"));
-		th.add(new TableHeader("Reference Id"));
-		th.add(new TableHeader("Date"));
-		th.add(new TableHeader("Till Number"));
+		th.add(new TableHeader(""));
+		th.add(new TableHeader("Business Name"));
+		th.add(new TableHeader("Till No"));
+		th.add(new TableHeader("Phone No"));
+		th.add(new TableHeader("Merchant"));
 		th.add(new TableHeader("Status"));
+		th.add(new TableHeader("Last Modified"));
 		
 		tblView.setTableHeaders(th);
 	}
@@ -53,21 +53,23 @@ public class ProgramsTable extends Composite {
 	private void createRow(Transaction transaction) {
 		System.err.println(">>>Printed Row");
 		
-		ProgramsTableRow row = new ProgramsTableRow();
+		TillsTableRow row = new TillsTableRow();
+		TillsTableRow row1 = new TillsTableRow();
+		TillsTableRow row2 = new TillsTableRow();
 		if(transaction.getId()==lastUpdatedId){
 			//row.highlight();
 		}
-		
+
 		//row.setSelectionChangeHandler(handler);
 		tblView.addRow(row);
+		tblView.addRow(row1);
+		tblView.addRow(row2);
 	}
 	
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 	}
-	
-	
 	
 	
 	public class Transaction{

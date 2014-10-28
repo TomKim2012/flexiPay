@@ -5,8 +5,11 @@ import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.workpoint.mwallet.client.place.ClientPlaceManager;
 import com.workpoint.mwallet.client.place.DefaultPlace;
 import com.workpoint.mwallet.client.place.NameTokens;
+import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.MainPageView;
+import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
+import com.workpoint.mwallet.client.ui.admin.users.UserView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
 import com.workpoint.mwallet.client.ui.header.HeaderPresenter;
@@ -15,8 +18,15 @@ import com.workpoint.mwallet.client.ui.home.HomePresenter;
 import com.workpoint.mwallet.client.ui.home.HomeView;
 import com.workpoint.mwallet.client.ui.login.LoginPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginView;
-import com.workpoint.mwallet.client.ui.programs.ProgramsPresenter;
-import com.workpoint.mwallet.client.ui.programs.ProgramsView;
+import com.workpoint.mwallet.client.ui.popup.GenericPopupPresenter;
+import com.workpoint.mwallet.client.ui.popup.GenericPopupView;
+import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
+import com.workpoint.mwallet.client.ui.tills.TillsView;
+import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
+import com.workpoint.mwallet.client.ui.tills.save.CreateTillView;
+import com.workpoint.mwallet.client.ui.transactions.ProgramsPresenter;
+import com.workpoint.mwallet.client.ui.transactions.ProgramsView;
+import com.workpoint.mwallet.client.util.AppContext;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -25,15 +35,30 @@ public class ClientModule extends AbstractPresenterModule {
 		install(new DefaultModule(ClientPlaceManager.class));
 
 		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
-
+		
+		requestStaticInjection(AppContext.class);
+		requestStaticInjection(AppManager.class);
+		
 		bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class,
 				MainPageView.class, MainPagePresenter.MyProxy.class);
 
 		bindPresenter(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class, HomePresenter.MyProxy.class);
 		
+		bindPresenterWidget(GenericPopupPresenter.class, GenericPopupPresenter.MyView.class,
+				GenericPopupView.class);
+		
 		bindPresenterWidget(ProgramsPresenter.class, ProgramsPresenter.IActivitiesView.class,
 				ProgramsView.class);
+		
+		bindPresenterWidget(TillsPresenter.class, TillsPresenter.IActivitiesView.class,
+				TillsView.class);
+		
+		bindPresenterWidget(CreateTillPresenter.class, CreateTillPresenter.MyView.class,
+				CreateTillView.class);
+		
+		bindPresenterWidget(UserPresenter.class, UserPresenter.MyView.class,
+				UserView.class);
 
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);

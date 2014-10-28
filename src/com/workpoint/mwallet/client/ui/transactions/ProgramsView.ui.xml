@@ -3,8 +3,8 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'
-	xmlns:programs='urn:import:com.workpoint.mwallet.client.ui.programs'
-	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.programs.table'
+	xmlns:programs='urn:import:com.workpoint.mwallet.client.ui.transactions'
+	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.transactions.table'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
@@ -16,9 +16,9 @@
 				<div class="action-buttons row-fluid">
 					<div class="span9">
 						<div class="span3">
-							<d:ActionLink ui:field="aProgram" styleName="btn btn-primary hide"
+							<d:ActionLink ui:field="aProgram" styleName="btn btn-primary"
 								dataToggle="tooltip">
-								Create Program
+								Refresh
 							</d:ActionLink>
 						</div>
 
@@ -29,80 +29,8 @@
 							</d:ActionLink>
 						</div>
 
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aNewOutcome" styleName="btn btn-primary"
-								dataToggle="tooltip" dataPlacement="bottom" title="Create outcome">
-								<i class="icon-plus"></i>
-								Create Outcome
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aNewObjective" styleName="btn btn-primary"
-								dataToggle="tooltip" dataPlacement="bottom" title="Create objective">
-								<i class="icon-plus-sign"></i>
-								Create Objective
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aNewActivity" styleName="btn btn-primary"
-								dataToggle="tooltip" dataPlacement="bottom" title="Create activity">
-								<i class="icon-plus"></i>
-								Create Activity
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aNewTask" styleName="btn btn-primary"
-								dataToggle="tooltip" dataPlacement="bottom" title="Create Task">
-								<i class="icon-plus"></i>
-								Create Task
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
-								dataToggle="tooltip" dataPlacement="bottom" title="Edit">
-								<i class="icon-pencil icon-button"></i>
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aDetail" styleName="btn btn-default hide"
-								dataToggle="tooltip" dataPlacement="bottom" title="Detailed view">
-								<i class="icon-tasks icon-button"></i>
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aDeleteProgram" styleName="btn btn-default"
-								dataToggle="tooltip" dataPlacement="bottom" title="Delete">
-								<i class="icon-trash icon-button"></i>
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aMove" styleName="btn btn-default"
-								dataToggle="tooltip" dataPlacement="bottom" title="Move">
-								<i class="icon-folder-open icon-button"></i>
-							</d:ActionLink>
-						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aAssign" styleName="btn btn-default"
-								dataToggle="tooltip" dataPlacement="bottom" title="Assign to Individual/Group">
-								<i class="icon-google-share icon-button"></i>
-							</d:ActionLink>
-						</div>
-
-						<div class="span3">
-							<d:ActionLink ui:field="aExport" styleName="btn btn-default hide"
-								dataToggle="tooltip">Export</d:ActionLink>
-						</div>
-
 					</div>
-					<div class="span3 right-side hide">
+					<div class="span3 right-side">
 						<div class="program-search">
 							<div class="input-append">
 								<input type="text" styleName="search-query" placeholder="Search here">

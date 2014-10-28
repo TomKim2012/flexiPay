@@ -25,7 +25,7 @@
 					<div class="details">
 						<span class="content-block">Money In</span>
 						<span class="value" ui:field="spnTotalFunding">
-
+							10,500
 						</span>
 					</div> <!-- /.details -->
 
@@ -44,7 +44,7 @@
 					<div class="details">
 						<span class="content-block">Total Transactions</span>
 						<span class="value" ui:field="spnActual">
-
+						24
 						</span>
 					</div> <!-- /.details -->
 
@@ -61,9 +61,9 @@
 					</div> <!-- /.visual -->
 
 					<div class="details">
-						<span class="content-block">Left to Spend</span>
+						<span class="content-block">Merchants</span>
 						<span class="value" ui:field="spnRemaining">
-
+						15
 						</span>
 					</div> <!-- /.details -->
 
