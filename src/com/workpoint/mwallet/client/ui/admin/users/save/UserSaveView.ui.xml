@@ -1,10 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 
-<!-- xmlns:up='urn:import:com.workpoint.mwallet.client.ui.upload.custom' -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:a='urn:import:com.workpoint.mwallet.client.ui.component.autocomplete'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'
+	xmlns:a='urn:import:com.workpoint.mwallet.client.ui.component.autocomplete'
 	xmlns:up='urn:import:com.workpoint.mwallet.client.ui.upload.custom'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
@@ -32,10 +31,10 @@
 							<label for="Names">
 								<b>Names:</b>
 							</label>
-							<d:TextField ui:field="txtLastname" type="text"
-								class="input-medium" placeholder="Last Name" />
 							<d:TextField ui:field="txtFirstname" type="text"
 								class="input-medium" placeholder="First Name" />
+							<d:TextField ui:field="txtLastname" type="text"
+								class="input-medium" placeholder="Last Name" />
 						</div>
 					</div>
 
@@ -45,7 +44,7 @@
 								<b>Username:</b>
 							</label>
 							<d:TextField ui:field="txtUserName" type="text"
-								class="input-large" placeholder="" />
+								class="input-large" placeholder="" disabled="false"/>
 						</div>
 					</div>
 					<div class="control-group">

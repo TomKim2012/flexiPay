@@ -75,7 +75,6 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(UserPresenter.class, UserPresenter.MyView.class,
 				UserView.class);
 
-		
 		bindPresenterWidget(HeaderPresenter.class,
 				HeaderPresenter.IHeaderView.class, HeaderView.class);
 

@@ -16,23 +16,23 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewImpl;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.model.UploadContext;
 import com.workpoint.mwallet.client.model.UploadContext.UPLOADACTION;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.component.IssuesPanel;
 import com.workpoint.mwallet.client.ui.component.PasswordField;
+import com.workpoint.mwallet.client.ui.component.TextArea;
 import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.component.autocomplete.AutoCompleteField;
 import com.workpoint.mwallet.client.ui.upload.custom.Uploader;
 import com.workpoint.mwallet.shared.model.HTUser;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
-public class UserSaveView extends ViewImpl implements
+public class UserSaveView extends PopupViewImpl implements
 		UserSavePresenter.IUserSaveView {
 
 	private final Widget widget;
@@ -40,6 +40,8 @@ public class UserSaveView extends ViewImpl implements
 	@UiField HTMLPanel divGroupDetails;
 	@UiField IssuesPanel issues;
 	@UiField Anchor aClose;
+	
+	TabPanel t;
 
 	@UiField TextField txtUserName;
 	@UiField TextField txtFirstname;
@@ -60,7 +62,6 @@ public class UserSaveView extends ViewImpl implements
 	
 	@UiField DivElement divUserSave;
 	@UiField Uploader uploader;
-	//@UiField ListField<UserGroup> lstGroups;
 	@UiField AutoCompleteField<UserGroup> lstGroups;
 	
 	TYPE type;
@@ -69,13 +70,13 @@ public class UserSaveView extends ViewImpl implements
 	}
 
 	@Inject
-	public UserSaveView(final Binder binder) {
-		//super(eventBus);
+	public UserSaveView(final EventBus eventBus, final Binder binder) {
+		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		aClose.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//hide();
+				hide();
 			}
 		});
 				
@@ -146,11 +147,13 @@ public class UserSaveView extends ViewImpl implements
 		HTUser user = new HTUser();
 		user.setEmail(txtEmail.getValue());
 		user.setName(txtFirstname.getValue());
-		user.setPassword(txtPassword.getValue());
+		if(!isNullOrEmpty(txtPassword.getValue())){
+			user.setPassword(txtPassword.getValue());
+		}
+		
 		user.setSurname(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
-		
 		return user;
 	}
 	
@@ -162,6 +165,7 @@ public class UserSaveView extends ViewImpl implements
 		txtConfirmPassword.setValue(user.getPassword());
 		txtLastname.setValue(user.getSurname());
 		txtUserName.setValue(user.getUserId());
+		txtUserName.setDisabled(true);
 		lstGroups.select(user.getGroups());
 		setContext(user.getUserId());
 
@@ -187,16 +191,13 @@ public class UserSaveView extends ViewImpl implements
 		}
 		
 		if(isNullOrEmpty(txtPassword.getText())){
-			valid=false;
-			issues.addError("Password is mandatory");
+//			valid=false;
+//			issues.addError("Password is mandatory");
 		}else{
 			if(!txtPassword.getValue().equals(txtConfirmPassword.getValue())){
 				issues.addError("Password and confirm password fields do not match");
 			}
 		}
-		
-		
-		
 		return valid;
 	}
 
