@@ -1,20 +1,20 @@
 package com.workpoint.mwallet.client.ui.admin.users;
 
-import com.gwtplatform.mvp.client.ViewImpl;
+import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.GROUPSLOT;
+import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.ITEMSLOT;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
-
-import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.*;
 
 public class UserView extends ViewImpl implements UserPresenter.MyView {
 

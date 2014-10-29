@@ -85,7 +85,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 			@Override
 			public void processResult(UserSavePresenter result) {
 				result.setType(type, obj);
-				//addToPopupSlot(result, false);
+				addToPopupSlot(result, false);
 			}
 		});
 
@@ -159,7 +159,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 			groupFactory.get(new ServiceCallback<GroupPresenter>() {
 				@Override
 				public void processResult(GroupPresenter result) {
-					// result.setGroup(group);
+					result.setGroup(group);
 					addToSlot(GROUPSLOT, result);
 				}
 			});
