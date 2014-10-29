@@ -32,7 +32,7 @@ import com.workpoint.mwallet.client.ui.upload.custom.Uploader;
 import com.workpoint.mwallet.shared.model.HTUser;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
-public class UserSaveView extends ViewImpl implements
+public class UserSaveView extends PopupViewImpl implements
 		UserSavePresenter.IUserSaveView {
 
 	private final Widget widget;
@@ -69,13 +69,13 @@ public class UserSaveView extends ViewImpl implements
 	}
 
 	@Inject
-	public UserSaveView(final Binder binder) {
-		//super(eventBus);
+	public UserSaveView(final EventBus eventBus,final Binder binder) {
+		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		aClose.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//hide();
+				hide();
 			}
 		});
 				

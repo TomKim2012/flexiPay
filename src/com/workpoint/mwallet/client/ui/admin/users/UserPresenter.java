@@ -85,7 +85,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 			@Override
 			public void processResult(UserSavePresenter result) {
 				result.setType(type, obj);
-				//addToPopupSlot(result, false);
+				addToPopupSlot(result, false);
 			}
 		});
 
