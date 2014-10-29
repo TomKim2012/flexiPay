@@ -24,9 +24,11 @@ import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
+import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
+import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.ProgramsPresenter;
@@ -209,7 +211,7 @@ public class HomePresenter extends
 		//fireEvent(new LoadAlertsEvent());
 		clear();
 
-		final String page = request.getParameter("page", null);
+		final String page = request.getParameter("page", "dashboard");
 
 		if (page != null && page.equals("dashboard")) {
 			Window.setTitle("Dashboard");
@@ -251,7 +253,6 @@ public class HomePresenter extends
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
-			
 			getView().setSelectedTab("Users");
 		}else if (page != null && page.equals("settings")) {
 			Window.setTitle("Settings");
@@ -264,8 +265,6 @@ public class HomePresenter extends
 			*/
 			getView().setSelectedTab("Settings");
 		}
-		
-
 	}
 
 	private void clear() {

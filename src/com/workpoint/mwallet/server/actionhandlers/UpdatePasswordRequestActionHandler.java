@@ -3,7 +3,6 @@ package com.workpoint.mwallet.server.actionhandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.workpoint.mwallet.server.helper.auth.LoginHelper;
 import com.workpoint.mwallet.shared.requests.UpdatePasswordRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.UpdatePasswordResponse;
@@ -23,7 +22,7 @@ public class UpdatePasswordRequestActionHandler extends
 		
 		String username = action.getUsername();
 		String password = action.getPassword();
-		boolean success= LoginHelper.get().updatePassword(username, password);
+//		boolean success= LoginHelper.get().updatePassword(username, password);
 		
 		UpdatePasswordResponse response = (UpdatePasswordResponse)actionResult;
 	}

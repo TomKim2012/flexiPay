@@ -7,18 +7,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
-import com.workpoint.mwallet.client.service.TaskServiceCallback;
-import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
-import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
+import com.gwtplatform.mvp.client.View;
 import com.workpoint.mwallet.shared.model.HTUser;
 import com.workpoint.mwallet.shared.model.UserGroup;
+import com.workpoint.mwallet.shared.requests.SaveUserRequest;
 
 public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSaveView> {
 
-	public interface IUserSaveView extends PopupView {
+	public interface IUserSaveView extends View {
 
 		void setType(TYPE type);
 		
@@ -50,7 +47,7 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 	
 	UserGroup group;
 	
-	@Inject DispatchAsync requestHelper;
+	//@Inject DispatchAsync requestHelper;
 	
 	@Inject
 	public UserSavePresenter(final EventBus eventBus, final IUserSaveView view) {
@@ -70,16 +67,16 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 					if(user!=null){
 						htuser.setId(user.getId());
 					}
-					/*SaveUserRequest request = new SaveUserRequest(htuser);
-					requestHelper.execute(request, new TaskServiceCallback<SaveUserResponse>() {
-						@Override
-						public void processResult(SaveUserResponse result) {
-							user = result.getUser();
-							getView().setUser(user);
-							getView().hide();
-							fireEvent(new LoadUsersEvent());
-						}
-					});*/
+					SaveUserRequest request = new SaveUserRequest(htuser);
+//					requestHelper.execute(request,new TaskServiceCallback<SaveUserResponse>() {
+//						@Override
+//						public void processResult(SaveUserResponse result) {
+//							user = result.getUser();
+//							getView().setUser(user);
+//							//getView().hide();
+//							fireEvent(new LoadUsersEvent());
+//						}
+//					});
 				}
 			}
 		});

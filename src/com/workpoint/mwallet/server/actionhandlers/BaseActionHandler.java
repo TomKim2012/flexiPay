@@ -11,8 +11,8 @@ import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.ActionHandler;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.workpoint.mwallet.server.db.DB;
-import com.workpoint.mwallet.server.helper.error.ErrorLogDaoHelper;
+//import com.workpoint.mwallet.server.db.DB;
+//import com.workpoint.mwallet.server.helper.error.ErrorLogDaoHelper;
 import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.exceptions.InvalidSubjectExeption;
 import com.workpoint.mwallet.shared.requests.BaseRequest;
@@ -63,14 +63,14 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 			
 			execute(action, result, execContext);
 			
-			DB.commitTransaction();
+//			DB.commitTransaction();
 		} catch (Exception e) {	
 			e.printStackTrace();
-			DB.rollback();			
+//			DB.rollback();			
 			hasError = true;
 			throwable = e;
 		}finally {
-			DB.closeSession();		
+//			DB.closeSession();		
 			logErrors(hasError, throwable, result);
 			SessionHelper.afterRequest();
 		}
@@ -94,18 +94,18 @@ public abstract class BaseActionHandler<A extends BaseRequest<B>, B extends Base
 //				if(!DB.hasActiveTrx())
 //					DB.beginTransaction();
 //				
-				errorId=ErrorLogDaoHelper.saveLog(throwable, this.getActionType().getName());
-				DB.commitTransaction();
+//				errorId=ErrorLogDaoHelper.saveLog(throwable, this.getActionType().getName());
+//				DB.commitTransaction();
 			}catch(Exception e){
 				e.printStackTrace();
 				try{
-					DB.rollback();
+//					DB.rollback();
 				}catch(Exception ee){
 					ee.printStackTrace();
 				}
 				
 			}finally{
-				DB.closeSession();				
+//				DB.closeSession();				
 			}
 			
 			//set error msg

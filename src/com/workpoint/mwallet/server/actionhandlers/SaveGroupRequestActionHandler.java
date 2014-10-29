@@ -3,7 +3,6 @@ package com.workpoint.mwallet.server.actionhandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.workpoint.mwallet.server.helper.auth.LoginHelper;
 import com.workpoint.mwallet.shared.model.UserGroup;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;

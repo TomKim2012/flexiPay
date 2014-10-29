@@ -47,6 +47,10 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 		HasClickHandlers getaNewGroup();
 
 		void setType(TYPE type);
+
+		HasClickHandlers getUserTabLink();
+
+		HasClickHandlers getGroupTabLink();
 	}
 
 	public static final Object ITEMSLOT = new Object();
@@ -81,7 +85,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 			@Override
 			public void processResult(UserSavePresenter result) {
 				result.setType(type, obj);
-				addToPopupSlot(result, false);
+				//addToPopupSlot(result, false);
 			}
 		});
 
@@ -106,6 +110,21 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 			@Override
 			public void onClick(ClickEvent event) {
 				showPopup(UserSavePresenter.TYPE.GROUP);
+			}
+		});
+		
+		getView().getUserTabLink().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				setType(TYPE.USER);
+			}
+		});
+		
+		
+		getView().getGroupTabLink().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				setType(TYPE.GROUP);
 			}
 		});
 	}
@@ -196,6 +215,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 	public void setType(TYPE type) {
 		this.type = type;
 		getView().setType(type);
+		loadData();
 	}
 
 	@Override

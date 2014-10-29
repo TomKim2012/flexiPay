@@ -14,7 +14,6 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.OptionControl;
-import com.workpoint.mwallet.client.ui.header.HeaderPresenter;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 
 public class TillsPresenter extends

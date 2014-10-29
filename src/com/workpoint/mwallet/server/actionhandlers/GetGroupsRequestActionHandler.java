@@ -3,7 +3,6 @@ package com.workpoint.mwallet.server.actionhandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.workpoint.mwallet.server.helper.auth.LoginHelper;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.GetGroupsResponse;
@@ -20,7 +19,7 @@ public class GetGroupsRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		GetGroupsResponse response  = (GetGroupsResponse)actionResult;
 		
-		response.setGroups(LoginHelper.get().getAllGroups());
+//		response.setGroups(LoginHelper.get().getAllGroups());
 	}
 	
 	@Override

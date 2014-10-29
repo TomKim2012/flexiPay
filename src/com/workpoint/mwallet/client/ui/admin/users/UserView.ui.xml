@@ -48,14 +48,13 @@
 									<div class="th">Username</div>
 									<div class="th">Email</div>
 									<div class="th">Group</div>
-									<div class="th">Action</div>
+									<div class="th">Client Code</div>
 								</div>
 							</div>
 
 
 							<g:HTMLPanel ui:field="panelUsers" styleName="tbody"><!-- div 
 									class="tbody" -->
-
 							</g:HTMLPanel><!--End Tbody -->
 
 						</div><!--End Table -->
@@ -104,8 +103,8 @@
 										</label>
 									</div>
 									<div class="th">Code</div>
-									<div class="th">Description</div>
-									<div class="th">Action</div>
+									<div class="th">Group Name</div>
+									<div class="th">Actions</div>
 								</div>
 							</div>
 

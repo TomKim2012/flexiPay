@@ -3,8 +3,6 @@ package com.workpoint.mwallet.server.actionhandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.workpoint.mwallet.server.helper.auth.LoginHelper;
-import com.workpoint.mwallet.shared.model.HTUser;
 import com.workpoint.mwallet.shared.requests.GetUserRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.GetUserRequestResult;
@@ -19,10 +17,10 @@ public class GetUserRequestActionHandler extends
 	@Override
 	public void execute(GetUserRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
-		HTUser user = LoginHelper.getHelper().getUser(action.getUserId(), true);
+//		HTUser user = LoginHelper.getHelper().getUser(action.getUserId(), true);
 		GetUserRequestResult result = (GetUserRequestResult)actionResult;
 	
-		result.setUser(user);
+//		result.setUser(user);
 	}
 	
 	
