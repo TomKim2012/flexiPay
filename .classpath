@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-1.5-post-gwt-2.2.jar"/>
@@ -17,5 +18,23 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ejb3-persistence-1.0.2.GA.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasypt-1.9.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-3.4.0.GA.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-9.2-1003.jdbc4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-3.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/asm-3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.5.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/javassist-3.14.0-GA.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.ws.rs-api-2.0-m10.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
