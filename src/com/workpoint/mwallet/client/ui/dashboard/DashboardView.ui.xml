@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
-	xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component" xmlns:c="urn:import:com.workpoint.mwallet.client.ui.charts"
+	xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component"
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="home-reports content-body overflow-y">

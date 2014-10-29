@@ -18,8 +18,7 @@ public class GetGroupsRequestActionHandler extends
 	public void execute(GetGroupsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		GetGroupsResponse response  = (GetGroupsResponse)actionResult;
-		
-//		response.setGroups(LoginHelper.get().getAllGroups());
+		//response.setGroups(LoginHelper.get().getAllGroups());
 	}
 	
 	@Override

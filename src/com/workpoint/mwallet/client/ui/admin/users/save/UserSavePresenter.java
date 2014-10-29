@@ -77,7 +77,7 @@ public class UserSavePresenter extends PresenterWidget<UserSavePresenter.IUserSa
 						htuser.setId(user.getId());
 					}
 					SaveUserRequest request = new SaveUserRequest(htuser);
-					requestHelper.execute(request, new TaskServiceCallback<SaveUserResponse>() {
+					requestHelper.execute(request,new TaskServiceCallback<SaveUserResponse>() {
 						@Override
 						public void processResult(SaveUserResponse result) {
 							user = result.getUser();

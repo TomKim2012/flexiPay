@@ -70,7 +70,7 @@ public class UserSaveView extends PopupViewImpl implements
 	}
 
 	@Inject
-	public UserSaveView(final EventBus eventBus, final Binder binder) {
+	public UserSaveView(final EventBus eventBus,final Binder binder) {
 		super(eventBus);
 		widget = binder.createAndBindUi(this);
 		aClose.addClickHandler(new ClickHandler() {
