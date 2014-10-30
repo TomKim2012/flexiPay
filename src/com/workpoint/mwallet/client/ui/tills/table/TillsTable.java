@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.transactions.TableHeader;
+import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class TillsTable extends Composite {
 

@@ -3,7 +3,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'
-	xmlns:programs='urn:import:com.workpoint.mwallet.client.ui.transactions'
+	xmlns:p='urn:import:com.workpoint.mwallet.client.ui.transactions'
 	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.transactions.table'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
@@ -50,8 +50,8 @@
 
 
 				<div class="row-fluid">
-					<programs:ProgramHeader ui:field="headerContainer"
-						leftMargin="true"></programs:ProgramHeader>
+					<p:TransactionsHeader ui:field="headerContainer"
+						leftMargin="true"></p:TransactionsHeader>
 				</div>
 
 				<!-- BreadCrumb Panel -->
@@ -78,8 +78,8 @@
 					<d:MyHTMLPanel styleName="tab-content" ui:field="divProgramsTable">
 						<g:HTMLPanel>
 							<div ui:field="divTab1Content" class="tab-pane fade in active">
-								<table:ProgramsTable ui:field="tblView">
-								</table:ProgramsTable>
+								<table:GenericTable ui:field="tblView">
+								</table:GenericTable>
 							</div>
 						</g:HTMLPanel>
 					</d:MyHTMLPanel>

@@ -13,12 +13,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.BreadCrumbItem;
 
-public class ProgramHeader extends Composite {
+public class TransactionsHeader extends Composite {
 
 	private static ActivityHeaderUiBinder uiBinder = GWT
 			.create(ActivityHeaderUiBinder.class);
 
-	interface ActivityHeaderUiBinder extends UiBinder<Widget, ProgramHeader> {
+	interface ActivityHeaderUiBinder extends UiBinder<Widget, TransactionsHeader> {
 	}
 
 	@UiField
@@ -36,7 +36,7 @@ public class ProgramHeader extends Composite {
 	
 	private Long programId;
 
-	public ProgramHeader() {
+	public TransactionsHeader() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 	/*	periodDropdown

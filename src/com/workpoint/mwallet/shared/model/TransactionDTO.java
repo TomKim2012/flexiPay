@@ -1,44 +1,27 @@
-package com.workpoint.mwallet.server.dao.model;
+package com.workpoint.mwallet.shared.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="LipaNaMpesaIPN")
-public class TransactionModel {
+public class TransactionDTO implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name="mpesa_sender")
-	private String customerName;
-	@Column(name="mpesa_msisdn")
-	private String phone;
-	@Column(name="mpesa_amt")
-	private Double amount;
-	@Column(name="mpesa_code")
-	private String referenceId;
-	@Column(name="tstamp")
-	private Date trxDate;
-	@Column(name="business_number")
-	private String tillNumber;
-	@Column(name="Isprocessed")
-	private boolean status;
-	
-	
 
+	private Long id;
+	private String customerName;
+	private String phone;
+	private Double amount;
+	private String referenceId;
+	private Date trxDate;
+	private String tillNumber;
+	private boolean status;
+
+	public TransactionDTO() {
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -102,5 +85,4 @@ public class TransactionModel {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	
 }

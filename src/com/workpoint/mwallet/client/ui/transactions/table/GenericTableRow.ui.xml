@@ -3,25 +3,19 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component">
 	<g:HTMLPanel styleName="tr" ui:field="row">
 		<g:HTMLPanel styleName="td" ui:field="divCustNames">
-			Tom Kimani
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divPhone">
-			0729472421
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divAmount">
-			10
 		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divTransactionCode">
-			FQWRETMV
+		<g:HTMLPanel styleName="td" ui:field="divReferenceId">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divDate">
-			25/10/2014
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divTills">
-			356236
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divStatus">
-			<span class="label label-default">posted</span>
+			<span class="label label-default" ui:field="spnStatus">posted</span>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -3,22 +3,23 @@
 http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
 	xmlns:orm="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/persistence">
-	
-    <persistence-unit name="mwallet-pu" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider> 
-        <class>com.workpoint.mwallet.server.dao.model.TransactionModel</class>
-		    
-        <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/mwallet" />
-            <property name="hibernate.connection.username" value="postgres" />
-            <property name="hibernate.connection.password" value="postgres" />
-            <property name="hibernate.max_fetch_depth" value="3" />
-            <!-- property name="hibernate.connection.autocommit" value="false"/ -->
-            
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.show_sql" value="false" />
-        </properties>
-    </persistence-unit>
+
+	<persistence-unit name="mwallet-pu" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.workpoint.mwallet.server.dao.model.TransactionModel</class>
+
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
+			<property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+			<property name="hibernate.connection.url"
+				value="jdbc:sqlserver://localhost:1433;databaseName=mobileBanking" />
+			<property name="hibernate.connection.username" value="TomKim" />
+			<property name="hibernate.connection.password" value="gitaru09" />
+			<property name="hibernate.max_fetch_depth" value="3" />
+			<!-- property name="hibernate.connection.autocommit" value="false"/ -->
+
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false" />
+		</properties>
+	</persistence-unit>
 </persistence>

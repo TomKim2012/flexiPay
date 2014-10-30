@@ -13,7 +13,6 @@ public class TransactionDao extends BaseDaoImpl {
 	}
 
 	public List<TransactionModel> getAllTrx() {
-		
 		return getResultList(em.createQuery("FROM TransactionModel t"));
 	}
 }

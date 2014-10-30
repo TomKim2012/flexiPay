@@ -8,14 +8,21 @@ import com.workpoint.mwallet.server.actionvalidator.SessionValidator;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.requests.GetUserRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
+import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
+import com.workpoint.mwallet.server.actionhandlers.GetTransactionsRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
 	@Override
 	protected void configureHandlers() {
-		bindHandler(GetUsersRequest.class, GetUsersRequestActionHandler.class, SessionValidator.class);
-		bindHandler(GetGroupsRequest.class, GetGroupsRequestActionHandler.class, SessionValidator.class);
-		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class, SessionValidator.class);
-		
+		bindHandler(GetUsersRequest.class, GetUsersRequestActionHandler.class,
+				SessionValidator.class);
+		bindHandler(GetGroupsRequest.class,
+				GetGroupsRequestActionHandler.class, SessionValidator.class);
+		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class,
+				SessionValidator.class);
+		bindHandler(GetTransactionsRequest.class,
+				GetTransactionsRequestActionHandler.class,
+				SessionValidator.class);
 	}
 }

@@ -31,7 +31,7 @@ import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHa
 import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
-import com.workpoint.mwallet.client.ui.transactions.ProgramsPresenter;
+import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.shared.model.HTUser;
 
 public class HomePresenter extends
@@ -85,7 +85,7 @@ public class HomePresenter extends
 	
 	
 	private IndirectProvider<DashboardPresenter> dashboardFactory;
-	private IndirectProvider<ProgramsPresenter> transactionsFactory;
+	private IndirectProvider<TransactionsPresenter> transactionsFactory;
 	private IndirectProvider<UserPresenter> usersFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
 	
@@ -114,7 +114,7 @@ public class HomePresenter extends
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider, 
-			Provider<ProgramsPresenter> transactionsProvider,
+			Provider<TransactionsPresenter> transactionsProvider,
 			Provider<UserPresenter> userProvider,
 			Provider<TillsPresenter> tillProvider
 	/*
@@ -128,7 +128,7 @@ public class HomePresenter extends
 	) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(dashboardProvider);
-		transactionsFactory = new StandardProvider<ProgramsPresenter>(transactionsProvider);
+		transactionsFactory = new StandardProvider<TransactionsPresenter>(transactionsProvider);
 		usersFactory = new StandardProvider<UserPresenter>(userProvider);
 		tillFactory =  new StandardProvider<TillsPresenter>(tillProvider);
 		/*
@@ -237,9 +237,9 @@ public class HomePresenter extends
 		
 		else if (page != null && page.equals("transactions")) {
 			Window.setTitle("Transactions");
-			transactionsFactory.get(new ServiceCallback<ProgramsPresenter>() {
+			transactionsFactory.get(new ServiceCallback<TransactionsPresenter>() {
 				@Override
-				public void processResult(ProgramsPresenter aResponse) {
+				public void processResult(TransactionsPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});

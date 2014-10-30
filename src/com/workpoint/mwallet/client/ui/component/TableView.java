@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
-import com.workpoint.mwallet.client.ui.transactions.TableHeader;
+import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class TableView extends Composite {
 

@@ -17,6 +17,8 @@ import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSaveView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
+import com.workpoint.mwallet.client.ui.error.ErrorPresenter;
+import com.workpoint.mwallet.client.ui.error.ErrorView;
 import com.workpoint.mwallet.client.ui.header.HeaderPresenter;
 import com.workpoint.mwallet.client.ui.header.HeaderView;
 import com.workpoint.mwallet.client.ui.home.HomePresenter;
@@ -29,8 +31,8 @@ import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsView;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillView;
-import com.workpoint.mwallet.client.ui.transactions.ProgramsPresenter;
-import com.workpoint.mwallet.client.ui.transactions.ProgramsView;
+import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
+import com.workpoint.mwallet.client.ui.transactions.TransactionsView;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.client.util.Definitions;
 
@@ -56,12 +58,15 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(GroupPresenter.class, GroupPresenter.MyView.class,
 				GroupView.class);
+		
+		bindPresenterWidget(ErrorPresenter.class, ErrorPresenter.MyView.class,
+				ErrorView.class);
 
 		bindPresenterWidget(GenericPopupPresenter.class,
 				GenericPopupPresenter.MyView.class, GenericPopupView.class);
 
-		bindPresenterWidget(ProgramsPresenter.class,
-				ProgramsPresenter.IActivitiesView.class, ProgramsView.class);
+		bindPresenterWidget(TransactionsPresenter.class,
+				TransactionsPresenter.ITransactionView.class, TransactionsView.class);
 
 		bindPresenterWidget(UserSavePresenter.class,
 				UserSavePresenter.IUserSaveView.class, UserSaveView.class);
