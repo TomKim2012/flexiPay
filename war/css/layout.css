@@ -41,6 +41,11 @@
 }
 .main-container .content-right .content-body{
 	padding:10px;	
+	padding-left: 0px;
+}
+
+.main-container .content-right .users-panel{
+	padding-left:10px;
 }
 
 /*Uploader Modal */

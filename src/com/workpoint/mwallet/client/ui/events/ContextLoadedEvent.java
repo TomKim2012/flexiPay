@@ -3,14 +3,14 @@ package com.workpoint.mwallet.client.ui.events;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.Version;
 
 public class ContextLoadedEvent extends
 		GwtEvent<ContextLoadedEvent.ContextLoadedHandler> {
 
 	public static Type<ContextLoadedHandler> TYPE = new Type<ContextLoadedHandler>();
-	private HTUser currentUser;
+	private UserDTO currentUser;
 	private Version version;
 	private String organizationName;
 
@@ -21,12 +21,12 @@ public class ContextLoadedEvent extends
 	public ContextLoadedEvent() {
 	}
 	
-	public ContextLoadedEvent(HTUser currentUser,Version version) {
+	public ContextLoadedEvent(UserDTO currentUser,Version version) {
 		this.currentUser = currentUser;
 		this.version = version;
 	}
 
-	public HTUser getCurrentUser() {
+	public UserDTO getCurrentUser() {
 		return currentUser;
 	}
 	

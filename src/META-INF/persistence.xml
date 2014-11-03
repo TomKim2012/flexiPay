@@ -7,7 +7,9 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 	<persistence-unit name="mwallet-pu" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.workpoint.mwallet.server.dao.model.TransactionModel</class>
-
+		<class>com.workpoint.mwallet.server.dao.model.TillModel</class>
+		<class>com.workpoint.mwallet.server.dao.model.User</class>
+		
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
 			<property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />

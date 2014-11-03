@@ -9,10 +9,13 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.OnOptionSelected;
 import com.workpoint.mwallet.client.ui.events.EditGroupEvent;
 import com.workpoint.mwallet.shared.model.UserGroup;
+import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
+import com.workpoint.mwallet.shared.responses.SaveGroupResponse;
 
 public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView>{
 
@@ -68,14 +71,14 @@ public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView>{
 	}
 	
 	protected void delete(UserGroup group) {
-		/*SaveGroupRequest request = new SaveGroupRequest(group);
+		SaveGroupRequest request = new SaveGroupRequest(group);
 		request.setDelete(true);
 		requestHelper.execute(request, new TaskServiceCallback<SaveGroupResponse>() {
 			@Override
 			public void processResult(SaveGroupResponse result) {
 				getView().asWidget().removeFromParent();
 			}
-		});*/
+		});
 	}
 
 	public void setGroup(UserGroup group){

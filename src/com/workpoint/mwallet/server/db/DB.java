@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import com.workpoint.mwallet.server.actionhandlers.BaseActionHandler;
+import com.workpoint.mwallet.server.dao.ErrorDaoImpl;
+import com.workpoint.mwallet.server.dao.UserGroupDaoImpl;
 
 /**
  * <p>
@@ -225,6 +227,13 @@ public class DB{
 	public static boolean hasActiveTrx() throws NamingException{
 		return getUserTrx().isActive();
 	}
-
+	
+	public static UserGroupDaoImpl getUserGroupDao(){
+		return factory().getUserGroupDaoImpl(getEntityManager());
+	}
+	
+	public static ErrorDaoImpl getErrorDao() {
+		return factory().getErrorDao(getEntityManager());
+	}
 
 }

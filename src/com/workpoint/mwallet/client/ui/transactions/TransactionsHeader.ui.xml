@@ -26,6 +26,21 @@
 					</g:HTMLPanel>
 				</g:FocusPanel>
 			</div>
+
+			<g:HTMLPanel styleName="span3 budget" ui:field="divBudget">
+				<div class="span6">
+					<div class="bold muted helper-font-small">TRANSACTIONS</div>
+					<div>
+						<span class="bold" ui:field="spnTransactions" title="Total Budgeted Amount"></span>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="bold muted helper-font-small">AMOUNT</div>
+					<div>
+						<span class="bold" ui:field="spnAmount" title="Remaining Amount"></span>
+					</div>
+				</div>
+			</g:HTMLPanel>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

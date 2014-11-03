@@ -28,6 +28,13 @@
 								<i class="icon-pencil icon-button"></i>
 							</d:ActionLink>
 						</div>
+						
+						<div class="span3">
+							<d:ActionLink ui:field="aDelete" styleName="btn btn-danger"
+								dataToggle="tooltip" dataPlacement="bottom" title="Delete">
+								<i class="icon-trash icon-button"></i>
+							</d:ActionLink>
+						</div>
 					</div>
 
 					<div class="span3 right-side">

@@ -24,7 +24,8 @@ public class TestDB {
 		
 	}
 	
-	@Test
+	
+	@Ignore
 	public void update(){
 		TransactionDao dao = new TransactionDao(em);
 		

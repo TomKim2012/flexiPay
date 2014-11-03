@@ -29,7 +29,7 @@ import com.workpoint.mwallet.client.ui.component.TextArea;
 import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.component.autocomplete.AutoCompleteField;
 import com.workpoint.mwallet.client.ui.upload.custom.Uploader;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
 public class UserSaveView extends PopupViewImpl implements
@@ -143,28 +143,28 @@ public class UserSaveView extends PopupViewImpl implements
 		txtGroupname.setValue(group.getName());
 	}
 	
-	public HTUser getUser(){
-		HTUser user = new HTUser();
+	public UserDTO getUser(){
+		UserDTO user = new UserDTO();
 		user.setEmail(txtEmail.getValue());
-		user.setName(txtFirstname.getValue());
+		user.setFirstName(txtFirstname.getValue());
 		if(!isNullOrEmpty(txtPassword.getValue())){
 			user.setPassword(txtPassword.getValue());
 		}
 		
-		user.setSurname(txtLastname.getValue());
+		user.setLastName(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
 		return user;
 	}
 	
-	HTUser user;
-	public void setUser(HTUser user){
+	UserDTO user;
+	public void setUser(UserDTO user){
 		txtEmail.setValue(user.getEmail());
-		txtFirstname.setValue(user.getName());
+		txtFirstname.setValue(user.getFirstName());
+		txtLastname.setValue(user.getLastName());
+		txtUserName.setValue(user.getUserId());
 		txtPassword.setValue(user.getPassword());
 		txtConfirmPassword.setValue(user.getPassword());
-		txtLastname.setValue(user.getSurname());
-		txtUserName.setValue(user.getUserId());
 		txtUserName.setDisabled(true);
 		lstGroups.select(user.getGroups());
 		setContext(user.getUserId());

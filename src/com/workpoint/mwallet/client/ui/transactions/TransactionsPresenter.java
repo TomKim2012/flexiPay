@@ -13,6 +13,9 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
+import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
+import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
@@ -32,6 +35,12 @@ public class TransactionsPresenter extends
 	public interface ITransactionView extends View {
 
 		void presentData(TransactionDTO trxs);
+
+		void setMiddleHeight();
+
+		void clear();
+
+		void presentSummary(String transactions, String amount);
 	}
 
 	@Inject
@@ -52,30 +61,38 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		getView().setMiddleHeight();
 		loadData();
 	}
 
 	List<TransactionDTO> trxs = new ArrayList<TransactionDTO>();
 
 	private void loadData() {
+		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new GetTransactionsRequest(),
 				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
 					public void processResult(
 							GetTransactionsRequestResult aResponse) {
 						trxs = aResponse.getTransactions();
-						System.err.println("Transaction size >" + trxs.size());
-						loopTrxs();
+						bindTransactions();
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 
 	}
 
-	protected void loopTrxs() {
+	protected void bindTransactions() {
+		getView().clear();
+		Double totalAmount = 0.0;
 		for (TransactionDTO transaction : trxs) {
-			//System.err.println("Amount>>"+transaction.getAmount());
+			totalAmount = totalAmount + transaction.getAmount();
 			getView().presentData(transaction);
 		}
+		
+		getView().presentSummary(
+				NumberUtils.NUMBERFORMAT.format(trxs.size()),
+				NumberUtils.CURRENCYFORMAT.format(totalAmount));
 	}
 
 	@Override

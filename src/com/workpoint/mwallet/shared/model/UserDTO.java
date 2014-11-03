@@ -1,75 +1,33 @@
 package com.workpoint.mwallet.shared.model;
 
 import java.io.Serializable;
-import java.lang.String;
 import java.util.List;
 
-public class HTUser implements Serializable, Listable, OrgEntity {
+public class UserDTO implements Serializable, Listable, OrgEntity {
 
 	private static final long serialVersionUID = -5249516544970187459L;
 	private Long id;
-	private String name;
+	private String firstName;
 	private String userId;
 	private String email;
-	private String surname;
+	private String lastName;
 	private String password;
-	private List<UserGroup> groups ;
+	private String linkCode;
+	private List<UserGroup> groups;
 	
-	public HTUser() {
+	public UserDTO() {
 	}
 
-	public HTUser(String id) {
-		this.userId = id;
-	}
-	
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setUserId(String id) {
+	public UserDTO(String id) {
 		this.userId = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
 	public String getFullName(){
-		return surname+" "+name;
+		return lastName+" "+firstName;
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return userId;
 	}
 
@@ -121,17 +79,17 @@ public class HTUser implements Serializable, Listable, OrgEntity {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj==null || !(obj instanceof HTUser)){
+		if(obj==null || !(obj instanceof UserDTO)){
 			return false;
 		}
 		
-		HTUser other =  (HTUser)obj;
+		UserDTO other =  (UserDTO)obj;
 		
-		if(name==null){
+		if(firstName==null){
 			return false;
 		}
 		
-		return name.equals(other.name);
+		return firstName.equals(other.firstName);
 	}
 
 	@Override
@@ -142,5 +100,58 @@ public class HTUser implements Serializable, Listable, OrgEntity {
 	@Override
 	public String getEntityId() {
 		return userId;
+	}
+
+	@Override
+	public String getName() {
+		return userId;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getLinkCode() {
+		return linkCode;
+	}
+
+	public void setLinkCode(String linkCode) {
+		this.linkCode = linkCode;
 	}
 }

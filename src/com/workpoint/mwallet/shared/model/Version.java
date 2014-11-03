@@ -1,7 +1,6 @@
 package com.workpoint.mwallet.shared.model;
 
 import java.io.Serializable;
-import java.lang.String;
 import java.util.Date;
 
 /**

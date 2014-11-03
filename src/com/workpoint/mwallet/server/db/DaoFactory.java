@@ -2,12 +2,13 @@ package com.workpoint.mwallet.server.db;
 
 import javax.persistence.EntityManager;
 
+import com.workpoint.mwallet.server.dao.ErrorDaoImpl;
 import com.workpoint.mwallet.server.dao.UserGroupDaoImpl;
 
 class DaoFactory {
 
 //	DocumentDaoImpl documentDao = null;
-//	ErrorDaoImpl errorDao = null;
+	ErrorDaoImpl errorDao = null;
 //	NotificationDaoImpl notificationDao;
 //	AttachmentDaoImpl attachmentDao;
 //	CommentDaoImpl commentDaoImpl;
@@ -31,5 +32,18 @@ class DaoFactory {
 		
 		return userGroupDao;
 	}
+	
+	ErrorDaoImpl getErrorDao(EntityManager entityManager) {
+		if (errorDao == null) {
+			synchronized (DaoFactory.class) {
+				if (errorDao == null) {
+					errorDao = new ErrorDaoImpl(entityManager);
+				}
+			}
+		}
+
+		return errorDao;
+	}
+
 	
 }

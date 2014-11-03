@@ -320,7 +320,7 @@
 .content-body .tab-content {
 	overflow-x: hidden;
 	overflow-y: auto;
-	height: 392px;
+	/* height: 392px; */
 }
 
 .content-body .table .action-commands a {
@@ -618,9 +618,9 @@
 .td {
 	display: table-cell;
 	padding: 5px;
-	text-align: left;
+	/* text-align: left; */
 	vertical-align: middle;
-	padding-left: 8px;
+	padding-left: 10px;
 }
 
 }

@@ -1,7 +1,5 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
-import java.util.List;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,17 +13,14 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.BulletListPanel;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
-import com.workpoint.mwallet.client.ui.transactions.table.GenericTable;
-import com.workpoint.mwallet.client.ui.transactions.table.GenericTableRow;
+import com.workpoint.mwallet.client.ui.transactions.table.TransactionTable;
+import com.workpoint.mwallet.client.ui.transactions.table.TransactionTableRow;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TransactionsView extends ViewImpl implements
 		TransactionsPresenter.ITransactionView {
 
 	private final Widget widget;
-
-	@UiField
-	ActionLink aProgram;
 
 	@UiField
 	HTMLPanel divMainContainer;
@@ -41,8 +36,9 @@ public class TransactionsView extends ViewImpl implements
 
 	@UiField
 	HTMLPanel divNoContent;
+
 	@UiField
-	GenericTable tblView;
+	TransactionTable tblView;
 
 	@UiField
 	HTMLPanel divFilterBox;
@@ -51,6 +47,7 @@ public class TransactionsView extends ViewImpl implements
 	Anchor iFilterdropdown;
 	@UiField
 	MyHTMLPanel divProgramsTable;
+
 	@UiField
 	ActionLink aBack;
 
@@ -66,10 +63,8 @@ public class TransactionsView extends ViewImpl implements
 	ActionLink aRight;
 	Long lastUpdatedId;
 
-
 	public interface Binder extends UiBinder<Widget, TransactionsView> {
 	}
-
 
 	protected boolean isNotDisplayed;
 
@@ -77,15 +72,14 @@ public class TransactionsView extends ViewImpl implements
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		listPanel.setId("mytab");
-		
-		
+
 		aBack.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				History.back();
 			}
 		});
-		
+
 		iFilterdropdown.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -104,12 +98,30 @@ public class TransactionsView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
-	
+
 	@Override
 	public void presentData(TransactionDTO transaction) {
-		tblView.createRow(new GenericTableRow(transaction));
+		tblView.createRow(new TransactionTableRow(transaction));
 	}
 
-	
+	@Override
+	public void presentSummary(String transactions, String amount) {
+		headerContainer.setTotals(transactions, amount);
+		// System.err.println("Transactions>>"+transactions);
+	}
+
+	public void clear() {
+		tblView.clearRows();
+	}
+
+	public void setMiddleHeight() {
+		int totalHeight = divMainContainer.getElement().getOffsetHeight();
+		int topHeight = divContentTop.getElement().getOffsetHeight();
+		int middleHeight = totalHeight - topHeight - 10;
+
+		if (middleHeight > 0) {
+			divProgramsTable.setHeight(middleHeight + "px");
+		}
+	}
 
 }

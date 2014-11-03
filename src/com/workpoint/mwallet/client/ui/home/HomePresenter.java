@@ -32,7 +32,7 @@ import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements
@@ -55,7 +55,7 @@ public class HomePresenter extends
 
 		void setSelectedTab(String page);
 
-		void showUserImg(HTUser currentUser);
+		void showUserImg(UserDTO currentUser);
 
 		void showActivitiesPanel(boolean show);
 	}
@@ -251,6 +251,7 @@ public class HomePresenter extends
 				@Override
 				public void processResult(UserPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
+					aResponse.setType(TYPE.USER);
 				}
 			});
 			getView().setSelectedTab("Users");
@@ -282,15 +283,6 @@ public class HomePresenter extends
 		super.onReset();
 	}
 
-
-
-	private void displayDocument(final Long documentId, final Long taskId) {
-		if (documentId == null && taskId == null) {
-			setInSlot(DOCUMENT_SLOT, null);
-			return;
-		}
-
-	}
 
 
 	@Override

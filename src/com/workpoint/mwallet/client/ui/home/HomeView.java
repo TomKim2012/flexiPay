@@ -18,7 +18,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.BulletListPanel;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
 import com.workpoint.mwallet.client.util.AppContext;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
@@ -186,7 +186,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		}
 	}
 
-	public void showUserImg(HTUser currentUser) {
+	public void showUserImg(UserDTO currentUser) {
 		// System.err.println(currentUser.getFullName());
 		imgUser.setUrl(AppContext.getUserImageUrl(currentUser, 175.0, 175.0));
 		spnUser.setInnerText(currentUser.getFullName());

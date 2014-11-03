@@ -49,10 +49,10 @@ public class GetTransactionsRequestActionHandler extends
 			trxDTO.setStatus(trxmodel.getStatus());
 			trxDTO.setTillNumber(trxmodel.getTillNumber());
 			trxDTO.setTrxDate(trxmodel.getTrxDate());
-
 			dtos.add(trxDTO);
 		}
 		
 		((GetTransactionsRequestResult)actionResult).setTransactions(dtos);
+		
 	}
 }

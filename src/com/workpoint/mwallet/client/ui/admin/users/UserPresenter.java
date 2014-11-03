@@ -29,7 +29,7 @@ import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
@@ -175,18 +175,18 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 
 					@Override
 					public void processResult(GetUsersResponse result) {
-						List<HTUser> users = result.getUsers();
+						List<UserDTO> users = result.getUsers();
+//						System.err.println(">>>Dispatched users loading..."+users.size());
 						loadUsers(users);
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
-
 	}
 
-	protected void loadUsers(List<HTUser> users) {
+	protected void loadUsers(List<UserDTO> users) {
 		setInSlot(ITEMSLOT, null);
 		if (users != null)
-			for (final HTUser user : users) {
+			for (final UserDTO user : users) {
 				userItemFactory.get(new ServiceCallback<UserItemPresenter>() {
 					@Override
 					public void processResult(UserItemPresenter result) {
@@ -220,6 +220,6 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 
 	@Override
 	public void onEditGroup(EditGroupEvent event) {
-		showPopup(type, event.getGroup());
+		showPopup(TYPE.GROUP, event.getGroup());
 	}
 }

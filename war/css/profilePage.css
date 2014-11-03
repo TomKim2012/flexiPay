@@ -233,10 +233,10 @@
 .table-programs .table>.thead>.tr>.th{
 	border: 1px solid #E6E6E6;
 	border-top: 1px solid #E6E6E6 !important;
-	text-align:center;
+	text-align: left;
 	white-space: nowrap;
 	padding-right: 0px;
-	padding-left: 0px;
+	padding-left: 10px;
 }
 
 /*Set Maximum and Minimum widths for Budgets & Title*/
@@ -277,7 +277,6 @@
 .table-programs .tbody .td{
 	border: 1px solid #E6E6E6;
 	padding-bottom: 0px;
-	text-align: center;
 	margin: 0px;
 }
 .table-programs .tbody .hovered{

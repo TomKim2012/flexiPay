@@ -80,7 +80,6 @@ public class UserGroup implements Serializable, Listable, OrgEntity{
 
 	@Override
 	public String getEntityId() {
-
 		return name;
 	}
 }

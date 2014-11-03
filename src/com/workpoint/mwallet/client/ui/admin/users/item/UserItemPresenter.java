@@ -13,22 +13,26 @@ import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.OnOptionSelected;
 import com.workpoint.mwallet.client.ui.events.EditUserEvent;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.SaveUserRequest;
+import com.workpoint.mwallet.shared.responses.SaveUserResponse;
 
-public class UserItemPresenter extends PresenterWidget<UserItemPresenter.MyView> {
+public class UserItemPresenter extends
+		PresenterWidget<UserItemPresenter.MyView> {
 
 	public interface MyView extends View {
-		void setValues(String firstName, String lastName, String username, String email, String groups);
-		
+		void setValues(UserDTO user);
+
 		HasClickHandlers getEdit();
-		
+
 		HasClickHandlers getDelete();
 	}
 
-	HTUser user;
-	
-	@Inject DispatchAsync requestHelper;
-	
+	UserDTO user;
+
+	@Inject
+	DispatchAsync requestHelper;
+
 	@Inject
 	public UserItemPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -37,51 +41,54 @@ public class UserItemPresenter extends PresenterWidget<UserItemPresenter.MyView>
 	@Override
 	protected void onBind() {
 		super.onBind();
-		
+
 		getView().getEdit().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				fireEvent(new EditUserEvent(user));
 			}
 		});
-		
+
 		getView().getDelete().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
-				
-				AppManager.showPopUp("Confirm Delete",new HTMLPanel("Do you want to delete user \""
-				+user.getName()+"\""), new OnOptionSelected() {
-					
-					@Override
-					public void onSelect(String name) {
-						if(name.equals("Ok")){
-							delete(user);
-						}
-					}
 
-				},"Cancel","Ok");
-				
+				AppManager.showPopUp(
+						"Confirm Delete",
+						new HTMLPanel("Do you want to delete user \""
+								+ user.getName() + "\""),
+						new OnOptionSelected() {
+
+							@Override
+							public void onSelect(String name) {
+								if (name.equals("Ok")) {
+									delete(user);
+								}
+							}
+
+						}, "Cancel", "Ok");
+
 			}
 		});
 	}
 
-	private void delete(HTUser user) {
+	private void delete(UserDTO user) {
 
-		/*SaveUserRequest request = new SaveUserRequest(user);
+		SaveUserRequest request = new SaveUserRequest(user);
 		request.setDelete(true);
-		requestHelper.execute(request, new TaskServiceCallback<SaveUserResponse>() {
-			@Override
-			public void processResult(SaveUserResponse result) {
-				getView().asWidget().removeFromParent();
-			}
-		});*/
+		requestHelper.execute(request,
+				new TaskServiceCallback<SaveUserResponse>() {
+					@Override
+					public void processResult(SaveUserResponse result) {
+						getView().asWidget().removeFromParent();
+					}
+				});
 	}
-	
-	
-	public void setUser(HTUser user){
+
+	public void setUser(UserDTO user) {
 		this.user = user;
-		getView().setValues(user.getName(), user.getSurname(), user.getUserId(), user.getEmail(), user.getGroupsAsString());
+		getView().setValues(user);
 	}
 }

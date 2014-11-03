@@ -38,7 +38,6 @@ public class Group extends PO {
 	
 	@ManyToMany(mappedBy="groups", fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,
 			CascadeType.MERGE,CascadeType.REFRESH})
-	
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
 	private Collection<User> members = new HashSet<>();
 	

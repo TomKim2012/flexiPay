@@ -11,7 +11,7 @@ public class SaveGroupRequest extends BaseRequest<SaveGroupResponse> {
 
 	@SuppressWarnings("unused")
 	private SaveGroupRequest() {
-		// For serialization only
+
 	}
 
 	public SaveGroupRequest(UserGroup group) {
@@ -39,6 +39,5 @@ public class SaveGroupRequest extends BaseRequest<SaveGroupResponse> {
 	public void setDelete(boolean isDelete) {
 		this.isDelete = isDelete;
 	}
-	
 	
 }

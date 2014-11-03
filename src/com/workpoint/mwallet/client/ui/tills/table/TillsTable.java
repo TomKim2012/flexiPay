@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
+import com.workpoint.mwallet.client.ui.transactions.table.TransactionHeader;
 
 public class TillsTable extends Composite {
 
@@ -26,73 +28,58 @@ public class TillsTable extends Composite {
 	boolean isSummaryTable = false;
 	boolean isGoalsTable = false;
 	Long lastUpdatedId = null;
-	private Long programId = null;
+	private Long tillId = null;
 
 	public TillsTable() {
 		initWidget(uiBinder.createAndBindUi(this));
 		createHeader();
-		createRow(new Transaction());
 	}
-	
-	
-	public void createHeader(){
-		System.err.println(">>>Created Header");
-		
-		List<TableHeader> th = new ArrayList<TableHeader>();
-		th.add(new TableHeader(""));
-		th.add(new TableHeader("Business Name"));
-		th.add(new TableHeader("Till No"));
-		th.add(new TableHeader("Phone No"));
-		th.add(new TableHeader("Merchant"));
-		th.add(new TableHeader("Status"));
-		th.add(new TableHeader("Last Modified"));
-		
+
+	ValueChangeHandler<Boolean> handler = new ValueChangeHandler<Boolean>() {
+		@Override
+		public void onValueChange(ValueChangeEvent<Boolean> event) {
+			boolean isSelected = event.getValue();
+			if (isSelected) {
+				if (selected != null) {
+					selected.setValue(false);
+				}
+
+				selected = (CheckBox) event.getSource();
+			} else {
+				selected = null;
+			}
+		}
+	};
+
+	public void createHeader() {
+		// System.err.println(">>>Created Header");
+
+		List<TransactionHeader> th = new ArrayList<TransactionHeader>();
+		th.add(new TransactionHeader(""));
+		th.add(new TransactionHeader("Business Name"));
+		th.add(new TransactionHeader("Till No"));
+		th.add(new TransactionHeader("Phone No"));
+		th.add(new TransactionHeader("Owner"));
+		th.add(new TransactionHeader("Acquirer"));
+		th.add(new TransactionHeader("Cashiers"));
+		th.add(new TransactionHeader("Status"));
+		th.add(new TransactionHeader("Last Modified"));
+
 		tblView.setTableHeaders(th);
 	}
-	
-	private void createRow(Transaction transaction) {
-		System.err.println(">>>Printed Row");
-		
-		TillsTableRow row = new TillsTableRow();
-		TillsTableRow row1 = new TillsTableRow();
-		TillsTableRow row2 = new TillsTableRow();
-		if(transaction.getId()==lastUpdatedId){
-			//row.highlight();
-		}
 
-		//row.setSelectionChangeHandler(handler);
+	public void createRow(TillsTableRow row) {
 		tblView.addRow(row);
-		tblView.addRow(row1);
-		tblView.addRow(row2);
+		row.setSelectionChangeHandler(handler);
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 	}
-	
-	
-	public class Transaction{
-		Long transactionId;
-		String transactionCode;
-		String customerNames;
-		String phone;
-		String amount;
-		String referenceId;
-		String date;
-		
-		public Transaction(Long transactionId, String transactionCode, 
-							String customerNames, String phone, String amount, 
-							String status) {
-			
-		}
-		
-		public Transaction() {
-		}
-		
-		public Long getId() {
-			return transactionId;
-		}
+
+	public void clear() {
+		tblView.clearRows();
 	}
 
 }

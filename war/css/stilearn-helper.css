@@ -74,7 +74,7 @@ a,a.btn:visited,a:hover {
 
 input:focus {
 	outline: none;
-	border: none;
+	/* border: none; */
 	box-shadow: none;
 }
 

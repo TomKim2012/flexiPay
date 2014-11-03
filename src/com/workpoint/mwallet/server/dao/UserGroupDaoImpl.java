@@ -14,8 +14,6 @@ import com.workpoint.mwallet.server.dao.model.User;
 
 public class UserGroupDaoImpl extends BaseDaoImpl{
 
-	Properties dbProperties = new Properties();
-	
 	public UserGroupDaoImpl(EntityManager em){
 		super(em);
 	}

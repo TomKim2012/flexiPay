@@ -11,13 +11,13 @@ import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
 
-public class GenericTableRow extends RowWidget {
+public class TransactionTableRow extends RowWidget {
 
 	private static ActivitiesTableRowUiBinder uiBinder = GWT
 			.create(ActivitiesTableRowUiBinder.class);
 
 	interface ActivitiesTableRowUiBinder extends
-			UiBinder<Widget, GenericTableRow> {
+			UiBinder<Widget, TransactionTableRow> {
 	}
 
 	@UiField
@@ -39,19 +39,19 @@ public class GenericTableRow extends RowWidget {
 	SpanElement spnStatus;
 
 
-	public GenericTableRow() {
+	public TransactionTableRow() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public GenericTableRow(TransactionDTO transaction){
+	public TransactionTableRow(TransactionDTO transaction){
 		this();
-		System.err.println(transaction.getAmount());
+		//System.err.println(transaction.getAmount());
 
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
 		divAmount.getElement().setInnerHTML(NumberUtils.NUMBERFORMAT.format(transaction.getAmount()));
 		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
-		divDate.getElement().setInnerHTML(DateUtils.DATEFORMAT.format(transaction.getTrxDate()));
+		divDate.getElement().setInnerHTML(DateUtils.FULLDATEFORMAT.format(transaction.getTrxDate()));
 		divTills.getElement().setInnerHTML(transaction.getTillNumber());
 		setStatus(transaction.getStatus());
 	}

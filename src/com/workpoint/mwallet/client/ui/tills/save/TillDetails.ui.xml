@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="control-group">
-				<div class="control-label" ui:field="divPhone">Till Phone:</div>
+				<div class="control-label" ui:field="divPhone">Till Phone No:</div>
 				<div class="controls">
 					<g:TextBox ui:field="txtPhone" styleName="input-xlarge"></g:TextBox>
 					<span class="mandatory" title="Required Field">*</span>

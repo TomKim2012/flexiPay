@@ -1,6 +1,6 @@
 package com.workpoint.mwallet.shared.requests;
 
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.SaveUserResponse;
 
@@ -11,18 +11,18 @@ import com.workpoint.mwallet.shared.responses.SaveUserResponse;
  */
 public class SaveUserRequest extends BaseRequest<SaveUserResponse> {
 
-	private HTUser user;
+	private UserDTO user;
 	private boolean isDelete=false;
 
 	@SuppressWarnings("unused")
 	private SaveUserRequest() {
 	}
 
-	public SaveUserRequest(HTUser user) {
+	public SaveUserRequest(UserDTO user) {
 		this.user = user;
 	}
 
-	public HTUser getUser() {
+	public UserDTO getUser() {
 		return user;
 	}
 	

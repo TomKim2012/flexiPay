@@ -11,8 +11,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
-import com.workpoint.mwallet.client.ui.component.BulletListPanel;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTable;
+import com.workpoint.mwallet.client.ui.tills.table.TillsTableRow;
+import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TillsView extends ViewImpl implements
 		TillsPresenter.IActivitiesView {
@@ -21,9 +22,12 @@ public class TillsView extends ViewImpl implements
 
 	@UiField
 	ActionLink aCreate;
-	
+
 	@UiField
 	ActionLink aEdit;
+	
+	@UiField
+	ActionLink aDelete;
 
 	@UiField
 	HTMLPanel divMainContainer;
@@ -40,7 +44,6 @@ public class TillsView extends ViewImpl implements
 	@UiField
 	TillsHeader headerContainer;
 
-
 	public interface Binder extends UiBinder<Widget, TillsView> {
 	}
 
@@ -49,8 +52,7 @@ public class TillsView extends ViewImpl implements
 	@Inject
 	public TillsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		
-		
+
 		iFilterdropdown.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -63,6 +65,15 @@ public class TillsView extends ViewImpl implements
 				}
 			}
 		});
+		
+		init();
+		
+	}
+
+	public void init() {
+		show(aCreate,true);
+		show(aEdit,false);
+		show(aDelete,false);
 	}
 
 	@Override
@@ -78,6 +89,47 @@ public class TillsView extends ViewImpl implements
 	@Override
 	public HasClickHandlers getEditButton() {
 		return aEdit;
+	}
+	
+	@Override
+	public HasClickHandlers getDeleteButton(){
+		return aDelete;
+	}
+
+	@Override
+	public void presentData(TillDTO till) {
+		tblView.createRow(new TillsTableRow(till));
+	}
+
+	@Override
+	public void presentSummary(String totalTills) {
+		headerContainer.setSummary(totalTills);
+	}
+
+	@Override
+	public void clear() {
+		tblView.clear();
+	}
+
+	@Override
+	public void setSelection(boolean show) {
+		if (show) {
+			show(aCreate, false);
+			show(aEdit, true);
+			show(aDelete,true);
+		} else {
+			show(aCreate, true);
+			show(aEdit, false);
+			show(aDelete,false);
+		}
+	}
+
+	private void show(Anchor aAnchor, boolean show) {
+		if (show) {
+			aAnchor.getElement().getParentElement().removeClassName("hide");
+		} else {
+			aAnchor.getElement().getParentElement().addClassName("hide");
+		}
 	}
 
 }

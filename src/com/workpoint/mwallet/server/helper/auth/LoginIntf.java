@@ -3,7 +3,7 @@ package com.workpoint.mwallet.server.helper.auth;
 import java.io.Closeable;
 import java.util.List;
 
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
 public interface LoginIntf extends Closeable {
@@ -19,9 +19,9 @@ public interface LoginIntf extends Closeable {
 	 * 
 	 * @return
 	 */
-	public List<HTUser> retrieveUsers();
+	public List<UserDTO> retrieveUsers();
 	
-	public HTUser getUser(String userId);
+	public UserDTO getUser(String userId);
 	
 
 	/**
@@ -33,10 +33,10 @@ public interface LoginIntf extends Closeable {
 	/**
 	 * Create/Update New User
 	 */
-	public HTUser createUser(HTUser user);
+	public UserDTO createUser(UserDTO user);
 	
 
-	public boolean deleteUser(HTUser user);
+	public boolean deleteUser(UserDTO user);
 	
 	public UserGroup createGroup(UserGroup group);
 	
@@ -53,19 +53,19 @@ public interface LoginIntf extends Closeable {
 	 */
 	public List<UserGroup> getGroupsForUser(String userId);
 	
-	public List<HTUser> getUsersForGroup(String groupName);
+	public List<UserDTO> getUsersForGroup(String groupName);
 	
 	public boolean existsUser(String userId);
 
-	public List<HTUser> getAllUsers();
+	public List<UserDTO> getAllUsers();
 
 	public List<UserGroup> getAllGroups();
 
 	public UserGroup getGroupById(String groupId);
 
-	HTUser getUser(String userId, boolean loadGroups);
+	UserDTO getUser(String userId, boolean loadGroups);
 
-	public List<HTUser> getUsersForGroups(String[] groups);
+	public List<UserDTO> getUsersForGroups(String[] groups);
 
 	public boolean updatePassword(String username, String password);
 	

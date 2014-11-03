@@ -1,11 +1,11 @@
 package com.workpoint.mwallet.shared.responses;
 
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class LoginRequestResult extends BaseResponse {
 
 	private Boolean isValid=false;
-	private HTUser user;
+	private UserDTO user;
 	private String sessionId;
 
 	@SuppressWarnings("unused")
@@ -25,11 +25,11 @@ public class LoginRequestResult extends BaseResponse {
 		this.isValid = isValid;
 	}
 
-	public HTUser getUser() {
+	public UserDTO getUser() {
 		return user;
 	}
 
-	public void setUser(HTUser user) {
+	public void setUser(UserDTO user) {
 		this.user = user;
 	}
 

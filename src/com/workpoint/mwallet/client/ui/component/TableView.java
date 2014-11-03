@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
-import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
+import com.workpoint.mwallet.client.ui.transactions.table.TransactionHeader;
 
 public class TableView extends Composite {
 
@@ -243,11 +243,11 @@ public class TableView extends Composite {
 		panelBody.insert(rowWidget, beforeIndex);
 	}
 
-	public void setTableHeaders(List<TableHeader> headers) {
+	public void setTableHeaders(List<TransactionHeader> headers) {
 		panelHeader.clear();
 		// for (TableHeader header : headers) {
 		// InlineLabel label = new InlineLabel(header.getTitleName());
-		for (TableHeader header : headers) {
+		for (TransactionHeader header : headers) {
 			// th
 			HTMLPanel th = new HTMLPanel("");
 			th.addStyleName("th");

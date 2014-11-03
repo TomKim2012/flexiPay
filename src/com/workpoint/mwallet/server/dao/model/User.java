@@ -2,6 +2,7 @@ package com.workpoint.mwallet.server.dao.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -36,7 +39,7 @@ public class User extends PO {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, unique=true)
 	private String userId;
 	
 	private String password;
@@ -50,7 +53,22 @@ public class User extends PO {
 	@Column(length=100)
 	private String email;
 	
+	@OneToMany(mappedBy="owner")
+	private Set<TillModel> tillsOwned = new HashSet<TillModel>();
+	
+	@OneToMany(mappedBy="salesPerson")
+	private Set<TillModel> salesPersonTills = new HashSet<TillModel>();
+	
+	@OneToMany(mappedBy="boss")
+	private Set<User> cashiers = new HashSet<User>();
+	
+	@ManyToOne
+	@JoinColumn(name="bossId", referencedColumnName="userId")
+	private User boss;
+	
 	private boolean isArchived;
+	
+	private String linkCode;
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
 	@JoinTable(name="UserGroup",
@@ -137,5 +155,25 @@ public class User extends PO {
 
 	public void setGroups(Collection<Group> groups) {
 		this.groups = groups;
+	}
+
+	public User getBoss() {
+		return boss;
+	}
+
+	public void setBoss(User boss) {
+		this.boss = boss;
+	}
+
+	public Set<User> getCashiers() {
+		return cashiers;
+	}
+
+	public String getLinkCode() {
+		return linkCode;
+	}
+
+	public void setLinkCode(String linkCode) {
+		this.linkCode = linkCode;
 	}
 }

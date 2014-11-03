@@ -3,6 +3,7 @@ package com.workpoint.mwallet.server.actionhandlers;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.workpoint.mwallet.server.helper.auth.LoginHelper;
 import com.workpoint.mwallet.shared.model.UserGroup;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
@@ -18,20 +19,23 @@ public class SaveGroupRequestActionHandler extends
 	@Override
 	public void execute(SaveGroupRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
+		
 		UserGroup group = action.getGroup();
+		
 		
 		if(!action.isDelete()){	
 			
-//			group = LoginHelper.get().createGroup(group);
+			group = LoginHelper.get().createGroup(group);
+			
+			System.err.println("Group Detail>>"+group.getName());
 			
 			//save
 			SaveGroupResponse response = (SaveGroupResponse)actionResult;
 			response.setGroup(group);
-			
 		}
 		
 		if(action.isDelete()){
-//			LoginHelper.get().deleteGroup(group);
+			LoginHelper.get().deleteGroup(group);
 		}
 	}
 	

@@ -3,22 +3,22 @@ package com.workpoint.mwallet.client.ui.events;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class EditUserEvent extends GwtEvent<EditUserEvent.EditUserHandler> {
 
 	public static Type<EditUserHandler> TYPE = new Type<EditUserHandler>();
-	private HTUser user;
+	private UserDTO user;
 
 	public interface EditUserHandler extends EventHandler {
 		void onEditUser(EditUserEvent event);
 	}
 
-	public EditUserEvent(HTUser user) {
+	public EditUserEvent(UserDTO user) {
 		this.user = user;
 	}
 
-	public HTUser getUser() {
+	public UserDTO getUser() {
 		return user;
 	}
 
@@ -36,7 +36,7 @@ public class EditUserEvent extends GwtEvent<EditUserEvent.EditUserHandler> {
 		return TYPE;
 	}
 
-	public static void fire(HasHandlers source, HTUser user) {
+	public static void fire(HasHandlers source, UserDTO user) {
 		source.fireEvent(new EditUserEvent(user));
 	}
 }

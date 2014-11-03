@@ -5,23 +5,22 @@
 		<g:HTMLPanel styleName="td">
 			<g:CheckBox ui:field="chkSelect"></g:CheckBox>
 		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divCustNames">
-			KAU 512M
+		<g:HTMLPanel styleName="td" ui:field="divBusinessName">
 		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divPhone">
-			815245
+		<g:HTMLPanel styleName="td" ui:field="divtillNo">
 		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divAmount">
-			0729458362
+		<g:HTMLPanel styleName="td" ui:field="divphoneNo">
 		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divTransactionCode">
-			Tom Kimani
+		<g:HTMLPanel styleName="td" ui:field="divOwner">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divAcquirer">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divCashier">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divStatus">
-			<span class="label label-success">enabled</span>
+			<span class="label label-success" ui:field="spnStatus"></span>
 		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divTills">
-			25/10/2014
+		<g:HTMLPanel styleName="td" ui:field="divlastModified">
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

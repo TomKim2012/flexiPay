@@ -13,6 +13,8 @@ import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
 import com.workpoint.mwallet.client.ui.admin.users.UserView;
 import com.workpoint.mwallet.client.ui.admin.users.groups.GroupPresenter;
 import com.workpoint.mwallet.client.ui.admin.users.groups.GroupView;
+import com.workpoint.mwallet.client.ui.admin.users.item.UserItemPresenter;
+import com.workpoint.mwallet.client.ui.admin.users.item.UserItemView;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSaveView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
@@ -67,6 +69,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(TransactionsPresenter.class,
 				TransactionsPresenter.ITransactionView.class, TransactionsView.class);
+		
+		bindPresenterWidget(UserItemPresenter.class, UserItemPresenter.MyView.class,
+				UserItemView.class);
 
 		bindPresenterWidget(UserSavePresenter.class,
 				UserSavePresenter.IUserSaveView.class, UserSaveView.class);

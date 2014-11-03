@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 
@@ -16,53 +17,66 @@ public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 	public interface Binder extends UiBinder<Widget, UserItemView> {
 	}
 
-	@UiField HTMLPanel panelFirstName;
-	@UiField HTMLPanel panelLastName;
-	@UiField HTMLPanel panelEmail;
-	@UiField HTMLPanel panelGroups;
-	@UiField HTMLPanel panelUserName;
-	
-	@UiField Anchor aEdit;
-	@UiField Anchor aDelete;
-	
+	@UiField
+	HTMLPanel panelFirstName;
+	@UiField
+	HTMLPanel panelLastName;
+	@UiField
+	HTMLPanel panelEmail;
+	@UiField
+	HTMLPanel panelGroups;
+	@UiField
+	HTMLPanel panelUserName;
+	@UiField
+	HTMLPanel panelLinkCode;
+
+	@UiField
+	Anchor aEdit;
+	@UiField
+	Anchor aDelete;
+
 	@Inject
 	public UserItemView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 	}
 
-	public void setValues(String firstName, String lastName, String username, String email, String groups){
-		
-		if(firstName!=null){
-			panelFirstName.getElement().setInnerText(firstName);
+	public void setValues(UserDTO user) {
+
+		if (user.getFirstName() != null) {
+			panelFirstName.getElement().setInnerText(user.getFirstName());
 		}
 
-		if(lastName!=null){
-			panelLastName.getElement().setInnerText(lastName);
+		if (user.getLastName() != null) {
+			panelLastName.getElement().setInnerText(user.getLastName());
+		}
+
+		if (user.getEmail() != null) {
+			panelEmail.getElement().setInnerText(user.getEmail());
+		}
+
+		if (user.getGroupsAsString() != null) {
+			panelGroups.getElement().setInnerText(user.getGroupsAsString());
+		}
+
+		if (user.getUserId() != null) {
+			panelUserName.getElement().setInnerText(user.getUserId());
 		}
 		
-		if(email!=null){
-			panelEmail.getElement().setInnerText(email);
-		}
-		
-		if(groups!=null){
-			panelGroups.getElement().setInnerText(groups);
-		}
-		
-		if(username!=null){
-			panelUserName.getElement().setInnerText(username);
+		if(user.getLinkCode() != null){
+			panelLinkCode.getElement().setInnerText(user.getLinkCode());
 		}
 	}
-	
+
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
-	
-	public HasClickHandlers getEdit(){
+
+	public HasClickHandlers getEdit() {
 		return aEdit;
 	}
-	
-	public HasClickHandlers getDelete(){
+
+	public HasClickHandlers getDelete() {
 		return aDelete;
 	}
 

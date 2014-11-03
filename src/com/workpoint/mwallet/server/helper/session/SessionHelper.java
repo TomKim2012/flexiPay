@@ -3,7 +3,7 @@ package com.workpoint.mwallet.server.helper.session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.server.ServerConstants;
 
 /**
@@ -21,11 +21,11 @@ public class SessionHelper{
 	 * 
 	 * @return User This is the currently logged in user
 	 */
-	public static HTUser getCurrentUser(){
+	public static UserDTO getCurrentUser(){
 				
 		HttpSession session = request.get()==null? null: request.get().getSession(false);
 		if(session==null){
-			return new HTUser("Administrator");
+			return new UserDTO("Administrator");
 			//return null;
 		}
 		
@@ -34,7 +34,7 @@ public class SessionHelper{
 			return null;
 		}
 		
-		return (HTUser)session.getAttribute(ServerConstants.USER);
+		return (UserDTO)session.getAttribute(ServerConstants.USER);
 	}
 	
 	/**

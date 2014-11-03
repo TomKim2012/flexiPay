@@ -17,6 +17,7 @@
 			<g:HTMLPanel ui:field="panelUserName" styleName="td">Kimani</g:HTMLPanel>
 			<g:HTMLPanel ui:field="panelEmail" styleName="td">tosh0948@gmail.com</g:HTMLPanel>
 			<g:HTMLPanel ui:field="panelGroups" styleName="td">HOD_Development</g:HTMLPanel>
+			<g:HTMLPanel ui:field="panelLinkCode" styleName="td"></g:HTMLPanel>
 			<g:HTMLPanel styleName="td">
 				<div class="action-commands">										
 					<g:Anchor styleName="btn btn-success" ui:field="aEdit">
