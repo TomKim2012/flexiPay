@@ -1,0 +1,64 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:dt='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:FocusPanel ui:field="filterDialog">
+		<g:HTMLPanel styleName="dialog dialog-filter is-visible"
+			ui:field="divFilter">
+			<g:HTMLPanel>
+				<div class="pointer">
+					<div class="arrow"></div>
+					<div class="arrow_border"></div>
+				</div>
+				<div class="body">
+					<div class="row-fluid">
+						<p class="title span10">
+							<strong>Filter Options:</strong>
+						</p>
+						<g:Anchor styleName="span2" ui:field="aClose">
+							<i class="icon-remove pull-right" />
+						</g:Anchor>
+					</div>
+					<div class="form">
+						<div class="row-fluid">
+							<span>Till Number:</span>
+						</div>
+						<div class="row-fluid">
+							<d:DropDownList ui:field="lstTills">
+							</d:DropDownList>
+						</div>
+						
+						<div class="row-fluid">
+							<span>By Date:</span>
+						</div>
+						<div class="row-fluid">
+							<d:DropDownList ui:field="lstDates">
+							</d:DropDownList>
+						</div>
+						
+						<div class="row-fluid">
+							<span>Date Range:</span>
+						</div>
+						<div class="row-fluid">
+							<div class="controls">
+								<d:DateRangeWidget ui:field="dtRange"></d:DateRangeWidget>
+							</div>
+						</div>
+
+						<div class="row-fluid">
+							<g:Button styleName="btn btn-primary pull-left"
+								ui:field="btnSearch">
+								<i class="icon-search"></i>
+							</g:Button>
+						</div>
+					</div>
+				</div>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+	</g:FocusPanel>
+</ui:UiBinder>

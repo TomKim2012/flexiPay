@@ -18,6 +18,8 @@ import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.requests.SaveUserRequest;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.server.actionhandlers.SaveTillRequestActionHandler;
+import com.workpoint.mwallet.shared.requests.ImportClientRequest;
+import com.workpoint.mwallet.server.actionhandlers.ImportClientRequestActionHandler;
 
 public class ServerModule extends HandlerModule {
 
@@ -43,5 +45,8 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetTillsRequest.class,
 				GetTillsRequestActionHandler.class,
 				SessionValidator.class);
+
+		bindHandler(ImportClientRequest.class,
+				ImportClientRequestActionHandler.class, SessionValidator.class);
 	}
 }

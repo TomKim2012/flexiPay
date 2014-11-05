@@ -4,8 +4,11 @@ import javax.persistence.EntityManager;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.workpoint.mwallet.server.dao.ClientDao;
+import com.workpoint.mwallet.server.dao.model.ClientModel;
 import com.workpoint.mwallet.server.dao.model.Group;
 import com.workpoint.mwallet.server.db.DB;
 
@@ -21,6 +24,15 @@ public class TestUsers {
 	}
 	
 	@Test
+	public void getClient(){
+		String clCode = "PB/025e3";
+		ClientDao dao = new ClientDao(em);
+		ClientModel model = dao.getClientByCode(clCode);
+		
+		System.err.println("First Name>>"+model.getFirstName());
+	}
+	
+	@Ignore
 	public void saveTills(){
 		Group group = new Group();
 		group.setArchived(true);

@@ -12,6 +12,7 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 	private String email;
 	private String lastName;
 	private String password;
+	private String phoneNo;
 	private String linkCode;
 	private List<UserGroup> groups;
 	
@@ -153,5 +154,13 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 
 	public void setLinkCode(String linkCode) {
 		this.linkCode = linkCode;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 }

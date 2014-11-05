@@ -16,12 +16,12 @@
 					<div class="span3 right-side">
 						<div class="program-search">
 							<div class="input-append">
-								<input type="text" styleName="search-query" placeholder="Search here">
-								</input>
-								<g:Anchor styleName="icon-caret-down muted" ui:field="iFilterdropdown"></g:Anchor>
-								<button type="submit" class="btn">
+								<d:TextField ui:field="txtSearchBox" placeholder="Search here"></d:TextField>
+								<d:ActionLink styleName="icon-caret-down muted"
+									ui:field="iFilterdropdown"></d:ActionLink>
+								<d:ActionLink styleName="btn" ui:field="btnSearch">
 									<i class="icon-search"></i>
-								</button>
+								</d:ActionLink>
 							</div>
 
 							<g:HTMLPanel ui:field="divFilterBox" styleName="hide search-box">
@@ -32,7 +32,7 @@
 
 					<div class="span9">
 						<div class="span3">
-							<d:ActionLink ui:field="aProgram" styleName="btn btn-primary"
+							<d:ActionLink ui:field="aRefresh" styleName="btn btn-primary"
 								dataToggle="tooltip">
 								Refresh
 							</d:ActionLink>

@@ -20,7 +20,7 @@
 								title="Select Period" ui:field="aProgramEdit" dataToggle="dropdown">
 							</d:ActionLink>
 
-							<d:Dropdown ui:field="periodDropdown"></d:Dropdown>
+							<d:Dropdown ui:field="periodDropdown" styleName="hide"></d:Dropdown>
 						</g:HTMLPanel>
 
 					</g:HTMLPanel>

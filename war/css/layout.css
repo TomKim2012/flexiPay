@@ -529,6 +529,7 @@ body .dateBoxPopup{
 	left: 0px;
 	height: 100%;
 	border-right: 1px solid #c7c6c7;
+	z-index: 10;
 }
 
 #sidebar-nav .add-doc {

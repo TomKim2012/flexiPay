@@ -209,10 +209,13 @@
 }
 .action-buttons .search-box{
 	position:relative;
+	background: #ffffff;
 }
 .action-buttons .search-box .dialog-filter{
     position: absolute;
 	
+    z-index: 200;
+    left: 0px;
 }
 
 /*Dialog Box*/

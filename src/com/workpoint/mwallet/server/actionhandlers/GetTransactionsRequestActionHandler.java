@@ -32,7 +32,7 @@ public class GetTransactionsRequestActionHandler extends
 			throws ActionException {
 		TransactionDao dao =  new TransactionDao(DB.getEntityManager());
 		
-		List<TransactionModel> trxs = dao.getAllTrx();
+		List<TransactionModel> trxs = dao.getAllTrx(action.getFilter());
 		
 		List<TransactionDTO> dtos = new ArrayList<TransactionDTO>();
  		

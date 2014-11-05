@@ -1,10 +1,14 @@
 package com.workpoint.mwallet.server.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.workpoint.mwallet.server.dao.model.TransactionModel;
+import com.workpoint.mwallet.shared.model.SearchFilter;
 
 public class TransactionDao extends BaseDaoImpl {
 
@@ -12,7 +16,51 @@ public class TransactionDao extends BaseDaoImpl {
 		super(em);
 	}
 
-	public List<TransactionModel> getAllTrx() {
-		return getResultList(em.createQuery("FROM TransactionModel t order by trxDate DESC"));
+	public List<TransactionModel> getAllTrx(SearchFilter filter) {
+		if(filter ==null)
+			return getResultList(em.createQuery("FROM TransactionModel t order by trxDate DESC"));
+		
+		StringBuffer jpql = new StringBuffer("FROM TransactionModel t ");
+		
+		Map<String,Object> params = new HashMap<>();
+		
+		boolean isFirst = true;
+		if(filter.getStartDate()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" t.trxDate>:startDate");
+			params.put("startDate", filter.getStartDate());
+			isFirst = false;
+		}
+		
+		if(filter.getEndDate()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" t.trxDate<:endDate");
+			params.put("endDate", filter.getEndDate());
+			isFirst = false;
+		}
+		
+		if(filter.getTill()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" t.tillNumber = :tillNumber");
+			params.put("tillNumber", filter.getTill().getTillNo());
+			isFirst = false;
+		}
+		
+		if(filter.getPhrase()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" (t.customerName like :customerName or t.referenceId like :referenceId or " +
+					"t.tillNumber like :tillNumber)");
+			params.put("customerName", "%"+filter.getPhrase()+"%");
+			params.put("referenceId", "%"+filter.getPhrase()+"%");
+			params.put("tillNumber", "%"+filter.getPhrase()+"%");
+			isFirst = false;
+		}
+
+		Query query = em.createQuery(jpql.toString());
+		for(String key: params.keySet()){
+			query.setParameter(key, params.get(key));
+		}
+		
+		return getResultList(query);
 	}
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class TillDTO implements Serializable{
+public class TillDTO implements Serializable,Listable{
 	/**
 	 * 
 	 */
@@ -95,6 +95,16 @@ public class TillDTO implements Serializable{
 
 	public void setCashiers(List<UserDTO> cashiers) {
 		this.cashiers = cashiers;
+	}
+
+	@Override
+	public String getName() {
+		return tillNo;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return tillNo + " - " +businessName;
 	}
 	
 }

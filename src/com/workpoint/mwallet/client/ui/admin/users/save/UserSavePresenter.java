@@ -5,20 +5,30 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyDownHandlers;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.admin.users.importuser.ImportUser;
 import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
+import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
+import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
+import com.workpoint.mwallet.shared.model.ClientDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
+import com.workpoint.mwallet.shared.requests.ImportClientRequest;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.requests.SaveUserRequest;
 import com.workpoint.mwallet.shared.responses.GetGroupsResponse;
+import com.workpoint.mwallet.shared.responses.ImportClientResponse;
 import com.workpoint.mwallet.shared.responses.SaveGroupResponse;
 import com.workpoint.mwallet.shared.responses.SaveUserResponse;
 
@@ -45,6 +55,14 @@ public class UserSavePresenter extends
 
 		void setGroups(List<UserGroup> groups);
 
+		HasClickHandlers getPickUser();
+
+		void setMessage(String message, String styleName);
+
+		String getClientCode();
+
+		HasKeyDownHandlers getSearchBox();
+
 	}
 
 	public enum TYPE {
@@ -59,6 +77,8 @@ public class UserSavePresenter extends
 
 	@Inject
 	DispatchAsync requestHelper;
+
+	private ImportUser importWidget;
 
 	@Inject
 	public UserSavePresenter(final EventBus eventBus, final IUserSaveView view) {
@@ -109,10 +129,7 @@ public class UserSavePresenter extends
 										SaveGroupResponse result) {
 									group = result.getGroup();
 									getView().setGroup(group);
-									System.err
-											.println("Group>>"
-													+ group.getDisplayName());
-									
+
 									fireEvent(new LoadGroupsEvent());
 									getView().hide();
 								}
@@ -120,6 +137,58 @@ public class UserSavePresenter extends
 				}
 			}
 		});
+
+		getView().getPickUser().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				searchUser();
+			}
+		});
+		
+		getView().getSearchBox().addKeyDownHandler(keyHandler);
+	}
+	
+	
+	KeyDownHandler keyHandler = new KeyDownHandler() {
+		@Override
+		public void onKeyDown(KeyDownEvent event) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				searchUser();
+			}
+		}
+	};
+	
+	public void searchUser(){
+		String clCode = getView().getClientCode();
+		if(clCode == null){
+			return;
+		}
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(new ImportClientRequest(clCode),
+				new TaskServiceCallback<ImportClientResponse>() {
+					@Override
+					public void processResult(
+							ImportClientResponse aResponse) {
+						fireEvent(new ProcessingCompletedEvent());
+						ClientDTO client = aResponse.getClient();
+						if (client == null) {
+							getView().setMessage(
+									"No Client Record found.",
+									"text-error");
+							return;
+						}
+						getView().setMessage("", "hide");
+						UserDTO user = new UserDTO();
+						user.setFirstName(client.getFirstName());
+						user.setLastName(client.getMiddleName().trim()
+								+ " " + client.getSirName().trim());
+						user.setPhoneNo(client.getPhoneNo());
+						user.setUserId(client.getClCode());
+						user.setPassword(client.getPhoneNo());
+						setType(TYPE.USER, user);
+					}
+
+				});
 	}
 
 	@Override

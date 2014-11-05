@@ -3,7 +3,6 @@ package com.workpoint.mwallet.server.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;

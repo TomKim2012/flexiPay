@@ -12,6 +12,7 @@ import com.google.gwt.editor.client.Editor.Ignore;
 import com.workpoint.mwallet.server.dao.TransactionDao;
 import com.workpoint.mwallet.server.dao.model.TransactionModel;
 import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.shared.model.SearchFilter;
 
 public class TestDB {
 
@@ -25,11 +26,13 @@ public class TestDB {
 	}
 	
 	
-	@Ignore
-	public void update(){
+	@Test
+	public void search(){
 		TransactionDao dao = new TransactionDao(em);
 		
-		List<TransactionModel> model = dao.getAllTrx();
+		SearchFilter filter = new SearchFilter();
+		filter.setPhrase("James");
+		List<TransactionModel> model = dao.getAllTrx(filter);
 		
 		System.out.println(model.size());
 	}

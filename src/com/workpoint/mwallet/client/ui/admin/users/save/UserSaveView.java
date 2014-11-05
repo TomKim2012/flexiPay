@@ -7,6 +7,8 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyDownHandlers;
+import com.google.gwt.event.dom.client.HasKeyUpHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -23,6 +25,7 @@ import com.gwtplatform.mvp.client.PopupViewImpl;
 import com.workpoint.mwallet.client.model.UploadContext;
 import com.workpoint.mwallet.client.model.UploadContext.UPLOADACTION;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
+import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.IssuesPanel;
 import com.workpoint.mwallet.client.ui.component.PasswordField;
 import com.workpoint.mwallet.client.ui.component.TextArea;
@@ -40,6 +43,7 @@ public class UserSaveView extends PopupViewImpl implements
 	@UiField HTMLPanel divGroupDetails;
 	@UiField IssuesPanel issues;
 	@UiField Anchor aClose;
+	@UiField ActionLink aPickUser;
 	
 	TabPanel t;
 
@@ -47,12 +51,14 @@ public class UserSaveView extends PopupViewImpl implements
 	@UiField TextField txtFirstname;
 	@UiField TextField txtLastname;
 	@UiField TextField txtEmail;
+	@UiField TextField txtPhone;
 	@UiField PasswordField txtPassword;
 	@UiField PasswordField txtConfirmPassword;
 	
 	@UiField TextField txtGroupname;
 	@UiField TextArea txtDescription;
-	//@UiField TextField txtUsers;
+	@UiField SpanElement spnMessage;
+	@UiField TextField txtSearchBox;
 
 	@UiField PopupPanel AddUserDialog;
 	@UiField Anchor aSaveGroup;
@@ -186,8 +192,8 @@ public class UserSaveView extends PopupViewImpl implements
 		}
 		
 		if(isNullOrEmpty(txtEmail.getValue())){
-			valid = false;
-			issues.addError("Email is mandatory");
+//			valid = false;
+//			issues.addError("Email is mandatory");
 		}
 		
 		if(isNullOrEmpty(txtPassword.getText())){
@@ -197,6 +203,11 @@ public class UserSaveView extends PopupViewImpl implements
 			if(!txtPassword.getValue().equals(txtConfirmPassword.getValue())){
 				issues.addError("Password and confirm password fields do not match");
 			}
+		}
+		
+		if(lstGroups.getSelectedItems().size()==0){
+			valid = false;
+			issues.addError("User must belong to a Group");
 		}
 		return valid;
 	}
@@ -222,8 +233,16 @@ public class UserSaveView extends PopupViewImpl implements
 		return aSaveUser;
 	}
 	
+	public HasClickHandlers getPickUser(){
+		return aPickUser;
+	}
+	
 	public HasClickHandlers getSaveGroup(){
 		return aSaveGroup;
+	}
+	
+	public HasKeyDownHandlers getSearchBox(){
+		return txtSearchBox;
 	}
 	
 	@Override
@@ -246,4 +265,22 @@ public class UserSaveView extends PopupViewImpl implements
 	public void setGroups(List<UserGroup> groups) {
 		lstGroups.addItems(groups);
 	}
+	
+	@Override
+	public void setMessage(String message, String styleName){
+		spnMessage.setInnerText(message);
+		spnMessage.setClassName(styleName);
+	}
+	
+	
+	public String getClientCode(){
+		if(isNullOrEmpty(txtSearchBox.getText())){
+			setMessage("Please Enter a valid Linking code", "text-error");
+			return null;
+		}else{
+			return txtSearchBox.getText();	
+		}
+		
+	}
+	
 }

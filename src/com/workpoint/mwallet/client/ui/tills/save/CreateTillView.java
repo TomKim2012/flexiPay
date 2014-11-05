@@ -79,7 +79,6 @@ public class CreateTillView extends ViewImpl implements
 		TillDTO tillDetail = tillDetails.getTillInfo();
 		TillDTO tillCombined = userDetails.getTillUserInfo(tillDetail);
 		
-		System.err.println("Business Name>>"+tillCombined.getBusinessName());
 		return tillCombined;
 		
 	}

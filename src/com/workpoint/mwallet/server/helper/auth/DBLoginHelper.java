@@ -53,6 +53,8 @@ public class DBLoginHelper implements LoginIntf{
 		UserDTO.setFirstName(user.getFirstName());
 		//UserDTO.setPassword(user.getPassword());
 		UserDTO.setLastName(user.getLastName());
+		UserDTO.setPhoneNo(user.getPhone());
+		UserDTO.setLinkCode(user.getLinkCode());
 		UserDTO.setId(user.getId());
 		
 		if(loadGroups)
@@ -131,7 +133,7 @@ public class DBLoginHelper implements LoginIntf{
 		user.setId(UserDTO.getId());
 		user.setArchived(false);
 		user.setEmail(UserDTO.getEmail());
-		user.setFirstName(UserDTO.getName());
+		user.setFirstName(UserDTO.getFirstName());
 		user.setLastName(UserDTO.getLastName());
 		if(UserDTO.getPassword()!=null){
 			//Passwords are never read from the db to the FE due to one way encryption

@@ -42,7 +42,6 @@ public class CreateTillPresenter extends
 	}
 
 	public void setUsers(List<UserDTO> users) {
-		
 		getView().setUsers(users);
 	}
 

@@ -3,6 +3,13 @@ package com.workpoint.mwallet.client.ui.transactions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyDownHandlers;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -15,13 +22,20 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
+import com.workpoint.mwallet.client.ui.events.SearchEvent;
+import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
+import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
+import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
+import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
+import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
 
 public class TransactionsPresenter extends
-		PresenterWidget<TransactionsPresenter.ITransactionView>
+		PresenterWidget<TransactionsPresenter.ITransactionView> implements
+		SearchHandler
 // implements ActivitySelectionChangedHandler, ProgramsReloadHandler,
 // ResizeHandler
 {
@@ -29,8 +43,8 @@ public class TransactionsPresenter extends
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
 
-	// @Inject
-	// FilterPresenter filterPresenter;
+	@Inject
+	FilterPresenter filterPresenter;
 
 	public interface ITransactionView extends View {
 
@@ -41,6 +55,14 @@ public class TransactionsPresenter extends
 		void clear();
 
 		void presentSummary(String transactions, String amount);
+
+		HasClickHandlers getRefreshLink();
+
+		HasClickHandlers getSearchButton();
+
+		SearchFilter getFilter();
+
+		HasKeyDownHandlers getSearchBox();
 	}
 
 	@Inject
@@ -61,6 +83,7 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		setInSlot(FILTER_SLOT, filterPresenter);
 		getView().setMiddleHeight();
 		loadData();
 	}
@@ -81,7 +104,7 @@ public class TransactionsPresenter extends
 				});
 
 	}
-
+	
 	protected void bindTransactions() {
 		getView().clear();
 		Double totalAmount = 0.0;
@@ -89,15 +112,66 @@ public class TransactionsPresenter extends
 			totalAmount = totalAmount + transaction.getAmount();
 			getView().presentData(transaction);
 		}
-		
-		getView().presentSummary(
-				NumberUtils.NUMBERFORMAT.format(trxs.size()),
+
+		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(trxs.size()),
 				NumberUtils.CURRENCYFORMAT.format(totalAmount));
 	}
+	
+	KeyDownHandler keyHandler = new KeyDownHandler() {
+		@Override
+		public void onKeyDown(KeyDownEvent event) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				GetTransactionsRequest request = new GetTransactionsRequest(getView().getFilter());
+				performSearch(request);
+			}
+		}
+	};
 
 	@Override
 	protected void onBind() {
 		super.onBind();
+
+		addRegisteredHandler(SearchEvent.TYPE, this);
+
+		getView().getRefreshLink().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				loadData();
+			}
+		});
+		
+		getView().getSearchBox().addKeyDownHandler(keyHandler);
+		
+		getView().getSearchButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if (getView().getFilter() != null) {
+					GetTransactionsRequest request = new GetTransactionsRequest(getView().getFilter());
+					performSearch(request);
+				}
+			}
+		});
 	}
 
+	@Override
+	public void onSearch(SearchEvent event) {
+		GetTransactionsRequest request = new GetTransactionsRequest(
+				event.getFilter());
+
+		performSearch(request);
+	}
+
+	public void performSearch(GetTransactionsRequest request) {
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(request,
+				new TaskServiceCallback<GetTransactionsRequestResult>() {
+					@Override
+					public void processResult(
+							GetTransactionsRequestResult aResponse) {
+						trxs = aResponse.getTransactions();
+						bindTransactions();
+						fireEvent(new ProcessingCompletedEvent());
+					};
+				});
+	}
 }

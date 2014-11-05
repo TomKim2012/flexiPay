@@ -9,21 +9,24 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.AppManager;
-import com.workpoint.mwallet.client.ui.OnOptionSelected;
 import com.workpoint.mwallet.client.ui.OptionControl;
 import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
+import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.ActivitySelectionChangedHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
-import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.ActivitySelectionChangedHandler;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -69,8 +72,9 @@ public class TillsPresenter extends
 	@Inject
 	PlaceManager placeManager;
 
-	@Inject
-	CreateTillPresenter tillPopUp;
+	private IndirectProvider<CreateTillPresenter> createTillPopUp;
+	
+	private CreateTillPresenter tillPopUp;
 
 	List<TillDTO> tills = new ArrayList<TillDTO>();
 
@@ -78,11 +82,12 @@ public class TillsPresenter extends
 
 	private List<UserDTO> users = new ArrayList<UserDTO>();
 
-	private boolean hasUsersLoaded;;
-
 	@Inject
-	public TillsPresenter(final EventBus eventBus, final IActivitiesView view) {
+	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
+			Provider<CreateTillPresenter> tillProvider
+			) {
 		super(eventBus, view);
+		createTillPopUp = new StandardProvider<CreateTillPresenter>(tillProvider);
 	}
 
 	private void loadData() {
@@ -151,17 +156,23 @@ public class TillsPresenter extends
 					public void onSelect(String name) {
 						if (name.equals("Confirm")) {
 							saveTill(selected, true);
-						} 
+						}
 						hide();
 					}
 				}, "Confirm", "Cancel");
-
 
 	}
 
 	protected void showtillPopUp(boolean edit) {
 		loadUsers();
+		createTillPopUp.get(new ServiceCallback<CreateTillPresenter>() {
 
+			@Override
+			public void processResult(CreateTillPresenter aResponse) {
+			  tillPopUp = aResponse;
+			}
+		});
+		
 		if (edit) {
 			tillPopUp.setTillDetails(selected);
 		}
@@ -172,8 +183,8 @@ public class TillsPresenter extends
 					public void onSelect(String name) {
 						if (name.equals("Save")) {
 							if (tillPopUp.getView().isValid()) {
-								saveTill(tillPopUp.getView().getTillDTO(),
-										false);
+								saveTill(tillPopUp.getView()
+										.getTillDTO(), false);
 								hide();
 							}
 						} else {

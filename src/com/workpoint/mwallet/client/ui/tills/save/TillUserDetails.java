@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.client.ui.tills.save;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.workpoint.mwallet.client.ui.component.IssuesPanel;
 import com.workpoint.mwallet.client.ui.component.autocomplete.AutoCompleteField;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.model.UserGroup;
 
 public class TillUserDetails extends Composite {
 
@@ -54,16 +56,15 @@ public class TillUserDetails extends Composite {
 		if (tillSelected == null) {
 			tillSelected = new TillDTO();
 		}
-		System.err.println("Owner>>>"+aOwners.getSelectedItems().size());
 		for (UserDTO owner : aOwners.getSelectedItems()) {
 			tillSelected.setOwner(owner);
-			System.err.println("Owner>>>"+owner.getFirstName());
 		}
 		for (UserDTO salesPerson : aSalesPersons.getSelectedItems()) {
 			tillSelected.setSalesPerson(salesPerson);
 		}
+
 		tillSelected.setCashiers(aCashiers.getSelectedItems());
-		
+
 		return tillSelected;
 	}
 
@@ -85,10 +86,62 @@ public class TillUserDetails extends Composite {
 		return errorMessage;
 	}
 
+	List<UserDTO> owners = new ArrayList<UserDTO>();
+	List<UserDTO> cashiers = new ArrayList<UserDTO>();
+	List<UserDTO> salesPerson = new ArrayList<UserDTO>();
+
 	public void setUsers(List<UserDTO> allUsers) {
-		aOwners.setValues(allUsers);
-		aCashiers.setValues(allUsers);
-		aSalesPersons.setValues(allUsers);
+		breakUsers(allUsers);
+		if (owners != null) {
+			aOwners.setValues(owners);
+		}
+		if (cashiers != null) {
+			aCashiers.setValues(cashiers);
+		}
+		if (salesPerson != null) {
+			aSalesPersons.setValues(salesPerson);
+		}
+	}
+
+	private void breakUsers(List<UserDTO> allUsers) {
+		for (UserDTO user : allUsers) {
+			sortByGroup(user.getGroups(), user);
+		}
+	}
+
+	private void sortByGroup(List<UserGroup> groups, UserDTO user) {
+		for (UserGroup group : groups) {
+			System.err.println("Group Names>>>"+group.getName());
+			GroupType type = GroupType.valueOf(group.getName());
+			switch (type) {
+			case Merchant:
+				owners.add(user);
+				break;
+			case Cashier:
+				cashiers.add(user);
+			case SalesPerson:
+				salesPerson.add(user);
+			}
+
+		}
+	}
+
+	public enum GroupType {
+		Merchant("Merchant"), SalesPerson("SalesPerson"), Cashier("Cashier");
+		
+		private String groupCode;
+		private GroupType(String groupCode) {
+			this.groupCode = groupCode;
+		}
+
+		public String getGroupCode() {
+			return groupCode;
+		}
+
+	}
+	
+	public static void main(String args[]){
+		
 	}
 
 }
