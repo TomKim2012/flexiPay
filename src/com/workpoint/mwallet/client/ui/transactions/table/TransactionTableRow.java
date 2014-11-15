@@ -49,9 +49,9 @@ public class TransactionTableRow extends RowWidget {
 
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
-		divAmount.getElement().setInnerHTML(NumberUtils.NUMBERFORMAT.format(transaction.getAmount()));
+		divAmount.getElement().setInnerHTML(NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
 		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
-		divDate.getElement().setInnerHTML(DateUtils.FULLDATEFORMAT.format(transaction.getTrxDate()));
+		divDate.getElement().setInnerHTML(DateUtils.TIMESTAMPFORMAT.format(transaction.getTrxDate()));
 		divTills.getElement().setInnerHTML(transaction.getTillNumber());
 		setStatus(transaction.getStatus());
 	}

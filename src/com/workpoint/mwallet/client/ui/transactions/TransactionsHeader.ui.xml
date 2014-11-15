@@ -13,14 +13,14 @@
 						<g:HTMLPanel styleName="edit span1 btn-group"
 							ui:field="divPopup">
 							<g:InlineLabel ui:field="spnDates"
-								styleName="text-info helper-font-small dropdown-toggle">1st Jan 2014 - 30 Dec 2014
+								styleName="text-info helper-font-small dropdown-toggle">
 							</g:InlineLabel>
 
 							<d:ActionLink styleName="icon-caret-down dropdown-toggle"
 								title="Select Period" ui:field="aProgramEdit" dataToggle="dropdown">
 							</d:ActionLink>
 
-							<d:Dropdown ui:field="periodDropdown" styleName="hide"></d:Dropdown>
+							<d:Dropdown ui:field="periodDropdown"></d:Dropdown>
 						</g:HTMLPanel>
 
 					</g:HTMLPanel>

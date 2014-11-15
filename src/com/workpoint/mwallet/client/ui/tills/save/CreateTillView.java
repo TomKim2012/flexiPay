@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
@@ -75,17 +77,40 @@ public class CreateTillView extends ViewImpl implements
 		userDetails.setTillInfo(tillSelected);
 	}
 	
+	@Override
+	public void setSelectedMerchant(UserDTO user){
+		userDetails.setSelectedMerchant(user);
+	}
+	
 	public TillDTO getTillDTO(){
 		TillDTO tillDetail = tillDetails.getTillInfo();
 		TillDTO tillCombined = userDetails.getTillUserInfo(tillDetail);
 		
 		return tillCombined;
-		
+	}
+	
+	
+	public String getTillSearchCode(){
+		return tillDetails.getTillCode();
+	}
+	
+	public void setSearchMessage(String message, String styleName){
+		tillDetails.setMessage(message, styleName);
 	}
 
 	@Override
 	public void setUsers(List<UserDTO> allUsers) {
 		userDetails.setUsers(allUsers);
+	}
+
+	@Override
+	public HasClickHandlers getPickUser() {
+		return tillDetails.getPickUser();
+	}
+
+	@Override
+	public HasKeyDownHandlers getSearchBox() {
+		return tillDetails.getSearchBox();
 	}
 
 }

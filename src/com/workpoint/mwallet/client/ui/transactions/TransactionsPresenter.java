@@ -25,12 +25,12 @@ import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
+import com.workpoint.mwallet.client.ui.util.DateRanges;
+import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
-import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
-import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
 
 public class TransactionsPresenter extends
@@ -85,14 +85,20 @@ public class TransactionsPresenter extends
 		super.onReset();
 		setInSlot(FILTER_SLOT, filterPresenter);
 		getView().setMiddleHeight();
-		loadData();
+		loadData(DateRanges.LASTWEEK);
 	}
 
 	List<TransactionDTO> trxs = new ArrayList<TransactionDTO>();
 
-	private void loadData() {
+	private DateRanges setDateRange;
+
+	private void loadData(DateRanges date) {
+		this.setDateRange = date;
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new GetTransactionsRequest(),
+		SearchFilter filter =  new SearchFilter();
+		filter.setStartDate(DateUtils.getDateByRange(date));
+		filter.setEndDate(DateUtils.getDateByRange(DateRanges.TODAY));
+		requestHelper.execute(new GetTransactionsRequest(filter),
 				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
 					public void processResult(
@@ -136,7 +142,7 @@ public class TransactionsPresenter extends
 		getView().getRefreshLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				loadData();
+				loadData(setDateRange);
 			}
 		});
 		

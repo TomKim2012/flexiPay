@@ -34,7 +34,7 @@ public class GetTillsRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		TillDao dao = new TillDao(DB.getEntityManager());
 
-		List<TillModel> tills = dao.getAllTills();
+		List<TillModel> tills = dao.getAllTills(action.getFilter());
 
 		List<TillDTO> dtos = new ArrayList<TillDTO>();
 

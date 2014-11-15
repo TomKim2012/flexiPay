@@ -52,7 +52,7 @@ public class User extends PO {
 	@Column(length = 100)
 	private String email;
 
-	@Column(length = 10)
+	@Column(length = 20)
 	private String phone;
 
 	@OneToMany(mappedBy = "owner")
@@ -74,7 +74,7 @@ public class User extends PO {
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REFRESH })
-	@JoinTable(name = "UserGroup", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = { @JoinColumn(name = "groupid") })
+	@JoinTable(name = "bUserGroup", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = { @JoinColumn(name = "groupid") })
 	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.PERSIST,
 			org.hibernate.annotations.CascadeType.MERGE })

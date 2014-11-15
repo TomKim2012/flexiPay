@@ -4,7 +4,7 @@
 	xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component">
 	<g:HTMLPanel>
 		<d:TableView ui:field="tblView" striped="false" isGrid="false"
-			bordered="true" autoNumber="false" styleName="table-programs">
+			bordered="true" autoNumber="true" styleName="table-programs">
 		</d:TableView>
 	</g:HTMLPanel>
 </ui:UiBinder>

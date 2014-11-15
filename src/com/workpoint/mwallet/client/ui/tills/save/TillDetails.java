@@ -1,12 +1,16 @@
 package com.workpoint.mwallet.client.ui.tills.save;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.IssuesPanel;
 import com.workpoint.mwallet.shared.model.TillDTO;
 
@@ -16,13 +20,19 @@ public class TillDetails extends Composite {
 			.create(TillDetailsUiBinder.class);
 	
 	@UiField TextBox txtBusinessName;
+//	@UiField TextBox txtTillCode;
 	@UiField TextBox txtTillCode;
 	@UiField TextBox txtPhone;
 	@UiField CheckBox chckEnable;
+	@UiField SpanElement spnMessage;
+	
+	@UiField ActionLink aPickTill;
 
 	private TillDTO tillSelected;
 
 	private String errorMessage;
+	
+	
 
 	interface TillDetailsUiBinder extends UiBinder<Widget, TillDetails> {
 	}
@@ -70,6 +80,35 @@ public class TillDetails extends Composite {
 
 	public String geterrorMessages() {
 		return errorMessage;
+	}
+	
+	public String getTillCode(){
+		if(isNullOrEmpty(txtTillCode.getText())){
+			setMessage("Please Enter a valid Till Code", "text-error");
+			return null;
+		}else{
+			return txtTillCode.getText();	
+		}
+		
+	}
+	
+	
+	
+	boolean isNullOrEmpty(String value) {
+		return value == null || value.trim().length() == 0;
+	}
+
+	public void setMessage(String message, String styleName){
+		spnMessage.setInnerText(message);
+		spnMessage.setClassName(styleName);
+	}
+
+	public HasClickHandlers getPickUser() {
+		return aPickTill;
+	}
+
+	public HasKeyDownHandlers getSearchBox() {
+		return txtTillCode;
 	}
 
 }

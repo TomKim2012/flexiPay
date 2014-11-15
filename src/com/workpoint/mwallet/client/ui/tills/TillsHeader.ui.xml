@@ -8,7 +8,7 @@
 				<g:FocusPanel ui:field='panelTitle'>
 					<g:HTMLPanel styleName="row-fluid">
 						<g:HTMLPanel styleName="title-container span3">
-							<h4 ui:field="spnTitle" class="title">Tills</h4>
+							<h4 ui:field="spnTitle" class="title">Tills Management</h4>
 						</g:HTMLPanel>
 					</g:HTMLPanel>
 				</g:FocusPanel>

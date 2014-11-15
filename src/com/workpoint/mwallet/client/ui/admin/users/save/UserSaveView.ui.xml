@@ -31,7 +31,7 @@
 								<b>Client Code:</b>
 							</label>
 							<div class="input-append">
-								<d:TextField ui:field="txtSearchBox" placeholder="eg: PB/02555">
+								<d:TextField ui:field="txtSearchBox" placeholder="eg: Enter Client Code">
 								</d:TextField>
 								<d:ActionLink ui:field="aPickUser" styleName="btn btn-primary">
 									Search

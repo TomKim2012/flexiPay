@@ -28,7 +28,7 @@
 								<i class="icon-pencil icon-button"></i>
 							</d:ActionLink>
 						</div>
-						
+
 						<div class="span3">
 							<d:ActionLink ui:field="aDelete" styleName="btn btn-danger"
 								dataToggle="tooltip" dataPlacement="bottom" title="Delete">
@@ -77,8 +77,8 @@
 				</g:HTMLPanel>
 
 
-				<g:HTMLPanel ui:field="divMiddleContent" styleName="tabbable tabs-below full-page">
-
+				<g:HTMLPanel ui:field="divMiddleContent"
+					styleName="tabbable tabs-below full-page overflow-y">
 					<d:MyHTMLPanel styleName="tab-content" ui:field="divProgramsTable">
 						<g:HTMLPanel>
 							<div ui:field="divTab1Content" class="tab-pane fade in active">

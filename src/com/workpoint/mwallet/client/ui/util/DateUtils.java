@@ -13,8 +13,9 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 public class DateUtils {
 	static String datepattern="dd/MM/yyyy";
 	static String createdpattern="dd/MM/yyyy HH:mm";
+	static String timestamppattern="yyyy-MM-dd HH:mm";
 	static String fullPattern = "EEE,MMM d,yyyy";
-	static String halfPattern = "EEEE, MMM d";
+	static String halfPattern = "EEEE, MMM d HH:mm";
 	static String monthDayPattern = "MMM d";
 	static String monthShortPattern="MMM";
 	static String dayShortPattern="d";
@@ -23,6 +24,7 @@ public class DateUtils {
 			
 	public static final DateTimeFormat CREATEDFORMAT = DateTimeFormat.getFormat(createdpattern);
 	public static final DateTimeFormat DATEFORMAT = DateTimeFormat.getFormat(datepattern);
+	public static final DateTimeFormat TIMESTAMPFORMAT = DateTimeFormat.getFormat(timestamppattern);
 	public static final DateTimeFormat HALFDATEFORMAT = DateTimeFormat.getFormat(halfPattern);
 	public static final DateTimeFormat FULLDATEFORMAT = DateTimeFormat.getFormat(fullPattern);
 	public static final DateTimeFormat MONTHDAYFORMAT = DateTimeFormat.getFormat(monthDayPattern);
@@ -133,7 +135,50 @@ public class DateUtils {
 		
 		buff.append(" ago");
 		return buff.toString();
+	}
 	
+	
+	public static Date getDateByRange(DateRanges range){
+		Date today = new Date();
+		switch (range) {
+		case TODAY:
+			//today.setTime(0000);
+			return today;
+		case YESTERDAY:
+			CalendarUtil.addDaysToDate(today, -1);
+			return today;
+		case THISWEEK:
+			CalendarUtil.getStartingDayOfWeek();
+			return today;
+		case THISMONTH:
+			CalendarUtil.setToFirstDayOfMonth(today);
+			return today;
+		case THISQUARTER:
+			CalendarUtil.addMonthsToDate(today, -3);
+			return today;
+		case THISYEAR:
+			CalendarUtil.addMonthsToDate(today, -12);
+			return today;
+		
+		case LASTWEEK:
+			CalendarUtil.addDaysToDate(today, -14);
+			return today;
+		case LASTMONTH:
+			CalendarUtil.addDaysToDate(today, -62);
+			return today;
+		case LASTQUARTER:
+			CalendarUtil.addMonthsToDate(today,-6);
+			return today;
+		case LASTYEAR:
+			CalendarUtil.addMonthsToDate(today,-12);
+			return today;
+		default:
+		return today;
+		
+		}
+		
+		
+		
 	}
 
 	public static boolean isDueInMins(int mins, Date endDate) {

@@ -10,7 +10,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.workpoint.mwallet.server.dao.ClientDao;
 import com.workpoint.mwallet.server.dao.TillDao;
+import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
@@ -25,6 +27,14 @@ public class TestTills {
 	}
 	
 	@Test
+	public void searchClientByTill(){
+		ClientDocModel model = new ClientDao(em).getClientByTillCode("80576000");
+		
+		System.err.println("Client Code >>"+ model.getClientcode());
+	}
+	
+	
+	@Ignore
 	public void search(){
 		List<TillModel> models = new TillDao(em).getTillsByName("Nya");
 		Assert.assertNotSame(0,models.size());

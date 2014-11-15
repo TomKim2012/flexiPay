@@ -45,10 +45,22 @@ public class TillUserDetails extends Composite {
 	public void setTillInfo(TillDTO tillSelected) {
 		this.tillSelected = tillSelected;
 		if (tillSelected != null) {
-			aOwners.select(Arrays.asList(tillSelected.getOwner()));
-			aCashiers.select(tillSelected.getCashiers());
-			aSalesPersons.select(Arrays.asList(tillSelected.getSalesPerson()));
+			if (tillSelected.getOwner() != null) {
+				aOwners.addItems(Arrays.asList(tillSelected.getOwner()));
+				aOwners.select(Arrays.asList(tillSelected.getOwner()));
+			}
+			if (tillSelected.getCashiers() != null) {
+				aCashiers.select(tillSelected.getCashiers());
+			}
+			if (tillSelected.getSalesPerson() != null) {
+				aSalesPersons.select(Arrays.asList(tillSelected
+						.getSalesPerson()));
+			}
 		}
+	}
+
+	public void setSelectedMerchant(UserDTO user) {
+		aOwners.select(Arrays.asList(user));
 	}
 
 	public TillDTO getTillUserInfo(TillDTO till) {
@@ -72,10 +84,12 @@ public class TillUserDetails extends Composite {
 		if (aOwners.getSelectedItems().size() < 1) {
 			issues.addError("Please set an Owner for this till");
 			return false;
-		} else if (aCashiers.getSelectedItems().size() < 1) {
-			issues.addError("Please set at least 1 Cashier for this till");
-			return false;
-		} else if (aSalesPersons.getSelectedItems().size() < 1) {
+		} 
+//		else if (aCashiers.getSelectedItems().size() < 1) {
+//			issues.addError("Please set at least 1 Cashier for this till");
+//			return false;
+//		} 
+		else if (aSalesPersons.getSelectedItems().size() < 1) {
 			issues.addError("Please set the SalesPerson for this till");
 			return false;
 		}
@@ -111,7 +125,7 @@ public class TillUserDetails extends Composite {
 
 	private void sortByGroup(List<UserGroup> groups, UserDTO user) {
 		for (UserGroup group : groups) {
-			System.err.println("Group Names>>>"+group.getName());
+			System.err.println("Group Names>>>" + group.getName());
 			GroupType type = GroupType.valueOf(group.getName());
 			switch (type) {
 			case Merchant:
@@ -119,17 +133,23 @@ public class TillUserDetails extends Composite {
 				break;
 			case Cashier:
 				cashiers.add(user);
+				break;
 			case SalesPerson:
 				salesPerson.add(user);
+				break;
+			default:
+
 			}
 
 		}
 	}
 
 	public enum GroupType {
-		Merchant("Merchant"), SalesPerson("SalesPerson"), Cashier("Cashier");
-		
+		Merchant("Merchant"), SalesPerson("SalesPerson"), Cashier("Cashier"), Administrator(
+				"Administrator");
+
 		private String groupCode;
+
 		private GroupType(String groupCode) {
 			this.groupCode = groupCode;
 		}
@@ -139,9 +159,9 @@ public class TillUserDetails extends Composite {
 		}
 
 	}
-	
-	public static void main(String args[]){
-		
+
+	public static void main(String args[]) {
+
 	}
 
 }
