@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class TillDTO implements Serializable,Listable{
+public class TillDTO implements Serializable,Listable, Comparable<TillDTO>{
 	/**
 	 * 
 	 */
@@ -104,7 +104,14 @@ public class TillDTO implements Serializable,Listable{
 
 	@Override
 	public String getDisplayName() {
-		return tillNo + " - " +businessName;
+		return businessName+" - "+tillNo;
+	}
+
+	@Override
+	public int compareTo(TillDTO till) {
+		if(getLastModified()==null || till.getLastModified()==null)
+			return 0;
+		return -getLastModified().compareTo(till.getLastModified());
 	}
 	
 }

@@ -2,8 +2,6 @@
 
 import java.util.List;
 
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
@@ -14,9 +12,11 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 
@@ -32,11 +32,16 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		SearchFilter getSearchFilter();
 
 		void setTills(List<TillDTO> tills);
+
+		void showFilter(SearchType searchType);
+
+		void setUsers(List<UserDTO> users);
 	}
 
 
 	@Inject
 	DispatchAsync requestHelper;
+	private SearchType searchType;
 
 	@Inject
 	public FilterPresenter(final EventBus eventBus, final MyView view) {
@@ -51,13 +56,14 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 			@Override
 			public void onClick(ClickEvent event) {
 				SearchFilter filter = getView().getSearchFilter();
-				fireEvent(new SearchEvent(filter));
+				fireEvent(new SearchEvent(filter,searchType));
 			}
 		});
-
-		getView().getFilterDialog().addBlurHandler(new BlurHandler() {
+		
+		getView().getCloseButton().addClickHandler(new ClickHandler() {
 			@Override
-			public void onBlur(BlurEvent event) {
+			public void onClick(ClickEvent event) {
+				fireEvent(new HideFilterBoxEvent());
 			}
 		});
 	}
@@ -80,4 +86,21 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 					}
 				});
 	}
+
+	public void setFilter(SearchType searchType) {
+		setFilter(searchType,null);
+	}
+	
+	public void setFilter(SearchType searchType, List<UserDTO> users) {
+		this.searchType = searchType;
+		if(users!=null){
+			getView().setUsers(users);
+		}
+		getView().showFilter(searchType);
+	}
+	
+	public enum SearchType{
+		Till,Transaction
+	}
+	
 }

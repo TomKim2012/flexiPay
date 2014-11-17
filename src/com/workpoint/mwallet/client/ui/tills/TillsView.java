@@ -1,8 +1,11 @@
 package com.workpoint.mwallet.client.ui.tills;
 
+import static com.workpoint.mwallet.client.ui.tills.TillsPresenter.FILTER_SLOT;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -11,8 +14,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
+import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
+import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTable;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTableRow;
+import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TillsView extends ViewImpl implements
@@ -21,11 +27,17 @@ public class TillsView extends ViewImpl implements
 	private final Widget widget;
 
 	@UiField
+	HTMLPanel divContentTop;
+
+	@UiField
+	MyHTMLPanel divContentTable;
+
+	@UiField
 	ActionLink aCreate;
 
 	@UiField
 	ActionLink aEdit;
-	
+
 	@UiField
 	ActionLink aDelete;
 
@@ -44,6 +56,12 @@ public class TillsView extends ViewImpl implements
 	@UiField
 	TillsHeader headerContainer;
 
+	@UiField
+	ActionLink btnSearch;
+
+	@UiField
+	TextField txtSearchBox;
+
 	public interface Binder extends UiBinder<Widget, TillsView> {
 	}
 
@@ -56,24 +74,28 @@ public class TillsView extends ViewImpl implements
 		iFilterdropdown.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if (isNotDisplayed) {
-					divFilterBox.removeStyleName("hide");
-					isNotDisplayed = false;
-				} else {
-					divFilterBox.addStyleName("hide");
-					isNotDisplayed = true;
-				}
+				showFilterView();
 			}
 		});
-		
+
 		init();
-		
+
+	}
+
+	public void showFilterView() {
+		if (isNotDisplayed) {
+			divFilterBox.removeStyleName("hide");
+			isNotDisplayed = false;
+		} else {
+			divFilterBox.addStyleName("hide");
+			isNotDisplayed = true;
+		}
 	}
 
 	public void init() {
-		show(aCreate,true);
-		show(aEdit,false);
-		show(aDelete,false);
+		show(aCreate, true);
+		show(aEdit, false);
+		show(aDelete, false);
 	}
 
 	@Override
@@ -90,9 +112,9 @@ public class TillsView extends ViewImpl implements
 	public HasClickHandlers getEditButton() {
 		return aEdit;
 	}
-	
+
 	@Override
-	public HasClickHandlers getDeleteButton(){
+	public HasClickHandlers getDeleteButton() {
 		return aDelete;
 	}
 
@@ -112,15 +134,28 @@ public class TillsView extends ViewImpl implements
 	}
 
 	@Override
+	public void setInSlot(Object slot, Widget content) {
+		if (slot == FILTER_SLOT) {
+			divFilterBox.clear();
+			if (content != null) {
+				divFilterBox.add(content);
+			}
+		} else {
+			super.setInSlot(slot, content);
+		}
+
+	}
+
+	@Override
 	public void setSelection(boolean show) {
 		if (show) {
 			show(aCreate, false);
 			show(aEdit, true);
-			show(aDelete,true);
+			show(aDelete, true);
 		} else {
 			show(aCreate, true);
 			show(aEdit, false);
-			show(aDelete,false);
+			show(aDelete, false);
 		}
 	}
 
@@ -131,5 +166,38 @@ public class TillsView extends ViewImpl implements
 			aAnchor.getElement().getParentElement().addClassName("hide");
 		}
 	}
+
+	public void setMiddleHeight() {
+		int totalHeight = divMainContainer.getElement().getOffsetHeight();
+		int topHeight = divContentTop.getElement().getOffsetHeight();
+		int middleHeight = totalHeight - topHeight - 10;
+
+		if (middleHeight > 0) {
+			divContentTable.setHeight(middleHeight + "px");
+		}
+	}
+
+	public SearchFilter getFilter() {
+		SearchFilter filter = new SearchFilter();
+		if (!txtSearchBox.getText().isEmpty()) {
+			filter.setPhrase(txtSearchBox.getText());
+			return filter;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public HasClickHandlers getSearchButton() {
+		return btnSearch;
+	}
+	
+	@Override
+	public HasKeyDownHandlers getSearchBox() {
+		return txtSearchBox;
+	}
+
+	
+
 
 }

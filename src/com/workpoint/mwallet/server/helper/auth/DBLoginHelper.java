@@ -54,7 +54,6 @@ public class DBLoginHelper implements LoginIntf{
 		//UserDTO.setPassword(user.getPassword());
 		UserDTO.setLastName(user.getLastName());
 		UserDTO.setPhoneNo(user.getPhone());
-		UserDTO.setLinkCode(user.getLinkCode());
 		UserDTO.setId(user.getId());
 		
 		if(loadGroups)
@@ -140,6 +139,7 @@ public class DBLoginHelper implements LoginIntf{
 			user.setPassword(UserDTO.getPassword());
 		}
 		user.setUserId(UserDTO.getUserId());
+		user.setPhone(UserDTO.getPhoneNo());
 		user.setGroups(get(UserDTO.getGroups()));
 		
 		dao.saveUser(user);

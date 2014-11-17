@@ -38,16 +38,16 @@
 					</div>
 
 					<div class="span3 right-side">
-						<div class="program-search">
+						<div class="till-search">
 							<div class="input-append">
-								<input type="text" styleName="search-query" placeholder="Search here">
-								</input>
+								<d:TextField ui:field="txtSearchBox" styleName="search-query"
+									placeholder="Search here"></d:TextField>
 								<g:Anchor styleName="icon-caret-down muted" ui:field="iFilterdropdown"></g:Anchor>
-								<button type="submit" class="btn">
+								<d:ActionLink styleName="btn hide" ui:field="btnSearch">
 									<i class="icon-search"></i>
-								</button>
+								</d:ActionLink>
 							</div>
-							<g:HTMLPanel ui:field="divFilterBox" styleName="hide search-box">
+							<g:HTMLPanel ui:field="divFilterBox" styleName="hide search-box tills">
 							</g:HTMLPanel>
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 
 				<g:HTMLPanel ui:field="divMiddleContent"
 					styleName="tabbable tabs-below full-page overflow-y">
-					<d:MyHTMLPanel styleName="tab-content" ui:field="divProgramsTable">
+					<d:MyHTMLPanel styleName="tab-content" ui:field="divContentTable">
 						<g:HTMLPanel>
 							<div ui:field="divTab1Content" class="tab-pane fade in active">
 								<table:TillsTable ui:field="tblView">

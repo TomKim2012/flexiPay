@@ -33,6 +33,28 @@ public class TillDao extends BaseDaoImpl {
 			isFirst = false;
 		}
 		
+		if(filter.getPhrase()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" (t.tillNo like :phrase or t.businessName like :phrase or " +
+					"t.owner like :phrase or t.salesPerson like :phrase)");
+			params.put("phrase", "%"+filter.getPhrase()+"%");
+			isFirst = false;
+		}
+		
+		if(filter.getOwner()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" (t.owner = :owner)");
+			params.put("owner", filter.getOwner().getUserId());
+			isFirst = false;
+		}
+		
+		if(filter.getSalesPerson()!=null){
+			jpql.append(isFirst? " Where" : " And");
+			jpql.append(" (t.salesPerson = :salesPerson)");
+			params.put("salesPerson", filter.getSalesPerson().getUserId());
+			isFirst = false;
+		}
+		
 		Query query = em.createQuery(jpql.toString());
 		for(String key: params.keySet()){
 			query.setParameter(key, params.get(key));

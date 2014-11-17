@@ -11,6 +11,9 @@ public class SearchFilter implements Serializable {
 	private static final long serialVersionUID = -8494519116994121416L;
 	private String phrase;
 	private TillDTO till;
+	private UserDTO owner;
+	private UserDTO salesPerson;
+	private UserDTO cashier;
 	private Date startDate;
 	private Date endDate;
 
@@ -59,6 +62,30 @@ public class SearchFilter implements Serializable {
 			return false;
 		return  true;
 		
+	}
+
+	public UserDTO getOwner() {
+		return owner;
+	}
+
+	public void setOwner(UserDTO owner) {
+		this.owner = owner;
+	}
+
+	public UserDTO getSalesPerson() {
+		return salesPerson;
+	}
+
+	public void setSalesPerson(UserDTO salesPerson) {
+		this.salesPerson = salesPerson;
+	}
+
+	public UserDTO getCashier() {
+		return cashier;
+	}
+
+	public void setCashier(UserDTO cashier) {
+		this.cashier = cashier;
 	}
 
 }

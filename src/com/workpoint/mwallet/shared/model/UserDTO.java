@@ -13,7 +13,6 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 	private String lastName;
 	private String password;
 	private String phoneNo;
-	private String linkCode;
 	private List<UserGroup> groups;
 	
 	public UserDTO() {
@@ -147,15 +146,6 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getLinkCode() {
-		return linkCode;
-	}
-
-	public void setLinkCode(String linkCode) {
-		this.linkCode = linkCode;
-	}
-
 	public String getPhoneNo() {
 		return phoneNo;
 	}

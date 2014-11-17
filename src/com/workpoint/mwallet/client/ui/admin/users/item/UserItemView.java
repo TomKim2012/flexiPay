@@ -27,8 +27,8 @@ public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 	HTMLPanel panelGroups;
 	@UiField
 	HTMLPanel panelUserName;
-	@UiField
-	HTMLPanel panelLinkCode;
+//	@UiField
+//	HTMLPanel panelLinkCode;
 
 	@UiField
 	Anchor aEdit;
@@ -62,9 +62,9 @@ public class UserItemView extends ViewImpl implements UserItemPresenter.MyView {
 			panelUserName.getElement().setInnerText(user.getUserId());
 		}
 		
-		if(user.getLinkCode() != null){
-			panelLinkCode.getElement().setInnerText(user.getLinkCode());
-		}
+//		if(user.getLinkCode() != null){
+//			panelLinkCode.getElement().setInnerText(user.getLinkCode());
+//		}
 	}
 
 	@Override

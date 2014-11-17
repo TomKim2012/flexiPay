@@ -30,9 +30,8 @@ public class TransactionDao extends BaseDaoImpl {
 			jpql.append(isFirst? " Where" : " And");
 			jpql.append(" t.trxDate>:startDate");
 			params.put("startDate", filter.getStartDate());
-			
-			System.err.println("Filter Query\n"+"---------------\n");
-			System.out.println("Start Date>>"+filter.getStartDate());
+//			System.err.println("Filter Query\n"+"---------------\n");
+//			System.out.println("Start Date>>"+filter.getStartDate());
 			isFirst = false;
 		}
 		
@@ -41,7 +40,7 @@ public class TransactionDao extends BaseDaoImpl {
 			jpql.append(" t.trxDate<:endDate");
 			params.put("endDate", filter.getEndDate());
 			
-			System.out.println("End Date >>"+filter.getEndDate());
+//			System.out.println("End Date >>"+filter.getEndDate());
 			isFirst = false;
 		}
 		

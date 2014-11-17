@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.server.test;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -11,8 +12,10 @@ import org.junit.Test;
 
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.workpoint.mwallet.server.dao.ClientDao;
+import com.workpoint.mwallet.server.dao.UserGroupDaoImpl;
 import com.workpoint.mwallet.server.dao.model.ClientModel;
 import com.workpoint.mwallet.server.dao.model.Group;
+import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.ClientDTO;
 
@@ -26,8 +29,25 @@ public class TestUsers {
 		em = DB.getEntityManager();
 
 	}
-
+	
+	
 	@Test
+	public void saveUser(){
+		
+		UserGroupDaoImpl dao = new UserGroupDaoImpl(em);
+		Group group = dao.getGroup("Merchant");
+		User user =  new User();
+		user.setFirstName("Tom");
+		user.setLastName("Kimani");
+		user.setUserId("TomKim");
+		user.setGroups(Arrays.asList(group));
+		
+		
+		dao.saveUser(user);
+	}
+	
+
+	@Ignore
 	public void TestDates() {
 		Date today = new Date();
 		System.err.println("Today>>"+today);

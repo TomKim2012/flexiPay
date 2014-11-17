@@ -4,7 +4,7 @@ import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.GetGroupsResponse;
 
 public class GetGroupsRequest extends BaseRequest<GetGroupsResponse> {
-
+	
 	public GetGroupsRequest() {
 	}
 	

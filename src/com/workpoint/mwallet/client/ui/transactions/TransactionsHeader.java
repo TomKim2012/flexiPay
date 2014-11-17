@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.Dropdown;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
+import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.util.DateRanges;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.util.AppContext;
@@ -73,9 +74,9 @@ public class TransactionsHeader extends Composite {
 				+ DateUtils.DATEFORMAT.format(endDate) + ") ";
 		spnDates.getElement().setInnerText(displayName);
 
-		System.err.println("DateRange>>>Start Date::" + filter.getStartDate()
-				+ "End Date >>" + filter.getEndDate());
-		AppContext.fireEvent(new SearchEvent(filter));
+//		System.err.println("DateRange>>>Start Date::" + filter.getStartDate()
+//				+ "End Date >>" + filter.getEndDate());
+		AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
 	}
 
 	public void setTotals(String transactions, String amount) {

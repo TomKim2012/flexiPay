@@ -69,9 +69,12 @@ public class TillUserDetails extends Composite {
 			tillSelected = new TillDTO();
 		}
 		for (UserDTO owner : aOwners.getSelectedItems()) {
+			System.err.println("Owner>>"+ owner.getFullName());
 			tillSelected.setOwner(owner);
 		}
+		
 		for (UserDTO salesPerson : aSalesPersons.getSelectedItems()) {
+			System.err.println("Owner>>"+ salesPerson.getFullName());
 			tillSelected.setSalesPerson(salesPerson);
 		}
 
@@ -85,12 +88,18 @@ public class TillUserDetails extends Composite {
 			issues.addError("Please set an Owner for this till");
 			return false;
 		} 
-//		else if (aCashiers.getSelectedItems().size() < 1) {
-//			issues.addError("Please set at least 1 Cashier for this till");
-//			return false;
-//		} 
-		else if (aSalesPersons.getSelectedItems().size() < 1) {
+		
+		if (aOwners.getSelectedItems().size() > 1) {
+			issues.addError("Till can only have one owner");
+			return false;
+		} 
+		if (aSalesPersons.getSelectedItems().size() < 1) {
 			issues.addError("Please set the SalesPerson for this till");
+			return false;
+		}
+		
+		if (aSalesPersons.getSelectedItems().size() < 1) {
+			issues.addError("Till can only have one salesPerson");
 			return false;
 		}
 		return true;

@@ -46,6 +46,8 @@ public class TillDetails extends Composite {
 		if(tillSelected!=null){
 			txtBusinessName.setValue(tillSelected.getBusinessName());
 			txtTillCode.setValue(tillSelected.getTillNo());
+			aPickTill.setVisible(false);
+			txtTillCode.getElement().setAttribute("readonly", "true");
 			txtPhone.setValue(tillSelected.getPhoneNo());
 			chckEnable.setValue(tillSelected.isActive()==1?true:false);
 		}

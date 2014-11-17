@@ -196,6 +196,10 @@
 .action-buttons .input-append{
 	position:relative;
 }
+
+.action-buttons .till-search .input-append .icon-caret-down{
+	right:10px !important;
+}
 .action-buttons .input-append .icon-caret-down{
 	font-size: 14px;
 	position: absolute;
@@ -213,11 +217,12 @@
 }
 .action-buttons .search-box .dialog-filter{
     position: absolute;
-	
     z-index: 200;
     left: 0px;
 }
-
+.action-buttons .tills .dialog-filter{
+	left: -37px !important;
+}
 /*Dialog Box*/
 .dialog-filter .form .compositeinput{
     width: 100%;

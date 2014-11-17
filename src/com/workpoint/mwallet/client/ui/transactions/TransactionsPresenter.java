@@ -25,6 +25,7 @@ import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
+import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.util.DateRanges;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
@@ -83,6 +84,7 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+		filterPresenter.setFilter(SearchType.Transaction);
 		setInSlot(FILTER_SLOT, filterPresenter);
 		getView().setMiddleHeight();
 		loadData(DateRanges.LASTWEEK);
@@ -95,9 +97,10 @@ public class TransactionsPresenter extends
 	private void loadData(DateRanges date) {
 		this.setDateRange = date;
 		fireEvent(new ProcessingEvent());
-		SearchFilter filter =  new SearchFilter();
+		SearchFilter filter = new SearchFilter();
 		filter.setStartDate(DateUtils.getDateByRange(date));
 		filter.setEndDate(DateUtils.getDateByRange(DateRanges.TODAY));
+
 		requestHelper.execute(new GetTransactionsRequest(filter),
 				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
@@ -110,7 +113,7 @@ public class TransactionsPresenter extends
 				});
 
 	}
-	
+
 	protected void bindTransactions() {
 		getView().clear();
 		Double totalAmount = 0.0;
@@ -122,12 +125,13 @@ public class TransactionsPresenter extends
 		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(trxs.size()),
 				NumberUtils.CURRENCYFORMAT.format(totalAmount));
 	}
-	
+
 	KeyDownHandler keyHandler = new KeyDownHandler() {
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				GetTransactionsRequest request = new GetTransactionsRequest(getView().getFilter());
+				GetTransactionsRequest request = new GetTransactionsRequest(
+						getView().getFilter());
 				performSearch(request);
 			}
 		}
@@ -145,14 +149,15 @@ public class TransactionsPresenter extends
 				loadData(setDateRange);
 			}
 		});
-		
+
 		getView().getSearchBox().addKeyDownHandler(keyHandler);
-		
+
 		getView().getSearchButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (getView().getFilter() != null) {
-					GetTransactionsRequest request = new GetTransactionsRequest(getView().getFilter());
+					GetTransactionsRequest request = new GetTransactionsRequest(
+							getView().getFilter());
 					performSearch(request);
 				}
 			}
@@ -161,10 +166,11 @@ public class TransactionsPresenter extends
 
 	@Override
 	public void onSearch(SearchEvent event) {
-		GetTransactionsRequest request = new GetTransactionsRequest(
-				event.getFilter());
-
-		performSearch(request);
+		if (event.getSearchType() == SearchType.Transaction) {
+			GetTransactionsRequest request = new GetTransactionsRequest(
+					event.getFilter());
+			performSearch(request);
+		}
 	}
 
 	public void performSearch(GetTransactionsRequest request) {
