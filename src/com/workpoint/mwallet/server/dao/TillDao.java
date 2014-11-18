@@ -43,14 +43,14 @@ public class TillDao extends BaseDaoImpl {
 		
 		if(filter.getOwner()!=null){
 			jpql.append(isFirst? " Where" : " And");
-			jpql.append(" (t.owner = :owner)");
+			jpql.append("(t.owner.userId = :owner)");
 			params.put("owner", filter.getOwner().getUserId());
 			isFirst = false;
 		}
 		
 		if(filter.getSalesPerson()!=null){
 			jpql.append(isFirst? " Where" : " And");
-			jpql.append(" (t.salesPerson = :salesPerson)");
+			jpql.append(" (t.salesPerson.userId = :salesPerson)");
 			params.put("salesPerson", filter.getSalesPerson().getUserId());
 			isFirst = false;
 		}

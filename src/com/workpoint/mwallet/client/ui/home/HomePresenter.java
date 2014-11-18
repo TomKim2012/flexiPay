@@ -2,7 +2,6 @@ package com.workpoint.mwallet.client.ui.home;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -28,7 +27,6 @@ import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
-import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
@@ -88,7 +86,6 @@ public class HomePresenter extends
 	private IndirectProvider<TransactionsPresenter> transactionsFactory;
 	private IndirectProvider<UserPresenter> usersFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
-	
 	//private IndirectProvider<ProgramsPresenter> activitiesFactory;
 	
 	/*
@@ -101,30 +98,12 @@ public class HomePresenter extends
 	 */
 
 
-	// @Inject
-	// FilterPresenter filterPresenter;
-	Timer timer = new Timer() {
-
-		@Override
-		public void run() {
-			search();
-		}
-	};
-
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider, 
 			Provider<TransactionsPresenter> transactionsProvider,
 			Provider<UserPresenter> userProvider,
 			Provider<TillsPresenter> tillProvider
-	/*
-	 * Provider<CreateProgramPresenter> docProvider,
-	 * Provider<GenericFormPresenter> formProvider,
-	 * Provider<GenericDocumentPresenter> docViewProvider,
-	 * Provider<DateGroupPresenter> dateGroupProvider,
-	 * Provider<NewsFeedPresenter> newsfeedProvider, Provider<ProfilePresenter>
-	 * profileProvider, Provider<ProgramsPresenter> activitiesProvider
-	 */
 	) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(dashboardProvider);
@@ -146,36 +125,6 @@ public class HomePresenter extends
 		 */
 	}
 
-	protected void search() {
-		timer.cancel();
-		if (searchTerm.isEmpty()) {
-			//loadTasks();
-			return;
-		}
-
-		// fireEvent(new ProcessingEvent());
-		// SearchFilter filter = new SearchFilter();
-		// filter.setSubject(searchTerm);
-		// filter.setPhrase(searchTerm);
-		// search(filter);
-	}
-
-	/*
-	 * public void search(final SearchFilter filter) {
-	 * 
-	 * GetTaskList request = new GetTaskList(AppContext.getUserId(), filter);
-	 * fireEvent(new ProcessingEvent()); dispatcher.execute(request, new
-	 * TaskServiceCallback<GetTaskListResult>() {
-	 * 
-	 * @Override public void processResult(GetTaskListResult result) {
-	 * 
-	 * GetTaskListResult rst = (GetTaskListResult) result; List<Doc> tasks =
-	 * rst.getTasks(); loadLines(tasks); if (tasks.isEmpty())
-	 * getView().setHasItems(false); else getView().setHasItems(true);
-	 * 
-	 * fireEvent(new AfterSearchEvent(filter.getSubject(), filter.getPhrase()));
-	 * fireEvent(new ProcessingCompletedEvent()); } }); }
-	 */
 
 	@Override
 	protected void revealInParent() {
@@ -207,8 +156,6 @@ public class HomePresenter extends
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
-
-		//fireEvent(new LoadAlertsEvent());
 		clear();
 
 		final String page = request.getParameter("page", "dashboard");
@@ -223,7 +170,7 @@ public class HomePresenter extends
 				}
 			});
 
-		}else if (page != null && page.equals("tills")) {
+		}else if (page!= null && page.equals("tills")) {
 			Window.setTitle("Tills");
 			tillFactory.get(new ServiceCallback<TillsPresenter>() {
 				@Override
@@ -233,9 +180,8 @@ public class HomePresenter extends
 			});
 			
 			getView().setSelectedTab("Tills");
-		}  
 		
-		else if (page != null && page.equals("transactions")) {
+		}else if (page != null && page.equals("transactions")) {
 			Window.setTitle("Transactions");
 			transactionsFactory.get(new ServiceCallback<TransactionsPresenter>() {
 				@Override
@@ -245,6 +191,7 @@ public class HomePresenter extends
 			});
 			
 			getView().setSelectedTab("Transactions");
+		
 		} else if (page != null && page.equals("users")) {
 			Window.setTitle("Users");
 			usersFactory.get(new ServiceCallback<UserPresenter>() {
@@ -270,21 +217,14 @@ public class HomePresenter extends
 
 	private void clear() {
 		// clear document slot
-		setInSlot(DATEGROUP_SLOT, null);
 		setInSlot(DOCUMENT_SLOT, null);
 	}
 
-
-	
-
-	
 	@Override
 	protected void onReset() {
 		super.onReset();
 	}
-
-
-
+	
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
 		getView().showUserImg(event.getCurrentUser());

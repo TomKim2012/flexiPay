@@ -180,7 +180,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	private void sortByGroup(List<UserGroup> groups, UserDTO user) {
 		for (UserGroup group : groups) {
-			System.err.println("Group Names>>>" + group.getName());
 			GroupType type = GroupType.valueOf(group.getName());
 			switch (type) {
 			case Merchant:

@@ -11,27 +11,23 @@ public class ContextLoadedEvent extends
 
 	public static Type<ContextLoadedHandler> TYPE = new Type<ContextLoadedHandler>();
 	private UserDTO currentUser;
-	private Version version;
-	private String organizationName;
+
+	// private Version version;
+	// private String organizationName;
 
 	public interface ContextLoadedHandler extends EventHandler {
 		void onContextLoaded(ContextLoadedEvent event);
 	}
-	
+
 	public ContextLoadedEvent() {
 	}
-	
-	public ContextLoadedEvent(UserDTO currentUser,Version version) {
+
+	public ContextLoadedEvent(UserDTO currentUser, Version version) {
 		this.currentUser = currentUser;
-		this.version = version;
 	}
 
 	public UserDTO getCurrentUser() {
 		return currentUser;
-	}
-	
-	public Version getVersion(){
-		return version;
 	}
 
 	@Override
@@ -48,15 +44,8 @@ public class ContextLoadedEvent extends
 		return TYPE;
 	}
 
-	/*public static void fire(HasHandlers source, HTUser currentUser,Version version) {
-		source.fireEvent(new ContextLoadedEvent(currentUser,version));
-	}*/
-
-	public String getOrganizationName() {
-		return organizationName;
-	}
-
-	public void setOrganizationName(String organizationName) {
-		this.organizationName = organizationName;
+	public static void fire(HasHandlers source, UserDTO currentUser,
+			Version version) {
+		source.fireEvent(new ContextLoadedEvent(currentUser, version));
 	}
 }

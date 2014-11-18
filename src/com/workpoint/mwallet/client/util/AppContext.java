@@ -10,8 +10,14 @@ import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.workpoint.mwallet.client.place.NameTokens;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.Version;
+import com.workpoint.mwallet.shared.requests.GetContextRequest;
+import com.workpoint.mwallet.shared.responses.GetContextRequestResult;
 
 /**
  * 
@@ -62,20 +68,25 @@ public class AppContext {
 	}
 
 	public static boolean isValid() {
-		// System.err.println("Session Cookie Asked:: "+CookieManager.getAuthCookie());
-
-		/*
-		 * boolean valid = false; valid = CookieManager.getAuthCookie()!=null;
-		 * 
-		 * if(valid){ checkNeedReloadState(); }else{ //store targetUrl
-		 * PlaceRequest req = placeManager.getCurrentPlaceRequest();
-		 * 
-		 * if(req!=null && !req.matchesNameToken(NameTokens.login)){ String
-		 * token = placeManager.buildHistoryToken(req);
-		 * Cookies.setCookie(Definitions.PENDINGREQUESTURL, token); } } return
-		 * valid;
-		 */
-
+//		System.err.println("Session Cookie Asked:: "
+//				+ CookieManager.getAuthCookie());
+//
+//		boolean valid = false;
+//		valid = CookieManager.getAuthCookie() != null;
+//
+//		if (valid) {
+//			checkNeedReloadState();
+//		} else {
+//			// store targetUrl
+//			PlaceRequest req = placeManager.getCurrentPlaceRequest();
+//
+//			if (req != null && !req.matchesNameToken(NameTokens.login)) {
+//				String token = placeManager.buildHistoryToken(req);
+//				Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
+//			}
+//		}
+//		return valid;
+		
 		return true;
 	}
 
@@ -86,18 +97,19 @@ public class AppContext {
 	}
 
 	public static void reloadContext() {
-		/*
-		 * dispatcher.execute(new GetContextRequest(), new
-		 * TaskServiceCallback<GetContextRequestResult>() {
-		 * 
-		 * @Override public void processResult(GetContextRequestResult result) {
-		 * organizationName= result.getOrganizationName();
-		 * setUserValues(result.getUser()); version = result.getVersion();
-		 * 
-		 * ContextLoadedEvent event = new ContextLoadedEvent(result.getUser(),
-		 * version); event.setOrganizationName(organizationName);
-		 * eventBus.fireEvent(event); } });
-		 */
+		dispatcher.execute(new GetContextRequest(),
+				new TaskServiceCallback<GetContextRequestResult>() {
+					@Override
+					public void processResult(GetContextRequestResult result) {
+						// organizationName = result.getOrganizationName();
+						setUserValues(result.getUser());
+						// version = result.getVersion();
+
+						ContextLoadedEvent event = new ContextLoadedEvent(
+								result.getUser(), version);
+						eventBus.fireEvent(event);
+					}
+				});
 	}
 
 	protected static void setUserValues(UserDTO htuser) {
