@@ -77,10 +77,6 @@ public class CreateTillView extends ViewImpl implements
 		userDetails.setTillInfo(tillSelected);
 	}
 	
-	@Override
-	public void setSelectedMerchant(UserDTO user){
-		userDetails.setSelectedMerchant(user);
-	}
 	
 	public TillDTO getTillDTO(){
 		TillDTO tillDetail = tillDetails.getTillInfo();

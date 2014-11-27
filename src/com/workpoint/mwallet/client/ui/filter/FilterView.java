@@ -111,7 +111,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	@Override
 	public void setUsers(List<UserDTO> users) {
 		breakUsers(users);
-		clear();
 		lstCashiers.setItems(cashiers);
 		lstMerchant.setItems(owners);
 		lstSalesPerson.setItems(salesPerson);
@@ -185,6 +184,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	private void sortByGroup(List<UserGroup> groups, UserDTO user) {
+		clear();
 		for (UserGroup group : groups) {
 			GroupType type = GroupType.valueOf(group.getName());
 			switch (type) {

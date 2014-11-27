@@ -48,8 +48,6 @@ public class CreateTillPresenter extends
 
 		void setSearchMessage(String message, String styleName);
 
-		void setSelectedMerchant(UserDTO user);
-
 		HasClickHandlers getPickUser();
 
 		HasKeyDownHandlers getSearchBox();
@@ -145,10 +143,10 @@ public class CreateTillPresenter extends
 								+ (first.length > 2 ? first[2] : ""));
 						user.setPhoneNo(client.getPhoneNo());
 						user.setUserId(client.getPhoneNo());
-
+						user.setPassword("pass123");
+						
 						// Get Group where Code is "Merchant"
 						getGroupFromName("Merchant");
-						user.setPassword("pass123");
 
 					}
 

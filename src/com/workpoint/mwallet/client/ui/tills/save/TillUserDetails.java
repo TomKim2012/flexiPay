@@ -46,36 +46,39 @@ public class TillUserDetails extends Composite {
 		this.tillSelected = tillSelected;
 		if (tillSelected != null) {
 			if (tillSelected.getOwner() != null) {
+				System.err.println("Added Owner::"
+						+ tillSelected.getOwner().getUserId());
 				owners.add(tillSelected.getOwner());
+				aOwners.setValues(owners);
 				aOwners.select(Arrays.asList(tillSelected.getOwner()));
 			}
 			if (tillSelected.getCashiers() != null) {
 				aCashiers.select(tillSelected.getCashiers());
 			}
 			if (tillSelected.getSalesPerson() != null) {
-				cashiers.add(tillSelected.getSalesPerson());
+				salesPerson.add(tillSelected.getSalesPerson());
+				aOwners.setValues(owners);
 				aSalesPersons.select(Arrays.asList(tillSelected
 						.getSalesPerson()));
 			}
 		}
 	}
 
-	public void setSelectedMerchant(UserDTO user) {
-		aOwners.select(Arrays.asList(user));
-	}
 
 	public TillDTO getTillUserInfo(TillDTO till) {
 		tillSelected = till;
 		if (tillSelected == null) {
 			tillSelected = new TillDTO();
 		}
+		
+		System.err.println("Owners"+aOwners.getSelectedItems().size());
 		for (UserDTO owner : aOwners.getSelectedItems()) {
-			System.err.println("Owner>>"+ owner.getFullName());
+			System.err.println("Owner>>" + owner.getUserId());
 			tillSelected.setOwner(owner);
 		}
-		
+
 		for (UserDTO salesPerson : aSalesPersons.getSelectedItems()) {
-			System.err.println("Owner>>"+ salesPerson.getFullName());
+			System.err.println("SalesPerson>>" + salesPerson.getFullName());
 			tillSelected.setSalesPerson(salesPerson);
 		}
 
@@ -88,17 +91,17 @@ public class TillUserDetails extends Composite {
 		if (aOwners.getSelectedItems().size() < 1) {
 			issues.addError("Please set an Owner for this till");
 			return false;
-		} 
-		
+		}
+
 		if (aOwners.getSelectedItems().size() > 1) {
 			issues.addError("Till can only have one owner");
 			return false;
-		} 
+		}
 		if (aSalesPersons.getSelectedItems().size() < 1) {
 			issues.addError("Please set the SalesPerson for this till");
 			return false;
 		}
-		
+
 		if (aSalesPersons.getSelectedItems().size() < 1) {
 			issues.addError("Till can only have one salesPerson");
 			return false;
