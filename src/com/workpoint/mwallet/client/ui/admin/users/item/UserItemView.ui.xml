@@ -6,11 +6,11 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="tr">
-		<g:HTMLPanel styleName="td">
-			<label>
-				<input type="checkbox" />
-			</label>
-		</g:HTMLPanel>
+<!-- 		<g:HTMLPanel styleName="td"> -->
+<!-- 			<label> -->
+<!-- 				<input type="checkbox" /> -->
+<!-- 			</label> -->
+<!-- 		</g:HTMLPanel> -->
 		<g:HTMLPanel ui:field="panelFirstName" styleName="td">Tom</g:HTMLPanel>
 		<g:HTMLPanel ui:field="panelLastName" styleName="td">Kimani</g:HTMLPanel>
 		<g:HTMLPanel ui:field="panelUserName" styleName="td">Kimani</g:HTMLPanel>

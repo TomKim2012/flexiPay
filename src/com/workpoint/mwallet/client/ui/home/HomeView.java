@@ -1,8 +1,6 @@
 package com.workpoint.mwallet.client.ui.home;
 
 import static com.workpoint.mwallet.client.ui.home.HomePresenter.ACTIVITIES_SLOT;
-import static com.workpoint.mwallet.client.ui.home.HomePresenter.DATEGROUP_SLOT;
-import static com.workpoint.mwallet.client.ui.home.HomePresenter.DOCUMENT_SLOT;
 
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.SpanElement;
@@ -45,10 +43,10 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@UiField
 	LIElement liTransactions;
-	
+
 	@UiField
 	LIElement liUsers;
-	
+
 	@UiField
 	LIElement liSettings;
 
@@ -67,19 +65,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	@Inject
 	public HomeView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		// docContainer.getElement().setAttribute("id", "detailed-info");
-
-		imgUser.addErrorHandler(new ErrorHandler() {
-
-			@Override
-			public void onError(ErrorEvent event) {
-				imgUser.setUrl("img/blueman.png");
-			}
-		});
-
-		if (AppContext.getContextUser() != null) {
-			showUserImg(AppContext.getContextUser());
-		}
 	}
 
 	public HTMLPanel getActivityContainer() {
@@ -93,20 +78,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@Override
 	public void setInSlot(Object slot, Widget content) {
-		if (slot == DATEGROUP_SLOT) {
-			showActivitiesPanel(false);
-			ulTaskGroups.clear();
-			if (content != null) {
-				ulTaskGroups.add(content);
-			}
-
-		} else if (slot == DOCUMENT_SLOT) {
-			showActivitiesPanel(false);
-			docContainer.clear();
-			if (content != null) {
-				docContainer.add(content);
-			}
-		} else if (slot == ACTIVITIES_SLOT) {
+		if (slot == ACTIVITIES_SLOT) {
 			showActivitiesPanel(true);
 			activityContainer.clear();
 			if (content != null) {
@@ -114,17 +86,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			}
 		} else {
 			super.setInSlot(slot, content);
-		}
-	}
-
-	@Override
-	public void addToSlot(Object slot, Widget content) {
-		if (slot == DATEGROUP_SLOT) {
-			if (content != null) {
-				ulTaskGroups.add(content);
-			}
-		} else {
-			super.addToSlot(slot, content);
 		}
 	}
 
@@ -167,6 +128,35 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		}
 	}
 
+	private void showTab(LIElement element, boolean status) {
+		if (status) {
+			element.removeClassName("hide");
+		} else {
+			element.addClassName("hide");
+		}
+	}
+
+	public void setTabs(String group) {
+		showTab(liDashboard, false);
+		showTab(liTills, false);
+		showTab(liTransactions, false);
+		showTab(liUsers, false);
+		showTab(liSettings, false);
+		if (group.equals("Merchant")) {
+			showTab(liDashboard, true);
+			showTab(liTransactions, true);
+		} else if (group.equals("SalesPerson")) {
+			showTab(liDashboard, true);
+			showTab(liTransactions, true);
+		} else if (group.equals("Admin")) {
+			showTab(liDashboard, true);
+			showTab(liTills, true);
+			showTab(liTransactions, true);
+			showTab(liUsers, true);
+			showTab(liSettings, true);
+		}
+	}
+
 	public void setSelectedTab(String page) {
 		setActive(liDashboard, false);
 		setActive(liTills, false);
@@ -184,12 +174,6 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		} else if (page.equals("Settings")) {
 			setActive(liSettings, true);
 		}
-	}
-
-	public void showUserImg(UserDTO currentUser) {
-		// System.err.println(currentUser.getFullName());
-		imgUser.setUrl(AppContext.getUserImageUrl(currentUser, 175.0, 175.0));
-		spnUser.setInnerText(currentUser.getFullName());
 	}
 
 }

@@ -29,10 +29,10 @@ public class TillsTableRow extends RowWidget {
 
 	@UiField
 	HTMLPanel row;
-	
+
 	@UiField
 	CheckBox chkSelect;
-	
+
 	@UiField
 	HTMLPanel divBusinessName;
 	@UiField
@@ -59,7 +59,7 @@ public class TillsTableRow extends RowWidget {
 	public TillsTableRow(TillDTO till) {
 		this();
 		init(till);
-		
+
 		chkSelect.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
@@ -68,7 +68,7 @@ public class TillsTableRow extends RowWidget {
 			}
 		});
 	}
-	
+
 	ValueChangeHandler<Boolean> selectionHandler;
 
 	public void setSelectionChangeHandler(ValueChangeHandler<Boolean> handler) {
@@ -82,22 +82,22 @@ public class TillsTableRow extends RowWidget {
 			bindText(divBusinessName, till.getBusinessName());
 			bindText(divtillNo, till.getTillNo());
 			bindText(divphoneNo, till.getPhoneNo());
-			
+
 			String ownerNames = till.getOwner().getFullName();
 			List<UserDTO> cashiers = till.getCashiers();
-			
-			String cashierString="";
+
+			String cashierString = "";
 			int size = cashiers.size();
-			for(UserDTO cashier: cashiers){
+			for (UserDTO cashier : cashiers) {
 				cashierString = cashier.getName();
-				if(size>1){
-					cashierString+=",";
+				if (size > 1) {
+					cashierString += ",";
 				}
 			}
 			bindText(divCashier, cashierString);
-			
+
 			String acquirerNames = till.getSalesPerson().getFullName();
-			
+
 			bindText(divOwner, ownerNames);
 			bindText(divAcquirer, acquirerNames);
 			bindText(divlastModified,
@@ -106,19 +106,25 @@ public class TillsTableRow extends RowWidget {
 		}
 	}
 
+	private void bindText(HTMLPanel panel, String text, String title) {
+		panel.getElement().setInnerText(text);
+		if (title != null) {
+			panel.getElement().setTitle(title);
+		}
+	}
+
 	private void setActive(int active) {
-		if(active==1){
+		if (active == 1) {
 			spnStatus.setClassName("label label-success");
 			spnStatus.setInnerText("Active");
-		}else{
+		} else {
 			spnStatus.setClassName("label label-default");
 			spnStatus.setInnerText("In-Active");
 		}
 	}
 
 	public void bindText(HTMLPanel panel, String text) {
-		panel.getElement().setInnerText(text);
-
+		bindText(panel, text, null);
 	}
 
 }

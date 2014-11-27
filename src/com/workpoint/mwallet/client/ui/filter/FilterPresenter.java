@@ -71,7 +71,6 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-
 		loadTills();
 	}
 

@@ -5,11 +5,11 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
-	<g:HTMLPanel>
-		<div class="content-body users-panel">
-			<div class="row-fluid">
+	<g:HTMLPanel styleName="full-page">
+		<g:HTMLPanel styleName="content-body users-panel" ui:field="divMainContainer">
+			<g:HTMLPanel styleName="row-fluid">
 				<!--Action Buttons -->
-				<div class="action-buttons">
+				<g:HTMLPanel styleName="action-buttons" ui:field="divContentTop">
 					<g:Anchor ui:field="aNewUser" styleName="btn btn-primary"
 						title="Add a New User">
 						<i class="icon-plus"></i>
@@ -21,7 +21,7 @@
 						<i class="icon-plus"></i>
 						Add Group
 					</g:Anchor>
-				</div>
+				</g:HTMLPanel>
 
 				<ul id="mytab" class="nav nav-tabs">
 					<li class="active" ui:field="liUser">
@@ -32,15 +32,15 @@
 					</li>
 				</ul>
 
-				<div id="usercontent" class="tab-content">
+				<g:HTMLPanel styleName="tab-content" ui:field="divContentTable">
 					<!-- User's Information Tab -->
 					<div ui:field="divUserContent" class="tab-pane fade in active">
 						<div class="table table-hover table-striped table-bordered">
 							<div class="thead">
 								<div class="tr">
-									<div class="th">
-										<input type="checkbox"></input>
-									</div>
+									<!-- <div class="th"> -->
+									<!-- <input type="checkbox"></input> -->
+									<!-- </div> -->
 									<div class="th">First Name</div>
 									<div class="th">Last Name</div>
 									<div class="th">Username</div>
@@ -112,8 +112,8 @@
 							</g:HTMLPanel><!--End Tbody -->
 						</div><!--End Table -->
 					</div>
-				</div>
-			</div>
-		</div>
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

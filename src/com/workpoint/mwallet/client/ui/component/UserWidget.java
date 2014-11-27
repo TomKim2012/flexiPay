@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -16,7 +15,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.events.LogoutEvent;
 import com.workpoint.mwallet.client.util.AppContext;
-//import com.workpoint.mwallet.shared.model.HTUser;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class UserWidget extends Composite {
 
@@ -55,7 +54,7 @@ public class UserWidget extends Composite {
 		aLogout.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//AppContext.fireEvent(new LogoutEvent());
+				AppContext.fireEvent(new LogoutEvent());
 			}
 		});
 	}
@@ -76,14 +75,14 @@ public class UserWidget extends Composite {
 				+ ", <span title=\"Build Date\">" + versionDate + "</span>");
 	}
 
-	/*public void setImage(HTUser user) {
+	public void setImage(UserDTO user) {
 		if (this.isMobile) {
 			img.setUrl(AppContext.getUserImageUrl(user, 40.0, 40.0));
 		} else {
 			img.setUrl(AppContext.getUserImageUrl(user, 90.0, 90.0));
 		}
 
-	}*/
+	}
 
 	public void setMobile(boolean isMobile) {
 		this.isMobile = isMobile;

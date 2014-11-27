@@ -21,24 +21,24 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.service.ServiceCallback;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
-import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
-import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
+import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.GetContextRequest;
+import com.workpoint.mwallet.shared.responses.GetContextRequestResult;
 
 public class HomePresenter extends
-		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> implements
-		ContextLoadedHandler {
+		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> {
 
 	/*
-	 * Other Handlers -->
-	 * AfterSaveHandler, DocumentSelectionHandler,
+	 * Other Handlers --> AfterSaveHandler, DocumentSelectionHandler,
 	 * ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler,
 	 * ProcessingHandler, ProcessingCompletedHandler, SearchHandler,
 	 * CreateProgramHandler,
@@ -53,9 +53,9 @@ public class HomePresenter extends
 
 		void setSelectedTab(String page);
 
-		void showUserImg(UserDTO currentUser);
-
 		void showActivitiesPanel(boolean show);
+
+		void setTabs(String group);
 	}
 
 	@ProxyCodeSplit
@@ -64,7 +64,6 @@ public class HomePresenter extends
 	public interface MyProxy extends ProxyPlace<HomePresenter> {
 	}
 
-	public static final Object DATEGROUP_SLOT = new Object();
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot
@@ -73,58 +72,33 @@ public class HomePresenter extends
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> ACTIVITIES_SLOT = new Type<RevealContentHandler<?>>();
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> ADMIN_SLOT = new Type<RevealContentHandler<?>>();
 
 	@Inject
 	DispatchAsync dispatcher;
 	@Inject
 	PlaceManager placeManager;
-	
-	
+
 	private IndirectProvider<DashboardPresenter> dashboardFactory;
 	private IndirectProvider<TransactionsPresenter> transactionsFactory;
 	private IndirectProvider<UserPresenter> usersFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
-	//private IndirectProvider<ProgramsPresenter> activitiesFactory;
-	
-	/*
-	 * private IndirectProvider<CreateProgramPresenter> createDocProvider;
-	 * private IndirectProvider<GenericDocumentPresenter> docViewFactory;
-	 * 
-	 * IndirectProvider<DateGroupPresenter> dateGroupFactory; private
-	 * IndirectProvider<NewsFeedPresenter> newsFeedFactory; private
-	 * private IndirectProvider<ProfilePresenter> profileFactory;
-	 */
-
 
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy, Provider<DashboardPresenter> dashboardProvider, 
+			final MyProxy proxy,
+			Provider<DashboardPresenter> dashboardProvider,
 			Provider<TransactionsPresenter> transactionsProvider,
 			Provider<UserPresenter> userProvider,
-			Provider<TillsPresenter> tillProvider
-	) {
+			Provider<TillsPresenter> tillProvider) {
 		super(eventBus, view, proxy);
-		dashboardFactory = new StandardProvider<DashboardPresenter>(dashboardProvider);
-		transactionsFactory = new StandardProvider<TransactionsPresenter>(transactionsProvider);
+		dashboardFactory = new StandardProvider<DashboardPresenter>(
+				dashboardProvider);
+		transactionsFactory = new StandardProvider<TransactionsPresenter>(
+				transactionsProvider);
 		usersFactory = new StandardProvider<UserPresenter>(userProvider);
-		tillFactory =  new StandardProvider<TillsPresenter>(tillProvider);
-		/*
-		 * createDocProvider = new StandardProvider<CreateProgramPresenter>(
-		 * docProvider); docViewFactory = new
-		 * StandardProvider<GenericDocumentPresenter>( docViewProvider);
-		 * 
-		 * dateGroupFactory = new StandardProvider<DateGroupPresenter>(
-		 * dateGroupProvider); newsFeedFactory = new
-		 * StandardProvider<NewsFeedPresenter>( newsfeedProvider);
-		 * profileFactory = new
-		 * StandardProvider<ProfilePresenter>(profileProvider);
-		 * activitiesFactory = new StandardProvider<ProgramsPresenter>(
-		 * activitiesProvider);
-		 */
-	}
+		tillFactory = new StandardProvider<TillsPresenter>(tillProvider);
 
+	}
 
 	@Override
 	protected void revealInParent() {
@@ -136,18 +110,6 @@ public class HomePresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-		/*
-		 * addRegisteredHandler(AfterSaveEvent.TYPE, this);
-		 * addRegisteredHandler(DocumentSelectionEvent.TYPE, this);
-		 * addRegisteredHandler(ReloadEvent.TYPE, this);
-		 * addRegisteredHandler(AlertLoadEvent.TYPE, this);
-		 * addRegisteredHandler(ActivitiesSelectedEvent.TYPE, this);
-		 * addRegisteredHandler(ProcessingEvent.TYPE, this);
-		 * addRegisteredHandler(ProcessingCompletedEvent.TYPE, this);
-		 * addRegisteredHandler(SearchEvent.TYPE, this);
-		 * addRegisteredHandler(CreateProgramEvent.TYPE, this);
-		 * addRegisteredHandler(ContextLoadedEvent.TYPE, this);
-		 */
 	}
 
 	/**
@@ -160,7 +122,8 @@ public class HomePresenter extends
 
 		final String page = request.getParameter("page", "dashboard");
 
-		if (page != null && page.equals("dashboard")) {
+		if (page != null && page.equals("dashboard")
+				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Dashboard");
 			dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
 				@Override
@@ -170,7 +133,8 @@ public class HomePresenter extends
 				}
 			});
 
-		}else if (page!= null && page.equals("tills")) {
+		} else if (page != null && page.equals("tills")
+				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Tills");
 			tillFactory.get(new ServiceCallback<TillsPresenter>() {
 				@Override
@@ -178,21 +142,25 @@ public class HomePresenter extends
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
-			
+
 			getView().setSelectedTab("Tills");
-		
-		}else if (page != null && page.equals("transactions")) {
+
+		} else if (page != null && page.equals("transactions")
+				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Transactions");
-			transactionsFactory.get(new ServiceCallback<TransactionsPresenter>() {
-				@Override
-				public void processResult(TransactionsPresenter aResponse) {
-					setInSlot(ACTIVITIES_SLOT, aResponse);
-				}
-			});
-			
+			transactionsFactory
+					.get(new ServiceCallback<TransactionsPresenter>() {
+						@Override
+						public void processResult(
+								TransactionsPresenter aResponse) {
+							setInSlot(ACTIVITIES_SLOT, aResponse);
+						}
+					});
+
 			getView().setSelectedTab("Transactions");
-		
-		} else if (page != null && page.equals("users")) {
+
+		} else if (page != null && page.equals("users")
+				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Users");
 			usersFactory.get(new ServiceCallback<UserPresenter>() {
 				@Override
@@ -202,17 +170,37 @@ public class HomePresenter extends
 				}
 			});
 			getView().setSelectedTab("Users");
-		}else if (page != null && page.equals("settings")) {
+		} else if (page != null && page.equals("settings")
+				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Settings");
-			/*dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
-				@Override
-				public void processResult(DashboardPresenter aResponse) {
-					setInSlot(ACTIVITIES_SLOT, aResponse);
-				}
-			});
-			*/
+			/*
+			 * dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
+			 * 
+			 * @Override public void processResult(DashboardPresenter aResponse)
+			 * { setInSlot(ACTIVITIES_SLOT, aResponse); } });
+			 */
 			getView().setSelectedTab("Settings");
 		}
+	}
+
+	private boolean isCurrentUserAllowed(String page) {
+		if ((AppContext.getContextUser() != null)
+				&& (AppContext.getContextUser().getGroups() != null)) {
+			UserDTO user = AppContext.getContextUser();
+
+			if (AppContext.isCurrentUserAdmin()) {
+				return true;
+			} else if (((user.hasGroup("Merchant")) || (user
+					.hasGroup("SalesPerson")))
+					&& ((page.equals("dashboard")) || (page
+							.equals("transactions")))) {
+				System.err.println("User Has Been Allowed!");
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	private void clear() {
@@ -223,11 +211,34 @@ public class HomePresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
+
+		if (AppContext.getContextUser() == null
+				|| AppContext.getContextUser().getGroups() == null) {
+			dispatcher.execute(new GetContextRequest(),
+					new TaskServiceCallback<GetContextRequestResult>() {
+						@Override
+						public void processResult(GetContextRequestResult result) {
+							UserDTO user = result.getUser();
+							setNavigations(user);
+						}
+					});
+		} else {
+			setNavigations(AppContext.getContextUser());
+		}
 	}
-	
-	@Override
-	public void onContextLoaded(ContextLoadedEvent event) {
-		getView().showUserImg(event.getCurrentUser());
+
+	private void setNavigations(UserDTO user) {
+		if (!AppContext.isCurrentUserAdmin()) {
+			if (user.hasGroup("Merchant")) {
+				System.err.println("Navigations for Merchant");
+				getView().setTabs("Merchant");
+			} else if (user.hasGroup("SalesPerson")) {
+				System.err.println("Navigations for Sales Person");
+				getView().setTabs("SalesPerson");
+			}
+		} else {
+			getView().setTabs("Admin");
+		}
 	}
 
 }

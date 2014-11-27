@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class TillDTO implements Serializable,Listable, Comparable<TillDTO>{
+public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	
+
 	private String businessName;
 	private String tillNo;
 	private String phoneNo;
@@ -20,11 +20,11 @@ public class TillDTO implements Serializable,Listable, Comparable<TillDTO>{
 	private List<UserDTO> cashiers;
 	private Date lastModified;
 	private int isActive;
-	
+
 	public TillDTO() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -80,7 +80,7 @@ public class TillDTO implements Serializable,Listable, Comparable<TillDTO>{
 	public void setActive(int isActive) {
 		this.isActive = isActive;
 	}
-	
+
 	public Date getLastModified() {
 		return lastModified;
 	}
@@ -104,14 +104,19 @@ public class TillDTO implements Serializable,Listable, Comparable<TillDTO>{
 
 	@Override
 	public String getDisplayName() {
-		return businessName+" - "+tillNo;
+		return businessName + " - " + tillNo;
 	}
 
 	@Override
 	public int compareTo(TillDTO till) {
-		if(getLastModified()==null || till.getLastModified()==null)
+		if (getLastModified() == null || till.getLastModified() == null)
 			return 0;
 		return -getLastModified().compareTo(till.getLastModified());
 	}
-	
+
+	@Override
+	public String toString() {
+		return tillNo;
+	}
+
 }

@@ -1,7 +1,6 @@
 package com.workpoint.mwallet.client.ui.header;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -19,17 +18,20 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent;
-import com.workpoint.mwallet.client.ui.events.LogoutEvent;
 import com.workpoint.mwallet.client.ui.events.ContextLoadedEvent.ContextLoadedHandler;
+import com.workpoint.mwallet.client.ui.events.LogoutEvent;
 import com.workpoint.mwallet.client.ui.events.LogoutEvent.LogoutHandler;
 import com.workpoint.mwallet.client.util.AppContext;
+import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.LogoutAction;
+import com.workpoint.mwallet.shared.responses.LogoutActionResult;
 
 public class HeaderPresenter extends
 		PresenterWidget<HeaderPresenter.IHeaderView> implements
 		ContextLoadedHandler, LogoutHandler {
 
 	public interface IHeaderView extends View {
-		void setValues(String userNames, String userGroups, String orgName);
+		void setValues(String userNames, String userGroups);
 
 		Anchor getNotificationsButton();
 
@@ -48,7 +50,10 @@ public class HeaderPresenter extends
 		void showAdminLink(boolean admin);
 
 		void setVersionInfo(Date created, String date, String version);
+
 		// void setImage(HTUser currentUser);
+
+		void setImage(UserDTO currentUser);
 	}
 
 	@Inject
@@ -76,7 +81,7 @@ public class HeaderPresenter extends
 
 		@Override
 		public void run() {
-			//loadAlertCount();
+			// loadAlertCount();
 		}
 	};
 
@@ -98,7 +103,7 @@ public class HeaderPresenter extends
 					return;
 				}
 
-				//loadAlerts();
+				// loadAlerts();
 			}
 		});
 	}
@@ -116,27 +121,24 @@ public class HeaderPresenter extends
 	}
 
 	protected void logout() {
-		// dispatcher.execute(new LogoutAction(), new
-		// TaskServiceCallback<LogoutActionResult>() {
-		// @Override
-		// public void processResult(LogoutActionResult result) {
-		// AppContext.destroy();
-		// placeManager.revealErrorPlace("login");
-		// }
-		// });
+		// System.err.println("Logout Called");
+		dispatcher.execute(new LogoutAction(),
+				new TaskServiceCallback<LogoutActionResult>() {
+					@Override
+					public void processResult(LogoutActionResult result) {
+						AppContext.destroy();
+						placeManager.revealErrorPlace("login");
+						System.err.println("Executed Logout");
+					}
+				});
 	}
 
 	@Override
 	public void onContextLoaded(ContextLoadedEvent event) {
-		/*HTUser currentUser = event.getCurrentUser();
+		UserDTO currentUser = event.getCurrentUser();
 		getView().setImage(currentUser);
-		// getView().showAdminLink(currentUser.isAdmin());
-		getView().setValues(currentUser.getSurname(),
-				currentUser.getGroupsAsString(), event.getOrganizationName());
-
-		Version version = event.getVersion();
-		getView().setVersionInfo(version.getCreated(), version.getDate(),
-				version.getVersion());*/
+		getView().setValues(currentUser.getFirstName()+" "+currentUser.getLastName(),
+				currentUser.getGroupsAsString());
 	}
 
 	@Override

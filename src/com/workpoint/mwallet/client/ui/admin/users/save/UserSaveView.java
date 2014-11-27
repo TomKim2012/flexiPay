@@ -155,7 +155,7 @@ public class UserSaveView extends PopupViewImpl implements
 		if(!isNullOrEmpty(txtPassword.getValue())){
 			user.setPassword(txtPassword.getValue());
 		}
-		
+		user.setPhoneNo(txtPhone.getValue());
 		user.setLastName(txtLastname.getValue());
 		user.setUserId(txtUserName.getValue());
 		user.setGroups(lstGroups.getSelectedItems());
@@ -169,6 +169,7 @@ public class UserSaveView extends PopupViewImpl implements
 		txtLastname.setValue(user.getLastName());
 		txtUserName.setValue(user.getUserId());
 		txtPassword.setValue(user.getPassword());
+		txtPhone.setValue(user.getPhoneNo());
 		txtConfirmPassword.setValue(user.getPassword());
 		txtUserName.setDisabled(true);
 		lstGroups.select(user.getGroups());

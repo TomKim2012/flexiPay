@@ -51,6 +51,8 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 		HasClickHandlers getUserTabLink();
 
 		HasClickHandlers getGroupTabLink();
+
+		void setMiddleHeight();
 	}
 
 	public static final Object ITEMSLOT = new Object();
@@ -90,7 +92,13 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 		});
 
 	}
-
+	
+	@Override
+	protected void onReset() {
+		getView().setMiddleHeight();
+		super.onReset();
+	}
+	
 	@Override
 	protected void onBind() {
 		super.onBind();

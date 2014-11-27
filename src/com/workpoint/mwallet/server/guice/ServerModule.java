@@ -1,6 +1,8 @@
 package com.workpoint.mwallet.server.guice;
 
 import com.gwtplatform.dispatch.server.guice.HandlerModule;
+import com.gwtplatform.dispatch.shared.SecurityCookie;
+import com.workpoint.mwallet.server.ServerConstants;
 import com.workpoint.mwallet.server.actionhandlers.GetContextRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetGroupsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetTillsRequestActionHandler;
@@ -8,6 +10,8 @@ import com.workpoint.mwallet.server.actionhandlers.GetTransactionsRequestActionH
 import com.workpoint.mwallet.server.actionhandlers.GetUserRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetUsersRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.ImportClientRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.LoginRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.LogoutActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveGroupRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveTillRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveUserRequestActionHandler;
@@ -19,6 +23,8 @@ import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.requests.GetUserRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
 import com.workpoint.mwallet.shared.requests.ImportClientRequest;
+import com.workpoint.mwallet.shared.requests.LoginRequest;
+import com.workpoint.mwallet.shared.requests.LogoutAction;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.requests.SaveUserRequest;
@@ -27,6 +33,9 @@ public class ServerModule extends HandlerModule {
 
 	@Override
 	protected void configureHandlers() {
+
+		bindConstant().annotatedWith(SecurityCookie.class).to(
+				ServerConstants.AUTHENTICATIONCOOKIE);
 
 		bindHandler(SaveUserRequest.class, SaveUserRequestActionHandler.class,
 				SessionValidator.class);
@@ -49,5 +58,10 @@ public class ServerModule extends HandlerModule {
 				ImportClientRequestActionHandler.class, SessionValidator.class);
 		bindHandler(GetContextRequest.class,
 				GetContextRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(LoginRequest.class, LoginRequestActionHandler.class);
+
+		bindHandler(LogoutAction.class, LogoutActionHandler.class,
+				SessionValidator.class);
 	}
 }

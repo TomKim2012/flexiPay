@@ -8,10 +8,17 @@
 
 	<g:HTMLPanel styleName="login-bg">
 		<g:HTMLPanel styleName="row-fluid login-wrapper">
-			<a href="#" class="brand">
-				<!-- <g:Image ui:field="imgLogo" url="img/logo.png"></g:Image> -->
-				<a class="brand" href="#">M-Wallet</a>
-			</a>
+			<div class="navbar navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="container">
+						<a class="brand" href="index.html">
+							<g:Image ui:field="imgLogo" url="img/Pioneer_Logo.png"></g:Image>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<p class="hide">M-Wallet</p>
 			<g:HTMLPanel styleName="span4 box" ui:field="loadingbox">
 				<div class="content-wrap">
 					<h6>Log in</h6>

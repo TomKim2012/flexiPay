@@ -21,34 +21,26 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
 import com.workpoint.mwallet.client.place.NameTokens;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.util.AppContext;
+import com.workpoint.mwallet.shared.requests.LoginRequest;
+import com.workpoint.mwallet.shared.responses.LoginRequestResult;
 
 public class LoginPresenter extends
 		Presenter<LoginPresenter.ILoginView, LoginPresenter.MyProxy> {
 
-	public interface ILoginView extends View {
+	public interface ILoginView  extends View {
 		String getUsername();
-
 		String getPassword();
-
 		Anchor getLoginBtn();
-
 		TextBox getPasswordBox();
-
 		boolean isValid();
-
 		void setError(String err);
-
 		void showLoginProgress();
-
 		void clearLoginProgress();
-
 		void clearViewItems(boolean status);
-
 		TextBox getUserNameBox();
-
 		void clearErrors();
-
 		void setOrgName(String orgName);
 	}
 
@@ -59,15 +51,13 @@ public class LoginPresenter extends
 
 	@Inject
 	DispatchAsync requestHelper;
+	
+	@Inject PlaceManager placeManager;
 
-	@Inject
-	PlaceManager placeManager;
-
-	@Inject
-	LoginGateKeeper gateKeeper;
-
-	String redirect = null;
-
+	@Inject LoginGateKeeper gateKeeper;
+		
+	String redirect=null;
+	
 	@Inject
 	public LoginPresenter(final EventBus eventBus, final ILoginView view,
 			final MyProxy proxy) {
@@ -83,13 +73,14 @@ public class LoginPresenter extends
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
 		redirect = request.getParameter("redirect", null);
-
-		if (AppContext.isValid()) {
-			History.newItem(NameTokens.login);
-			placeManager.revealDefaultPlace();
+		
+		if(AppContext.isValid()){
+			
+				placeManager.revealDefaultPlace();
+			
+			return;
 		}
 	}
-
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -109,18 +100,86 @@ public class LoginPresenter extends
 				}
 			}
 		};
-
+		
 		getView().getUserNameBox().addKeyDownHandler(keyHandler);
 		getView().getPasswordBox().addKeyDownHandler(keyHandler);
 	}
 
 	protected void onReset() {
-		Window.setTitle("mWallet - Merchant Wallet");
+		Window.setTitle("mwallet");	
 		getView().clearViewItems(true);
 	};
+	
+//	private void loadName() {		
+//		//not secured -- probably a bad idea
+//		requestHelper.execute(new GetSettingsRequest(Arrays.asList(SETTINGNAME.ORGNAME)), 
+//				new TaskServiceCallback<GetSettingsResponse>() {
+//			@Override
+//			public void processResult(GetSettingsResponse aResponse) {
+//				List<Setting> settings = aResponse.getSettings();
+//				if(settings!=null && !settings.isEmpty()){
+//					Setting setting = settings.get(0);
+//					Value value = setting.getValue();
+//					if(value.getValue()!=null){
+//						String orgName = value.getValue().toString();
+//						getView().setOrgName(orgName);
+//					}
+//				}
+//			}
+//		});
+//	}
 
-
-	protected void login() {
-		History.newItem(NameTokens.home);
+	protected void login() {		
+		if (getView().isValid()) {
+			getView().clearErrors();
+			getView().showLoginProgress();
+			requestHelper.execute(new LoginRequest(getView().getUsername(),
+					getView().getPassword()),
+					new TaskServiceCallback<LoginRequestResult>() {
+						@Override
+						public void processResult(LoginRequestResult result) {
+							boolean isValid = result.isValid();
+							if(isValid){
+								AppContext.setSessionValues(result.getUser(), result.getSessionId());
+									//placeManager.revealDefaultPlace();
+									
+								
+									if(redirect!=null){
+										History.newItem(redirect);
+//										boolean isAdmin = result.getUser().isAdmin();
+//										if(isAdmin && redirect.equals("home")){
+//											History.newItem(NameTokens.adminhome);
+//										}else{
+//											History.newItem(redirect);
+//										}
+										
+									}else{
+										placeManager.revealDefaultPlace();
+										//System.err.println("No Redirect");
+//										if(result.getUser().isAdmin()){
+//											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
+//										}else{
+//											placeManager.revealDefaultPlace();
+//										}
+										
+									}
+									AppContext.reloadContext();
+//									fireEvent(new LoadAlertsEvent());
+									
+							}else{
+								getView().clearLoginProgress();
+								getView().getPasswordBox().setText("");
+								getView().setError("Wrong username or password");
+							}
+						}
+						
+						@Override
+						public void onFailure(Throwable caught) {
+							getView().clearLoginProgress();
+							super.onFailure(caught);
+							getView().setError("Could authenticate user. Please report this to your administrator");
+						}
+					});
+		}
 	}
 }

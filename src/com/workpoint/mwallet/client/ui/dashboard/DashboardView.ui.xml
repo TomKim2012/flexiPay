@@ -7,15 +7,21 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="home-reports content-body overflow-y">
-		<div class="content-header">
+		<div class="content-header hide">
 			<h3>
 				<span class="icon-dashboard"></span>
 				&nbsp;
 				<span>Dashboard</span>
 			</h3>
 		</div>
-
-		<div class="row-fluid top-section section">
+		<div class="row-fluid">
+			<div class="alert alert-block alert-success">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				Dashboard is under Construction and will be launched soon..
+			</div>
+		</div>
+		
+		<div class="row-fluid top-section section hide">
 			<div class="span4">
 				<a class="dashboard-stat tertiary">
 					<div class="visual">
@@ -44,7 +50,7 @@
 					<div class="details">
 						<span class="content-block">Total Transactions</span>
 						<span class="value" ui:field="spnActual">
-						24
+							24
 						</span>
 					</div> <!-- /.details -->
 
@@ -63,7 +69,7 @@
 					<div class="details">
 						<span class="content-block">Merchants</span>
 						<span class="value" ui:field="spnRemaining">
-						15
+							15
 						</span>
 					</div> <!-- /.details -->
 
@@ -74,7 +80,7 @@
 			</div> <!-- /.col-md-3 -->
 		</div>
 
-		<div class="row-fluid middle-section section">
+		<div class="row-fluid middle-section section hide">
 			<div class="span6">
 				<div class="portlet">
 					<div class="portlet-header">

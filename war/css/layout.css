@@ -46,6 +46,7 @@
 
 .main-container .content-right .users-panel{
 	padding-left:10px;
+	height: 100%;
 }
 
 /*Uploader Modal */
@@ -185,11 +186,17 @@ body .dateBoxPopup{
 .navbar .brand {
 	color: #1B1464;
 	text-shadow: 1px 1px #1B1464;
-	margin-left: 0px;
-	font-size: 25px;
-	padding-top: 19px;
+	padding: 0px;
+	/* padding-bottom: 10px; */
 }
 
+.top-header .navbar .brand{
+	color: #1B1464;
+	text-shadow: 1px 1px #1B1464;
+	padding:10px;
+	font-size:25px;
+	margin-left: 0px;
+}
 .navbar .brand img {
 	width: 163px;
 }
@@ -198,12 +205,15 @@ body .dateBoxPopup{
 .login-wrapper .brand {
 	width: 260px;
 	height: 86px;
-	display: inline-block;
-	box-shadow: 3px 4px 7px 3px #383838;
+	/* display: inline-block; */
+	/* box-shadow: 3px 4px 7px 3px #383838; */
+	float: none;
+	text-align: center;
+	margin: 0px auto;
 }
 .login-wrapper .brand img {
-	width: 260px;
-	height: 86px;
+	width: 180px;
+	height: 80px;
 }
 
 

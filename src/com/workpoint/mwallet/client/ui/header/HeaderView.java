@@ -20,6 +20,8 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.UserWidget;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
+import com.workpoint.mwallet.client.util.AppContext;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView {
 
@@ -32,8 +34,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	Anchor aHome;
 	@UiField
 	Anchor aNavbarToggle;
-	// @UiField
-	// SpanElement spnCompanyName;
 	@UiField
 	Image imgSmall;
 	@UiField
@@ -59,7 +59,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	boolean isSelected = false;
 
-	private Boolean isToggleClicked = true;
+	//private Boolean isToggleClicked = true;
 
 	@Inject
 	public HeaderView(final Binder binder) {
@@ -81,18 +81,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	}
 
 	private void setAnchorHandlers() {
-		aNavbarToggle.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				/*
-				 * AppContext.fireEvent(new NavbarToggleEvent(isToggleClicked));
-				 * 
-				 * if (isToggleClicked) { isToggleClicked = false; } else {
-				 * isToggleClicked = true; }
-				 */
-			}
-		});
-
 		aHome.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -134,16 +122,13 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		super.setInSlot(slot, content);
 	}
 
-	public void setValues(String user_names, String userGroups, String orgName) {
-		setValues(user_names, userGroups); // Values to user Widget
+	public void setValues(String user_names, String userGroups) {
 		if (user_names != null) {
 			spnUser.setInnerText(user_names);
 		} else {
 			spnUser.setInnerText("");
 		}
-	}
-
-	public void setValues(String user_names, String userGroups) {
+		
 		divUserContainer.setValues(user_names, userGroups);
 	}
 
@@ -212,9 +197,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		divUserContainer.setVersion(versionDate, version);
 	}
 
-	/*
-	 * public void setImage(HTUser user) {
-	 * imgSmall.setUrl(AppContext.getUserImageUrl(user, 48.0, 48.0));
-	 * divUserContainer.setImage(user); }
-	 */
+	@Override
+	public void setImage(UserDTO currentUser) {
+		imgSmall.setUrl(AppContext.getUserImageUrl(currentUser, 48.0, 48.0));
+		divUserContainer.setImage(currentUser);
+	}
 }

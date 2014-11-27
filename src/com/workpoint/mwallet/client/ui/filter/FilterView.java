@@ -18,7 +18,7 @@ import com.workpoint.mwallet.client.ui.component.DateRangeWidget;
 import com.workpoint.mwallet.client.ui.component.DropDownList;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.tills.save.TillUserDetails.GroupType;
-import com.workpoint.mwallet.client.ui.util.DateRanges;
+import com.workpoint.mwallet.client.ui.util.DateRange;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
@@ -37,16 +37,16 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	@UiField
 	DropDownList<TillDTO> lstTills;
-	
+
 	@UiField
 	DropDownList<UserDTO> lstSalesPerson;
 	@UiField
-	DropDownList<UserDTO>lstMerchant;
+	DropDownList<UserDTO> lstMerchant;
 	@UiField
 	DropDownList<UserDTO> lstCashiers;
 
 	@UiField
-	DropDownList<DateRanges> lstDates;
+	DropDownList<DateRange> lstDates;
 
 	@UiField
 	HTMLPanel divTill;
@@ -107,14 +107,20 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		}
 		return filter;
 	}
-	
-	
+
 	@Override
 	public void setUsers(List<UserDTO> users) {
 		breakUsers(users);
+		clear();
 		lstCashiers.setItems(cashiers);
 		lstMerchant.setItems(owners);
 		lstSalesPerson.setItems(salesPerson);
+	}
+
+	private void clear() {
+		cashiers.clear();
+		owners.clear();
+		salesPerson.clear();
 	}
 
 	@Override
@@ -133,11 +139,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	public void show(HTMLPanel panel, Boolean status) {
-			if(status){
-				panel.removeStyleName("hide");
-			}else{
-				panel.addStyleName("hide");
-			}
+		if (status) {
+			panel.removeStyleName("hide");
+		} else {
+			panel.addStyleName("hide");
+		}
 	}
 
 	@Override
@@ -159,7 +165,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 		case Transaction:
 			show(divTill, true);
-			show(divDateRange, true);
+			show(divDateRange, false);
 			show(divDateRangeWidget, true);
 			break;
 
@@ -167,11 +173,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 			break;
 		}
 	}
-	
+
 	List<UserDTO> owners = new ArrayList<UserDTO>();
 	List<UserDTO> cashiers = new ArrayList<UserDTO>();
 	List<UserDTO> salesPerson = new ArrayList<UserDTO>();
-	
+
 	private void breakUsers(List<UserDTO> allUsers) {
 		for (UserDTO user : allUsers) {
 			sortByGroup(user.getGroups(), user);
@@ -197,5 +203,5 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 		}
 	}
-	
+
 }

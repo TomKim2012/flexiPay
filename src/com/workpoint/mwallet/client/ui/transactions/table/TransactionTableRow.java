@@ -45,8 +45,6 @@ public class TransactionTableRow extends RowWidget {
 	
 	public TransactionTableRow(TransactionDTO transaction){
 		this();
-		//System.err.println(transaction.getAmount());
-
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
 		divAmount.getElement().setInnerHTML(NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));

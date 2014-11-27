@@ -3,6 +3,7 @@ package com.workpoint.mwallet.client.ui.admin.users;
 import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.GROUPSLOT;
 import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.ITEMSLOT;
 
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -21,10 +22,19 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	private final Widget widget;
 	@UiField
 	Anchor aNewUser;
+	
 	@UiField
 	Anchor aNewGroup;
 	@UiField
 	Anchor aUserstab;
+	
+	@UiField
+	HTMLPanel divContentTop;
+	
+	@UiField
+	HTMLPanel divContentTable;
+	@UiField
+	HTMLPanel divMainContainer;
 	@UiField
 	Anchor aGroupstab;
 	@UiField
@@ -58,8 +68,8 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		aUserstab.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				//History.newItem("home;page=users");
-				 setType(TYPE.USER);
+				// History.newItem("home;page=users");
+				setType(TYPE.USER);
 
 			}
 		});
@@ -68,7 +78,7 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			@Override
 			public void onClick(ClickEvent event) {
 				// History.newItem("home;page=groups");
-				 setType(TYPE.GROUP);
+				setType(TYPE.GROUP);
 			}
 		});
 	}
@@ -128,15 +138,14 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	public HasClickHandlers getaNewGroup() {
 		return aNewGroup;
 	}
-	
+
 	public HasClickHandlers getGroupTabLink() {
 		return aGroupstab;
 	}
-	
+
 	public HasClickHandlers getUserTabLink() {
 		return aUserstab;
 	}
-	
 
 	@Override
 	public void setType(TYPE type) {
@@ -162,6 +171,16 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 
 			divGroupContent.removeClassName("in");
 			divGroupContent.removeClassName("active");
+		}
+	}
+	
+	public void setMiddleHeight() {
+		int totalHeight = divMainContainer.getElement().getOffsetHeight();
+		int topHeight = divContentTop.getElement().getOffsetHeight();
+		int middleHeight = totalHeight - topHeight -100;
+
+		if (middleHeight > 0) {
+			divContentTable.setHeight(middleHeight + "px");
 		}
 	}
 

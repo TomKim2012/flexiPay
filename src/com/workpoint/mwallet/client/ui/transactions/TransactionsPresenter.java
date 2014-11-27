@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -20,26 +21,30 @@ import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
+import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent.HideFilterBoxHandler;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
-import com.workpoint.mwallet.client.ui.util.DateRanges;
+import com.workpoint.mwallet.client.ui.util.DateRange;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
+import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
+import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
 
 public class TransactionsPresenter extends
 		PresenterWidget<TransactionsPresenter.ITransactionView> implements
-		SearchHandler
-// implements ActivitySelectionChangedHandler, ProgramsReloadHandler,
-// ResizeHandler
-{
+		SearchHandler, HideFilterBoxHandler {
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
@@ -64,6 +69,10 @@ public class TransactionsPresenter extends
 		SearchFilter getFilter();
 
 		HasKeyDownHandlers getSearchBox();
+
+		void setHeader(String date);
+
+		void showFilterView();
 	}
 
 	@Inject
@@ -72,8 +81,7 @@ public class TransactionsPresenter extends
 	@Inject
 	PlaceManager placeManager;
 
-	Long programId;
-	String programCode;
+	private SearchFilter filter = new SearchFilter();
 
 	@Inject
 	public TransactionsPresenter(final EventBus eventBus,
@@ -87,19 +95,62 @@ public class TransactionsPresenter extends
 		filterPresenter.setFilter(SearchType.Transaction);
 		setInSlot(FILTER_SLOT, filterPresenter);
 		getView().setMiddleHeight();
-		loadData(DateRanges.LASTWEEK);
+
+		if (AppContext.getContextUser() != null
+				|| AppContext.getContextUser().getGroups() != null) {
+			UserDTO user = AppContext.getContextUser();
+
+			if (AppContext.isCurrentUserAdmin()) {
+				loadData("This Month");
+			} else if (user.hasGroup("Merchant")
+					|| (user.hasGroup("SalesPerson"))) {
+				getTills(user);
+			}
+
+		} else {
+			Window.alert("User details not found.");
+		}
+
+	}
+
+	private List<TillDTO> tills;
+
+	private void getTills(UserDTO user) {
+		SearchFilter tillFilter = new SearchFilter();
+		if (user.hasGroup("Merchant")) {
+			tillFilter.setOwner(user);
+		} else {
+			tillFilter.setSalesPerson(user);
+		}
+		requestHelper.execute(new GetTillsRequest(tillFilter),
+				new TaskServiceCallback<GetTillsRequestResult>() {
+					@Override
+					public void processResult(GetTillsRequestResult aResponse) {
+						tills = aResponse.getTills();
+						System.err.println("Tills size::" + tills.size());
+						if (tills != null) {
+							filter.setTills(tills);
+						}
+						loadData("This Month");
+					}
+				});
 	}
 
 	List<TransactionDTO> trxs = new ArrayList<TransactionDTO>();
+	private String setDateRange;
 
-	private DateRanges setDateRange;
+	private void loadData(String passedDate) {
+		this.setDateRange = passedDate;
 
-	private void loadData(DateRanges date) {
-		this.setDateRange = date;
+		setLoggedInUserTills();
+
+		getView().setHeader(passedDate);
+
 		fireEvent(new ProcessingEvent());
-		SearchFilter filter = new SearchFilter();
-		filter.setStartDate(DateUtils.getDateByRange(date));
-		filter.setEndDate(DateUtils.getDateByRange(DateRanges.TODAY));
+
+		filter.setStartDate(DateUtils.getDateByRange(DateRange
+				.getDateRange(passedDate)));
+		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
 
 		requestHelper.execute(new GetTransactionsRequest(filter),
 				new TaskServiceCallback<GetTransactionsRequestResult>() {
@@ -130,8 +181,10 @@ public class TransactionsPresenter extends
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+				filter = getView().getFilter();
+				setLoggedInUserTills();
 				GetTransactionsRequest request = new GetTransactionsRequest(
-						getView().getFilter());
+						filter);
 				performSearch(request);
 			}
 		}
@@ -140,8 +193,8 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-
 		addRegisteredHandler(SearchEvent.TYPE, this);
+		addRegisteredHandler(HideFilterBoxEvent.TYPE, this);
 
 		getView().getRefreshLink().addClickHandler(new ClickHandler() {
 			@Override
@@ -167,9 +220,17 @@ public class TransactionsPresenter extends
 	@Override
 	public void onSearch(SearchEvent event) {
 		if (event.getSearchType() == SearchType.Transaction) {
-			GetTransactionsRequest request = new GetTransactionsRequest(
-					event.getFilter());
+			filter = event.getFilter();
+			setLoggedInUserTills();
+			System.err.println("Tills" + filter.getTills().size());
+			GetTransactionsRequest request = new GetTransactionsRequest(filter);
 			performSearch(request);
+		}
+	}
+
+	private void setLoggedInUserTills() {
+		if (tills != null) {
+			filter.setTills(tills);
 		}
 	}
 
@@ -185,5 +246,10 @@ public class TransactionsPresenter extends
 						fireEvent(new ProcessingCompletedEvent());
 					};
 				});
+	}
+
+	@Override
+	public void onHideFilterBox(HideFilterBoxEvent event) {
+		getView().showFilterView();
 	}
 }

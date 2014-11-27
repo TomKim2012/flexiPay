@@ -197,7 +197,4 @@ public class TillsView extends ViewImpl implements
 		return txtSearchBox;
 	}
 
-	
-
-
 }

@@ -7,7 +7,7 @@
 
 	<g:HTMLPanel styleName="row-fluid main-container no-overflow-x">
 		<g:HTMLPanel ui:field="mainContainer" styleName="full-page">
-			
+
 			<div class="span2 sidebar-nav hidden-phone" id="sidebar-nav">
 				<ul class="nav nav-tabs nav-stacked" id="dashboard-menu">
 					<li class="side-user hide">
@@ -44,15 +44,15 @@
 							Transactions
 						</a>
 					</li>
-					
+
 					<li ui:field="liUsers">
 						<a href='#home;page=users'>
 							<i class="icon-group"></i>
 							Users
 						</a>
 					</li>
-					
-					<li ui:field="liSettings">
+
+					<li ui:field="liSettings" class="hide">
 						<a href='#home;page=settings'>
 							<i class="icon-cogs"></i>
 							Settings
@@ -77,7 +77,8 @@
 
 					<div ui:field="divDocListing">
 						<div class="content-nav row-fluid">
-							<d:BulletListPanel ui:field="ulTaskGroups" cssId="navigation-menu">
+							<d:BulletListPanel ui:field="ulTaskGroups"
+								cssId="navigation-menu">
 							</d:BulletListPanel>
 							<g:InlineLabel ui:field="spnNoItems"></g:InlineLabel>
 						</div>
@@ -85,7 +86,8 @@
 				</div>
 
 				<!--Detailed Info(Generic document View) -->
-				<d:MyHTMLPanel ui:field="docContainer" styleName="full-page span10" cssId="detailed-info">
+				<d:MyHTMLPanel ui:field="docContainer" styleName="full-page span10"
+					cssId="detailed-info">
 				</d:MyHTMLPanel>
 			</g:HTMLPanel>
 

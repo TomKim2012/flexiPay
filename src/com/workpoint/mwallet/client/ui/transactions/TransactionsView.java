@@ -100,13 +100,7 @@ public class TransactionsView extends ViewImpl implements
 		iFilterdropdown.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if (isNotDisplayed) {
-					divFilterBox.removeStyleName("hide");
-					isNotDisplayed = false;
-				} else {
-					divFilterBox.addStyleName("hide");
-					isNotDisplayed = true;
-				}
+				showFilterView();
 			}
 		});
 	}
@@ -123,7 +117,18 @@ public class TransactionsView extends ViewImpl implements
 	public Widget asWidget() {
 		return widget;
 	}
+	
+	public void showFilterView() {
+		if (isNotDisplayed) {
+			divFilterBox.removeStyleName("hide");
+			isNotDisplayed = false;
+		} else {
+			divFilterBox.addStyleName("hide");
+			isNotDisplayed = true;
+		}
+	}
 
+	
 	@Override
 	public void presentData(TransactionDTO transaction) {
 		tblView.createRow(new TransactionTableRow(transaction));
@@ -174,5 +179,10 @@ public class TransactionsView extends ViewImpl implements
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public void setHeader(String setDate) {
+		headerContainer.setDateString(setDate);
 	}
 }

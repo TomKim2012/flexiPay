@@ -488,6 +488,16 @@ body .GWTUpld .gwt-FileUpload{
 
 
 /* Home Reports Styles */
+
+body .home-reports .alert{
+	max-width:none;
+	width:initial;
+	position:relative;
+	margin-left:0px;
+	left:0px;
+	top:30px;
+	
+}
 .content-right .home-reports{
 	height:inherit;
 	padding:0px 20px;

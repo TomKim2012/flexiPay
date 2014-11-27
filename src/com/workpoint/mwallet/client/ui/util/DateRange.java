@@ -2,22 +2,18 @@ package com.workpoint.mwallet.client.ui.util;
 
 import com.workpoint.mwallet.shared.model.Listable;
 
-public enum DateRanges implements Listable{
+public enum DateRange implements Listable{
+	NOW("Now"),
 	TODAY("Today"),
-	THISWEEK("This Week"),
-	THISMONTH("This Month"),
-	THISQUARTER("This Quarter"),
-	THISYEAR("This Year"),
 	YESTERDAY("Yesterday"),
-	LASTWEEK("Last Week"),
-	LASTMONTH("Last One Month"),
-	LASTQUARTER("Last Quarter"),
-	LASTYEAR("Last Year");
-
+	THISWEEK("Last 7 Days"),
+	THISMONTH("This Month"),
+	THISQUARTER("Last 3 Months"),
+	THISYEAR("This Year");
 	
 	private String displayName;
 
-	DateRanges(String displayName){
+	DateRange(String displayName){
 		this.displayName = displayName;
 	}
 	
@@ -26,8 +22,8 @@ public enum DateRanges implements Listable{
 		return displayName;
 	}
 	
-	public static DateRanges getDateRange(String name){
-		for(DateRanges type: DateRanges.values()){
+	public static DateRange getDateRange(String name){
+		for(DateRange type: DateRange.values()){
 			if(type.displayName.equals(name)){
 				return type;
 			}

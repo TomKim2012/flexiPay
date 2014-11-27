@@ -73,8 +73,7 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 	}
 
 	public boolean isAdmin() {
-
-		return hasGroup("admin");
+		return hasGroup("Administrator");
 	}
 	
 	@Override

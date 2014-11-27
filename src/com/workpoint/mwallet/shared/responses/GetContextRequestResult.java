@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
+import com.workpoint.mwallet.shared.model.Version;
 
 
 public class GetContextRequestResult extends BaseResponse {
@@ -11,7 +12,7 @@ public class GetContextRequestResult extends BaseResponse {
 	private Boolean isValid;
 	private UserDTO user;
 	private List<UserGroup> groups;
-//	private Version version;
+	private Version version;
 	private String organizationName;
 
 	public GetContextRequestResult() {
@@ -48,6 +49,14 @@ public class GetContextRequestResult extends BaseResponse {
 
 	public void setOrganizationName(String organizationName) {
 		this.organizationName = organizationName;
+	}
+
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 
 }

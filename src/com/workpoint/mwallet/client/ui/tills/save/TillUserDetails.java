@@ -46,13 +46,14 @@ public class TillUserDetails extends Composite {
 		this.tillSelected = tillSelected;
 		if (tillSelected != null) {
 			if (tillSelected.getOwner() != null) {
-				aOwners.addItems(Arrays.asList(tillSelected.getOwner()));
+				owners.add(tillSelected.getOwner());
 				aOwners.select(Arrays.asList(tillSelected.getOwner()));
 			}
 			if (tillSelected.getCashiers() != null) {
 				aCashiers.select(tillSelected.getCashiers());
 			}
 			if (tillSelected.getSalesPerson() != null) {
+				cashiers.add(tillSelected.getSalesPerson());
 				aSalesPersons.select(Arrays.asList(tillSelected
 						.getSalesPerson()));
 			}
@@ -166,10 +167,6 @@ public class TillUserDetails extends Composite {
 		public String getGroupCode() {
 			return groupCode;
 		}
-
-	}
-
-	public static void main(String args[]) {
 
 	}
 

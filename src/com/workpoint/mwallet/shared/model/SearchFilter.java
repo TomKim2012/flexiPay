@@ -1,16 +1,16 @@
 package com.workpoint.mwallet.shared.model;
 
 import java.io.Serializable;
-import java.lang.String;
 import java.util.Date;
-import java.lang.Integer;
-import java.lang.Boolean;
+import java.util.List;
 
 public class SearchFilter implements Serializable {
 
 	private static final long serialVersionUID = -8494519116994121416L;
+	
 	private String phrase;
 	private TillDTO till;
+	private List<TillDTO> tills;
 	private UserDTO owner;
 	private UserDTO salesPerson;
 	private UserDTO cashier;
@@ -32,7 +32,6 @@ public class SearchFilter implements Serializable {
 		this.endDate = endDate;
 	}
 
-
 	public String getPhrase() {
 		return phrase;
 	}
@@ -52,16 +51,16 @@ public class SearchFilter implements Serializable {
 	public void setTill(TillDTO till) {
 		this.till = till;
 	}
-	
-	public boolean isEmpty(){
-		if(phrase!=null)
+
+	public boolean isEmpty() {
+		if (phrase != null)
 			return false;
-		if(startDate!=null)
+		if (startDate != null)
 			return false;
-		if(endDate!=null)
+		if (endDate != null)
 			return false;
-		return  true;
-		
+		return true;
+
 	}
 
 	public UserDTO getOwner() {
@@ -87,5 +86,14 @@ public class SearchFilter implements Serializable {
 	public void setCashier(UserDTO cashier) {
 		this.cashier = cashier;
 	}
+
+	public List<TillDTO> getTills() {
+		return tills;
+	}
+
+	public void setTills(List<TillDTO> tills) {
+		this.tills = tills;
+	}
+	
 
 }

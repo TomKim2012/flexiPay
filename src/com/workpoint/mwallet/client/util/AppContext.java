@@ -41,7 +41,7 @@ public class AppContext {
 	static Timer timer = new Timer() {
 		@Override
 		public void run() {
-			// reloadContext();
+			reloadContext();
 		}
 	};
 
@@ -68,26 +68,23 @@ public class AppContext {
 	}
 
 	public static boolean isValid() {
-//		System.err.println("Session Cookie Asked:: "
-//				+ CookieManager.getAuthCookie());
-//
-//		boolean valid = false;
-//		valid = CookieManager.getAuthCookie() != null;
-//
-//		if (valid) {
-//			checkNeedReloadState();
-//		} else {
-//			// store targetUrl
-//			PlaceRequest req = placeManager.getCurrentPlaceRequest();
-//
-//			if (req != null && !req.matchesNameToken(NameTokens.login)) {
-//				String token = placeManager.buildHistoryToken(req);
-//				Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
-//			}
-//		}
-//		return valid;
-		
-		return true;
+
+		boolean valid = false;
+		valid = CookieManager.getAuthCookie() != null;
+
+		if (valid) {
+			checkNeedReloadState();
+		} else {
+			// store targetUrl
+			PlaceRequest req = placeManager.getCurrentPlaceRequest();
+
+			if (req != null && !req.matchesNameToken(NameTokens.login)) {
+				String token = placeManager.buildHistoryToken(req);
+				Cookies.setCookie(Definitions.PENDINGREQUESTURL, token);
+			}
+		}
+		return valid;
+
 	}
 
 	private static void checkNeedReloadState() {
@@ -101,9 +98,9 @@ public class AppContext {
 				new TaskServiceCallback<GetContextRequestResult>() {
 					@Override
 					public void processResult(GetContextRequestResult result) {
-						// organizationName = result.getOrganizationName();
+						organizationName = result.getOrganizationName();
 						setUserValues(result.getUser());
-						// version = result.getVersion();
+						version = result.getVersion();
 
 						ContextLoadedEvent event = new ContextLoadedEvent(
 								result.getUser(), version);
