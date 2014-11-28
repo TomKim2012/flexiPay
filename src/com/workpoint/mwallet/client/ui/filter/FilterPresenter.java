@@ -73,7 +73,11 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		super.onReveal();
 		loadTills();
 	}
-
+	
+	public void setTills(List<TillDTO> tills){
+		getView().setTills(tills);
+	}
+	
 	private void loadTills() {
 		GetTillsRequest requests = new GetTillsRequest();
 
@@ -89,6 +93,8 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 	public void setFilter(SearchType searchType) {
 		setFilter(searchType,null);
 	}
+	
+	
 	
 	public void setFilter(SearchType searchType, List<UserDTO> users) {
 		this.searchType = searchType;

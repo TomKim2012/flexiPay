@@ -33,6 +33,7 @@ public class SessionValidator implements ActionValidator {
 		HttpSession session = request.get().getSession(false);
 		
 		if(session==null){
+			//clear cookies
 			throw new InvalidSessionException("No valid session found[1]");
 		}
 		

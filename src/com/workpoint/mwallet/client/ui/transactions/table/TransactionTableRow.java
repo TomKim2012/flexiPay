@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.RowWidget;
@@ -36,37 +37,56 @@ public class TransactionTableRow extends RowWidget {
 	@UiField
 	HTMLPanel divTills;
 	@UiField
+	HTMLPanel divStatus;
+	@UiField
 	SpanElement spnStatus;
-
 
 	public TransactionTableRow() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
-	public TransactionTableRow(TransactionDTO transaction){
-		this();
-		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
-		divPhone.getElement().setInnerHTML(transaction.getPhone());
-		divAmount.getElement().setInnerHTML(NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
-		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
-		divDate.getElement().setInnerHTML(DateUtils.TIMESTAMPFORMAT.format(transaction.getTrxDate()));
-		divTills.getElement().setInnerHTML(transaction.getTillNumber());
-		setStatus(transaction.getStatus());
+
+	public TransactionTableRow(TransactionDTO transaction) {
+		this(transaction, false);
 	}
 
-	private void setStatus(boolean status) {
-		if(status){
-			spnStatus.setClassName("label label-success");
+	public TransactionTableRow(TransactionDTO transaction, boolean isSalesPerson) {
+		this();
+		divCustNames.getElement().setInnerHTML(
+				transaction.getCustomerName());
+		divPhone.getElement().setInnerHTML(transaction.getPhone());
+		divAmount.getElement().setInnerHTML(
+				NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
+		divReferenceId.getElement().setInnerHTML(
+				transaction.getReferenceId());
+		divDate.getElement().setInnerHTML(
+				DateUtils.TIMESTAMPFORMAT.format(transaction.getTrxDate()));
+		divTills.getElement().setInnerHTML(transaction.getTill().getTillNo());
+		divTills.getElement().setTitle(transaction.getTill().getBusinessName());
+		setStatus(transaction.getStatus());
+		
+		if (isSalesPerson) {
+			show(divCustNames,false);
+			show(divPhone, false);
+			show(divStatus, false);
+		} else {
+			show(divCustNames,true);
+			show(divPhone, true);
+		}
+
+	}
+
+	private void show(HTMLPanel panel, boolean show) {
+		if (show) {
+			//panel.removeFromParent();
+
+		} else {
+			panel.removeFromParent();
 		}
 	}
 
-	private void hide(HTMLPanel divPanel, boolean show) {
-		if (show) {
-			divPanel.setStyleName("hide");
-			divPanel.setWidth("0%");
-		} else {
-			divPanel.removeStyleName("hide");
-			divPanel.setWidth("10%");
+	private void setStatus(boolean status) {
+		if (status) {
+			spnStatus.setClassName("label label-success");
 		}
 	}
 

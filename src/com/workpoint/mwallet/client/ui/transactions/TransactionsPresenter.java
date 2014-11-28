@@ -73,6 +73,10 @@ public class TransactionsPresenter extends
 		void setHeader(String date);
 
 		void showFilterView();
+
+		void setSalesTable(boolean b);
+
+		void presentData(TransactionDTO transaction, boolean isSalesPerson);
 	}
 
 	@Inject
@@ -92,8 +96,8 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		filterPresenter.setFilter(SearchType.Transaction);
 		setInSlot(FILTER_SLOT, filterPresenter);
+		filterPresenter.setFilter(SearchType.Transaction);
 		getView().setMiddleHeight();
 
 		if (AppContext.getContextUser() != null
@@ -102,7 +106,7 @@ public class TransactionsPresenter extends
 
 			if (AppContext.isCurrentUserAdmin()) {
 				loadData("This Month");
-			} else if (user.hasGroup("Merchant")
+			} else if ((user.hasGroup("Merchant"))
 					|| (user.hasGroup("SalesPerson"))) {
 				getTills(user);
 			}
@@ -115,11 +119,16 @@ public class TransactionsPresenter extends
 
 	private List<TillDTO> tills;
 
+	private boolean isSalesPerson = false;
+
 	private void getTills(UserDTO user) {
 		SearchFilter tillFilter = new SearchFilter();
+		
 		if (user.hasGroup("Merchant")) {
 			tillFilter.setOwner(user);
 		} else {
+			isSalesPerson = true;
+			getView().setSalesTable(isSalesPerson);// Set SalesPerson Transaction Table
 			tillFilter.setSalesPerson(user);
 		}
 		requestHelper.execute(new GetTillsRequest(tillFilter),
@@ -131,6 +140,7 @@ public class TransactionsPresenter extends
 						if (tills != null) {
 							filter.setTills(tills);
 						}
+						filterPresenter.setTills(tills);
 						loadData("This Month");
 					}
 				});
@@ -165,12 +175,20 @@ public class TransactionsPresenter extends
 
 	}
 
+	private static final Double SALESPERSONRATE = 0.25;
+
 	protected void bindTransactions() {
 		getView().clear();
 		Double totalAmount = 0.0;
 		for (TransactionDTO transaction : trxs) {
+			if (isSalesPerson) {
+				Double commission = SALESPERSONRATE * transaction.getAmount();
+				transaction.setAmount(commission);
+				getView().presentData(transaction,isSalesPerson);
+			}else{
+				getView().presentData(transaction);
+			}
 			totalAmount = totalAmount + transaction.getAmount();
-			getView().presentData(transaction);
 		}
 
 		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(trxs.size()),
@@ -222,7 +240,7 @@ public class TransactionsPresenter extends
 		if (event.getSearchType() == SearchType.Transaction) {
 			filter = event.getFilter();
 			setLoggedInUserTills();
-			System.err.println("Tills" + filter.getTills().size());
+			// System.err.println("Tills" + filter.getTills().size());
 			GetTransactionsRequest request = new GetTransactionsRequest(filter);
 			performSearch(request);
 		}

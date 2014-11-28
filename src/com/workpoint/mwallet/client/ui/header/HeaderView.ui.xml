@@ -18,7 +18,7 @@
 
 		<div class="navbar-inner">
 			<g:Anchor styleName="brand" href="#home" ui:field="aBrand">
-				M-Wallet
+				E-Wallet
 			</g:Anchor>
 			<a href="#home" class="brand hide">
 				<g:Image ui:field="imgLogo" url="img/logo.png"></g:Image>

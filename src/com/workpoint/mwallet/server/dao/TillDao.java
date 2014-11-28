@@ -72,6 +72,14 @@ public class TillDao extends BaseDaoImpl {
 
 		return getResultList(query);
 	}
+	
+	public TillModel getTillByTillNo(String tillNo){
+		String jpql = "FROM TillModel t where t.tillNo like :tillNo ";
+		
+		Query query = em.createQuery(jpql).setParameter("tillNo", tillNo);
+
+		return getSingleResultOrNull(query);
+	}
 
 	public void saveTill(TillModel till) {
 		save(till);

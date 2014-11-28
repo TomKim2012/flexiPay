@@ -6,9 +6,12 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
+import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.TransactionDao;
+import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.TransactionModel;
 import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
@@ -30,16 +33,16 @@ public class GetTransactionsRequestActionHandler extends
 	public void execute(GetTransactionsRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
 			throws ActionException {
-		TransactionDao dao =  new TransactionDao(DB.getEntityManager());
-		
+		TransactionDao dao = new TransactionDao(DB.getEntityManager());
+
 		List<TransactionModel> trxs = dao.getAllTrx(action.getFilter());
-		
+
 		List<TransactionDTO> dtos = new ArrayList<TransactionDTO>();
- 		
-//		System.err.println("Cust Size>>"+trxs.size());
-		
-		for(TransactionModel trxmodel:trxs){
-			
+
+		// System.err.println("Cust Size>>"+trxs.size());
+
+		for (TransactionModel trxmodel : trxs) {
+
 			TransactionDTO trxDTO = new TransactionDTO();
 			trxDTO.setId(trxmodel.getId());
 			trxDTO.setCustomerName(trxmodel.getCustomerName());
@@ -47,12 +50,26 @@ public class GetTransactionsRequestActionHandler extends
 			trxDTO.setPhone(trxmodel.getPhone());
 			trxDTO.setReferenceId(trxmodel.getReferenceId());
 			trxDTO.setStatus(trxmodel.getStatus());
-			trxDTO.setTillNumber(trxmodel.getTillNumber());
+			trxDTO.setTill(getTill(trxmodel.getTillNumber()));
 			trxDTO.setTrxDate(trxmodel.getTrxDate());
 			dtos.add(trxDTO);
 		}
+
+		((GetTransactionsRequestResult) actionResult).setTransactions(dtos);
+
+	}
+
+	private TillDTO getTill(String tillNumber) {
+		TillDao tillDao = new TillDao(DB.getEntityManager());
+		TillModel tillModel = tillDao.getTillByTillNo(tillNumber);
 		
-		((GetTransactionsRequestResult)actionResult).setTransactions(dtos);
-		
+		TillDTO tillDTO = new TillDTO();
+		if (tillModel != null) {
+			tillDTO.setId(tillModel.getId());
+			tillDTO.setBusinessName(tillModel.getBusinessName());
+			tillDTO.setPhoneNo(tillModel.getPhoneNo());
+			tillDTO.setTillNo(tillModel.getTillNo());
+		}
+		return tillDTO;
 	}
 }

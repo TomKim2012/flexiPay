@@ -3,6 +3,8 @@ package com.workpoint.mwallet.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.workpoint.mwallet.server.dao.model.TillModel;
+
 public class TransactionDTO implements Serializable {
 
 	/**
@@ -16,7 +18,7 @@ public class TransactionDTO implements Serializable {
 	private Double amount;
 	private String referenceId;
 	private Date trxDate;
-	private String tillNumber;
+	private TillDTO till;
 	private boolean status;
 
 	public TransactionDTO() {
@@ -50,8 +52,8 @@ public class TransactionDTO implements Serializable {
 		return trxDate;
 	}
 
-	public String getTillNumber() {
-		return tillNumber;
+	public TillDTO getTill() {
+		return till;
 	}
 
 	public boolean getStatus() {
@@ -78,8 +80,8 @@ public class TransactionDTO implements Serializable {
 		this.trxDate = trxDate;
 	}
 
-	public void setTillNumber(String tillNumber) {
-		this.tillNumber = tillNumber;
+	public void setTill(TillDTO till) {
+		this.till = till;
 	}
 
 	public void setStatus(boolean status) {

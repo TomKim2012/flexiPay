@@ -15,45 +15,56 @@ public class TransactionTable extends Composite {
 	private static TransactionTableUiBinder uiBinder = GWT
 			.create(TransactionTableUiBinder.class);
 
-	interface TransactionTableUiBinder extends UiBinder<Widget, TransactionTable> {
+	interface TransactionTableUiBinder extends
+			UiBinder<Widget, TransactionTable> {
 	}
 
 	@UiField
 	TableView tblView;
 	CheckBox selected = null;
-	boolean isSummaryTable = false;
-	boolean isGoalsTable = false;
-	Long lastUpdatedId = null;
+	boolean isSalesTable = false;
 
 	public TransactionTable() {
 		initWidget(uiBinder.createAndBindUi(this));
 		createHeader();
 	}
-	
-	public void createHeader(){
+
+	public void createHeader() {
 		List<TransactionHeader> th = new ArrayList<TransactionHeader>();
-		th.add(new TransactionHeader("Customer Names"));
-		th.add(new TransactionHeader("Phone Number"));
-		th.add(new TransactionHeader("Amount"));
-		th.add(new TransactionHeader("Reference Id"));
-		th.add(new TransactionHeader("Date"));
-		th.add(new TransactionHeader("Till Number"));
-		th.add(new TransactionHeader("Status"));
-		
+		if (isSalesTable) {
+			th.add(new TransactionHeader("Commission"));
+			th.add(new TransactionHeader("Reference Id"));
+			th.add(new TransactionHeader("Date & Time"));
+			th.add(new TransactionHeader("Till Number"));
+		} else {
+			th.add(new TransactionHeader("Customer Names"));
+			th.add(new TransactionHeader("Phone Number"));
+			th.add(new TransactionHeader("Amount"));
+			th.add(new TransactionHeader("Reference Id"));
+			th.add(new TransactionHeader("Date"));
+			th.add(new TransactionHeader("Till Number"));
+			th.add(new TransactionHeader("Status"));
+		}
+
 		tblView.setTableHeaders(th);
 	}
-	
+
 	public void createRow(TransactionTableRow row) {
 		tblView.addRow(row);
 	}
-	
+
 	public void clearRows() {
 		tblView.clearRows();
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 	}
-	
+
+	public void setSalesTable(boolean isSalesTable) {
+		this.isSalesTable = isSalesTable;
+		createHeader();
+	}
+
 }

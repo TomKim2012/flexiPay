@@ -128,6 +128,10 @@ public class TransactionsView extends ViewImpl implements
 		}
 	}
 
+	@Override
+	public void presentData(TransactionDTO transaction, boolean isSalesPerson) {
+		tblView.createRow(new TransactionTableRow(transaction,isSalesPerson));
+	}
 	
 	@Override
 	public void presentData(TransactionDTO transaction) {
@@ -139,7 +143,8 @@ public class TransactionsView extends ViewImpl implements
 		headerContainer.setTotals(transactions, amount);
 		// System.err.println("Transactions>>"+transactions);
 	}
-
+	
+	@Override
 	public void clear() {
 		tblView.clearRows();
 	}
@@ -184,5 +189,10 @@ public class TransactionsView extends ViewImpl implements
 	@Override
 	public void setHeader(String setDate) {
 		headerContainer.setDateString(setDate);
+	}
+
+	@Override
+	public void setSalesTable(boolean show) {
+		tblView.setSalesTable(show);
 	}
 }

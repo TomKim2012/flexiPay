@@ -18,6 +18,7 @@ public class GetContextRequestActionHandler extends
 		BaseActionHandler<GetContextRequest, GetContextRequestResult> {
 
 	private final Provider<HttpServletRequest> httpRequest;
+	private Object user;
 
 	@Inject
 	public GetContextRequestActionHandler(
@@ -31,10 +32,9 @@ public class GetContextRequestActionHandler extends
 
 		HttpSession session = httpRequest.get().getSession(false);
 
-		// Object
-		// sessionid=session.getAttribute(ServerConstants.AUTHENTICATIONCOOKIE);
-		Object user = session.getAttribute(ServerConstants.USER);
-
+		if (session != null) {
+			user = session.getAttribute(ServerConstants.USER);
+		}
 		GetContextRequestResult result = (GetContextRequestResult) actionResult;
 		result.setIsValid(session != null && user != null);
 

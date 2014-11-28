@@ -117,6 +117,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	private void clear() {
+		System.err.println(owners.size());
 		cashiers.clear();
 		owners.clear();
 		salesPerson.clear();
@@ -178,13 +179,13 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	List<UserDTO> salesPerson = new ArrayList<UserDTO>();
 
 	private void breakUsers(List<UserDTO> allUsers) {
+		clear();
 		for (UserDTO user : allUsers) {
 			sortByGroup(user.getGroups(), user);
 		}
 	}
 
 	private void sortByGroup(List<UserGroup> groups, UserDTO user) {
-		clear();
 		for (UserGroup group : groups) {
 			GroupType type = GroupType.valueOf(group.getName());
 			switch (type) {
