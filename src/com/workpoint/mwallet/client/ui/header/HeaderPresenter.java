@@ -128,7 +128,7 @@ public class HeaderPresenter extends
 					public void processResult(LogoutActionResult result) {
 						AppContext.destroy();
 						placeManager.revealErrorPlace("login");
-						System.err.println("Executed Logout");
+						// System.err.println("Executed Logout");
 					}
 				});
 	}
@@ -137,7 +137,8 @@ public class HeaderPresenter extends
 	public void onContextLoaded(ContextLoadedEvent event) {
 		UserDTO currentUser = event.getCurrentUser();
 		getView().setImage(currentUser);
-		getView().setValues(currentUser.getFirstName()+" "+currentUser.getLastName(),
+		getView().setValues(
+				currentUser.getFirstName() + " " + currentUser.getLastName(),
 				currentUser.getGroupsAsString());
 	}
 

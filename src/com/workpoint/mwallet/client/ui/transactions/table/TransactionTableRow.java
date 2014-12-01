@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.RowWidget;
@@ -51,25 +50,31 @@ public class TransactionTableRow extends RowWidget {
 
 	public TransactionTableRow(TransactionDTO transaction, boolean isSalesPerson) {
 		this();
-		divCustNames.getElement().setInnerHTML(
-				transaction.getCustomerName());
+		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
 		divAmount.getElement().setInnerHTML(
 				NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
-		divReferenceId.getElement().setInnerHTML(
-				transaction.getReferenceId());
+		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
 		divDate.getElement().setInnerHTML(
 				DateUtils.TIMESTAMPFORMAT.format(transaction.getTrxDate()));
-		divTills.getElement().setInnerHTML(transaction.getTill().getTillNo());
+		
+		String businessName = transaction.getTill().getBusinessName();
+		
+		if(transaction.getTill().getBusinessName().length()>20){
+			businessName= businessName.substring(0, 20);
+			businessName+="...";
+		}
+		divTills.getElement().setInnerHTML(
+				transaction.getTill().getTillNo() + " (" + businessName + ")");
 		divTills.getElement().setTitle(transaction.getTill().getBusinessName());
 		setStatus(transaction.getStatus());
-		
+
 		if (isSalesPerson) {
-			show(divCustNames,false);
+			show(divCustNames, false);
 			show(divPhone, false);
 			show(divStatus, false);
 		} else {
-			show(divCustNames,true);
+			show(divCustNames, true);
 			show(divPhone, true);
 		}
 
@@ -77,7 +82,7 @@ public class TransactionTableRow extends RowWidget {
 
 	private void show(HTMLPanel panel, boolean show) {
 		if (show) {
-			//panel.removeFromParent();
+			// panel.removeFromParent();
 
 		} else {
 			panel.removeFromParent();

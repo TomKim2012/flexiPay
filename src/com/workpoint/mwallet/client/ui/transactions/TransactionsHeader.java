@@ -1,7 +1,6 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -78,8 +77,6 @@ public class TransactionsHeader extends Composite {
 		displayDate += DateUtils.MONTHDAYFORMAT.format(startDate);
 
 		DateRange compare = DateRange.getDateRange(passedDate);
-		System.err.println("Compare Date>>" + compare
-				+ (compare != DateRange.TODAY));
 		if ((compare == DateRange.TODAY) || (compare == DateRange.YESTERDAY)) {
 			displayDate += "";
 		} else {
@@ -89,7 +86,7 @@ public class TransactionsHeader extends Composite {
 		spnDates.getElement().setInnerText(displayDate);
 	}
 
-	protected void setDateRange(String displayName) {
+	public void setDateRange(String displayName) {
 		SearchFilter filter = new SearchFilter();
 		Date startDate = DateUtils.getDateByRange(DateRange
 				.getDateRange(displayName));

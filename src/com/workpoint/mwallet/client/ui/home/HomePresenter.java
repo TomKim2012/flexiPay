@@ -27,6 +27,7 @@ import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
+import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.client.util.AppContext;
@@ -82,6 +83,7 @@ public class HomePresenter extends
 	private IndirectProvider<TransactionsPresenter> transactionsFactory;
 	private IndirectProvider<UserPresenter> usersFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
+	private IndirectProvider<ProfilePresenter> profileFactory;
 
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
@@ -89,7 +91,8 @@ public class HomePresenter extends
 			Provider<DashboardPresenter> dashboardProvider,
 			Provider<TransactionsPresenter> transactionsProvider,
 			Provider<UserPresenter> userProvider,
-			Provider<TillsPresenter> tillProvider) {
+			Provider<TillsPresenter> tillProvider,
+			Provider<ProfilePresenter> profileProvider) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(
 				dashboardProvider);
@@ -97,6 +100,7 @@ public class HomePresenter extends
 				transactionsProvider);
 		usersFactory = new StandardProvider<UserPresenter>(userProvider);
 		tillFactory = new StandardProvider<TillsPresenter>(tillProvider);
+		profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
 
 	}
 
@@ -112,9 +116,6 @@ public class HomePresenter extends
 		super.onBind();
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public void prepareFromRequest(PlaceRequest request) {
 		super.prepareFromRequest(request);
@@ -179,6 +180,15 @@ public class HomePresenter extends
 			 * @Override public void processResult(DashboardPresenter aResponse)
 			 * { setInSlot(ACTIVITIES_SLOT, aResponse); } });
 			 */
+			getView().setSelectedTab("Settings");
+		}else if (page != null && page.equals("profile")){
+			Window.setTitle("Profile Settings");
+			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
+				@Override
+				public void processResult(ProfilePresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
 			getView().setSelectedTab("Settings");
 		}
 	}

@@ -1,4 +1,4 @@
-	package com.workpoint.mwallet.client.ui.filter;
+package com.workpoint.mwallet.client.ui.filter;
 
 import java.util.List;
 

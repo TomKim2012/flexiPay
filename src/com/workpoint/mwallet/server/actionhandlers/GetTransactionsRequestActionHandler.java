@@ -67,8 +67,10 @@ public class GetTransactionsRequestActionHandler extends
 		if (tillModel != null) {
 			tillDTO.setId(tillModel.getId());
 			tillDTO.setBusinessName(tillModel.getBusinessName());
-			tillDTO.setPhoneNo(tillModel.getPhoneNo());
 			tillDTO.setTillNo(tillModel.getTillNo());
+		}else{
+			tillDTO.setBusinessName("Not Registered");
+			tillDTO.setTillNo(tillNumber);
 		}
 		return tillDTO;
 	}

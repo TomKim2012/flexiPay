@@ -5,22 +5,24 @@ import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.InvocationException;
 import com.gwtplatform.dispatch.shared.ServiceException;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.workpoint.mwallet.client.ui.events.ClientDisconnectionEvent;
 import com.workpoint.mwallet.client.ui.events.ErrorEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.util.AppContext;
+import com.workpoint.mwallet.shared.exceptions.InvalidSessionException;
 
 public abstract class ServiceCallback<T> implements AsyncCallback<T>{
 
 
 	@Override
 	public void onFailure(Throwable caught) {	
-//		if(caught instanceof InvalidSessionException){
-//			AppContext.destroy();
-//			AppContext.getPlaceManager().revealPlace(new PlaceRequest("login"));
-//			return;
-//		}
-//		
+		if(caught instanceof InvalidSessionException){
+			AppContext.destroy();
+			AppContext.getPlaceManager().revealPlace(new PlaceRequest("login"));
+			return;
+		}
+		
 		if(caught instanceof ServiceException){
 			String msg = "Cannot connect to server...";
 			if(caught.getMessage()!=null && caught.getMessage().length()>5){

@@ -22,10 +22,10 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent;
+import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent.HideFilterBoxHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
-import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent.HideFilterBoxHandler;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
@@ -105,6 +105,7 @@ public class TransactionsPresenter extends
 			UserDTO user = AppContext.getContextUser();
 
 			if (AppContext.isCurrentUserAdmin()) {
+				// clear(); // clear all Tills
 				loadData("This Month");
 			} else if ((user.hasGroup("Merchant"))
 					|| (user.hasGroup("SalesPerson"))) {
@@ -117,18 +118,25 @@ public class TransactionsPresenter extends
 
 	}
 
-	private List<TillDTO> tills;
+	private void clear() {
+		if (tills != null) {
+			System.err.println("Cleared all tills");
+			tills.clear();
+		}
+	}
 
+	private List<TillDTO> tills = new ArrayList<TillDTO>();
 	private boolean isSalesPerson = false;
 
 	private void getTills(UserDTO user) {
 		SearchFilter tillFilter = new SearchFilter();
-		
+
 		if (user.hasGroup("Merchant")) {
 			tillFilter.setOwner(user);
 		} else {
 			isSalesPerson = true;
-			getView().setSalesTable(isSalesPerson);// Set SalesPerson Transaction Table
+			getView().setSalesTable(isSalesPerson);// Set SalesPerson
+													// Transaction Table
 			tillFilter.setSalesPerson(user);
 		}
 		requestHelper.execute(new GetTillsRequest(tillFilter),
@@ -141,6 +149,7 @@ public class TransactionsPresenter extends
 							filter.setTills(tills);
 						}
 						filterPresenter.setTills(tills);
+
 						loadData("This Month");
 					}
 				});
@@ -175,7 +184,7 @@ public class TransactionsPresenter extends
 
 	}
 
-	private static final Double SALESPERSONRATE = 0.25;
+	private static final Double SALESPERSONRATE = 0.25/100;
 
 	protected void bindTransactions() {
 		getView().clear();
@@ -184,8 +193,8 @@ public class TransactionsPresenter extends
 			if (isSalesPerson) {
 				Double commission = SALESPERSONRATE * transaction.getAmount();
 				transaction.setAmount(commission);
-				getView().presentData(transaction,isSalesPerson);
-			}else{
+				getView().presentData(transaction, isSalesPerson);
+			} else {
 				getView().presentData(transaction);
 			}
 			totalAmount = totalAmount + transaction.getAmount();
@@ -247,7 +256,7 @@ public class TransactionsPresenter extends
 	}
 
 	private void setLoggedInUserTills() {
-		if (tills != null) {
+		if ((tills != null) && (!AppContext.isCurrentUserAdmin())) {
 			filter.setTills(tills);
 		}
 	}

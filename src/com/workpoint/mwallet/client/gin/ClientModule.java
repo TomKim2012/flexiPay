@@ -31,6 +31,8 @@ import com.workpoint.mwallet.client.ui.login.LoginPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginView;
 import com.workpoint.mwallet.client.ui.popup.GenericPopupPresenter;
 import com.workpoint.mwallet.client.ui.popup.GenericPopupView;
+import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
+import com.workpoint.mwallet.client.ui.profile.ProfileView;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsView;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
@@ -62,10 +64,10 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(GroupPresenter.class, GroupPresenter.MyView.class,
 				GroupView.class);
-		
-		bindPresenterWidget(FilterPresenter.class, FilterPresenter.MyView.class,
-				FilterView.class);
-		
+
+		bindPresenterWidget(FilterPresenter.class,
+				FilterPresenter.MyView.class, FilterView.class);
+
 		bindPresenterWidget(ErrorPresenter.class, ErrorPresenter.MyView.class,
 				ErrorView.class);
 
@@ -73,10 +75,11 @@ public class ClientModule extends AbstractPresenterModule {
 				GenericPopupPresenter.MyView.class, GenericPopupView.class);
 
 		bindPresenterWidget(TransactionsPresenter.class,
-				TransactionsPresenter.ITransactionView.class, TransactionsView.class);
-		
-		bindPresenterWidget(UserItemPresenter.class, UserItemPresenter.MyView.class,
-				UserItemView.class);
+				TransactionsPresenter.ITransactionView.class,
+				TransactionsView.class);
+
+		bindPresenterWidget(UserItemPresenter.class,
+				UserItemPresenter.MyView.class, UserItemView.class);
 
 		bindPresenterWidget(UserSavePresenter.class,
 				UserSavePresenter.IUserSaveView.class, UserSaveView.class);
@@ -98,5 +101,8 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(DashboardPresenter.class,
 				DashboardPresenter.MyView.class, DashboardView.class);
+
+		bindPresenterWidget(ProfilePresenter.class,
+				ProfilePresenter.IProfileView.class, ProfileView.class);
 	}
 }
