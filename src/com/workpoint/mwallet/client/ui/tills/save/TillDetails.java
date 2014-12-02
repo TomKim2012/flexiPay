@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
@@ -27,6 +28,7 @@ public class TillDetails extends Composite {
 	@UiField SpanElement spnMessage;
 	
 	@UiField ActionLink aPickTill;
+	@UiField SpanElement spnSpinner;
 
 	private TillDTO tillSelected;
 
@@ -107,6 +109,14 @@ public class TillDetails extends Composite {
 
 	public HasClickHandlers getPickUser() {
 		return aPickTill;
+	}
+	
+	public void showSpinner(boolean show){
+		if(show){
+			spnSpinner.removeClassName("hide");
+		}else{
+			spnSpinner.addClassName("hide");
+		}
 	}
 
 	public HasKeyDownHandlers getSearchBox() {

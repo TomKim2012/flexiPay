@@ -103,6 +103,10 @@ public class CreateTillView extends ViewImpl implements
 	public HasClickHandlers getPickUser() {
 		return tillDetails.getPickUser();
 	}
+	
+	public void showImportProcessing(boolean show){
+			tillDetails.showSpinner(show);
+	}
 
 	@Override
 	public HasKeyDownHandlers getSearchBox() {

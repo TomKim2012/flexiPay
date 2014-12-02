@@ -78,7 +78,7 @@ public class TillsView extends ViewImpl implements
 			}
 		});
 
-		init();
+		initControlButtons();
 
 	}
 
@@ -92,7 +92,7 @@ public class TillsView extends ViewImpl implements
 		}
 	}
 
-	public void init() {
+	public void initControlButtons() {
 		show(aCreate, true);
 		show(aEdit, false);
 		show(aDelete, false);

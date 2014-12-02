@@ -65,6 +65,7 @@ public class AppManager {
 					}
 				}
 			});
+			
 			popupPresenter.getView().addToSlot(
 					GenericPopupPresenter.BUTTON_SLOT, aLnk);
 		}

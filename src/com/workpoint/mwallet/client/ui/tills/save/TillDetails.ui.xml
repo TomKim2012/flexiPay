@@ -11,13 +11,9 @@
 				</div>
 			</div>
 
-			<!-- <div class="control-group hide">
-				<div class="control-label" ui:field="divTill">Till Code:</div>
-				<div class="controls">
-					<g:TextBox ui:field="" styleName="input-xlarge"></g:TextBox>
-					<span class="mandatory" title="Required Field">*</span>
-				</div>
-			</div> -->
+			<!-- <div class="control-group hide"> <div class="control-label" ui:field="divTill">Till 
+				Code:</div> <div class="controls"> <g:TextBox ui:field="" styleName="input-xlarge"></g:TextBox> 
+				<span class="mandatory" title="Required Field">*</span> </div> </div> -->
 
 			<div class="control-group" ui:field="divImport">
 				<div class="controls">
@@ -28,6 +24,8 @@
 						<d:TextField ui:field="txtTillCode" placeholder="eg: Import Till Code">
 						</d:TextField>
 						<d:ActionLink ui:field="aPickTill" styleName="btn btn-primary">
+							<span class="icon-spinner icon-spin hide"
+								ui:field="spnSpinner"></span>
 							Import
 						</d:ActionLink>
 					</div>

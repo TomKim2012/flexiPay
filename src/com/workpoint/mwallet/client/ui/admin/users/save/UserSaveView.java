@@ -40,6 +40,8 @@ public class UserSaveView extends PopupViewImpl implements
 	private final Widget widget;
 	@UiField HTMLPanel divUserDetails;
 	@UiField HTMLPanel divGroupDetails;
+	@UiField HTMLPanel panelHeader;
+	
 	@UiField IssuesPanel issues;
 	@UiField Anchor aClose;
 	@UiField ActionLink aPickUser;
@@ -65,7 +67,7 @@ public class UserSaveView extends PopupViewImpl implements
 
 	@UiField SpanElement header;
 	
-	@UiField DivElement divUserSave;
+	@UiField HTMLPanel divUserSave;
 	@UiField Uploader uploader;
 	@UiField AutoCompleteField<UserGroup> lstGroups;
 	
@@ -251,12 +253,12 @@ public class UserSaveView extends PopupViewImpl implements
 		if(type==TYPE.GROUP){
 			divGroupDetails.removeStyleName("hide");
 			divUserDetails.addStyleName("hide");
-			divUserSave.addClassName("hide");
+			divUserSave.addStyleName("hide");
 			header.setInnerText("New Group");
 		}else{
 			divUserDetails.removeStyleName("hide");
 			divGroupDetails.addStyleName("hide");
-			divUserSave.removeClassName("hide");
+			divUserSave.removeStyleName("hide");
 			header.setInnerText("New User");
 		}
 	}
@@ -281,6 +283,17 @@ public class UserSaveView extends PopupViewImpl implements
 			return txtSearchBox.getText();	
 		}
 		
+	}
+
+	@Override
+	public void setToWidget(boolean isWidget) {
+		if(isWidget){
+			panelHeader.setVisible(false);
+			divUserSave.setVisible(false);
+		}else{
+			panelHeader.setVisible(true);
+			divUserSave.setVisible(true);
+		}
 	}
 	
 }

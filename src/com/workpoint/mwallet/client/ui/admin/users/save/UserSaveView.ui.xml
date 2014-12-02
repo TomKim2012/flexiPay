@@ -11,7 +11,7 @@
 	<g:PopupPanel glassEnabled="true" styleName="modal modal-admin"
 		modal="true" ui:field="AddUserDialog">
 		<g:HTMLPanel styleName="full-page">
-			<g:HTMLPanel styleName="modal-header">
+			<g:HTMLPanel styleName="modal-header" ui:field="panelHeader">
 				<h5>
 					<i class="icon-cogs"></i>
 					<span ui:field="header">New User</span>
@@ -72,7 +72,7 @@
 								placeholder="Email" />
 						</div>
 					</div>
-					
+
 					<div class="control-group">
 						<div class="controls">
 							<label for="Email">
@@ -82,7 +82,7 @@
 								placeholder="" />
 						</div>
 					</div>
-					
+
 
 					<div class="control-group">
 						<label for="ProcessName">
@@ -118,12 +118,12 @@
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 
-			<div class="form-actions" ui:field="divUserSave">
+			<g:HTMLPanel styleName="form-actions" ui:field="divUserSave">
 				<g:Anchor ui:field="aSaveUser" styleName="btn btn-primary pull-left">
 					Save&nbsp;
 					<i class="icon-double-angle-right"></i>
 				</g:Anchor>
-			</div>
+			</g:HTMLPanel>
 
 			<g:HTMLPanel styleName="hide" ui:field="divGroupDetails">
 				<g:HTMLPanel styleName="modal-body">
@@ -144,12 +144,12 @@
 						</div -->
 				</g:HTMLPanel>
 
-				<div class="form-actions">
+				<g:HTMLPanel styleName="form-actions">
 					<g:Anchor ui:field="aSaveGroup" styleName="btn btn-primary pull-left">
 						Save&nbsp;
 						<i class="icon-double-angle-right"></i>
 					</g:Anchor>
-				</div>
+				</g:HTMLPanel>
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:PopupPanel>
