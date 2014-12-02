@@ -58,8 +58,6 @@ public class TransactionsView extends ViewImpl implements
 	@UiField
 	MyHTMLPanel divProgramsTable;
 
-	@UiField
-	ActionLink aBack;
 
 	@UiField
 	TransactionsHeader headerContainer;
@@ -89,13 +87,6 @@ public class TransactionsView extends ViewImpl implements
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		listPanel.setId("mytab");
-
-		aBack.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				History.back();
-			}
-		});
 
 		iFilterdropdown.addClickHandler(new ClickHandler() {
 			@Override

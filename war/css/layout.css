@@ -38,6 +38,7 @@
 .main-body .main-container .content-right {
 	width: 84%;
 	height: 100%;
+	margin-left: 0px;
 }
 .main-container .content-right .content-body{
 	padding:10px;	
@@ -462,7 +463,7 @@ body .dateBoxPopup{
 }
 /*User-Account*/
 .navbar .user-dropdown span.name {
-	line-height: 2.5;
+	line-height: 0;
 }
 
 .navbar .user-dropdown .dropdown-menu {

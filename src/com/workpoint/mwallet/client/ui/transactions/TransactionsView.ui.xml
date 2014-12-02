@@ -19,7 +19,7 @@
 								<d:TextField ui:field="txtSearchBox" placeholder="Search here"></d:TextField>
 								<d:ActionLink styleName="icon-caret-down muted"
 									ui:field="iFilterdropdown"></d:ActionLink>
-								<d:ActionLink styleName="btn" ui:field="btnSearch">
+								<d:ActionLink styleName="btn hide" ui:field="btnSearch">
 									<i class="icon-search"></i>
 								</d:ActionLink>
 							</div>
@@ -32,25 +32,17 @@
 
 					<div class="span9">
 						<div class="span3">
-							<d:ActionLink ui:field="aRefresh" styleName="btn btn-primary"
+							<d:ActionLink ui:field="aRefresh" styleName="btn icon-refresh"
 								dataToggle="tooltip">
-								Refresh
 							</d:ActionLink>
 						</div>
-
-						<div class="span3 hide">
-							<d:ActionLink ui:field="aBack" styleName="btn btn-default"
-								dataToggle="tooltip" dataPlacement="bottom" title="Back">
-								<i class="icon-google-back icon-button"></i>
-							</d:ActionLink>
-						</div>
-
 					</div>
 				</div>
 
 
 				<div class="row-fluid">
-					<p:TransactionsHeader ui:field="headerContainer"></p:TransactionsHeader>
+					<p:TransactionsHeader ui:field="headerContainer">
+					</p:TransactionsHeader>
 				</div>
 
 				<!-- BreadCrumb Panel -->

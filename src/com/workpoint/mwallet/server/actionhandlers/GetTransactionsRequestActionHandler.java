@@ -42,7 +42,6 @@ public class GetTransactionsRequestActionHandler extends
 		// System.err.println("Cust Size>>"+trxs.size());
 
 		for (TransactionModel trxmodel : trxs) {
-
 			TransactionDTO trxDTO = new TransactionDTO();
 			trxDTO.setId(trxmodel.getId());
 			trxDTO.setCustomerName(trxmodel.getCustomerName());
