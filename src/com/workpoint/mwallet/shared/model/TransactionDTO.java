@@ -3,9 +3,7 @@ package com.workpoint.mwallet.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.workpoint.mwallet.server.dao.model.TillModel;
-
-public class TransactionDTO implements Serializable {
+public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 
 	/**
 	 * 
@@ -87,4 +85,12 @@ public class TransactionDTO implements Serializable {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	
+	@Override
+	public int compareTo(TransactionDTO transaction) {
+		if (getTrxDate() == null || transaction.getTrxDate() == null)
+			return 0;
+		return -getTrxDate().compareTo(transaction.getTrxDate());
+	}
+
 }

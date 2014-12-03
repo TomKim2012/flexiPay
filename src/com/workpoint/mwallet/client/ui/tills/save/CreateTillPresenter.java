@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.thirdparty.javascript.jscomp.ShowByPathWarningsGuard.ShowType;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -25,7 +24,6 @@ import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent.LoadUsersHandler;
-import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.ClientDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -249,6 +247,7 @@ public class CreateTillPresenter extends
 		TillDTO importedTill = new TillDTO();
 		importedTill.setBusinessName(client.getSirName().trim());
 		importedTill.setTillNo(getView().getTillSearchCode());
+		importedTill.setActive(1);
 		importedTill.setOwner(user);
 		getView().setTill(importedTill);
 		getView().setSearchMessage("Merchant imported Successfully!",

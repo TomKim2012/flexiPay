@@ -8,7 +8,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
@@ -21,7 +20,6 @@ public class TillDetails extends Composite {
 			.create(TillDetailsUiBinder.class);
 	
 	@UiField TextBox txtBusinessName;
-//	@UiField TextBox txtTillCode;
 	@UiField TextBox txtTillCode;
 	@UiField TextBox txtPhone;
 	@UiField CheckBox chckEnable;

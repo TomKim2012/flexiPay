@@ -21,7 +21,7 @@ public class TransactionDao extends BaseDaoImpl {
 	public List<TransactionModel> getAllTrx(SearchFilter filter) {
 		if (filter == null)
 			return getResultList(em
-					.createQuery("FROM TransactionModel t order by tstamp ASC"));
+					.createQuery("FROM TransactionModel t order by tstamp DESC"));
 
 		StringBuffer jpql = new StringBuffer("FROM TransactionModel t ");
 
