@@ -1,19 +1,19 @@
 package com.workpoint.mwallet.client.ui.transactions.table;
 
-public class TransactionHeader {
+public class TableHeader {
 	String titleName;
 	String thStyleName;
 	Double width;
 
-	public TransactionHeader(String titleName) {
+	public TableHeader(String titleName) {
 		this(titleName,null);
 	}
 
-	public TransactionHeader(String titleName, Double width) {
+	public TableHeader(String titleName, Double width) {
 		this(titleName, width, null);
 	}
 
-	public TransactionHeader(String titleName, Double width, String styleName) {
+	public TableHeader(String titleName, Double width, String styleName) {
 		this.titleName = titleName;
 		this.width = width;
 		this.thStyleName = styleName;

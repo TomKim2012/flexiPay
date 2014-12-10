@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.transactions.table.TransactionHeader;
+import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class TillsTable extends Composite {
 
@@ -54,16 +54,16 @@ public class TillsTable extends Composite {
 	public void createHeader() {
 		// System.err.println(">>>Created Header");
 
-		List<TransactionHeader> th = new ArrayList<TransactionHeader>();
-		th.add(new TransactionHeader(""));
-		th.add(new TransactionHeader("Business Name"));
-		th.add(new TransactionHeader("Till No"));
-		th.add(new TransactionHeader("Phone No"));
-		th.add(new TransactionHeader("Owner"));
-		th.add(new TransactionHeader("Acquirer"));
-		th.add(new TransactionHeader("Cashiers"));
-		th.add(new TransactionHeader("Status"));
-		th.add(new TransactionHeader("Last Modified"));
+		List<TableHeader> th = new ArrayList<TableHeader>();
+		th.add(new TableHeader(""));
+		th.add(new TableHeader("Business Name"));
+		th.add(new TableHeader("Till No"));
+		th.add(new TableHeader("Phone No"));
+		th.add(new TableHeader("Owner"));
+		th.add(new TableHeader("Acquirer"));
+		th.add(new TableHeader("Cashiers"));
+		th.add(new TableHeader("Status"));
+		th.add(new TableHeader("Last Modified"));
 
 		tblView.setTableHeaders(th);
 	}

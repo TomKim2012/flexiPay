@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -36,82 +37,13 @@ public class TransactionsHeader extends Composite {
 	@UiField
 	SpanElement spnAmount;
 
-	@UiField
-	InlineLabel spnDates;
-
-	@UiField
-	Dropdown<DateRange> periodDropdown;
-
 	public TransactionsHeader() {
 		initWidget(uiBinder.createAndBindUi(this));
-
-		spnDates.getElement().setAttribute("data-toggle", "dropdown");
-
-		List<DateRange> dateRanges = new ArrayList<DateRange>();
-
-		for (DateRange date : DateRange.values()) {
-			if (date != DateRange.NOW) {
-				dateRanges.add(date);
-			}
-		}
-
-		periodDropdown.setValues(dateRanges);
-
-		periodDropdown
-				.addValueChangeHandler(new ValueChangeHandler<DateRange>() {
-
-					@Override
-					public void onValueChange(ValueChangeEvent<DateRange> event) {
-						setDateRange(event.getValue().getDisplayName());
-					}
-				});
-
+		
 	}
-
-	public void setDateString(String passedDate) {
-		Date startDate = DateUtils.getDateByRange(DateRange
-				.getDateRange(passedDate));
-		Date endDate = getEndDate(passedDate);
-
-		String displayDate = passedDate + " (";
-		displayDate += DateUtils.MONTHDAYFORMAT.format(startDate);
-
-		DateRange compare = DateRange.getDateRange(passedDate);
-		if ((compare == DateRange.TODAY) || (compare == DateRange.YESTERDAY)) {
-			displayDate += "";
-		} else {
-			displayDate += " - " + DateUtils.MONTHDAYFORMAT.format(endDate);
-		}
-		displayDate += ") ";
-		spnDates.getElement().setInnerText(displayDate);
-	}
-
-	public void setDateRange(String displayName) {
-		SearchFilter filter = new SearchFilter();
-		Date startDate = DateUtils.getDateByRange(DateRange
-				.getDateRange(displayName));
-
-		filter.setStartDate(startDate);
-		filter.setEndDate(getEndDate(displayName));
-
-		setDateString(displayName);
-
-		AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
-	}
-
-	public Date getEndDate(String displayName) {
-		DateRange compare = DateRange.getDateRange(displayName);
-		if (compare == DateRange.YESTERDAY) {
-			return DateUtils
-					.getDateByRange(DateRange.getDateRange(displayName));
-		} else {
-			return DateUtils.getDateByRange(DateRange.NOW);
-		}
-	}
-
+	
 	public void setTotals(String transactions, String amount) {
 		spnTransactions.setInnerHTML(transactions);
 		spnAmount.setInnerHTML(amount);
 	}
-
 }

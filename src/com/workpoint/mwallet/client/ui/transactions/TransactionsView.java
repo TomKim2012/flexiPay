@@ -1,26 +1,37 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
-import static com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter.FILTER_SLOT;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.datepicker.client.ui.DateBoxAppended;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
-import com.workpoint.mwallet.client.ui.component.BulletListPanel;
+import com.workpoint.mwallet.client.ui.component.DropDownList;
+import com.workpoint.mwallet.client.ui.component.Dropdown;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
 import com.workpoint.mwallet.client.ui.component.TextField;
+import com.workpoint.mwallet.client.ui.events.SearchEvent;
+import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.transactions.table.TransactionTable;
 import com.workpoint.mwallet.client.ui.transactions.table.TransactionTableRow;
+import com.workpoint.mwallet.client.ui.util.DateRange;
+import com.workpoint.mwallet.client.ui.util.DateUtils;
+import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TransactionsView extends ViewImpl implements
@@ -33,27 +44,19 @@ public class TransactionsView extends ViewImpl implements
 
 	@UiField
 	HTMLPanel divMiddleContent;
-
+	
 	@UiField
-	HTMLPanel divContentBottom;
+	HTMLPanel divSearchBox;
+
 
 	@UiField
 	HTMLPanel divContentTop;
 
 	@UiField
-	HTMLPanel divNoContent;
-
-	@UiField
 	TransactionTable tblView;
 
 	@UiField
-	HTMLPanel divFilterBox;
-
-	@UiField
 	ActionLink aRefresh;
-
-	@UiField
-	Anchor iFilterdropdown;
 
 	@UiField
 	MyHTMLPanel divProgramsTable;
@@ -61,17 +64,19 @@ public class TransactionsView extends ViewImpl implements
 
 	@UiField
 	TransactionsHeader headerContainer;
+	
+	@UiField
+	InlineLabel spnDates;
 
 	@UiField
-	BulletListPanel listPanel;
+	Dropdown<DateRange> periodDropdown;
+	
+	@UiField
+	DropDownList<TillDTO> lstTills;
+	
+	@UiField
+	DateBoxAppended txtDatePicker;
 
-	@UiField
-	ActionLink aLeft;
-	@UiField
-	ActionLink aRight;
-
-	@UiField
-	ActionLink btnSearch;
 
 	@UiField
 	TextField txtSearchBox;
@@ -86,38 +91,98 @@ public class TransactionsView extends ViewImpl implements
 	@Inject
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		listPanel.setId("mytab");
 
-		iFilterdropdown.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				showFilterView();
+//		iFilterdropdown.addClickHandler(new ClickHandler() {
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				showFilterView();
+//			}
+//		});
+		
+
+		spnDates.getElement().setAttribute("data-toggle", "dropdown");
+
+		List<DateRange> dateRanges = new ArrayList<DateRange>();
+
+		for (DateRange date : DateRange.values()) {
+			if (date != DateRange.NOW) {
+				dateRanges.add(date);
+				NavLink link = new NavLink();
+				link.setText(date.getDisplayName());
+				txtDatePicker.add(link);
 			}
-		});
+		}
+		
+		
+
+		periodDropdown.setValues(dateRanges);
+		
+
+		periodDropdown
+				.addValueChangeHandler(new ValueChangeHandler<DateRange>() {
+
+					@Override
+					public void onValueChange(ValueChangeEvent<DateRange> event) {
+						setDateRange(event.getValue().getDisplayName());
+					}
+				});
 	}
+	
+
+	public void setDateString(String passedDate) {
+		Date startDate = DateUtils.getDateByRange(DateRange
+				.getDateRange(passedDate));
+		Date endDate = getEndDate(passedDate);
+
+		String displayDate = passedDate + " (";
+		displayDate += DateUtils.MONTHDAYFORMAT.format(startDate);
+
+		DateRange compare = DateRange.getDateRange(passedDate);
+		if ((compare == DateRange.TODAY) || (compare == DateRange.YESTERDAY)) {
+			displayDate += "";
+		} else {
+			displayDate += " - " + DateUtils.MONTHDAYFORMAT.format(endDate);
+		}
+		displayDate += ") ";
+		spnDates.getElement().setInnerText(displayDate);
+		
+		//txtDatePicker.setStartDate()
+	}
+
+	public void setDateRange(String displayName) {
+		SearchFilter filter = new SearchFilter();
+		Date startDate = DateUtils.getDateByRange(DateRange
+				.getDateRange(displayName));
+
+		filter.setStartDate(startDate);
+		filter.setEndDate(getEndDate(displayName));
+
+		setDateString(displayName);
+
+		AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
+	}
+
+	public Date getEndDate(String displayName) {
+		DateRange compare = DateRange.getDateRange(displayName);
+		if (compare == DateRange.YESTERDAY) {
+			return DateUtils
+					.getDateByRange(DateRange.getDateRange(displayName));
+		} else {
+			return DateUtils.getDateByRange(DateRange.NOW);
+		}
+	}
+
 
 	public HasClickHandlers getRefreshLink() {
 		return aRefresh;
 	}
 
-	public HasClickHandlers getSearchButton() {
-		return btnSearch;
-	}
 
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
 	
-	public void showFilterView() {
-		if (isNotDisplayed) {
-			divFilterBox.removeStyleName("hide");
-			isNotDisplayed = false;
-		} else {
-			divFilterBox.addStyleName("hide");
-			isNotDisplayed = true;
-		}
-	}
 
 	@Override
 	public void presentData(TransactionDTO transaction, boolean isSalesPerson) {
@@ -143,26 +208,14 @@ public class TransactionsView extends ViewImpl implements
 	public void setMiddleHeight() {
 		int totalHeight = divMainContainer.getElement().getOffsetHeight();
 		int topHeight = divContentTop.getElement().getOffsetHeight();
-		int middleHeight = totalHeight - topHeight - 10;
+		int searchBoxHeight = divSearchBox.getElement().getOffsetHeight();
+		int middleHeight = totalHeight - topHeight - searchBoxHeight - 10;
 
 		if (middleHeight > 0) {
 			divProgramsTable.setHeight(middleHeight + "px");
 		}
 	}
 
-	@Override
-	public void setInSlot(Object slot, Widget content) {
-		if (slot == FILTER_SLOT) {
-			divFilterBox.clear();
-			if (content != null) {
-				divFilterBox.add(content);
-			}
-		} else {
-			super.setInSlot(slot, content);
-		}
-
-	}
-	
 	public HasKeyDownHandlers getSearchBox(){
 		return txtSearchBox;
 	}
@@ -179,11 +232,17 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void setHeader(String setDate) {
-		headerContainer.setDateString(setDate);
+		setDateString(setDate);
 	}
 
 	@Override
 	public void setSalesTable(boolean show) {
 		tblView.setSalesTable(show);
+	}
+
+
+	@Override
+	public void setTills(List<TillDTO> tills) {
+		lstTills.setItems(tills);
 	}
 }

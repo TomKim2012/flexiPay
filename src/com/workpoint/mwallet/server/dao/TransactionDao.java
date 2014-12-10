@@ -70,12 +70,13 @@ public class TransactionDao extends BaseDaoImpl {
 		}
 
 		if (filter.getPhrase() != null) {
+			String searchTerm = filter.getPhrase().trim();
 			jpql.append(isFirst ? " Where" : " And");
 			jpql.append(" (t.customerName like :customerName or t.referenceId like :referenceId or "
 					+ "t.tillNumber like :tillNumber)");
-			params.put("customerName", "%" + filter.getPhrase() + "%");
-			params.put("referenceId", "%" + filter.getPhrase() + "%");
-			params.put("tillNumber", "%" + filter.getPhrase() + "%");
+			params.put("customerName", "%" + searchTerm + "%");
+			params.put("referenceId", "%" + searchTerm + "%");
+			params.put("tillNumber", "%" + searchTerm + "%");
 			isFirst = false;
 		}
 

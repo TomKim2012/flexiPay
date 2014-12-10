@@ -41,8 +41,24 @@
 	margin-left: 0px;
 }
 .main-container .content-right .content-body{
-	padding:10px;	
-	padding-left: 0px;
+	padding:10px;
+	padding-left:0px;	
+	padding-right: 0px;
+}
+.main-container .content-right .content-body .tabbable{
+	padding-left:10px
+}
+
+
+.tabbable .search-bar{
+	background: linear-gradient(rgb(248, 248, 248) 0px, rgb(236, 236, 236)
+ 	100%) repeat-x rgb(242, 242, 242);
+ 	border: 1px solid #E6E6E6;
+}
+
+.tabbable .search-bar .input-append{
+	margin-bottom:0px;
+	margin: 5px 5px;
 }
 
 .main-container .content-right .users-panel{
@@ -171,7 +187,7 @@ body .dateBoxPopup{
 .navbar {
 	margin-bottom: 1px;
 	position: relative;
-	height: inherit;
+	/* height: inherit; */
 }
 
 .navbar-inverse.navbar-admin .navbar-inner {
@@ -203,7 +219,7 @@ body .dateBoxPopup{
 }
 
 /* Login Logo - Placed Here coz SignIn CSS is not formated*/
-.login-wrapper .brand {
+.login-wrapper a.brand {
 	width: 260px;
 	height: 86px;
 	/* display: inline-block; */

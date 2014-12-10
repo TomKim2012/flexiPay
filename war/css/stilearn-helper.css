@@ -51,7 +51,7 @@ html{
 	width: 100%;
 }
 body {
-	/* overflow-y: hidden; */
+	overflow-y: hidden;
 	height: 100%;
 	width: 100%;
 }
@@ -557,7 +557,7 @@ body .breadcrumb a,a:hover{
 /** end text helper **/
 /** helper util **/
 .no-border {
-	border: 0 none;
+	border: 0 none !important;
 }
 /** /helper util **/
 /** form element focus **/

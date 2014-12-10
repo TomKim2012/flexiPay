@@ -1,10 +1,11 @@
 package com.workpoint.mwallet.client.ui.transactions.table;
 
+import com.github.gwtbootstrap.client.ui.Popover;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.RowWidget;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
@@ -38,7 +39,10 @@ public class TransactionTableRow extends RowWidget {
 	@UiField
 	HTMLPanel divStatus;
 	@UiField
-	SpanElement spnStatus;
+	InlineLabel spnStatus;
+	
+	@UiField 
+	Popover popoverStatus;
 
 	public TransactionTableRow() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -50,6 +54,13 @@ public class TransactionTableRow extends RowWidget {
 
 	public TransactionTableRow(TransactionDTO transaction, boolean isSalesPerson) {
 		this();
+
+		if (!transaction.isApproved()) {
+			row.setTitle("Transaction from unAllowed ipAddress::"
+					+ transaction.getIpAddress());
+			row.addStyleName("error");
+		}
+		
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
 		divAmount.getElement().setInnerHTML(
@@ -57,12 +68,12 @@ public class TransactionTableRow extends RowWidget {
 		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
 		divDate.getElement().setInnerHTML(
 				DateUtils.TIMESTAMPFORMAT.format(transaction.getTrxDate()));
-		
+
 		String businessName = transaction.getTill().getBusinessName();
-		
-		if(transaction.getTill().getBusinessName().length()>20){
-			businessName= businessName.substring(0, 20);
-			businessName+="...";
+
+		if (transaction.getTill().getBusinessName().length() > 20) {
+			businessName = businessName.substring(0, 20);
+			businessName += "...";
 		}
 		divTills.getElement().setInnerHTML(
 				transaction.getTill().getTillNo() + " (" + businessName + ")");
@@ -91,7 +102,7 @@ public class TransactionTableRow extends RowWidget {
 
 	private void setStatus(boolean status) {
 		if (status) {
-			spnStatus.setClassName("label label-success");
+			spnStatus.setStyleName("label label-success");
 		}
 	}
 

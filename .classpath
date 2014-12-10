@@ -37,6 +37,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqljdbc4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-bootstrap-2.3.2.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-bootstrap-2.3.2.0.jar" sourcepath="C:/Users/Maggy&apos;s/.m2/repository/com/github/gwtbootstrap/gwt-bootstrap/2.3.2.0/gwt-bootstrap-2.3.2.0-sources.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.workpoint.mwallet.server.dao.TransactionDao;
+import com.workpoint.mwallet.server.dao.model.SettingModel;
 import com.workpoint.mwallet.server.dao.model.TransactionModel;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -28,7 +29,7 @@ public class TestDB {
 	}
 	
 	
-	@Test
+	@Ignore
 	public void search(){
 		TransactionDao dao = new TransactionDao(em);
 		
@@ -48,13 +49,12 @@ public class TestDB {
 		System.out.println(model.size());
 	}
 	
-	@Ignore
+	@Test
 	public void callDB(){
-		TransactionModel model = new TransactionModel();
-		model.setAmount(223300.00);
-		model.setCustomerName("Tom sdsd");
-		model.setPhone("09845454");
-		model.setReferenceId("FYDKJDJD");
+		SettingModel model = new SettingModel();
+		model.setKey("IPNServer");
+		model.setDescription("IPNServer");
+		model.setValue("172.28.229.142");
 		
 		em.persist(model);
 		

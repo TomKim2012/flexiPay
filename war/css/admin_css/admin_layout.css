@@ -579,14 +579,6 @@
 	/* table-layout: auto; */
 }
 
-#usercontent .row-fluid:last-child {
-	border-top: 1px solid rgb(221, 221, 221);
-	padding-top: 12px;
-	padding-bottom: 12px;
-	background-color: rgb(239, 243, 248);
-	border-bottom: 1px solid rgb(221, 221, 221);
-}
-
 .thead {
 	display: table-header-group;
 	vertical-align: middle;
@@ -734,6 +726,41 @@
 	background-color: #faf2cc;
 	border-color: #f8e5be;
 }
+/*
+* Table Background Colors
+*/
+.table .tbody .tr.success > .td {
+  background-color: #dff0d8;
+}
+
+.table .tbody .tr.error > .td {
+  background-color: #f2dede;
+}
+
+.table .tbody .tr.warning > .td {
+  background-color: #fcf8e3;
+}
+
+.table .tbody .tr.info > .td {
+  background-color: #d9edf7;
+}
+
+.table-hover .tbody .tr.success:hover > .td {
+  background-color: #d0e9c6;
+}
+
+.table-hover .tbody .tr.error:hover > .td {
+  background-color: #ebcccc;
+}
+
+.table-hover .tbody .tr.warning:hover > .td {
+  background-color: #faf2cc;
+}
+
+.table-hover .tbody .tr.info:hover > .td {
+  background-color: #c4e3f3;
+}
+
 
 @media ( max-width : 768px) {
 	.table-responsive {
@@ -767,6 +794,8 @@
 		border-bottom: 0;
 	}
 }
+/*End of Table Styling */
+
 /* end content-body */
 /* end content */
 /*--------Panel Styles----*/

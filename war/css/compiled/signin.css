@@ -10,15 +10,16 @@
 }
 
 .login-wrapper {
-  /* position: absolute; */
-  /* top: 55px; */
+  position: absolute;
+  top: 20%;
   text-align: center; 
+  height: 100%;
 }
   .login-wrapper .logo {
     margin-bottom: 45px;
     position: relative;
     left: -2px; }
-  .login-wrapper .box {
+  .login-wrapper div.box {
     margin: 30px auto;
     padding: 35px;
     float: none;

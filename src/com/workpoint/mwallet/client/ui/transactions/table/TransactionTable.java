@@ -30,20 +30,20 @@ public class TransactionTable extends Composite {
 	}
 
 	public void createHeader() {
-		List<TransactionHeader> th = new ArrayList<TransactionHeader>();
+		List<TableHeader> th = new ArrayList<TableHeader>();
 		if (isSalesTable) {
-			th.add(new TransactionHeader("Commission"));
-			th.add(new TransactionHeader("Reference Id"));
-			th.add(new TransactionHeader("Date & Time"));
-			th.add(new TransactionHeader("Till Number"));
+			th.add(new TableHeader("Commission"));
+			th.add(new TableHeader("Reference Id"));
+			th.add(new TableHeader("Date & Time"));
+			th.add(new TableHeader("Till Number"));
 		} else {
-			th.add(new TransactionHeader("Customer Names"));
-			th.add(new TransactionHeader("Phone Number"));
-			th.add(new TransactionHeader("Amount"));
-			th.add(new TransactionHeader("Reference Id"));
-			th.add(new TransactionHeader("Date"));
-			th.add(new TransactionHeader("Till Number"));
-			th.add(new TransactionHeader("Status"));
+			th.add(new TableHeader("Customer Names"));
+			th.add(new TableHeader("Phone Number"));
+			th.add(new TableHeader("Amount"));
+			th.add(new TableHeader("Reference Id"));
+			th.add(new TableHeader("Date"));
+			th.add(new TableHeader("Till Number"));
+			th.add(new TableHeader("Status"));
 		}
 
 		tblView.setTableHeaders(th);

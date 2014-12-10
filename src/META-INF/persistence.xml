@@ -9,10 +9,12 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 		<class>com.workpoint.mwallet.server.dao.model.TransactionModel</class>
 		<class>com.workpoint.mwallet.server.dao.model.TillModel</class>
 		<class>com.workpoint.mwallet.server.dao.model.User</class>
-		
+		<class>com.workpoint.mwallet.server.dao.model.SettingModel</class>
+
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
-			<property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+			<property name="hibernate.connection.driver_class"
+				value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 			<property name="hibernate.connection.url"
 				value="jdbc:sqlserver://localhost:1433;databaseName=mobileBanking" />
 			<property name="hibernate.connection.username" value="TomKim" />

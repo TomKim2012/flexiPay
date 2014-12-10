@@ -28,7 +28,6 @@ public enum DateRange implements Listable{
 				return type;
 			}
 		}
-		
 		return null;
 	}
 

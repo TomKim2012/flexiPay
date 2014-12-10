@@ -9,13 +9,11 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
-		<!-- BreadCrump -->
-		<d:BulletListPanel styleName="breadcrumb" ui:field="crumbContainer">
-		</d:BulletListPanel>
-
+		<!-- Issues -->
 		<d:IssuesPanel ui:field="issues">
 		</d:IssuesPanel>
 
+		<!-- Tabs -->
 		<t:TabPanel ui:field="divTabs">
 		</t:TabPanel>
 	</g:HTMLPanel>

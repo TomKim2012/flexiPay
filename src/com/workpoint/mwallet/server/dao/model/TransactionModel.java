@@ -28,7 +28,7 @@ public class TransactionModel {
 	private String phone;
 	@Column(name="mpesa_amt")
 	private Double amount;
-	@Column(name="mpesa_code")
+	@Column(name="mpesa_code", unique=true)
 	private String referenceId;
 	@Column(name="tstamp")
 	private Date trxDate;
@@ -36,13 +36,13 @@ public class TransactionModel {
 	private String tillNumber;
 	@Column(name="Isprocessed")
 	private boolean status;
-	
+	private String ipAddress;
+	private Boolean isApproved;
 	
 
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -103,4 +103,17 @@ public class TransactionModel {
 		this.status = status;
 	}
 	
+	public String getipAddress(){
+		return ipAddress;
+	}
+	
+	public void setipAddress(String ipAddress){
+		this.ipAddress=ipAddress;
+	}
+	public Boolean getApproved() {
+		return isApproved;
+	}
+	public void setApproved(Boolean isApproved) {
+		this.isApproved = isApproved;
+	}
 }

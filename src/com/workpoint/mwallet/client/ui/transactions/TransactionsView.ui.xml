@@ -4,6 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:p='urn:import:com.workpoint.mwallet.client.ui.transactions'
 	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.transactions.table'
+	xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui"
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
@@ -13,27 +14,30 @@
 			<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
 				<!--Action Buttons -->
 				<div class="action-buttons row-fluid">
-					<div class="span3 right-side">
-						<div class="program-search">
-							<div class="input-append">
-								<d:TextField ui:field="txtSearchBox" placeholder="Search here"></d:TextField>
-								<d:ActionLink styleName="icon-caret-down muted"
-									ui:field="iFilterdropdown"></d:ActionLink>
-								<d:ActionLink styleName="btn hide" ui:field="btnSearch">
-									<i class="icon-search"></i>
-								</d:ActionLink>
-							</div>
-
-							<g:HTMLPanel ui:field="divFilterBox" styleName="hide search-box">
-							</g:HTMLPanel>
-
-						</div>
+					<div class="span6 till-box">
+							<p>Select Till:</p>
+							<d:DropDownList ui:field="lstTills">
+							</d:DropDownList>
 					</div>
 
-					<div class="span9">
-						<div class="span3">
-							<d:ActionLink ui:field="aRefresh" styleName="btn icon-refresh"
-								dataToggle="tooltip">
+					<div class="span6 date-box">
+						<b2:DateBoxAppended format="dd/mm/yyyy"
+							autoClose="true" icon="CALENDAR" ui:field="txtDatePicker" />
+
+						<g:InlineLabel ui:field="spnDates"
+							styleName="text-info helper-font-small dropdown-toggle hide">
+						</g:InlineLabel>
+
+						<d:ActionLink styleName="icon-caret-down dropdown-toggle hide"
+							title="Select Period" ui:field="aProgramEdit" dataToggle="dropdown">
+						</d:ActionLink>
+
+						<d:Dropdown ui:field="periodDropdown" styleName="hide"></d:Dropdown>
+
+						<div class="span1 pull-right">
+							<d:ActionLink ui:field="aRefresh" styleName="btn"
+								dataToggle="tooltip" title="Refresh">
+								<span class="icon-refresh"></span>
 							</d:ActionLink>
 						</div>
 					</div>
@@ -52,18 +56,14 @@
 
 
 			<div class="row-fluid full-page content-body">
-
-				<g:HTMLPanel ui:field="divNoContent" styleName="hidden">
-					<i class="icon-warning-sign helper-font-16"></i>
-					<span class="helper-font-16">
-						No Programs Added. Click
-						<a>Create Program</a>
-						to get started
-					</span>
-				</g:HTMLPanel>
-
-
 				<g:HTMLPanel ui:field="divMiddleContent" styleName="tabbable tabs-below full-page">
+					<g:HTMLPanel styleName="search-bar" ui:field="divSearchBox">
+						<div class="input-append">
+							<d:TextField ui:field="txtSearchBox" placeholder="Search here"></d:TextField>
+							<!-- <d:ActionLink styleName="icon-caret-down muted" -->
+							<!-- ui:field="iFilterdropdown"></d:ActionLink> -->
+						</div>
+					</g:HTMLPanel>
 
 					<d:MyHTMLPanel styleName="tab-content" ui:field="divProgramsTable">
 						<g:HTMLPanel>
@@ -74,30 +74,6 @@
 						</g:HTMLPanel>
 					</d:MyHTMLPanel>
 
-					<g:HTMLPanel styleName="row-fluid tab-body hide"
-						ui:field="divContentBottom">
-						<div class="span2 controllers hide">
-							<d:ActionLink ui:field="aShow" styleName="span3">
-								<span class="icon-align-justify helper-font-16"></span>
-							</d:ActionLink>
-						</div>
-
-						<div class="span10 tabs-container">
-							<d:BulletListPanel ui:field="listPanel"
-								styleName="nav nav-tabs">
-							</d:BulletListPanel>
-						</div>
-						<div class="span2 controllers">
-							<d:ActionLink ui:field="aLeft" styleName="span3"
-								dataPlacement="top" title="Scroll Left">
-								<span class="icon-caret-left helper-font-16"></span>
-							</d:ActionLink>
-							<d:ActionLink ui:field="aRight" styleName="span3"
-								dataPlacement="top" title="Scroll Right">
-								<span class="icon-caret-right helper-font-16"></span>
-							</d:ActionLink>
-						</div>
-					</g:HTMLPanel>
 				</g:HTMLPanel>
 			</div>
 

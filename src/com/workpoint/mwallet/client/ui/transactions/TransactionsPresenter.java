@@ -11,18 +11,13 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
-import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent;
-import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent.HideFilterBoxHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
@@ -44,10 +39,7 @@ import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
 
 public class TransactionsPresenter extends
 		PresenterWidget<TransactionsPresenter.ITransactionView> implements
-		SearchHandler, HideFilterBoxHandler {
-
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
+		SearchHandler{
 
 	@Inject
 	FilterPresenter filterPresenter;
@@ -64,7 +56,7 @@ public class TransactionsPresenter extends
 
 		HasClickHandlers getRefreshLink();
 
-		HasClickHandlers getSearchButton();
+//		HasClickHandlers getSearchButton();
 
 		SearchFilter getFilter();
 
@@ -72,11 +64,11 @@ public class TransactionsPresenter extends
 
 		void setHeader(String date);
 
-		void showFilterView();
-
 		void setSalesTable(boolean b);
 
 		void presentData(TransactionDTO transaction, boolean isSalesPerson);
+
+		void setTills(List<TillDTO> tills);
 	}
 
 	@Inject
@@ -96,21 +88,20 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		setInSlot(FILTER_SLOT, filterPresenter);
 		filterPresenter.setFilter(SearchType.Transaction);
 		getView().setMiddleHeight();
 
 		if (AppContext.getContextUser() != null
 				|| AppContext.getContextUser().getGroups() != null) {
 			UserDTO user = AppContext.getContextUser();
-
-			if (AppContext.isCurrentUserAdmin()) {
-				// clear(); // clear all Tills
-				loadData("This Month");
-			} else if ((user.hasGroup("Merchant"))
-					|| (user.hasGroup("SalesPerson"))) {
-				getTills(user);
-			}
+			getTills(user);
+			
+//			if (AppContext.isCurrentUserAdmin()) {
+//				loadData("This Year");
+//			} else if ((user.hasGroup("Merchant"))
+//					|| (user.hasGroup("SalesPerson"))) {
+//				
+//			}
 
 		} else {
 			Window.alert("User details not found.");
@@ -118,12 +109,6 @@ public class TransactionsPresenter extends
 
 	}
 
-	private void clear() {
-		if (tills != null) {
-			System.err.println("Cleared all tills");
-			tills.clear();
-		}
-	}
 
 	private List<TillDTO> tills = new ArrayList<TillDTO>();
 	private boolean isSalesPerson = false;
@@ -133,10 +118,9 @@ public class TransactionsPresenter extends
 
 		if (user.hasGroup("Merchant")) {
 			tillFilter.setOwner(user);
-		} else {
+		} else if(user.hasGroup("SalesPerson")) {
 			isSalesPerson = true;
 			getView().setSalesTable(isSalesPerson);// Set SalesPerson
-													// Transaction Table
 			tillFilter.setSalesPerson(user);
 		}
 		requestHelper.execute(new GetTillsRequest(tillFilter),
@@ -149,8 +133,7 @@ public class TransactionsPresenter extends
 							filter.setTills(tills);
 						}
 						filterPresenter.setTills(tills);
-
-						loadData("This Month");
+						loadData("This Year");
 					}
 				});
 	}
@@ -221,7 +204,6 @@ public class TransactionsPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(SearchEvent.TYPE, this);
-		addRegisteredHandler(HideFilterBoxEvent.TYPE, this);
 
 		getView().getRefreshLink().addClickHandler(new ClickHandler() {
 			@Override
@@ -232,16 +214,6 @@ public class TransactionsPresenter extends
 
 		getView().getSearchBox().addKeyDownHandler(keyHandler);
 
-		getView().getSearchButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				if (getView().getFilter() != null) {
-					GetTransactionsRequest request = new GetTransactionsRequest(
-							getView().getFilter());
-					performSearch(request);
-				}
-			}
-		});
 	}
 
 	@Override
@@ -259,6 +231,8 @@ public class TransactionsPresenter extends
 		if ((tills != null) && (!AppContext.isCurrentUserAdmin())) {
 			filter.setTills(tills);
 		}
+		
+		getView().setTills(tills);
 	}
 
 	public void performSearch(GetTransactionsRequest request) {
@@ -275,8 +249,4 @@ public class TransactionsPresenter extends
 				});
 	}
 
-	@Override
-	public void onHideFilterBox(HideFilterBoxEvent event) {
-		getView().showFilterView();
-	}
 }
