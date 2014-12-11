@@ -31,8 +31,6 @@ public class UserWidget extends Composite {
 	SpanElement spnUserGroup;
 	@UiField
 	DivElement spnVersion;
-	@UiField
-	BulletListPanel divPanelContainer;
 
 	private static UserWidgetUiBinder uiBinder = GWT
 			.create(UserWidgetUiBinder.class);
@@ -87,13 +85,9 @@ public class UserWidget extends Composite {
 	public void setMobile(boolean isMobile) {
 		this.isMobile = isMobile;
 		if (isMobile) {
-			divPanelContainer.removeStyleName("dropdown-menu");
-			divPanelContainer.addStyleName("nav nav-tabs nav-stacked");
 			aProfile.removeStyleName("btn btn-primary");
 			aLogout.removeStyleName("btn");
 		} else {
-			divPanelContainer.addStyleName("dropdown-menu");
-			divPanelContainer.removeStyleName("nav nav-tabs nav-stacked");
 			aProfile.addStyleName("btn btn-primary");
 			aLogout.addStyleName("btn");
 		}

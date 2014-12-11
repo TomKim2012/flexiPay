@@ -4,6 +4,7 @@
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="navbar" ui:field="divNavbar">
@@ -17,17 +18,17 @@
 		</div>
 
 		<div class="navbar-inner">
-			<g:Anchor styleName="brand" href="#home" ui:field="aBrand">
-				E-Wallet
-			</g:Anchor>
-			<a href="#home" class="brand hide">
-				<g:Image ui:field="imgLogo" url="img/logo.png"></g:Image>
+			<a href="#home" class="brand">
+				<g:Image ui:field="imgLogo" url="img/Pioneer_Logo.png"></g:Image>
 			</a>
+			
+			<g:Anchor styleName="brand brand-text" href="#home" ui:field="aBrand">
+				 | E-Wallet
+			</g:Anchor>
 
 			<ul class="nav pull-right">
 				<li class="home hide">
-					<g:Anchor href="#home" ui:field="aHome"
-						styleName="close-icon hand active ">
+					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand active ">
 						<i class="icon-home hidden-phone">&nbsp;Home</i>
 						<i class="icon-home visible-phone helper-font-26"></i>
 					</g:Anchor>
@@ -54,16 +55,9 @@
 
 				</li>
 
-				<li class="user-dropdown dropdown">
-					<a href="#" class="dropdown-toggle hidden-phone" data-toggle="dropdown">
-						<span ui:field="spnUser" class="name"></span>
-						<g:Image styleName="avatar-small hide" ui:field="imgSmall"
-							width="30px" height="50px" />
-						<b class="caret"></b>
-					</a>
-
+				<b:Dropdown ui:field="DropDownUser">
 					<d:UserWidget ui:field="divUserContainer" mobile="false"></d:UserWidget>
-				</li>
+				</b:Dropdown>
 			</ul>
 		</div>
 	</g:HTMLPanel>

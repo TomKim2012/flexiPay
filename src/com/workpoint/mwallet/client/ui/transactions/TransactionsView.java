@@ -1,6 +1,5 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,10 +43,9 @@ public class TransactionsView extends ViewImpl implements
 
 	@UiField
 	HTMLPanel divMiddleContent;
-	
+
 	@UiField
 	HTMLPanel divSearchBox;
-
 
 	@UiField
 	HTMLPanel divContentTop;
@@ -61,22 +59,20 @@ public class TransactionsView extends ViewImpl implements
 	@UiField
 	MyHTMLPanel divProgramsTable;
 
-
 	@UiField
 	TransactionsHeader headerContainer;
-	
+
 	@UiField
 	InlineLabel spnDates;
 
 	@UiField
 	Dropdown<DateRange> periodDropdown;
-	
+
 	@UiField
 	DropDownList<TillDTO> lstTills;
-	
+
 	@UiField
 	DateBoxAppended txtDatePicker;
-
 
 	@UiField
 	TextField txtSearchBox;
@@ -92,14 +88,6 @@ public class TransactionsView extends ViewImpl implements
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 
-//		iFilterdropdown.addClickHandler(new ClickHandler() {
-//			@Override
-//			public void onClick(ClickEvent event) {
-//				showFilterView();
-//			}
-//		});
-		
-
 		spnDates.getElement().setAttribute("data-toggle", "dropdown");
 
 		List<DateRange> dateRanges = new ArrayList<DateRange>();
@@ -112,22 +100,28 @@ public class TransactionsView extends ViewImpl implements
 				txtDatePicker.add(link);
 			}
 		}
-		
-		
 
 		periodDropdown.setValues(dateRanges);
-		
 
 		periodDropdown
 				.addValueChangeHandler(new ValueChangeHandler<DateRange>() {
-
 					@Override
 					public void onValueChange(ValueChangeEvent<DateRange> event) {
 						setDateRange(event.getValue().getDisplayName());
 					}
 				});
+
+		lstTills.addValueChangeHandler(new ValueChangeHandler<TillDTO>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<TillDTO> event) {
+				SearchFilter filter = new SearchFilter();
+				filter.setTill(lstTills.getValue());
+				lstTills.setValue(event.getValue());
+				AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
+			}
+
+		});
 	}
-	
 
 	public void setDateString(String passedDate) {
 		Date startDate = DateUtils.getDateByRange(DateRange
@@ -145,8 +139,8 @@ public class TransactionsView extends ViewImpl implements
 		}
 		displayDate += ") ";
 		spnDates.getElement().setInnerText(displayDate);
-		
-		//txtDatePicker.setStartDate()
+
+		// txtDatePicker.setStartDate()
 	}
 
 	public void setDateRange(String displayName) {
@@ -172,23 +166,20 @@ public class TransactionsView extends ViewImpl implements
 		}
 	}
 
-
 	public HasClickHandlers getRefreshLink() {
 		return aRefresh;
 	}
-
 
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
-	
 
 	@Override
 	public void presentData(TransactionDTO transaction, boolean isSalesPerson) {
-		tblView.createRow(new TransactionTableRow(transaction,isSalesPerson));
+		tblView.createRow(new TransactionTableRow(transaction, isSalesPerson));
 	}
-	
+
 	@Override
 	public void presentData(TransactionDTO transaction) {
 		tblView.createRow(new TransactionTableRow(transaction));
@@ -199,7 +190,7 @@ public class TransactionsView extends ViewImpl implements
 		headerContainer.setTotals(transactions, amount);
 		// System.err.println("Transactions>>"+transactions);
 	}
-	
+
 	@Override
 	public void clear() {
 		tblView.clearRows();
@@ -216,9 +207,10 @@ public class TransactionsView extends ViewImpl implements
 		}
 	}
 
-	public HasKeyDownHandlers getSearchBox(){
+	public HasKeyDownHandlers getSearchBox() {
 		return txtSearchBox;
 	}
+
 	@Override
 	public SearchFilter getFilter() {
 		SearchFilter filter = new SearchFilter();
@@ -240,9 +232,10 @@ public class TransactionsView extends ViewImpl implements
 		tblView.setSalesTable(show);
 	}
 
-
 	@Override
 	public void setTills(List<TillDTO> tills) {
 		lstTills.setItems(tills);
+		
+		System.err.println("Set Tills called");
 	}
 }

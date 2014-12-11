@@ -39,66 +39,88 @@ import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
-public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileView{
+public class ProfileView extends ViewImpl implements
+		ProfilePresenter.IProfileView {
 
 	private final Widget widget;
-	@UiField Uploader uploader;
-	@UiField FocusPanel panelPicture;
-	@UiField FocusPanel uploadPanel;
-	@UiField HTMLPanel panelPassword;
-	@UiField DivElement divPassword;
-	@UiField DivElement divGroups;
-	
-	@UiField TextField txtLastname;
-	@UiField TextField txtFirstname;
-	@UiField TextField txtUserName;
-	@UiField TextField txtEmail;
-	@UiField PasswordField txtPrevPassword;
-	@UiField PasswordField txtPassword;
-	@UiField PasswordField txtConfirmPassword;
-	@UiField DivElement divSaveUser;
-	@UiField Button btnSave;
-	@UiField Button btnCancel;
-	
-	@UiField Button btnPassword;
-	@UiField Button btnSavePassword;
-	@UiField Button btnCancelPasswordSave;
-	
-	@UiField Image imgUser;
-	
-	@UiField IssuesPanel issues;
-		
+	@UiField
+	Uploader uploader;
+	@UiField
+	FocusPanel panelPicture;
+	@UiField
+	FocusPanel uploadPanel;
+	@UiField
+	HTMLPanel panelPassword;
+	@UiField
+	DivElement divPassword;
+	@UiField
+	DivElement divGroups;
+
+	@UiField
+	TextField txtLastname;
+	@UiField
+	TextField txtFirstname;
+	@UiField
+	TextField txtUserName;
+	@UiField
+	TextField txtEmail;
+	@UiField
+	PasswordField txtPrevPassword;
+	@UiField
+	PasswordField txtPassword;
+	@UiField
+	PasswordField txtConfirmPassword;
+	@UiField
+	DivElement divSaveUser;
+	@UiField
+	Button btnSave;
+	@UiField
+	Button btnCancel;
+
+	@UiField
+	Button btnPassword;
+	@UiField
+	Button btnSavePassword;
+	@UiField
+	Button btnCancelPasswordSave;
+
+	@UiField
+	Image imgUser;
+
+	@UiField
+	IssuesPanel issues;
+
 	public interface Binder extends UiBinder<Widget, ProfileView> {
 	}
 
 	@Inject
 	public ProfileView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		
+
 		uploader.addStyleName("custom-file-input");
-		
+
 		panelPicture.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				uploader.removeStyleName("hide");
 			}
 		});
-		
+
 		imgUser.addErrorHandler(new ErrorHandler() {
-			
+
 			@Override
 			public void onError(ErrorEvent event) {
 				imgUser.setUrl("img/blueman.png");
 			}
 		});
-		
+
 		uploadPanel.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				uploader.addStyleName("hide");
 			}
 		});
-	
+
 		btnPassword.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -106,7 +128,7 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 				panelPassword.removeStyleName("hide");
 			}
 		});
-		
+
 		btnCancelPasswordSave.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -115,67 +137,65 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 				issues.clear();
 			}
 		});
-		
+
 		KeyPressHandler kphandler = new KeyPressHandler() {
-			
+
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				if(valueChanged()){
+				if (valueChanged()) {
 					UIObject.setVisible(divSaveUser, true);
 					UIObject.setVisible(btnPassword.getElement(), false);
-				}else{
+				} else {
 					UIObject.setVisible(divSaveUser, false);
 					UIObject.setVisible(btnPassword.getElement(), true);
 				}
 			}
 		};
-		
+
 		ValueChangeHandler<String> vhandler = new ValueChangeHandler<String>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				if(valueChanged()){
+				if (valueChanged()) {
 					UIObject.setVisible(divSaveUser, true);
 					UIObject.setVisible(btnPassword.getElement(), false);
-				}else{
+				} else {
 					UIObject.setVisible(divSaveUser, false);
 					UIObject.setVisible(btnPassword.getElement(), true);
 				}
 			}
 		};
-		
+
 		txtFirstname.addKeyPressHandler(kphandler);
 		txtEmail.addKeyPressHandler(kphandler);
 		txtLastname.addKeyPressHandler(kphandler);
-		
+
 		txtFirstname.addValueChangeHandler(vhandler);
 		txtEmail.addValueChangeHandler(vhandler);
 		txtLastname.addValueChangeHandler(vhandler);
-		
-			
+
 		UIObject.setVisible(divSaveUser, false);
-		
+
 		uploader.addOnFinishUploaderHandler(new IUploader.OnFinishUploaderHandler() {
-			
+
 			@Override
 			public void onFinish(IUploader uploaderRef) {
 				setImage(AppContext.getContextUser());
-				String url = imgUser.getUrl();				
-				imgUser.setUrl(url+"&version="+Random.nextInt());
+				String url = imgUser.getUrl();
+				imgUser.setUrl(url + "&version=" + Random.nextInt());
 			}
 		});
 	}
 
-	public UserDTO getUser(){
-		
+	public UserDTO getUser() {
+
 		UserDTO user = new UserDTO();
 		user.setEmail(txtEmail.getText());
 		user.setFirstName(txtFirstname.getText());
 		user.setLastName(txtLastname.getText());
 		return user;
 	}
-	
 
-	public void setUser(UserDTO user){
+	public void setUser(UserDTO user) {
 		issues.clear();
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getFirstName());
@@ -184,45 +204,47 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 		email = user.getEmail();
 		firstName = user.getName();
 		lastName = user.getLastName();
-		
+
 		setContext(user.getUserId());
 		setImage(user);
-		
+
 		List<UserGroup> groups = user.getGroups();
-		if(groups!=null){
+		if (groups != null) {
 			String html = "";
-			for(UserGroup group: groups){
-				html = html.concat("<span class=\"label\">"+group.getDisplayName()+"</span>");
+			for (UserGroup group : groups) {
+				html = html.concat("<div><span class=\"label\">"
+						+ group.getDisplayName() + "</span></div>");
 			}
-			
+
 			divGroups.setInnerHTML(html);
 		}
-		
+
 		UIObject.setVisible(divSaveUser, false);
 		UIObject.setVisible(btnPassword.getElement(), true);
 		divPassword.removeClassName("hide");
 		panelPassword.addStyleName("hide");
 	}
-	
-	String email=null;
-	String firstName=null;
-	String lastName=null;
+
+	String email = null;
+	String firstName = null;
+	String lastName = null;
+
 	protected boolean valueChanged() {
-		
-		if(!firstName.equals(txtFirstname.getValue())){
+
+		if (!firstName.equals(txtFirstname.getValue())) {
 			return true;
 		}
-		if(!lastName.equals(txtLastname.getValue())){
+		if (!lastName.equals(txtLastname.getValue())) {
 			return true;
 		}
-		
-		if(!email.equals(txtEmail.getValue())){
+
+		if (!email.equals(txtEmail.getValue())) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	protected void setContext(String value) {
 		UploadContext context = new UploadContext();
 		context.setAction(UPLOADACTION.UPLOADUSERIMAGE);
@@ -230,29 +252,27 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 		context.setAccept("png,jpeg,jpg,gif");
 		uploader.setContext(context);
 	}
-	
-	
+
 	@Override
 	public boolean isValid() {
 		issues.clear();
-		boolean valid=true;
-		
-		if(isNullOrEmpty(txtFirstname.getValue())){
+		boolean valid = true;
+
+		if (isNullOrEmpty(txtFirstname.getValue())) {
 			valid = false;
 			issues.addError("First Name is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtLastname.getValue())){
+
+		if (isNullOrEmpty(txtLastname.getValue())) {
 			valid = false;
 			issues.addError("First Name is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtEmail.getValue())){
+
+		if (isNullOrEmpty(txtEmail.getValue())) {
 			valid = false;
 			issues.addError("Email is mandatory");
 		}
-		
-		
+
 		return valid;
 	}
 
@@ -267,12 +287,12 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 
 	@Override
 	public HasClickHandlers getSaveUser() {
-		
+
 		return btnSave;
 	}
-	
+
 	public void setImage(UserDTO user) {
-		imgUser.setUrl(AppContext.getUserImageUrl(user,179.0));
+		imgUser.setUrl(AppContext.getUserImageUrl(user, 179.0));
 	}
 
 	@Override
@@ -284,35 +304,35 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 	@Override
 	public boolean isPasswordChangeValid() {
 		issues.clear();
-		boolean valid=true;
-		
-		if(isNullOrEmpty(txtPrevPassword.getValue())){
+		boolean valid = true;
+
+		if (isNullOrEmpty(txtPrevPassword.getValue())) {
 			valid = false;
 			issues.addError("Previous password is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtPassword.getValue())){
+
+		if (isNullOrEmpty(txtPassword.getValue())) {
 			valid = false;
 			issues.addError("New Password is mandatory");
 		}
-		
-		if(isNullOrEmpty(txtConfirmPassword.getValue())){
+
+		if (isNullOrEmpty(txtConfirmPassword.getValue())) {
 			valid = false;
 			issues.addError("Confirm Password is mandatory");
 		}
-		
-		
-		if(valid && !(txtPassword.getText().equals(txtConfirmPassword.getText()))){
+
+		if (valid
+				&& !(txtPassword.getText().equals(txtConfirmPassword.getText()))) {
 			valid = false;
 			issues.addError("New Password and Confirm Password must be same");
 		}
-		
+
 		return valid;
 	}
 
 	@Override
 	public String getPassword() {
-	
+
 		return txtPassword.getText();
 	}
 
@@ -324,11 +344,11 @@ public class ProfileView extends ViewImpl implements ProfilePresenter.IProfileVi
 
 	@Override
 	public String getPreviousPassword() {
-		
+
 		return txtPrevPassword.getText();
 	}
-	
-	public HasClickHandlers getCancelSaveUser(){
+
+	public HasClickHandlers getCancelSaveUser() {
 		return btnCancel;
 	}
 }

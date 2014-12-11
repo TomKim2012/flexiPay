@@ -88,20 +88,15 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		filterPresenter.setFilter(SearchType.Transaction);
+		
 		getView().setMiddleHeight();
+		
+		System.err.println("On Reset called");
 
 		if (AppContext.getContextUser() != null
 				|| AppContext.getContextUser().getGroups() != null) {
 			UserDTO user = AppContext.getContextUser();
 			getTills(user);
-			
-//			if (AppContext.isCurrentUserAdmin()) {
-//				loadData("This Year");
-//			} else if ((user.hasGroup("Merchant"))
-//					|| (user.hasGroup("SalesPerson"))) {
-//				
-//			}
 
 		} else {
 			Window.alert("User details not found.");
@@ -115,8 +110,10 @@ public class TransactionsPresenter extends
 
 	private void getTills(UserDTO user) {
 		SearchFilter tillFilter = new SearchFilter();
-
-		if (user.hasGroup("Merchant")) {
+		
+		if (AppContext.isCurrentUserAdmin()){
+			
+		}else if (user.hasGroup("Merchant")) {
 			tillFilter.setOwner(user);
 		} else if(user.hasGroup("SalesPerson")) {
 			isSalesPerson = true;
@@ -128,11 +125,7 @@ public class TransactionsPresenter extends
 					@Override
 					public void processResult(GetTillsRequestResult aResponse) {
 						tills = aResponse.getTills();
-						System.err.println("Tills size::" + tills.size());
-						if (tills != null) {
-							filter.setTills(tills);
-						}
-						filterPresenter.setTills(tills);
+						setLoggedInUserTills();
 						loadData("This Year");
 					}
 				});
@@ -143,8 +136,6 @@ public class TransactionsPresenter extends
 
 	private void loadData(String passedDate) {
 		this.setDateRange = passedDate;
-
-		setLoggedInUserTills();
 
 		getView().setHeader(passedDate);
 
@@ -192,7 +183,6 @@ public class TransactionsPresenter extends
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				filter = getView().getFilter();
-				setLoggedInUserTills();
 				GetTransactionsRequest request = new GetTransactionsRequest(
 						filter);
 				performSearch(request);
@@ -220,19 +210,19 @@ public class TransactionsPresenter extends
 	public void onSearch(SearchEvent event) {
 		if (event.getSearchType() == SearchType.Transaction) {
 			filter = event.getFilter();
-			setLoggedInUserTills();
-			// System.err.println("Tills" + filter.getTills().size());
 			GetTransactionsRequest request = new GetTransactionsRequest(filter);
 			performSearch(request);
 		}
 	}
 
 	private void setLoggedInUserTills() {
-		if ((tills != null) && (!AppContext.isCurrentUserAdmin())) {
+		if (tills != null) {
+			if(!AppContext.isCurrentUserAdmin()){
 			filter.setTills(tills);
+			}
+			getView().setTills(tills);
 		}
 		
-		getView().setTills(tills);
 	}
 
 	public void performSearch(GetTransactionsRequest request) {

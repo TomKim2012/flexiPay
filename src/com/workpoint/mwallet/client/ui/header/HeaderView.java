@@ -2,6 +2,7 @@ package com.workpoint.mwallet.client.ui.header;
 
 import java.util.Date;
 
+import com.github.gwtbootstrap.client.ui.Dropdown;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,13 +36,11 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@UiField
 	Anchor aNavbarToggle;
 	@UiField
-	Image imgSmall;
-	@UiField
 	Image imgLogo;
 	@UiField
 	Anchor aBrand;
 	@UiField
-	SpanElement spnUser;
+	Dropdown DropDownUser;
 	@UiField
 	Anchor aNotifications;
 	@UiField
@@ -59,23 +58,11 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	boolean isSelected = false;
 
-	//private Boolean isToggleClicked = true;
 
 	@Inject
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		aNotifications.setTabIndex(3);
-		aNotifications.getElement().setAttribute("data-toggle", "dropdown");
 		UIObject.setVisible(aAdmin.getElement(), false);
-
-		// UIObject.setVisible(aBrand.getElement(), false);
-
-		imgSmall.addErrorHandler(new ErrorHandler() {
-			@Override
-			public void onError(ErrorEvent event) {
-				imgSmall.setUrl("img/blueman(small).png");
-			}
-		});
 
 		setAnchorHandlers();
 	}
@@ -124,9 +111,9 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	public void setValues(String user_names, String userGroups) {
 		if (user_names != null) {
-			spnUser.setInnerText(user_names);
+			DropDownUser.setText(user_names);
 		} else {
-			spnUser.setInnerText("");
+			DropDownUser.setText("");
 		}
 		
 		divUserContainer.setValues(user_names, userGroups);
@@ -199,7 +186,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	@Override
 	public void setImage(UserDTO currentUser) {
-		imgSmall.setUrl(AppContext.getUserImageUrl(currentUser, 48.0, 48.0));
 		divUserContainer.setImage(currentUser);
 	}
 }
