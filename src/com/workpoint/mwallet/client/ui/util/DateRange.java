@@ -9,7 +9,10 @@ public enum DateRange implements Listable{
 	THISWEEK("Last 7 Days"),
 	THISMONTH("This Month"),
 	THISQUARTER("Last 3 Months"),
-	THISYEAR("This Year");
+	THISYEAR("This Year"),
+	SPECIFIC("Specific Date"),
+	INBETWEEN("DateRange");
+	
 	
 	private String displayName;
 
@@ -28,6 +31,7 @@ public enum DateRange implements Listable{
 				return type;
 			}
 		}
+//		System.err.println("No Match Found");
 		return null;
 	}
 

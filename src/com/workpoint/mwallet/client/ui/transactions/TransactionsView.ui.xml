@@ -5,7 +5,7 @@
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:p='urn:import:com.workpoint.mwallet.client.ui.transactions'
 	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.transactions.table'
 	xmlns:b2="urn:import:com.github.gwtbootstrap.datepicker.client.ui"
-	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="activities-page">
@@ -15,24 +15,38 @@
 				<!--Action Buttons -->
 				<div class="action-buttons row-fluid">
 					<div class="span6 till-box">
-							<p>Select Till:</p>
-							<d:DropDownList ui:field="lstTills">
-							</d:DropDownList>
+						<b:Form type="HORIZONTAL">
+							<b:ControlGroup>
+								<b:ControlLabel>Select Till:</b:ControlLabel>
+								<b:Controls>
+									<d:DropDownList ui:field="lstTills">
+									</d:DropDownList>
+								</b:Controls>
+							</b:ControlGroup>
+						</b:Form>
 					</div>
 
 					<div class="span6 date-box">
-						<b2:DateBoxAppended format="dd/mm/yyyy"
-							autoClose="true" icon="CALENDAR" ui:field="txtDatePicker" />
+						<b:Form type="HORIZONTAL">
+							<b:ControlGroup>
+								<b:ControlLabel>Choose Date(s):</b:ControlLabel>
+								<b:Controls>
+									<b:NavPills>
+										<b:Dropdown ui:field="periodDropdown"></b:Dropdown>
+									</b:NavPills>
+								</b:Controls>
+							</b:ControlGroup>
+						</b:Form>
 
-						<g:InlineLabel ui:field="spnDates"
-							styleName="text-info helper-font-small dropdown-toggle hide">
-						</g:InlineLabel>
-
-						<d:ActionLink styleName="icon-caret-down dropdown-toggle hide"
-							title="Select Period" ui:field="aProgramEdit" dataToggle="dropdown">
-						</d:ActionLink>
-
-						<d:Dropdown ui:field="periodDropdown" styleName="hide"></d:Dropdown>
+						<g:HTMLPanel ui:field="panelDatePicker1" styleName="relative">
+							<d:CustomDateBox format="dd/mm/yyyy" autoClose="true"
+								ui:field="boxDatePicker" />
+						</g:HTMLPanel>
+						<g:HTMLPanel ui:field="panelDatePicker2" styleName="">
+							<d:CustomDateBox format="dd/mm/yyyy" autoClose="true"
+								ui:field="boxDatePicker2" />
+						</g:HTMLPanel>
+						
 
 						<div class="span1 pull-right">
 							<d:ActionLink ui:field="aRefresh" styleName="btn"

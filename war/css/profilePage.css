@@ -175,25 +175,39 @@
 	display: inline;
 }
 
-.activities-page .action-buttons .till-box p,.activities-page .action-buttons .compositeinput{
-	display:inline;
+.activities-page .action-buttons .till-box .control-label{
+	width:80px;
+	text-align:left;
+}
+.activities-page .action-buttons .till-box .controls{
+	margin-left:75px;
 }
 
-.activities-page .action-buttons .compositeinput select{
-	margin-top: 7px;
-}
 
 .activities-page .action-buttons .date-box{
 	height:10px;
+	margin-left: 23px;
 }
 
-.activities-page .action-buttons .date-box .date{
-    position: absolute;
-    right: 45px;
+
+.activities-page .action-buttons .date-box .control-label{
+	margin-left: 150px;
 }
+.activities-page .action-buttons .date-box .controls{
+    width: 200px;
+    margin-left: 310px;
+}
+
+
 .activities-page .action-buttons .date-box .span1{
     margin-left: 0px;
+    position: absolute;
+    right: 0px;
+    top:10px;
+    width: initial;
 }
+
+
 .activities-page .summary-container{
 	padding: 24px;
 	text-align: center;

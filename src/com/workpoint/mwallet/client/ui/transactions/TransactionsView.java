@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.github.gwtbootstrap.client.ui.Dropdown;
 import com.github.gwtbootstrap.client.ui.NavLink;
-import com.github.gwtbootstrap.datepicker.client.ui.DateBoxAppended;
+import com.github.gwtbootstrap.datepicker.client.ui.DateBox;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -13,13 +19,12 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
+import com.workpoint.mwallet.client.ui.component.CustomDateBox;
 import com.workpoint.mwallet.client.ui.component.DropDownList;
-import com.workpoint.mwallet.client.ui.component.Dropdown;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
 import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
@@ -51,6 +56,12 @@ public class TransactionsView extends ViewImpl implements
 	HTMLPanel divContentTop;
 
 	@UiField
+	HTMLPanel panelDatePicker1;
+
+	@UiField
+	HTMLPanel panelDatePicker2;
+
+	@UiField
 	TransactionTable tblView;
 
 	@UiField
@@ -63,16 +74,15 @@ public class TransactionsView extends ViewImpl implements
 	TransactionsHeader headerContainer;
 
 	@UiField
-	InlineLabel spnDates;
-
-	@UiField
-	Dropdown<DateRange> periodDropdown;
+	Dropdown periodDropdown;
 
 	@UiField
 	DropDownList<TillDTO> lstTills;
 
 	@UiField
-	DateBoxAppended txtDatePicker;
+	CustomDateBox boxDatePicker;
+	@UiField
+	CustomDateBox boxDatePicker2;
 
 	@UiField
 	TextField txtSearchBox;
@@ -88,28 +98,49 @@ public class TransactionsView extends ViewImpl implements
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 
-		spnDates.getElement().setAttribute("data-toggle", "dropdown");
-
 		List<DateRange> dateRanges = new ArrayList<DateRange>();
+		
+		boxDatePicker.getElement().getStyle().setLeft(periodDropdown.getAbsoluteLeft(), Unit.PX);
+		boxDatePicker2.getElement().getStyle().setLeft(boxDatePicker.getAbsoluteLeft(), Unit.PX);
 
 		for (DateRange date : DateRange.values()) {
 			if (date != DateRange.NOW) {
 				dateRanges.add(date);
 				NavLink link = new NavLink();
 				link.setText(date.getDisplayName());
-				txtDatePicker.add(link);
+
+				if (date == DateRange.INBETWEEN || date == DateRange.SPECIFIC) {
+					link.addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+							event.stopPropagation();
+						}
+					});
+				}
+
+				periodDropdown.add(link);
 			}
 		}
 
-		periodDropdown.setValues(dateRanges);
+		// periodDropdown.setValues(dateRanges);
+		//
+		periodDropdown.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				String selected = periodDropdown.getLastSelectedNavLink()
+						.getText().trim();
+				if (selected.equals("Specific Date")) {
+					boxDatePicker.show();
 
-		periodDropdown
-				.addValueChangeHandler(new ValueChangeHandler<DateRange>() {
-					@Override
-					public void onValueChange(ValueChangeEvent<DateRange> event) {
-						setDateRange(event.getValue().getDisplayName());
-					}
-				});
+				} else if (selected.equals("DateRange")) {
+					panelDatePicker2.removeStyleName("hide");
+					boxDatePicker.show();
+					boxDatePicker2.show();
+				} else {
+					setDateRange(selected);
+				}
+			}
+		});
 
 		lstTills.addValueChangeHandler(new ValueChangeHandler<TillDTO>() {
 			@Override
@@ -117,7 +148,8 @@ public class TransactionsView extends ViewImpl implements
 				SearchFilter filter = new SearchFilter();
 				filter.setTill(lstTills.getValue());
 				lstTills.setValue(event.getValue());
-				AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
+				AppContext.fireEvent(new SearchEvent(filter,
+						SearchType.Transaction));
 			}
 
 		});
@@ -128,23 +160,24 @@ public class TransactionsView extends ViewImpl implements
 				.getDateRange(passedDate));
 		Date endDate = getEndDate(passedDate);
 
-		String displayDate = passedDate + " (";
-		displayDate += DateUtils.MONTHDAYFORMAT.format(startDate);
+		String displayDate = "";
+		displayDate += DateUtils.DATEFORMAT.format(startDate);
 
 		DateRange compare = DateRange.getDateRange(passedDate);
 		if ((compare == DateRange.TODAY) || (compare == DateRange.YESTERDAY)) {
 			displayDate += "";
 		} else {
-			displayDate += " - " + DateUtils.MONTHDAYFORMAT.format(endDate);
+			displayDate += " - " + DateUtils.DATEFORMAT.format(endDate);
 		}
-		displayDate += ") ";
-		spnDates.getElement().setInnerText(displayDate);
+		periodDropdown.setText(displayDate);
 
 		// txtDatePicker.setStartDate()
 	}
 
 	public void setDateRange(String displayName) {
 		SearchFilter filter = new SearchFilter();
+
+		System.err.println("Display Name:::" + displayName);
 		Date startDate = DateUtils.getDateByRange(DateRange
 				.getDateRange(displayName));
 
@@ -235,7 +268,7 @@ public class TransactionsView extends ViewImpl implements
 	@Override
 	public void setTills(List<TillDTO> tills) {
 		lstTills.setItems(tills);
-		
+
 		System.err.println("Set Tills called");
 	}
 }

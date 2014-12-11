@@ -58,6 +58,8 @@
 	background: linear-gradient(rgb(248, 248, 248) 0px, rgb(236, 236, 236)
  	100%) repeat-x rgb(242, 242, 242);
  	border: 1px solid #E6E6E6;
+	margin-right: 21px;
+	border-radius: 0px 0px;
 }
 
 .tabbable .search-bar .input-append{

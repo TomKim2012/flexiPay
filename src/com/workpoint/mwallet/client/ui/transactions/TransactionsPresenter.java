@@ -126,7 +126,7 @@ public class TransactionsPresenter extends
 					public void processResult(GetTillsRequestResult aResponse) {
 						tills = aResponse.getTills();
 						setLoggedInUserTills();
-						loadData("This Year");
+						loadData("Last 7 Days");
 					}
 				});
 	}

@@ -158,10 +158,8 @@ public class DateUtils {
 		switch (range) {
 		case NOW:
 			return today;
-		
 		case TODAY:
 			return setToMidnight(today);
-
 		case YESTERDAY:
 			CalendarUtil.addDaysToDate(today, -1);
 			return setToMidnight(today);
