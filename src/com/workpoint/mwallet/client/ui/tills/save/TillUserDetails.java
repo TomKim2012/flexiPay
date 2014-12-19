@@ -64,21 +64,20 @@ public class TillUserDetails extends Composite {
 		}
 	}
 
-
 	public TillDTO getTillUserInfo(TillDTO till) {
 		tillSelected = till;
 		if (tillSelected == null) {
 			tillSelected = new TillDTO();
 		}
-		
-		System.err.println("Owners"+aOwners.getSelectedItems().size());
+
+		System.err.println("Owners" + aOwners.getSelectedItems().size());
 		for (UserDTO owner : aOwners.getSelectedItems()) {
-			System.err.println("Owner>>" + owner.getUserId());
+			// System.err.println("Owner>>" + owner.getUserId());
 			tillSelected.setOwner(owner);
 		}
 
 		for (UserDTO salesPerson : aSalesPersons.getSelectedItems()) {
-			System.err.println("SalesPerson>>" + salesPerson.getFullName());
+			// System.err.println("SalesPerson>>" + salesPerson.getFullName());
 			tillSelected.setSalesPerson(salesPerson);
 		}
 
@@ -138,7 +137,6 @@ public class TillUserDetails extends Composite {
 
 	private void sortByGroup(List<UserGroup> groups, UserDTO user) {
 		for (UserGroup group : groups) {
-			System.err.println("Group Names>>>" + group.getName());
 			GroupType type = GroupType.valueOf(group.getName());
 			switch (type) {
 			case Merchant:
@@ -153,7 +151,6 @@ public class TillUserDetails extends Composite {
 			default:
 
 			}
-
 		}
 	}
 

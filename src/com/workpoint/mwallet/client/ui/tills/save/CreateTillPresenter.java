@@ -12,11 +12,18 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.gwtplatform.common.client.IndirectProvider;
+import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
-import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
+import com.workpoint.mwallet.client.ui.MainPagePresenter;
+import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter;
+import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
+import com.workpoint.mwallet.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.ClientDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -25,15 +32,15 @@ import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
+import com.workpoint.mwallet.shared.requests.GetUserRequest;
 import com.workpoint.mwallet.shared.requests.ImportClientRequest;
-import com.workpoint.mwallet.shared.requests.SaveUserRequest;
 import com.workpoint.mwallet.shared.responses.GetGroupsResponse;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
+import com.workpoint.mwallet.shared.responses.GetUserRequestResult;
 import com.workpoint.mwallet.shared.responses.ImportClientResponse;
-import com.workpoint.mwallet.shared.responses.SaveUserResponse;
 
 public class CreateTillPresenter extends
-		PresenterWidget<CreateTillPresenter.MyView> {
+		PresenterWidget<CreateTillPresenter.MyView> implements LoadUsersHandler {
 
 	public interface MyView extends View {
 		boolean isValid();
@@ -51,22 +58,33 @@ public class CreateTillPresenter extends
 		HasClickHandlers getPickUser();
 
 		HasKeyDownHandlers getSearchBox();
+
+		void showImportProcessing(boolean show);
 	}
 
 	@Inject
 	DispatchAsync requestHelper;
 	private TillDTO selected;
 	private UserDTO user;
-	private ClientDTO client; //Imported from external system
+	private ClientDTO client; // Imported from external system
+	private IndirectProvider<UserSavePresenter> userFactory;
 
 	@Inject
-	public CreateTillPresenter(final EventBus eventBus, final MyView view) {
+	MainPagePresenter mainPagePresenter;
+
+	@Inject
+	public CreateTillPresenter(final EventBus eventBus, final MyView view,
+			Provider<UserSavePresenter> addUserProvider) {
 		super(eventBus, view);
+		userFactory = new StandardProvider<UserSavePresenter>(addUserProvider);
+
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
+
+		addRegisteredHandler(LoadUsersEvent.TYPE, this);
 
 		getView().getPickUser().addClickHandler(new ClickHandler() {
 			@Override
@@ -97,17 +115,19 @@ public class CreateTillPresenter extends
 	}
 
 	public void importUserFromTill() {
-		String tillCode = getView().getTillSearchCode();
+		final String tillCode = getView().getTillSearchCode();
 		if (tillCode == null) {
 			return;
 		}
-		fireEvent(new ProcessingEvent());
+
+		getView().showImportProcessing(true);
 
 		// Check Existance of Till
 		SearchFilter filter = new SearchFilter();
 		TillDTO till = new TillDTO();
 		till.setTillNo(tillCode);
 		filter.setTill(till);
+
 		requestHelper.execute(new GetTillsRequest(filter),
 				new TaskServiceCallback<GetTillsRequestResult>() {
 					@Override
@@ -116,11 +136,15 @@ public class CreateTillPresenter extends
 						if (tills.size() > 0) {
 							getView().setSearchMessage("Till already exist!",
 									"text-error");
+							getView().showImportProcessing(false);
+						} else {
+							findTill(tillCode);
 						}
-						return;
 					}
 				});
+	}
 
+	private void findTill(String tillCode) {
 		// Import Merchant from Till-Code
 		requestHelper.execute(new ImportClientRequest(tillCode, true),
 				new TaskServiceCallback<ImportClientResponse>() {
@@ -128,29 +152,56 @@ public class CreateTillPresenter extends
 					public void processResult(ImportClientResponse aResponse) {
 						client = aResponse.getClient();
 						if (client == null) {
-							fireEvent(new ProcessingCompletedEvent());
-							getView().setSearchMessage(
-									"Merchant details not found!.",
-									"text-error");
-							return;
+							getView().showImportProcessing(false);
+							getView()
+									.setSearchMessage(
+											"Merchant details not found!",
+											"text-error");
+						} else {
+							// Check for User Existence
+							checkUserExistence(client.getPhoneNo());
 						}
-
-						user = new UserDTO();
-						String allNames = client.getFirstName().trim();
-						String[] first = allNames.split(" ");
-						user.setFirstName(first[0]);
-						user.setLastName(first[1] + " "
-								+ (first.length > 2 ? first[2] : ""));
-						user.setPhoneNo(client.getPhoneNo());
-						user.setUserId(client.getPhoneNo());
-						user.setPassword("pass123");
-						
-						// Get Group where Code is "Merchant"
-						getGroupFromName("Merchant");
-
 					}
 
 				});
+
+	}
+
+	protected void checkUserExistence(String userId) {
+		GetUserRequest request = new GetUserRequest(userId);
+		fireEvent(new ProcessingEvent());
+		requestHelper.execute(request,
+				new TaskServiceCallback<GetUserRequestResult>() {
+
+					@Override
+					public void processResult(GetUserRequestResult result) {
+						user = result.getUser();
+						if (user != null) {
+							showPopup(UserSavePresenter.TYPE.USER, user);
+						} else {
+							createUser();
+						}
+
+						getView().showImportProcessing(false);
+					}
+				});
+
+	}
+
+	private void createUser() {
+		user = new UserDTO();
+		String allNames = client.getFirstName().trim();
+		if (allNames != null) {
+			String[] first = allNames.split(" ");
+			user.setFirstName(first[0] == null?"":first[0]);
+			user.setLastName(first.length > 1 ? first[1] : "" + " "
+					+ (first.length > 2 ? first[2] : ""));
+		}
+		user.setPhoneNo(client.getPhoneNo());
+		user.setUserId(client.getPhoneNo());
+		user.setPassword("pass");
+		// Get Group where Code is "Merchant" then show User Popup
+		getGroupFromName("Merchant");
 
 	}
 
@@ -167,35 +218,41 @@ public class CreateTillPresenter extends
 						for (UserGroup group : groups) {
 							if (group.getName().equals(groupName)) {
 								user.setGroups(Arrays.asList(group));
-								SaveUser();
 							}
 						}
+						showPopup(UserSavePresenter.TYPE.USER, user);
 					}
 				});
 
 	}
 
-	private void SaveUser() {
-		// Select & Save User
-		SaveUserRequest request = new SaveUserRequest(user);
-		requestHelper.execute(request,
-				new TaskServiceCallback<SaveUserResponse>() {
-					@Override
-					public void processResult(SaveUserResponse result) {
-						UserDTO user = result.getUser();
+	private void showPopup(final UserSavePresenter.TYPE type, final UserDTO user) {
+		userFactory.get(new ServiceCallback<UserSavePresenter>() {
+			@Override
+			public void processResult(final UserSavePresenter result) {
+				result.setType(type, user);
+				result.loadGroups();
 
-						TillDTO importedTill = new TillDTO();
-						importedTill
-								.setBusinessName(client.getSirName().trim());
-						importedTill.setTillNo(getView().getTillSearchCode());
-						importedTill.setOwner(user);
-						getView().setTill(importedTill);
-						getView().setSearchMessage(
-								"Merchant imported Successfully!",
-								"text-success");
-						fireEvent(new ProcessingCompletedEvent());
-					}
-				});
+				mainPagePresenter.addToPopupSlot(result, false);
+
+			}
+		});
+
+	}
+
+	@Override
+	public void onLoadUsers(LoadUsersEvent event) {
+		UserDTO user = event.getSavedUser();
+
+		TillDTO importedTill = new TillDTO();
+		importedTill.setBusinessName(client.getSirName().trim());
+		importedTill.setTillNo(getView().getTillSearchCode());
+		importedTill.setActive(1);
+		importedTill.setOwner(user);
+		getView().setTill(importedTill);
+		getView().setSearchMessage("Merchant imported Successfully!",
+				"text-success");
+
 	}
 
 }

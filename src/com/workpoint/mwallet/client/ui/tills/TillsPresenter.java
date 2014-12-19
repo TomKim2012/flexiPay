@@ -75,7 +75,7 @@ public class TillsPresenter extends
 
 		HasClickHandlers getDeleteButton();
 
-		void init();
+		void initControlButtons();
 
 		void setMiddleHeight();
 
@@ -201,18 +201,21 @@ public class TillsPresenter extends
 		}
 	};
 
+	private OptionControl saveOptionControl;
+	private OptionControl deleteOptionControl;
+
 	protected void showDeletePopup() {
+		deleteOptionControl = new OptionControl() {
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Confirm")) {
+					saveTill(selected, true);
+				}
+			}
+		};
 		AppManager
 				.showPopUp("Confirm Delete", "Confirm that you want to Delete "
-						+ selected.getBusinessName(), new OptionControl() {
-					@Override
-					public void onSelect(String name) {
-						if (name.equals("Confirm")) {
-							saveTill(selected, true);
-						}
-						hide();
-					}
-				}, "Confirm", "Cancel");
+						+ selected.getBusinessName(),deleteOptionControl, "Confirm", "Cancel");
 
 	}
 
@@ -228,22 +231,22 @@ public class TillsPresenter extends
 		if (edit) {
 			tillPopUp.setTillDetails(selected);
 		}
-
-		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
-				tillPopUp.getWidget(), new OptionControl() {
-					@Override
-					public void onSelect(String name) {
-						if (name.equals("Save")) {
-							if (tillPopUp.getView().isValid()) {
-								saveTill(tillPopUp.getView().getTillDTO(),
-										false);
-								hide();
-							}
-						} else {
-							hide();
+		
+		saveOptionControl = new OptionControl() {
+				@Override
+				public void onSelect(String name) {
+					if (name.equals("Save")) {
+						if (tillPopUp.getView().isValid()) {
+							saveTill(tillPopUp.getView().getTillDTO(),
+									false);
 						}
+					} else {
+						hide();
 					}
-				}, "Save", "Cancel");
+				}
+			};
+		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
+				tillPopUp.getWidget(),saveOptionControl, "Save", "Cancel");
 	}
 
 	private void loadUsers() {
@@ -265,11 +268,12 @@ public class TillsPresenter extends
 				new TaskServiceCallback<SaveTillResponse>() {
 					@Override
 					public void processResult(SaveTillResponse aResponse) {
+						loadData();
+						getView().initControlButtons();
+						saveOptionControl.hide();
 						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new ActivitySavedEvent(
 								"Till successfully saved"));
-						loadData();
-						getView().init();
 					}
 				});
 

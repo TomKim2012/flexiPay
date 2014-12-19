@@ -20,13 +20,13 @@ public class TillDetails extends Composite {
 			.create(TillDetailsUiBinder.class);
 	
 	@UiField TextBox txtBusinessName;
-//	@UiField TextBox txtTillCode;
 	@UiField TextBox txtTillCode;
 	@UiField TextBox txtPhone;
 	@UiField CheckBox chckEnable;
 	@UiField SpanElement spnMessage;
 	
 	@UiField ActionLink aPickTill;
+	@UiField SpanElement spnSpinner;
 
 	private TillDTO tillSelected;
 
@@ -107,6 +107,14 @@ public class TillDetails extends Composite {
 
 	public HasClickHandlers getPickUser() {
 		return aPickTill;
+	}
+	
+	public void showSpinner(boolean show){
+		if(show){
+			spnSpinner.removeClassName("hide");
+		}else{
+			spnSpinner.addClassName("hide");
+		}
 	}
 
 	public HasKeyDownHandlers getSearchBox() {

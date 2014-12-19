@@ -1,6 +1,7 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -186,6 +187,8 @@ public class TransactionsPresenter extends
 
 	protected void bindTransactions() {
 		getView().clear();
+		Collections.sort(trxs);
+		
 		Double totalAmount = 0.0;
 		for (TransactionDTO transaction : trxs) {
 			if (isSalesPerson) {

@@ -63,6 +63,8 @@ public class UserSavePresenter extends
 
 		HasKeyDownHandlers getSearchBox();
 
+		void setToWidget(boolean isWidget);
+
 	}
 
 	public enum TYPE {
@@ -106,7 +108,7 @@ public class UserSavePresenter extends
 									user = result.getUser();
 									getView().setUser(user);
 									getView().hide();
-									fireEvent(new LoadUsersEvent());
+									fireEvent(new LoadUsersEvent(user));
 								}
 							});
 				}
@@ -117,24 +119,7 @@ public class UserSavePresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (getView().isValid()) {
-					UserGroup userGroup = getView().getGroup();
-
-					SaveGroupRequest request = new SaveGroupRequest(userGroup);
-
-					requestHelper.execute(request,
-							new TaskServiceCallback<SaveGroupResponse>() {
-								@Override
-								public void processResult(
-										SaveGroupResponse result) {
-									group = result.getGroup();
-									getView().setGroup(group);
-
-									fireEvent(new LoadGroupsEvent());
-									getView().hide();
-								}
-							});
-				}
+				saveUser();
 			}
 		});
 
@@ -149,6 +134,27 @@ public class UserSavePresenter extends
 	}
 	
 	
+	public void saveUser() {
+		if (getView().isValid()) {
+			UserGroup userGroup = getView().getGroup();
+
+			SaveGroupRequest request = new SaveGroupRequest(userGroup);
+
+			requestHelper.execute(request,
+					new TaskServiceCallback<SaveGroupResponse>() {
+						@Override
+						public void processResult(
+								SaveGroupResponse result) {
+							group = result.getGroup();
+							getView().setGroup(group);
+
+							fireEvent(new LoadGroupsEvent());
+							getView().hide();
+						}
+					});
+		}
+	}
+		
 	KeyDownHandler keyHandler = new KeyDownHandler() {
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
@@ -194,7 +200,22 @@ public class UserSavePresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-
+		loadGroups();
+		setToWidget(false);
+	}
+	
+	
+	@Override
+	protected void onReset() {
+		super.onReset();
+	}
+	
+	
+	public void setToWidget(boolean isWidget){
+		getView().setToWidget(isWidget);
+	}
+	
+	public void loadGroups(){
 		GetGroupsRequest request = new GetGroupsRequest();
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetGroupsResponse>() {
