@@ -32,21 +32,32 @@
 								<b:ControlLabel>Choose Date(s):</b:ControlLabel>
 								<b:Controls>
 									<b:NavPills>
-										<b:Dropdown ui:field="periodDropdown"></b:Dropdown>
+										<b:DropdownButton ui:field="periodDropdown"></b:DropdownButton>
 									</b:NavPills>
 								</b:Controls>
 							</b:ControlGroup>
 						</b:Form>
-
-						<g:HTMLPanel ui:field="panelDatePicker1" styleName="relative">
-							<d:CustomDateBox format="dd/mm/yyyy" autoClose="true"
-								ui:field="boxDatePicker" />
+						<g:HTMLPanel styleName="row-fluid" ui:field="panelDates">
+							<b:Row>
+								<g:HTMLPanel ui:field="panelDatePicker1" styleName="relative">
+									<d:CustomDateBox format="dd/mm/yyyy" autoClose="false"
+										ui:field="boxDatePickerStart" />
+								</g:HTMLPanel>
+								<g:HTMLPanel ui:field="panelDatePicker2" styleName="relative">
+									<d:CustomDateBox format="dd/mm/yyyy" autoClose="false"
+										ui:field="boxDatePickerEnd" />
+								</g:HTMLPanel>
+							</b:Row>
+							<b:Row>
+								<g:FocusPanel styleName="row-button hide" ui:field="panelDone">
+									<b:Column size="4" styleName="pull-right">
+										<b:Button text="Done" ui:field="btnDone" type="PRIMARY"
+											styleName="btn">
+										</b:Button>
+									</b:Column>
+								</g:FocusPanel>
+							</b:Row>
 						</g:HTMLPanel>
-						<g:HTMLPanel ui:field="panelDatePicker2" styleName="">
-							<d:CustomDateBox format="dd/mm/yyyy" autoClose="true"
-								ui:field="boxDatePicker2" />
-						</g:HTMLPanel>
-						
 
 						<div class="span1 pull-right">
 							<d:ActionLink ui:field="aRefresh" styleName="btn"

@@ -171,9 +171,11 @@ public class DateUtils {
 			return setToMidnight(today);
 		case THISQUARTER:
 			CalendarUtil.addMonthsToDate(today, -3);
+			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
 		case THISYEAR:
-			CalendarUtil.addMonthsToDate(today, -12);
+			CalendarUtil.addMonthsToDate(today, -today.getMonth());
+			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
 
 		default:

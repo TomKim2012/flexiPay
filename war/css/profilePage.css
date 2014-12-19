@@ -167,7 +167,7 @@
 
 .activities-page .action-buttons{
 	margin-top: 0px;
-	padding-bottom: 10px;
+	padding-bottom: 1px;
 	margin-bottom: 0px;
 }
 
@@ -183,21 +183,41 @@
 	margin-left:75px;
 }
 
-
 .activities-page .action-buttons .date-box{
 	height:10px;
 	margin-left: 23px;
 }
-
-
 .activities-page .action-buttons .date-box .control-label{
-	margin-left: 150px;
+	margin-left: 128px;
 }
 .activities-page .action-buttons .date-box .controls{
     width: 200px;
-    margin-left: 310px;
+    margin-left: 295px;
 }
 
+.activities-page .action-buttons .date-box .controls .btn-group a.dropdown-toggle{
+	color:black !important;
+}
+
+
+.activities-page .action-buttons .date-box .controls .dropdown-menu .icon-caret-right{
+	margin-top: 4px;
+}
+.activities-page .action-buttons .date-box .row-button{
+	background:white;
+	/* border: 1px solid; */
+	top: 190px;
+	position: relative;
+	width: 81%;
+	left: -140px;
+	height: 30px;
+	padding: 5px 0px;
+	border: 1px solid #ccc;
+}
+
+.activities-page .action-buttons .date-box .row-button .btn{
+	margin-right:10px;
+}
 
 .activities-page .action-buttons .date-box .span1{
     margin-left: 0px;
@@ -225,7 +245,8 @@
 }
 
 .action-buttons .till-search .input-append .icon-caret-down{
-	right:10px !important;
+	right: 68px !important;
+	top: 18px;
 }
 .action-buttons .input-append .icon-caret-down{
 	font-size: 14px;
@@ -262,7 +283,7 @@
 }
 
 .table-programs{
-	margin-right: 1px;
+	margin-right: 0px;
 }
 
 .table-programs .table>.thead>.tr>.th{

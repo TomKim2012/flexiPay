@@ -18,9 +18,11 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
+import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent.HidePanelBoxHandler;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
@@ -39,7 +41,7 @@ import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
 
 public class TransactionsPresenter extends
 		PresenterWidget<TransactionsPresenter.ITransactionView> implements
-		SearchHandler{
+		SearchHandler, HidePanelBoxHandler {
 
 	@Inject
 	FilterPresenter filterPresenter;
@@ -52,23 +54,26 @@ public class TransactionsPresenter extends
 
 		void clear();
 
-		void presentSummary(String transactions, String amount);
+		void presentSummary(String transactions, String amount,
+				String uniqueCustomers, String uniqueMerchants);
 
 		HasClickHandlers getRefreshLink();
-
-//		HasClickHandlers getSearchButton();
 
 		SearchFilter getFilter();
 
 		HasKeyDownHandlers getSearchBox();
-
-		void setHeader(String date);
 
 		void setSalesTable(boolean b);
 
 		void presentData(TransactionDTO transaction, boolean isSalesPerson);
 
 		void setTills(List<TillDTO> tills);
+
+		void setLoggedUser(UserDTO user);
+
+		void hideDoneBox();
+
+		void setDates(String setDate);
 	}
 
 	@Inject
@@ -88,14 +93,16 @@ public class TransactionsPresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		
+
 		getView().setMiddleHeight();
-		
-		System.err.println("On Reset called");
+
+		// System.err.println("On Reset called");
 
 		if (AppContext.getContextUser() != null
 				|| AppContext.getContextUser().getGroups() != null) {
 			UserDTO user = AppContext.getContextUser();
+			getView().setLoggedUser(user);
+
 			getTills(user);
 
 		} else {
@@ -104,18 +111,17 @@ public class TransactionsPresenter extends
 
 	}
 
-
 	private List<TillDTO> tills = new ArrayList<TillDTO>();
 	private boolean isSalesPerson = false;
 
 	private void getTills(UserDTO user) {
 		SearchFilter tillFilter = new SearchFilter();
-		
-		if (AppContext.isCurrentUserAdmin()){
-			
-		}else if (user.hasGroup("Merchant")) {
+
+		if (AppContext.isCurrentUserAdmin()) {
+
+		} else if (user.hasGroup("Merchant")) {
 			tillFilter.setOwner(user);
-		} else if(user.hasGroup("SalesPerson")) {
+		} else if (user.hasGroup("SalesPerson")) {
 			isSalesPerson = true;
 			getView().setSalesTable(isSalesPerson);// Set SalesPerson
 			tillFilter.setSalesPerson(user);
@@ -134,10 +140,16 @@ public class TransactionsPresenter extends
 	List<TransactionDTO> trxs = new ArrayList<TransactionDTO>();
 	private String setDateRange;
 
+	protected Long uniqueCustomers;
+	protected Long uniqueMerchants;
+	private String trxSize;
+
+	private String totals;
+
 	private void loadData(String passedDate) {
 		this.setDateRange = passedDate;
 
-		getView().setHeader(passedDate);
+		getView().setDates(passedDate);
 
 		fireEvent(new ProcessingEvent());
 
@@ -150,15 +162,27 @@ public class TransactionsPresenter extends
 					@Override
 					public void processResult(
 							GetTransactionsRequestResult aResponse) {
-						trxs = aResponse.getTransactions();
-						bindTransactions();
-						fireEvent(new ProcessingCompletedEvent());
+						getResults(aResponse);
 					}
 				});
 
 	}
 
-	private static final Double SALESPERSONRATE = 0.25/100;
+	protected void getResults(GetTransactionsRequestResult aResponse) {
+		trxs = aResponse.getTransactions();
+
+		uniqueCustomers = aResponse.getUniqueCustomers();
+		uniqueMerchants = aResponse.getUniqueMerchants();
+
+		// System.err.println("Unique Merchants>>" + uniqueMerchants);
+		// System.err.println("Unique Customers>>" + uniqueCustomers);
+
+		bindTransactions();
+
+		fireEvent(new ProcessingCompletedEvent());
+	}
+
+	private static final Double SALESPERSONRATE = 0.25 / 100;
 
 	protected void bindTransactions() {
 		getView().clear();
@@ -174,8 +198,10 @@ public class TransactionsPresenter extends
 			totalAmount = totalAmount + transaction.getAmount();
 		}
 
-		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(trxs.size()),
-				NumberUtils.CURRENCYFORMAT.format(totalAmount));
+		trxSize = NumberUtils.NUMBERFORMAT.format(trxs.size());
+		totals = NumberUtils.CURRENCYFORMAT.format(totalAmount);
+		getView().presentSummary(trxSize, totals,
+				Long.toString(uniqueCustomers), Long.toString(uniqueMerchants));
 	}
 
 	KeyDownHandler keyHandler = new KeyDownHandler() {
@@ -183,9 +209,11 @@ public class TransactionsPresenter extends
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
 				filter = getView().getFilter();
-				GetTransactionsRequest request = new GetTransactionsRequest(
-						filter);
-				performSearch(request);
+				if (filter != null) {
+					GetTransactionsRequest request = new GetTransactionsRequest(
+							filter);
+					performSearch(request);
+				}
 			}
 		}
 	};
@@ -194,6 +222,7 @@ public class TransactionsPresenter extends
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(SearchEvent.TYPE, this);
+		addRegisteredHandler(HidePanelBoxEvent.TYPE, this);
 
 		getView().getRefreshLink().addClickHandler(new ClickHandler() {
 			@Override
@@ -217,12 +246,12 @@ public class TransactionsPresenter extends
 
 	private void setLoggedInUserTills() {
 		if (tills != null) {
-			if(!AppContext.isCurrentUserAdmin()){
-			filter.setTills(tills);
+			if (!AppContext.isCurrentUserAdmin()) {
+				filter.setTills(tills);
 			}
 			getView().setTills(tills);
 		}
-		
+
 	}
 
 	public void performSearch(GetTransactionsRequest request) {
@@ -232,11 +261,16 @@ public class TransactionsPresenter extends
 					@Override
 					public void processResult(
 							GetTransactionsRequestResult aResponse) {
-						trxs = aResponse.getTransactions();
-						bindTransactions();
-						fireEvent(new ProcessingCompletedEvent());
+						getResults(aResponse);
 					};
 				});
+	}
+
+	@Override
+	public void onHidePanelBox(HidePanelBoxEvent event) {
+		if(event.getEventSource().equals("transactions")){
+			getView().hideDoneBox();	
+		}
 	}
 
 }

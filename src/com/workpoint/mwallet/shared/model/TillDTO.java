@@ -24,7 +24,11 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	public TillDTO() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public TillDTO(String tillNo){
+		this.tillNo = tillNo;
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -7,21 +7,17 @@
 			<div class="span9 title" ui:field="divHeader">
 				<g:FocusPanel ui:field='panelTitle'>
 					<g:HTMLPanel styleName="row-fluid">
-						<g:HTMLPanel styleName="title-container span3">
-							<h4 ui:field="spnTitle" class="title">Tills Management</h4>
+						<g:HTMLPanel styleName="title-container span6">
+							<h4 ui:field="spnTitle" class="title">
+								Tills Management (Total:
+								<span class="bold" ui:field="spnTillTotal" title="Total Number of Tills"></span>
+								)
+							</h4>
 						</g:HTMLPanel>
 					</g:HTMLPanel>
 				</g:FocusPanel>
 			</div>
-			
-			<g:HTMLPanel styleName="span3 budget" ui:field="divBudget">
-				<div class="span12">
-					<div class="bold muted helper-font-small">TOTAL TILLS</div>
-					<div>
-						<span class="bold" ui:field="spnTillTotal" title="Total Number of Tills"></span>
-					</div>
-				</div>
-			</g:HTMLPanel>
+
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

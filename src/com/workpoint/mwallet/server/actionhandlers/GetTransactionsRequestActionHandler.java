@@ -36,7 +36,7 @@ public class GetTransactionsRequestActionHandler extends
 		TransactionDao dao = new TransactionDao(DB.getEntityManager());
 
 		List<TransactionModel> trxs = dao.getAllTrx(action.getFilter());
-
+		
 		List<TransactionDTO> dtos = new ArrayList<TransactionDTO>();
 
 		// System.err.println("Cust Size>>"+trxs.size());
@@ -57,19 +57,23 @@ public class GetTransactionsRequestActionHandler extends
 		}
 
 		((GetTransactionsRequestResult) actionResult).setTransactions(dtos);
+		((GetTransactionsRequestResult) actionResult)
+				.setUniqueCustomers(dao.getCustomers());
+		((GetTransactionsRequestResult) actionResult)
+				.setUniqueMerchants(dao.getMerchants());
 
 	}
 
 	private TillDTO getTill(String tillNumber) {
 		TillDao tillDao = new TillDao(DB.getEntityManager());
 		TillModel tillModel = tillDao.getTillByTillNo(tillNumber);
-		
+
 		TillDTO tillDTO = new TillDTO();
 		if (tillModel != null) {
 			tillDTO.setId(tillModel.getId());
 			tillDTO.setBusinessName(tillModel.getBusinessName());
 			tillDTO.setTillNo(tillModel.getTillNo());
-		}else{
+		} else {
 			tillDTO.setBusinessName("Not Registered");
 			tillDTO.setTillNo(tillNumber);
 		}

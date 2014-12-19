@@ -1,26 +1,15 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.Popover;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
-import com.workpoint.mwallet.client.ui.component.Dropdown;
-import com.workpoint.mwallet.client.ui.events.SearchEvent;
-import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
-import com.workpoint.mwallet.client.ui.util.DateRange;
-import com.workpoint.mwallet.client.ui.util.DateUtils;
-import com.workpoint.mwallet.client.util.AppContext;
-import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TransactionsHeader extends Composite {
 
@@ -35,15 +24,48 @@ public class TransactionsHeader extends Composite {
 	SpanElement spnTransactions;
 
 	@UiField
+	InlineLabel spnTills;
+
+	@UiField
 	SpanElement spnAmount;
+
+	@UiField
+	DivElement panelText;
+
+	@UiField
+	Popover popSummaries;
+
+	private UserDTO LoggedUser;
 
 	public TransactionsHeader() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
 	}
 	
-	public void setTotals(String transactions, String amount) {
+	public void presentSummary(String transactions, String amount,
+			String uniqueCustomers, String uniqueMerchants) {
+
+		popSummaries.reconfigure();
 		spnTransactions.setInnerHTML(transactions);
 		spnAmount.setInnerHTML(amount);
+		spnTills.getElement().setInnerText(uniqueMerchants);
+		panelText.setInnerText("MERCHANTS SERVED");
+
+		if (LoggedUser.hasGroup("Merchant")) {
+			spnTills.getElement().setInnerText(uniqueCustomers);
+			panelText.setInnerText("CUSTOMERS SERVED");
+			popSummaries.hide(); 
+		} else if (LoggedUser.hasGroup("SalesPerson")) {
+			popSummaries.hide();
+		}
+
+	}
+
+	public void setLoggedUser(UserDTO user) {
+		this.LoggedUser = user;
+	}
+	
+	
+	public Popover getPopSummaries() {
+		return popSummaries;
 	}
 }

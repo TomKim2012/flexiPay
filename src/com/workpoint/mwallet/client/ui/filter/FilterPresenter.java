@@ -12,7 +12,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
-import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent;
+import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -63,7 +63,7 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		getView().getCloseButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				fireEvent(new HideFilterBoxEvent());
+				fireEvent(new HidePanelBoxEvent("tills"));
 			}
 		});
 	}

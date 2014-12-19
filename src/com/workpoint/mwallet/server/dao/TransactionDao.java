@@ -14,39 +14,62 @@ import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TransactionDao extends BaseDaoImpl {
 
+	private Long uniqueMerchants;
+	private Long uniqueCustomers;
+
 	public TransactionDao(EntityManager em) {
 		super(em);
 	}
 
 	public List<TransactionModel> getAllTrx(SearchFilter filter) {
-		if (filter == null)
-			return getResultList(em
-					.createQuery("FROM TransactionModel t order by tstamp ASC"));
-
+		StringBuffer jpqlMerchants = new StringBuffer(
+				"select count(DISTINCT t.tillNumber) FROM TransactionModel t");
+		StringBuffer jpqlCustomers = new StringBuffer(
+				"select count(DISTINCT t.phone) FROM TransactionModel t");
 		StringBuffer jpql = new StringBuffer("FROM TransactionModel t ");
 
+		if (filter == null) {
+			uniqueMerchants = (Long)em.createQuery(jpqlMerchants.toString())
+					.getSingleResult();
+			uniqueCustomers = (Long)em.createQuery(jpqlCustomers.toString())
+					.getSingleResult();
+			
+			return getResultList(em
+					.createQuery("FROM TransactionModel t order by tstamp ASC"));
+		} else {
+			
+			uniqueMerchants = getSingleResultOrNull(getQuery(filter,
+					jpqlMerchants));
+			uniqueCustomers = getSingleResultOrNull(getQuery(filter,
+					jpqlCustomers));
+			return getResultList(getQuery(filter, jpql));
+		}
+	}
+	int i=0;
+	private Query getQuery(SearchFilter filter, StringBuffer jpql) {
 		Map<String, Object> params = new HashMap<>();
-
 		boolean isFirst = true;
-
+		
+		
+		//System.err.println("Filter Query\n"+"---------------\n");
 		if (filter.getStartDate() != null) {
 			jpql.append(isFirst ? " Where" : " And");
 			jpql.append(" t.trxDate>:startDate");
 			params.put("startDate", filter.getStartDate());
-			// System.err.println("Filter Query\n"+"---------------\n");
-			// System.out.println("Start Date>>" + filter.getStartDate());
+			 //System.out.println("Start Date>>" + filter.getStartDate());
 			isFirst = false;
 		}
 
 		if (filter.getEndDate() != null) {
 			jpql.append(isFirst ? " Where" : " And");
-			jpql.append(" t.trxDate<:endDate");
+			jpql.append(" t.trxDate<=:endDate");
 			params.put("endDate", filter.getEndDate());
-			// System.out.println("End Date >>" + filter.getEndDate());
+			 //System.out.println("End Date >>" + filter.getEndDate());
 			isFirst = false;
 		}
 
 		if (filter.getTill() != null) {
+			//System.out.println(">>Till:"+filter.getTill());
 			jpql.append(isFirst ? " Where" : " And");
 			jpql.append(" t.tillNumber = :tillNumber");
 			params.put("tillNumber", filter.getTill().getTillNo());
@@ -71,6 +94,7 @@ public class TransactionDao extends BaseDaoImpl {
 
 		if (filter.getPhrase() != null) {
 			String searchTerm = filter.getPhrase().trim();
+			//System.out.println(">>Search Phrase:"+filter.getPhrase());
 			jpql.append(isFirst ? " Where" : " And");
 			jpql.append(" (t.customerName like :customerName or t.referenceId like :referenceId or "
 					+ "t.tillNumber like :tillNumber)");
@@ -79,13 +103,24 @@ public class TransactionDao extends BaseDaoImpl {
 			params.put("tillNumber", "%" + searchTerm + "%");
 			isFirst = false;
 		}
-
+		
+		//System.err.println("End of Query:\n"+"---------------\n"+jpql.toString());
+		
 		Query query = em.createQuery(jpql.toString());
 		// .setFirstResult(0).setMaxResults(20);
 		for (String key : params.keySet()) {
 			query.setParameter(key, params.get(key));
 		}
+		return query;
 
-		return getResultList(query);
 	}
+
+	public Long getMerchants() {
+		return uniqueMerchants;
+	}
+
+	public Long getCustomers() {
+		return uniqueCustomers;
+	}
+
 }

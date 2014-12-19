@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.shared.model.Listable;
+import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class DropDownList<T extends Listable> extends Composite implements
 		HasValueChangeHandlers<T>, HasValue<T> {
@@ -47,11 +48,16 @@ public class DropDownList<T extends Listable> extends Composite implements
 
 				String code = listBox.getValue(selectedIndex);
 				value = null;
+
 				if (code.isEmpty()) {
 					// setting null
 					value = null;
 				} else {
-					value = items.get(selectedIndex - 1);
+					if (selectedIndex == 0) {
+						value = null;
+					} else {
+						value = items.get(selectedIndex - 1);
+					}
 				}
 
 				ValueChangeEvent.fire(DropDownList.this, value);
@@ -63,12 +69,12 @@ public class DropDownList<T extends Listable> extends Composite implements
 		this.items = items;
 
 		listBox.clear();
-		if (items.get(0).equals("Select")) {
-			listBox.addItem("--Select--", "");
-		}else{
-			listBox.addItem("All("+items.size()+")","");
-		}
-		
+		// if (items.get(0).equals("Select")) {
+		// listBox.addItem("--Select--", "");
+		// }else{
+		listBox.addItem("All(" + items.size() + ")", "all");
+		// }
+
 		for (T item : items) {
 			listBox.addItem(item.getDisplayName(), item.getName());
 		}

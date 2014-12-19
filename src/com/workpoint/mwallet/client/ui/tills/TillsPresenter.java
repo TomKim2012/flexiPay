@@ -30,8 +30,8 @@ import com.workpoint.mwallet.client.ui.OptionControl;
 import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.ActivitySelectionChangedHandler;
-import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent;
-import com.workpoint.mwallet.client.ui.events.HideFilterBoxEvent.HideFilterBoxHandler;
+import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent;
+import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent.HidePanelBoxHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
@@ -52,7 +52,7 @@ import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
 public class TillsPresenter extends
 		PresenterWidget<TillsPresenter.IActivitiesView> implements
-		ActivitySelectionChangedHandler, SearchHandler, HideFilterBoxHandler{
+		ActivitySelectionChangedHandler, SearchHandler, HidePanelBoxHandler{
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
@@ -152,7 +152,7 @@ public class TillsPresenter extends
 		super.onBind();
 		addRegisteredHandler(ActivitySelectionChangedEvent.TYPE, this);
 		addRegisteredHandler(SearchEvent.TYPE, this);
-		addRegisteredHandler(HideFilterBoxEvent.TYPE, this);
+		addRegisteredHandler(HidePanelBoxEvent.TYPE, this);
 
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
@@ -309,8 +309,10 @@ public class TillsPresenter extends
 	}
 
 	@Override
-	public void onHideFilterBox(HideFilterBoxEvent event) {
-		getView().showFilterView();
+	public void onHidePanelBox(HidePanelBoxEvent event) {
+		if(event.getEventSource().equals("tills")){
+			getView().showFilterView();
+		}
 	}
 
 }

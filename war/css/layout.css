@@ -51,6 +51,8 @@
 }
 .main-container .content-right .content-body .tabbable{
 	padding-left:10px
+;
+	padding-right: 10px;
 }
 
 
@@ -58,7 +60,7 @@
 	background: linear-gradient(rgb(248, 248, 248) 0px, rgb(236, 236, 236)
  	100%) repeat-x rgb(242, 242, 242);
  	border: 1px solid #E6E6E6;
-	margin-right: 21px;
+	margin-right: 0px;
 	border-radius: 0px 0px;
 }
 

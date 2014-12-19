@@ -69,7 +69,7 @@ a {
 
 a,a.btn:visited,a:hover {
 	text-decoration: none;
-	color: #ffffff;
+	/* color: #ffffff; */
 }
 
 input:focus {

@@ -21,10 +21,11 @@
 
 			<div class="span4 no-border">
 				<div class="big-text">
-					<span class="" ui:field="spnTills" title="Transacted Tills">10</span>
+					<b:Popover heading="More Summary" ui:field="popSummaries" html="true" placement="LEFT">
+						<g:InlineLabel ui:field="spnTills" title="Transacted Tills"></g:InlineLabel>
+					</b:Popover>
 				</div>
-				<div class="bold muted helper-font-small">TILLS SERVED</div>
-
+				<div class="bold muted helper-font-small" ui:field="panelText"></div>
 			</div>
 		</div>
 	</g:HTMLPanel>
