@@ -40,10 +40,10 @@ public class DateUtils {
 			.getFormat(monthDayPattern);
 	public static final DateTimeFormat MONTHDAYHOURFORMAT = DateTimeFormat
 			.getFormat(monthDayHourPattern);
-	
+
 	public static final DateTimeFormat MONTHSHORTFORMAT = DateTimeFormat
 			.getFormat(monthShortPattern);
-	
+
 	public static final DateTimeFormat DAYSHORTFORMAT = DateTimeFormat
 			.getFormat(dayShortPattern);
 	public static final DateTimeFormat MONTHYEARFORMAT = DateTimeFormat
@@ -154,6 +154,10 @@ public class DateUtils {
 	}
 
 	public static Date getDateByRange(DateRange range) {
+		return getDateByRange(range, true);
+	}
+
+	public static Date getDateByRange(DateRange range, boolean setToMidnight) {
 		Date today = new Date();
 		switch (range) {
 		case NOW:
@@ -162,7 +166,11 @@ public class DateUtils {
 			return setToMidnight(today);
 		case YESTERDAY:
 			CalendarUtil.addDaysToDate(today, -1);
-			return setToMidnight(today);
+			if (setToMidnight) {
+				return setToMidnight(today);
+			} else {
+				return today;
+			}
 		case THISWEEK:
 			CalendarUtil.addDaysToDate(today, -7);
 			return setToMidnight(today);
@@ -202,13 +210,18 @@ public class DateUtils {
 		return false;
 	}
 
+	public static Date getOneDayBefore(Date passedDate) {
+		CalendarUtil.addDaysToDate(passedDate, -1);	
+		setToMidnight(passedDate);
+		return passedDate;
+	}
+
 	public static boolean isOverdue(Date endDate) {
 		Date currDate = new Date();
 		return currDate.after(endDate);
 	}
 
 	public static Date addDays(Date created, int days) {
-
 		return new Date(created.getTime() + dayInMillis * days);
 	}
 }

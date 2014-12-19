@@ -114,7 +114,7 @@ public class TransactionsView extends ViewImpl implements
 
 	private SearchFilter filter = new SearchFilter();
 
-	protected boolean isPassedOver=true;
+	protected boolean isPassedOver = true;
 
 	private double leftStartPosition = -140;
 	private double leftEndPosition = 87;
@@ -128,7 +128,7 @@ public class TransactionsView extends ViewImpl implements
 		panelDone.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				System.err.println("Mouse has passed inside");
+				// System.err.println("Mouse has passed inside");
 				isPassedOver = true;
 			}
 		});
@@ -136,7 +136,7 @@ public class TransactionsView extends ViewImpl implements
 		panelDone.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				System.err.println("Mouse has passed outside");
+				// System.err.println("Mouse has passed outside");
 				isPassedOver = false;
 			}
 		});
@@ -156,7 +156,7 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerEnd.addHideHandler(new HideHandler() {
 			@Override
 			public void onHide(HideEvent hideEvent) {
-				if (!isPassedOver){
+				if (!isPassedOver) {
 					System.err.println("Hide Event fired!");
 					AppContext.fireEvent(new HidePanelBoxEvent("transactions"));
 				}
@@ -222,7 +222,7 @@ public class TransactionsView extends ViewImpl implements
 			public void onValueChange(ValueChangeEvent<TillDTO> event) {
 				if (event.getValue() != null) {
 					filter.setTill(event.getValue());
-				}else{
+				} else {
 					filter.setTill(null);
 				}
 
@@ -236,8 +236,16 @@ public class TransactionsView extends ViewImpl implements
 
 			@Override
 			public void onClick(ClickEvent event) {
-				setDateRange(null, boxDatePickerStart.getValue(),
-						boxDatePickerEnd.getValue());
+				Date startDate = DateUtils.getOneDayBefore(boxDatePickerStart
+						.getValue());
+				Date endDate = DateUtils.setToMidnight(boxDatePickerEnd
+						.getValue());
+				if (specificRangeSelected) {
+					startDate = DateUtils.getOneDayBefore(boxDatePickerEnd
+							.getValue());
+				}
+				setDateRange(null, startDate, endDate);
+
 				panelDone.addStyleName("hide");
 			}
 		});
@@ -287,14 +295,13 @@ public class TransactionsView extends ViewImpl implements
 	public void setDateString(String passedDate) {
 		Date startDate = DateUtils.getDateByRange(DateRange
 				.getDateRange(passedDate));
-		Date endDate = getEndDate(passedDate);
+		Date endDate = getDateFromName(passedDate, false);
 
 		String displayDate = "";
 		displayDate += DateUtils.DATEFORMAT.format(startDate);
 
 		displayDate += " - " + DateUtils.DATEFORMAT.format(endDate);
 
-		// }
 		periodDropdown.setText(displayDate);
 
 	}
@@ -305,9 +312,8 @@ public class TransactionsView extends ViewImpl implements
 		Date endDate = null;
 
 		if (displayName != null) {
-			startDate = DateUtils.getDateByRange(DateRange
-					.getDateRange(displayName));
-			endDate = getEndDate(displayName);
+			startDate = getDateFromName(displayName, true);
+			endDate = getDateFromName(displayName, false);
 			setDateString(displayName);
 
 		} else {
@@ -318,15 +324,27 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerStart.setValue(startDate);
 		boxDatePickerEnd.setValue(endDate);
 
+//		System.err.println("Start Date::" + startDate);
+//		System.err.println("End Date::" + endDate);
+
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);
 
 		AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
 	}
 
-	public Date getEndDate(String displayName) {
+	public Date getDateFromName(String displayName, boolean isStart) {
 		DateRange compare = DateRange.getDateRange(displayName);
 		if (compare == DateRange.YESTERDAY) {
+			if (isStart) {
+				Date yesterday = DateUtils.getDateByRange(
+						DateRange.getDateRange(displayName), true);
+				return DateUtils.getOneDayBefore(yesterday);
+			} else {
+				return DateUtils.getDateByRange(DateRange
+						.getDateRange(displayName));
+			}
+		} else if (isStart) {
 			return DateUtils
 					.getDateByRange(DateRange.getDateRange(displayName));
 		} else {
@@ -388,7 +406,7 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public SearchFilter getFilter() {
-		if (txtSearchBox.getText()!=null) {
+		if (txtSearchBox.getText() != null) {
 			filter.setPhrase(txtSearchBox.getText());
 			return filter;
 		} else {
