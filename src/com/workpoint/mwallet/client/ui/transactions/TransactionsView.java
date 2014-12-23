@@ -114,7 +114,7 @@ public class TransactionsView extends ViewImpl implements
 
 	private SearchFilter filter = new SearchFilter();
 
-	protected boolean isPassedOver = true;
+	protected static boolean isPassedOver = true;
 
 	private double leftStartPosition = -140;
 	private double leftEndPosition = 87;
@@ -124,11 +124,12 @@ public class TransactionsView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 
 		List<DateRange> dateRanges = new ArrayList<DateRange>();
-
+		
+		
 		panelDone.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				// System.err.println("Mouse has passed inside");
+//				 System.err.println("passedOver = true");
 				isPassedOver = true;
 			}
 		});
@@ -136,7 +137,7 @@ public class TransactionsView extends ViewImpl implements
 		panelDone.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				// System.err.println("Mouse has passed outside");
+//				 System.err.println("passedOver = false");
 				isPassedOver = false;
 			}
 		});
@@ -156,8 +157,9 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerEnd.addHideHandler(new HideHandler() {
 			@Override
 			public void onHide(HideEvent hideEvent) {
+//				System.err.println("Passed Over variable::"+isPassedOver);
 				if (!isPassedOver) {
-					System.err.println("Hide Event fired!");
+//					System.err.println("Hide Event fired!");
 					AppContext.fireEvent(new HidePanelBoxEvent("transactions"));
 				}
 			}
@@ -192,7 +194,7 @@ public class TransactionsView extends ViewImpl implements
 			}
 		}
 
-		setDateValueChangeHandler();
+		changeDateString();
 
 		periodDropdown.addChangeHandler(new ChangeHandler() {
 			@Override
@@ -236,13 +238,13 @@ public class TransactionsView extends ViewImpl implements
 
 			@Override
 			public void onClick(ClickEvent event) {
-				Date startDate = DateUtils.getOneDayBefore(boxDatePickerStart
-						.getValue());
-				Date endDate = DateUtils.setToMidnight(boxDatePickerEnd
-						.getValue());
+				Date startDate = DateUtils.getRange(
+						boxDatePickerStart.getValue(), true);
+				Date endDate = DateUtils.getRange(boxDatePickerEnd.getValue(),
+						false);
 				if (specificRangeSelected) {
-					startDate = DateUtils.getOneDayBefore(boxDatePickerEnd
-							.getValue());
+					startDate = DateUtils.getRange(boxDatePickerEnd.getValue(),
+							true);
 				}
 				setDateRange(null, startDate, endDate);
 
@@ -251,7 +253,7 @@ public class TransactionsView extends ViewImpl implements
 		});
 	}
 
-	private void setDateValueChangeHandler() {
+	private void changeDateString() {
 		ValueChangeHandler<Date> dateBoxHandler = new ValueChangeHandler<Date>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
@@ -316,7 +318,11 @@ public class TransactionsView extends ViewImpl implements
 			endDate = getDateFromName(displayName, false);
 			setDateString(displayName);
 
-		} else {
+		}
+		// else if(specificRangeSelected) {
+		// // endDate
+		// }
+		else {
 			startDate = passedStart;
 			endDate = passedEnd;
 		}
@@ -324,8 +330,8 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerStart.setValue(startDate);
 		boxDatePickerEnd.setValue(endDate);
 
-//		System.err.println("Start Date::" + startDate);
-//		System.err.println("End Date::" + endDate);
+		System.err.println("Start Date::" + startDate);
+		System.err.println("End Date::" + endDate);
 
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);

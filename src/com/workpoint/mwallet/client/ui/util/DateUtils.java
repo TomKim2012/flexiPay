@@ -12,9 +12,10 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
  */
 public class DateUtils {
 	static String datepattern = "dd/MM/yyyy";
-	static String createdpattern = "dd/MM/yyyy HH:mm";
+	static String createdpattern = "d/MM/yyyy h:mm a";
 	static String timestamppattern = "yyyy-MM-dd HH:mm";
 	static String shortTimeStamp = "yyyy-MM-dd";
+	static String fullTimeStamp = "yyyy-MM-dd HH:mm";
 	static String fullPattern = "EEE,MMM d,yyyy";
 	static String halfPattern = "EEEE, MMM d HH:mm";
 	static String monthDayPattern = "MMM d";
@@ -32,6 +33,8 @@ public class DateUtils {
 			.getFormat(timestamppattern);
 	public static final DateTimeFormat SHORTTIMESTAMP = DateTimeFormat
 			.getFormat(shortTimeStamp);
+	public static final DateTimeFormat FULLTIMESTAMP = DateTimeFormat
+			.getFormat(fullTimeStamp);
 	public static final DateTimeFormat HALFDATEFORMAT = DateTimeFormat
 			.getFormat(halfPattern);
 	public static final DateTimeFormat FULLDATEFORMAT = DateTimeFormat
@@ -190,7 +193,6 @@ public class DateUtils {
 			return today;
 
 		}
-
 	}
 
 	public static Date setToMidnight(Date passedDate) {
@@ -211,9 +213,20 @@ public class DateUtils {
 	}
 
 	public static Date getOneDayBefore(Date passedDate) {
-		CalendarUtil.addDaysToDate(passedDate, -1);	
+		CalendarUtil.addDaysToDate(passedDate, -1);
 		setToMidnight(passedDate);
 		return passedDate;
+	}
+
+	public static Date getRange(Date passedDate, boolean isStart) {
+		if (isStart) {
+			String shortText = SHORTTIMESTAMP.format(passedDate) + " 00:01";
+			return FULLTIMESTAMP.parse(shortText);
+		} else {
+			String endText = SHORTTIMESTAMP.format(passedDate) + " 11:59";
+			return FULLTIMESTAMP.parse(endText);
+		}
+
 	}
 
 	public static boolean isOverdue(Date endDate) {

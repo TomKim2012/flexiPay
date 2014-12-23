@@ -46,6 +46,7 @@ public class TransactionDao extends BaseDaoImpl {
 		}
 	}
 	int i=0;
+	
 	private Query getQuery(SearchFilter filter, StringBuffer jpql) {
 		Map<String, Object> params = new HashMap<>();
 		boolean isFirst = true;
@@ -54,7 +55,7 @@ public class TransactionDao extends BaseDaoImpl {
 		//System.err.println("Filter Query\n"+"---------------\n");
 		if (filter.getStartDate() != null) {
 			jpql.append(isFirst ? " Where" : " And");
-			jpql.append(" t.trxDate>:startDate");
+			jpql.append(" t.trxDate>=:startDate");
 			params.put("startDate", filter.getStartDate());
 			 //System.out.println("Start Date>>" + filter.getStartDate());
 			isFirst = false;

@@ -67,7 +67,7 @@ public class TransactionTableRow extends RowWidget {
 				NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
 		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
 		divDate.getElement().setInnerHTML(
-				DateUtils.TIMESTAMPFORMAT.format(transaction.getTrxDate()));
+				DateUtils.CREATEDFORMAT.format(transaction.getTrxDate()));
 
 		String businessName = transaction.getTill().getBusinessName();
 
