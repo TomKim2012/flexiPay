@@ -119,17 +119,18 @@ public class TransactionsView extends ViewImpl implements
 	private double leftStartPosition = -140;
 	private double leftEndPosition = 87;
 
+	private UserDTO loggedUser;
+
 	@Inject
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 
 		List<DateRange> dateRanges = new ArrayList<DateRange>();
-		
-		
+
 		panelDone.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-//				 System.err.println("passedOver = true");
+				// System.err.println("passedOver = true");
 				isPassedOver = true;
 			}
 		});
@@ -137,7 +138,7 @@ public class TransactionsView extends ViewImpl implements
 		panelDone.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-//				 System.err.println("passedOver = false");
+				// System.err.println("passedOver = false");
 				isPassedOver = false;
 			}
 		});
@@ -157,9 +158,9 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerEnd.addHideHandler(new HideHandler() {
 			@Override
 			public void onHide(HideEvent hideEvent) {
-//				System.err.println("Passed Over variable::"+isPassedOver);
+				// System.err.println("Passed Over variable::"+isPassedOver);
 				if (!isPassedOver) {
-//					System.err.println("Hide Event fired!");
+					// System.err.println("Hide Event fired!");
 					AppContext.fireEvent(new HidePanelBoxEvent("transactions"));
 				}
 			}
@@ -379,15 +380,23 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void presentSummary(String transactions, String amount,
-			String uniqueCustomers, String uniqueMerchants) {
+			String uniqueCustomers, String uniqueMerchants,
+			String merchantAverage, String customerAverage) {
+		
+		String text1 = "<span class='helper-font-16'>Customers:</span>"
+				+ "<span class='helper-font-16'>" + uniqueCustomers + "</span><br/>";
+		if(loggedUser.hasGroup("Merchant")){
+			headerContainer.getPopSummaries().setText(text1);
+		}else{
+			String text2 = "<span class='helper-font-16'>Customer Average:</span>"
+					+ "<span class='helper-font-16'>" + customerAverage + "</span><br/>";
+			String text3 = "<span class='helper-font-16'>Merchants:</span>"
+					+ "<span class='helper-font-16'>" + uniqueMerchants + "</span>";
+			headerContainer.getPopSummaries().setText(text1 + text2 + text3);
+		}
 
-		headerContainer.getPopSummaries().setText(
-				"<span class='helper-font-16'>Customers:</span>"
-						+ "<span class='helper-font-16'>" + uniqueCustomers
-						+ "</span>");
 
-		headerContainer.presentSummary(transactions, amount, uniqueCustomers,
-				uniqueMerchants);
+		headerContainer.presentSummary(transactions, amount,uniqueMerchants, merchantAverage,customerAverage);
 	}
 
 	@Override
@@ -438,6 +447,7 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void setLoggedUser(UserDTO user) {
+		this.loggedUser = user;
 		headerContainer.setLoggedUser(user);
 	}
 

@@ -40,31 +40,32 @@ public class TransactionsHeader extends Composite {
 	public TransactionsHeader() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
+
 	public void presentSummary(String transactions, String amount,
-			String uniqueCustomers, String uniqueMerchants) {
+			String uniqueMerchants, String merchantAverage,
+			String customerAverage) {
 
 		popSummaries.reconfigure();
 		spnTransactions.setInnerHTML(transactions);
 		spnAmount.setInnerHTML(amount);
-		spnTills.getElement().setInnerText(uniqueMerchants);
-		panelText.setInnerText("MERCHANTS SERVED");
 
 		if (LoggedUser.hasGroup("Merchant")) {
-			spnTills.getElement().setInnerText(uniqueCustomers);
-			panelText.setInnerText("CUSTOMERS SERVED");
-			popSummaries.hide(); 
-		} else if (LoggedUser.hasGroup("SalesPerson")) {
-			popSummaries.hide();
+			spnTills.getElement().setInnerText(customerAverage);
+		} else {
+			if (uniqueMerchants.equals("1")) {
+				spnTills.getElement().setInnerText(customerAverage);
+			} else {
+				spnTills.getElement().setInnerText(merchantAverage);
+			}
 		}
 
+		panelText.setInnerText("AVERAGE");
 	}
 
 	public void setLoggedUser(UserDTO user) {
 		this.LoggedUser = user;
 	}
-	
-	
+
 	public Popover getPopSummaries() {
 		return popSummaries;
 	}

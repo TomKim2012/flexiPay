@@ -119,8 +119,8 @@ input:focus {
 .main-body .alert {
 	position: absolute;
 	left: 50%;
-	/* top: 2%; */
-	z-index: 10;
+	top: 2%;
+	/* z-index: 10; */
 	margin-left: -130px;
 	max-width: 30%;
 	font-weight: bold;

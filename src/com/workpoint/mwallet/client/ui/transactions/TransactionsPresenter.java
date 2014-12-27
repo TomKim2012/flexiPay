@@ -56,7 +56,8 @@ public class TransactionsPresenter extends
 		void clear();
 
 		void presentSummary(String transactions, String amount,
-				String uniqueCustomers, String uniqueMerchants);
+				String uniqueCustomers, String uniqueMerchants,
+				String merchantAverage, String customerAverage);
 
 		HasClickHandlers getRefreshLink();
 
@@ -147,6 +148,10 @@ public class TransactionsPresenter extends
 
 	private String totals;
 
+	private double merchantAverage;
+
+	private double customerAverage;
+
 	private void loadData(String passedDate) {
 		this.setDateRange = passedDate;
 
@@ -188,7 +193,7 @@ public class TransactionsPresenter extends
 	protected void bindTransactions() {
 		getView().clear();
 		Collections.sort(trxs);
-		
+
 		Double totalAmount = 0.0;
 		for (TransactionDTO transaction : trxs) {
 			if (isSalesPerson) {
@@ -203,8 +208,13 @@ public class TransactionsPresenter extends
 
 		trxSize = NumberUtils.NUMBERFORMAT.format(trxs.size());
 		totals = NumberUtils.CURRENCYFORMAT.format(totalAmount);
+
+		merchantAverage = totalAmount / uniqueMerchants;
+		customerAverage = totalAmount / uniqueCustomers;
 		getView().presentSummary(trxSize, totals,
-				Long.toString(uniqueCustomers), Long.toString(uniqueMerchants));
+				Long.toString(uniqueCustomers), Long.toString(uniqueMerchants),
+				NumberUtils.CURRENCYFORMAT.format(merchantAverage),
+				NumberUtils.CURRENCYFORMAT.format(customerAverage));
 	}
 
 	KeyDownHandler keyHandler = new KeyDownHandler() {
@@ -271,8 +281,8 @@ public class TransactionsPresenter extends
 
 	@Override
 	public void onHidePanelBox(HidePanelBoxEvent event) {
-		if(event.getEventSource().equals("transactions")){
-			getView().hideDoneBox();	
+		if (event.getEventSource().equals("transactions")) {
+			getView().hideDoneBox();
 		}
 	}
 

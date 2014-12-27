@@ -10,17 +10,20 @@
 	position: absolute;
 	width: 100%;
 	top: 0px;
+	z-index: -2;
 }
 
 .main-body .top-header .navbar{
 	border-bottom: 1px solid #c7c6c7;
 	height: 48px;
+	z-index: -1;
 }
 .main-body .top-header .navbar-inner {
 	background-image: linear-gradient(to bottom, #ffffff, #eeeeee);
 	background-color: #eeeeee;
 	padding-left: 12px;
 	height: inherit;
+	z-index: -1;
 }
 
 .main-body .sidebar-nav {

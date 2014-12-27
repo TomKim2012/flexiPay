@@ -36,7 +36,7 @@ public class GetTransactionsRequestActionHandler extends
 		TransactionDao dao = new TransactionDao(DB.getEntityManager());
 
 		List<TransactionModel> trxs = dao.getAllTrx(action.getFilter());
-		
+
 		List<TransactionDTO> dtos = new ArrayList<TransactionDTO>();
 
 		// System.err.println("Cust Size>>"+trxs.size());
@@ -57,11 +57,10 @@ public class GetTransactionsRequestActionHandler extends
 		}
 
 		((GetTransactionsRequestResult) actionResult).setTransactions(dtos);
-		((GetTransactionsRequestResult) actionResult)
-				.setUniqueCustomers(dao.getCustomers());
-		((GetTransactionsRequestResult) actionResult)
-				.setUniqueMerchants(dao.getMerchants());
-
+		((GetTransactionsRequestResult) actionResult).setUniqueCustomers(dao
+				.getCustomers());
+		((GetTransactionsRequestResult) actionResult).setUniqueMerchants(dao
+				.getMerchants());
 	}
 
 	private TillDTO getTill(String tillNumber) {

@@ -46,4 +46,5 @@ public class GetTransactionsRequestResult extends BaseResponse {
 	public Long getUniqueMerchants() {
 		return uniqueMerchants;
 	}
+
 }
