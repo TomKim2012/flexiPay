@@ -5,6 +5,7 @@ import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.workpoint.mwallet.server.ServerConstants;
 import com.workpoint.mwallet.server.actionhandlers.GetContextRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetGroupsRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.GetSmsLogRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetTillsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetTransactionsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetUserRequestActionHandler;
@@ -18,6 +19,7 @@ import com.workpoint.mwallet.server.actionhandlers.SaveUserRequestActionHandler;
 import com.workpoint.mwallet.server.actionvalidator.SessionValidator;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
+import com.workpoint.mwallet.shared.requests.GetSMSLogRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.requests.GetUserRequest;
@@ -45,8 +47,11 @@ public class ServerModule extends HandlerModule {
 				SessionValidator.class);
 		bindHandler(GetUsersRequest.class, GetUsersRequestActionHandler.class,
 				SessionValidator.class);
+		bindHandler(GetSMSLogRequest.class, GetSmsLogRequestActionHandler.class,
+				SessionValidator.class);
 		bindHandler(GetGroupsRequest.class,
 				GetGroupsRequestActionHandler.class, SessionValidator.class);
+		
 		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class,
 				SessionValidator.class);
 		bindHandler(GetTransactionsRequest.class,

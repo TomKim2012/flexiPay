@@ -53,6 +53,9 @@ public class GetTransactionsRequestActionHandler extends
 			trxDTO.setTrxDate(trxmodel.getTrxDate());
 			trxDTO.setIpAddress(trxmodel.getipAddress());
 			trxDTO.setApproved(trxmodel.getApproved());
+			if (trxmodel.getSmsStatus() != null) {
+				trxDTO.setSmsStatus(trxmodel.getSmsStatus().getStatus());
+			}
 			dtos.add(trxDTO);
 		}
 

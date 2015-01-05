@@ -4,8 +4,6 @@ import static com.workpoint.mwallet.client.ui.home.HomePresenter.ACTIVITIES_SLOT
 
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.ErrorEvent;
-import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -15,8 +13,6 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.BulletListPanel;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
-import com.workpoint.mwallet.client.util.AppContext;
-import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
@@ -46,6 +42,9 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@UiField
 	LIElement liUsers;
+
+	@UiField
+	LIElement liSmsLog;
 
 	@UiField
 	LIElement liSettings;
@@ -141,6 +140,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		showTab(liTills, false);
 		showTab(liTransactions, false);
 		showTab(liUsers, false);
+		showTab(liSmsLog, false);
 		showTab(liSettings, false);
 		if (group.equals("Merchant")) {
 			showTab(liDashboard, true);
@@ -153,6 +153,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			showTab(liTills, true);
 			showTab(liTransactions, true);
 			showTab(liUsers, true);
+			showTab(liSmsLog, true);
 			showTab(liSettings, true);
 		}
 	}
@@ -162,6 +163,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		setActive(liTills, false);
 		setActive(liTransactions, false);
 		setActive(liUsers, false);
+		setActive(liSmsLog, false);
 		setActive(liSettings, false);
 		if (page.equals("Dashboard")) {
 			setActive(liDashboard, true);
@@ -171,6 +173,8 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			setActive(liTransactions, true);
 		} else if (page.equals("Users")) {
 			setActive(liUsers, true);
+		} else if (page.equals("SmsLog")) {
+			setActive(liSmsLog, true);
 		} else if (page.equals("Settings")) {
 			setActive(liSettings, true);
 		}

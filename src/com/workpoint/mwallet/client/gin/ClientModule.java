@@ -33,6 +33,8 @@ import com.workpoint.mwallet.client.ui.popup.GenericPopupPresenter;
 import com.workpoint.mwallet.client.ui.popup.GenericPopupView;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
 import com.workpoint.mwallet.client.ui.profile.ProfileView;
+import com.workpoint.mwallet.client.ui.sms.SmsPresenter;
+import com.workpoint.mwallet.client.ui.sms.SmsView;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsView;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
@@ -86,6 +88,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(TillsPresenter.class,
 				TillsPresenter.IActivitiesView.class, TillsView.class);
+		
+		bindPresenterWidget(SmsPresenter.class,
+				SmsPresenter.IActivitiesView.class, SmsView.class);
 
 		bindPresenterWidget(CreateTillPresenter.class,
 				CreateTillPresenter.MyView.class, CreateTillView.class);

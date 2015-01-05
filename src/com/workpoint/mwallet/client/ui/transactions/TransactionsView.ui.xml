@@ -68,7 +68,6 @@
 					</div>
 				</div>
 
-
 				<div class="row-fluid">
 					<p:TransactionsHeader ui:field="headerContainer">
 					</p:TransactionsHeader>

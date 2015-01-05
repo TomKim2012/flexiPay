@@ -28,6 +28,7 @@ import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
+import com.workpoint.mwallet.client.ui.sms.SmsPresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.client.util.AppContext;
@@ -82,6 +83,7 @@ public class HomePresenter extends
 	private IndirectProvider<DashboardPresenter> dashboardFactory;
 	private IndirectProvider<TransactionsPresenter> transactionsFactory;
 	private IndirectProvider<UserPresenter> usersFactory;
+	private IndirectProvider<SmsPresenter> smsLogFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
 	private IndirectProvider<ProfilePresenter> profileFactory;
 
@@ -92,6 +94,7 @@ public class HomePresenter extends
 			Provider<TransactionsPresenter> transactionsProvider,
 			Provider<UserPresenter> userProvider,
 			Provider<TillsPresenter> tillProvider,
+			Provider<SmsPresenter> smsProvider,
 			Provider<ProfilePresenter> profileProvider) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(
@@ -100,6 +103,7 @@ public class HomePresenter extends
 				transactionsProvider);
 		usersFactory = new StandardProvider<UserPresenter>(userProvider);
 		tillFactory = new StandardProvider<TillsPresenter>(tillProvider);
+		smsLogFactory = new StandardProvider<SmsPresenter>(smsProvider);
 		profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
 
 	}
@@ -171,17 +175,18 @@ public class HomePresenter extends
 				}
 			});
 			getView().setSelectedTab("Users");
-		} else if (page != null && page.equals("settings")
+		} else if (page != null && page.equals("smsLog")
 				&& isCurrentUserAllowed(page)) {
-			Window.setTitle("Settings");
-			/*
-			 * dashboardFactory.get(new ServiceCallback<DashboardPresenter>() {
-			 * 
-			 * @Override public void processResult(DashboardPresenter aResponse)
-			 * { setInSlot(ACTIVITIES_SLOT, aResponse); } });
-			 */
-			getView().setSelectedTab("Settings");
-		}else if (page != null && page.equals("profile")){
+			Window.setTitle("SMS Log");
+			smsLogFactory.get(new ServiceCallback<SmsPresenter>() {
+				@Override
+				public void processResult(SmsPresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			getView().setSelectedTab("SmsLog");
+		} else if (page != null
+				&& (page.equals("profile") || page.equals("settings"))) {
 			Window.setTitle("Profile Settings");
 			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
 				@Override
@@ -204,7 +209,7 @@ public class HomePresenter extends
 					.hasGroup("SalesPerson")))
 					&& ((page.equals("dashboard")) || (page
 							.equals("transactions")))) {
-				System.err.println("User Has Been Allowed!");
+				// System.err.println("User Has Been Allowed!");
 				return true;
 			} else {
 				return false;

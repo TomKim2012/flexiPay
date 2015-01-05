@@ -21,7 +21,7 @@
 
 			<div class="span4 no-border">
 				<div class="big-text">
-					<b:Popover heading="More Summary" ui:field="popSummaries" html="true" placement="TOP">
+					<b:Popover heading="More Summary" ui:field="popSummaries" html="true" placement="LEFT">
 						<g:InlineLabel ui:field="spnTills" title="Transacted Tills"></g:InlineLabel>
 					</b:Popover>
 				</div>

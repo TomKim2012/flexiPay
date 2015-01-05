@@ -143,10 +143,6 @@ public class TransactionsView extends ViewImpl implements
 			}
 		});
 
-		// Static Positions
-		// System.err.println("Left Position::"+
-		// periodDropdown.getAbsoluteTop());
-
 		boxDatePickerEnd.getElement().getStyle()
 				.setLeft(leftEndPosition, Unit.PX);
 		boxDatePickerStart.getElement().getStyle()
@@ -158,9 +154,7 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerEnd.addHideHandler(new HideHandler() {
 			@Override
 			public void onHide(HideEvent hideEvent) {
-				// System.err.println("Passed Over variable::"+isPassedOver);
 				if (!isPassedOver) {
-					// System.err.println("Hide Event fired!");
 					AppContext.fireEvent(new HidePanelBoxEvent("transactions"));
 				}
 			}
@@ -319,11 +313,7 @@ public class TransactionsView extends ViewImpl implements
 			endDate = getDateFromName(displayName, false);
 			setDateString(displayName);
 
-		}
-		// else if(specificRangeSelected) {
-		// // endDate
-		// }
-		else {
+		} else {
 			startDate = passedStart;
 			endDate = passedEnd;
 		}
@@ -331,8 +321,8 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerStart.setValue(startDate);
 		boxDatePickerEnd.setValue(endDate);
 
-		System.err.println("Start Date::" + startDate);
-		System.err.println("End Date::" + endDate);
+		// System.err.println("Start Date::" + startDate);
+		// System.err.println("End Date::" + endDate);
 
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);
@@ -382,21 +372,27 @@ public class TransactionsView extends ViewImpl implements
 	public void presentSummary(String transactions, String amount,
 			String uniqueCustomers, String uniqueMerchants,
 			String merchantAverage, String customerAverage) {
-		
-		String text1 = "<span class='helper-font-16'>Customers:</span>"
-				+ "<span class='helper-font-16'>" + uniqueCustomers + "</span><br/>";
-		if(loggedUser.hasGroup("Merchant")){
+
+		String text1 = "<span class='helper-font-small color-blue'>Customers:</span>"
+				+ "<span class='helper-font-small bold'>"
+				+ uniqueCustomers
+				+ "</span><br/>";
+		if (loggedUser.hasGroup("Merchant")) {
 			headerContainer.getPopSummaries().setText(text1);
-		}else{
-			String text2 = "<span class='helper-font-16'>Customer Average:</span>"
-					+ "<span class='helper-font-16'>" + customerAverage + "</span><br/>";
-			String text3 = "<span class='helper-font-16'>Merchants:</span>"
-					+ "<span class='helper-font-16'>" + uniqueMerchants + "</span>";
+		} else {
+			String text2 = "<span class='helper-font-small color-blue'>Customer Average:</span>"
+					+ "<span class='helper-font-small bold'>"
+					+ customerAverage
+					+ "</span><br/>";
+			String text3 = "<span class='helper-font-small color-blue'>Merchants:</span>"
+					+ "<span class='helper-font-small bold'>"
+					+ uniqueMerchants
+					+ "</span>";
 			headerContainer.getPopSummaries().setText(text1 + text2 + text3);
 		}
 
-
-		headerContainer.presentSummary(transactions, amount,uniqueMerchants, merchantAverage,customerAverage);
+		headerContainer.presentSummary(transactions, amount, uniqueMerchants,
+				merchantAverage, customerAverage);
 	}
 
 	@Override

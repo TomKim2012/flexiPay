@@ -2,22 +2,21 @@ package com.workpoint.mwallet.server.dao.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;	
 
 @Entity
 @Table(name="LipaNaMpesaIPN")
 public class TransactionModel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -38,6 +37,10 @@ public class TransactionModel {
 	private boolean status;
 	private String ipAddress;
 	private Boolean isApproved;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="smsStatus_FK")
+	private SmsModel smsStatus;
 	
 
 	public Long getId() {
@@ -115,5 +118,11 @@ public class TransactionModel {
 	}
 	public void setApproved(Boolean isApproved) {
 		this.isApproved = isApproved;
+	}
+	public SmsModel getSmsStatus() {
+		return smsStatus;
+	}
+	public void setSmsStatus(SmsModel smsStatus) {
+		this.smsStatus = smsStatus;
 	}
 }

@@ -17,7 +17,7 @@
 		<g:HTMLPanel styleName="td" ui:field="divTills">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divStatus">
-			<b:Popover text="you can any text content hear." heading="Status"
+			<b:Popover heading="Status"
 				ui:field="popoverStatus" placement="LEFT">
 				<g:InlineLabel styleName="label label-default"
 					ui:field="spnStatus">posted</g:InlineLabel>

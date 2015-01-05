@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.RowWidget;
+import com.workpoint.mwallet.client.ui.sms.table.SmsStatus;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
@@ -40,8 +41,8 @@ public class TransactionTableRow extends RowWidget {
 	HTMLPanel divStatus;
 	@UiField
 	InlineLabel spnStatus;
-	
-	@UiField 
+
+	@UiField
 	Popover popoverStatus;
 
 	public TransactionTableRow() {
@@ -60,7 +61,7 @@ public class TransactionTableRow extends RowWidget {
 					+ transaction.getIpAddress());
 			row.addStyleName("error");
 		}
-		
+
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
 		divAmount.getElement().setInnerHTML(
@@ -78,7 +79,8 @@ public class TransactionTableRow extends RowWidget {
 		divTills.getElement().setInnerHTML(
 				transaction.getTill().getTillNo() + " (" + businessName + ")");
 		divTills.getElement().setTitle(transaction.getTill().getBusinessName());
-		setStatus(transaction.getStatus());
+		setStatus(transaction.getStatus(),
+				SmsStatus.getStatus(transaction.getSmsStatus()));
 
 		if (isSalesPerson) {
 			show(divCustNames, false);
@@ -92,18 +94,85 @@ public class TransactionTableRow extends RowWidget {
 	}
 
 	private void show(HTMLPanel panel, boolean show) {
-		if (show) {
-			// panel.removeFromParent();
-
-		} else {
+		if (!show) {
 			panel.removeFromParent();
 		}
 	}
 
-	private void setStatus(boolean status) {
-		if (status) {
+	private void setStatus(boolean status, SmsStatus smsStatus) {
+		String html = "";
+		if (smsStatus == SmsStatus.SUCCESS) {
 			spnStatus.setStyleName("label label-success");
-		}
-	}
+			if (status) {
+				spnStatus.setText("Complete");
+				html = "Transaction <strong>posted</strong>"
+						+ " and sms <strong>delivered</strong> to till phone";
+			} else {
+				spnStatus.setText("not-posted");
+				html = "Transaction <strong>not posted </strong>"
+						+ " but sms <strong>delivered</strong> to till phone";
+			}
+		} else if (smsStatus == SmsStatus.SUBMITTED) {
+			spnStatus.setStyleName("label label-warning");
+			if (status) {
+				spnStatus.setText("sms submitted");
+				html = "Transaction <strong>posted</strong>"
+						+ " and sms <strong>submitted</strong> to Mobile Provider " +
+						"but awaiting delivery to phone";
+			} else {
+				spnStatus.setText("not-posted");
+				html = "Transaction <strong>not posted </strong> but"
+						+ " sms <strong>submitted</strong> to Mobile Provider";
+			}
+		} else if (smsStatus == SmsStatus.BUFFERED) {
+			spnStatus.setStyleName("label label-inverse");
+			if (status) {
+				spnStatus.setText("sms Buffered");
+				html = "Transaction <strong>posted</strong>, "
+						+ "but sms is queued at the Mobile Provider";
+			} else {
+				spnStatus.setText("not-posted");
+				html = "Transaction not <strong>not posted </strong>, "
+						+ "but sms is queued at the Mobile Provider";
+			}
 
+		} else if (smsStatus == SmsStatus.SENT) {
+			spnStatus.setStyleName("label label-info");
+			if (status) {
+				spnStatus.setText("Sms Sent");
+				html = "Transaction <strong> posted </strong>, "
+						+ "and sms sent by sms gateway";
+			} else {
+				spnStatus.setText("Sms Sent");
+				html = "Transaction <strong>not posted</strong>, "
+						+ "but sms sent by sms gateway";
+			}
+		}  else if ((smsStatus == SmsStatus.FAILED)
+				|| (smsStatus == SmsStatus.REJECTED)) {
+			spnStatus.setStyleName("label label-important");
+			if (status) {
+				spnStatus.setText("sms Failed");
+				html = "Transaction <strong>posted</strong>, but sms <strong>not sent</strong>."
+						+ "It failed or is rejected";
+			} else {
+				spnStatus.setText("not-posted");
+				html = "Transaction <strong>not posted </strong>, and sms not sent."
+						+ "It failed or was rejected";
+			}
+		}else {
+			spnStatus.setStyleName("label label-important");
+			if (status) {
+				spnStatus.setText("posted");
+				html = "Transaction <strong>posted</strong>, "
+						+ "undefined status for sms";
+			} else {
+				spnStatus.setText("un-identified");
+				html = "Transaction <strong>not posted</strong>, "
+						+ "undefined status for sms";
+			}
+		}
+		popoverStatus.setText(html);
+		popoverStatus.setHtml(true);
+		popoverStatus.reconfigure();
+	}
 }

@@ -20,6 +20,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	private boolean status;
 	private boolean isApproved;
 	private String ipAddress;
+	private String smsStatus;
 
 	public TransactionDTO() {
 	}
@@ -108,6 +109,14 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 		if (getTrxDate() == null || transaction.getTrxDate() == null)
 			return 0;
 		return -getTrxDate().compareTo(transaction.getTrxDate());
+	}
+
+	public String getSmsStatus() {
+		return smsStatus;
+	}
+
+	public void setSmsStatus(String smsStatus) {
+		this.smsStatus = smsStatus;
 	}
 
 }
