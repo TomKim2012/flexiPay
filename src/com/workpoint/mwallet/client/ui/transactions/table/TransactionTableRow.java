@@ -24,7 +24,6 @@ public class TransactionTableRow extends RowWidget {
 
 	@UiField
 	HTMLPanel row;
-
 	@UiField
 	HTMLPanel divCustNames;
 	@UiField
@@ -57,7 +56,7 @@ public class TransactionTableRow extends RowWidget {
 		this();
 
 		if (!transaction.isApproved()) {
-			row.setTitle("Transaction from unAllowed ipAddress::"
+			row.setTitle("unAllowed ipAddress::"
 					+ transaction.getIpAddress());
 			row.addStyleName("error");
 		}
@@ -164,11 +163,11 @@ public class TransactionTableRow extends RowWidget {
 			if (status) {
 				spnStatus.setText("posted");
 				html = "Transaction <strong>posted</strong>, "
-						+ "undefined status for sms";
+						+ "sms status undefined";
 			} else {
 				spnStatus.setText("un-identified");
 				html = "Transaction <strong>not posted</strong>, "
-						+ "undefined status for sms";
+						+ "sms status undefined";
 			}
 		}
 		popoverStatus.setText(html);
