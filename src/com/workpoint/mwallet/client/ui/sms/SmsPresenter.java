@@ -15,7 +15,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
@@ -33,8 +32,6 @@ import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.SmsDTO;
-import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetSMSLogRequest;
 import com.workpoint.mwallet.shared.responses.GetSMSLogRequestResult;
 
@@ -50,7 +47,7 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 	public interface IActivitiesView extends View {
 		void presentData(SmsDTO log);
 
-		void presentSummary(String format);
+		void presentSummary(String totalLogs, String totalCost);
 
 		void clear();
 
@@ -98,11 +95,16 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 		// Sort
 		Collections.sort(logs);
 
+		Double smsCost = 0.0;
 		for (SmsDTO log : logs) {
 			getView().presentData(log);
+			smsCost = smsCost + log.getCost();
 		}
 
-		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(logs.size()));
+		String formattedTotal = "Kes" + NumberUtils.NUMBERFORMAT.format(logs.size());
+		String formattedSmsCost = NumberUtils.CURRENCYFORMATSHORT
+				.format(smsCost);
+		getView().presentSummary(formattedTotal, formattedSmsCost);
 	}
 
 	@Override

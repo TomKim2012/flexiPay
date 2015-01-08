@@ -10,13 +10,11 @@
 	position: absolute;
 	width: 100%;
 	top: 0px;
-	/* z-index: -2; */
 }
 
 .main-body .top-header .navbar{
 	border-bottom: 1px solid #c7c6c7;
 	height: 48px;
-	z-index: -1;
 }
 .main-body .top-header .navbar-inner {
 	background-image: linear-gradient(to bottom, #ffffff, #eeeeee);
@@ -284,8 +282,7 @@ body .dateBoxPopup{
 	padding-top: 5px;
 }
 
-.navbar .nav>li>a {
-	/* -webkit-tap-highlight-color: rgba(0,0,0,0); */;
+.navbar .nav>li>a {;
 	-webkit-tap-highlight-color: inherit; /* For some Androids */
 	}
 

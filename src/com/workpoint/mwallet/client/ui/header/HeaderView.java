@@ -4,10 +4,6 @@ import java.util.Date;
 
 import com.github.gwtbootstrap.client.ui.Dropdown;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ErrorEvent;
-import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.HasBlurHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,13 +11,11 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.UserWidget;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
-import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView {
@@ -31,8 +25,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	public interface Binder extends UiBinder<Widget, HeaderView> {
 	}
 
-	@UiField
-	Anchor aHome;
 	@UiField
 	Anchor aNavbarToggle;
 	@UiField
@@ -48,8 +40,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@UiField
 	HTMLPanel divNavbar;
 	@UiField
-	Anchor aAdmin;
-	@UiField
 	FocusPanel popupContainer;
 	@UiField
 	SpanElement lblCount;
@@ -62,28 +52,8 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@Inject
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		UIObject.setVisible(aAdmin.getElement(), false);
-
-		setAnchorHandlers();
 	}
 
-	private void setAnchorHandlers() {
-		aHome.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				aHome.addStyleName("active");
-				aAdmin.removeStyleName("active");
-			}
-		});
-
-		aAdmin.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				aAdmin.addStyleName("active");
-				aHome.removeStyleName("active");
-			}
-		});
-	}
 
 	@Override
 	public Widget asWidget() {
@@ -168,11 +138,6 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	@Override
 	public void changeFocus() {
 		popupContainer.setFocus(true);
-	}
-
-	@Override
-	public void showAdminLink(boolean isAdmin) {
-		UIObject.setVisible(aAdmin.getElement(), isAdmin);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
+import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
@@ -53,6 +54,10 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 		HasClickHandlers getGroupTabLink();
 
 		void setMiddleHeight();
+
+		void presentUserTotals(String totalUsers);
+
+		void presentGroupTotals(String totalGroups);
 	}
 
 	public static final Object ITEMSLOT = new Object();
@@ -92,13 +97,13 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 		});
 
 	}
-	
+
 	@Override
 	protected void onReset() {
 		getView().setMiddleHeight();
 		super.onReset();
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -120,15 +125,14 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 				showPopup(UserSavePresenter.TYPE.GROUP);
 			}
 		});
-		
+
 		getView().getUserTabLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				setType(TYPE.USER);
 			}
 		});
-		
-		
+
 		getView().getGroupTabLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -155,6 +159,8 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 					public void processResult(GetGroupsResponse result) {
 						List<UserGroup> groups = result.getGroups();
 						loadGroups(groups);
+						getView().presentGroupTotals(
+								NumberUtils.NUMBERFORMAT.format(groups.size()));
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
@@ -184,8 +190,9 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 					@Override
 					public void processResult(GetUsersResponse result) {
 						List<UserDTO> users = result.getUsers();
-//						System.err.println(">>>Dispatched users loading..."+users.size());
 						loadUsers(users);
+						getView().presentUserTotals(
+								NumberUtils.NUMBERFORMAT.format(users.size()));
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
@@ -203,6 +210,8 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 					}
 				});
 			}
+		getView().presentUserTotals(
+				NumberUtils.NUMBERFORMAT.format(users.size()));
 	}
 
 	@Override

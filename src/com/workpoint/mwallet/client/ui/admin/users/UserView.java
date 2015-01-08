@@ -3,8 +3,8 @@ package com.workpoint.mwallet.client.ui.admin.users;
 import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.GROUPSLOT;
 import static com.workpoint.mwallet.client.ui.admin.users.UserPresenter.ITEMSLOT;
 
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -22,15 +22,15 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	private final Widget widget;
 	@UiField
 	Anchor aNewUser;
-	
+
 	@UiField
 	Anchor aNewGroup;
 	@UiField
 	Anchor aUserstab;
-	
+
 	@UiField
 	HTMLPanel divContentTop;
-	
+
 	@UiField
 	HTMLPanel divContentTable;
 	@UiField
@@ -41,6 +41,10 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	HTMLPanel panelUsers;
 	@UiField
 	HTMLPanel panelGroup;
+	@UiField
+	SpanElement spnTotalUsers;
+	@UiField
+	SpanElement spnTotalGroups;
 
 	@UiField
 	Element divUserContent;
@@ -147,6 +151,14 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 		return aUserstab;
 	}
 
+	public void presentUserTotals(String totalUsers) {
+		spnTotalGroups.setInnerText(totalUsers);
+	}
+
+	public void presentGroupTotals(String totalGroups) {
+		spnTotalGroups.setInnerText(totalGroups);
+	}
+
 	@Override
 	public void setType(TYPE type) {
 		if (type == TYPE.GROUP) {
@@ -173,11 +185,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 			divGroupContent.removeClassName("active");
 		}
 	}
-	
+
 	public void setMiddleHeight() {
 		int totalHeight = divMainContainer.getElement().getOffsetHeight();
 		int topHeight = divContentTop.getElement().getOffsetHeight();
-		int middleHeight = totalHeight - topHeight -100;
+		int middleHeight = totalHeight - topHeight - 100;
 
 		if (middleHeight > 0) {
 			divContentTable.setHeight(middleHeight + "px");

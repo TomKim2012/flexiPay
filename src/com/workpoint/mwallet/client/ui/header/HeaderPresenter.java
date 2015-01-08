@@ -47,8 +47,6 @@ public class HeaderPresenter extends
 
 		void changeFocus();
 
-		void showAdminLink(boolean admin);
-
 		void setVersionInfo(Date created, String date, String version);
 
 		// void setImage(HTUser currentUser);

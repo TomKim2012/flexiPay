@@ -207,14 +207,14 @@ public class TransactionsPresenter extends
 		}
 
 		trxSize = NumberUtils.NUMBERFORMAT.format(trxs.size());
-		totals = NumberUtils.CURRENCYFORMAT.format(totalAmount);
+		totals = NumberUtils.CURRENCYFORMATSHORT.format(totalAmount);
 
 		merchantAverage = totalAmount / uniqueMerchants;
 		customerAverage = totalAmount / uniqueCustomers;
 		getView().presentSummary(trxSize, totals,
 				Long.toString(uniqueCustomers), Long.toString(uniqueMerchants),
-				NumberUtils.CURRENCYFORMAT.format(merchantAverage),
-				NumberUtils.CURRENCYFORMAT.format(customerAverage));
+				NumberUtils.CURRENCYFORMATSHORT.format(merchantAverage),
+				NumberUtils.CURRENCYFORMATSHORT.format(customerAverage));
 	}
 
 	KeyDownHandler keyHandler = new KeyDownHandler() {

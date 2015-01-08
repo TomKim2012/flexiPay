@@ -21,24 +21,13 @@
 			<a href="#home" class="brand">
 				<g:Image ui:field="imgLogo" url="img/Pioneer_Logo.png"></g:Image>
 			</a>
-			
-			<g:Anchor styleName="brand brand-text" href="#home" ui:field="aBrand">
-				 | E-Wallet
+
+			<g:Anchor styleName="brand brand-text" href="#home"
+				ui:field="aBrand">
+				| E-Wallet
 			</g:Anchor>
 
 			<ul class="nav pull-right">
-				<li class="home hide">
-					<g:Anchor href="#home" ui:field="aHome" styleName="close-icon hand active ">
-						<i class="icon-home hidden-phone">&nbsp;Home</i>
-						<i class="icon-home visible-phone helper-font-26"></i>
-					</g:Anchor>
-				</li>
-				<li class="home hidden-phone hide">
-					<g:Anchor href="#adminhome" ui:field="aAdmin" styleName="close-icon hand">
-						<i class="icon-bar-chart hidden-phone">&nbsp;Admin</i>
-						<i class="icon-bar-chart visible-phone helper-font-26"></i>
-					</g:Anchor>
-				</li>
 				<li class="notification-dropdown">
 					<d:ActionLink ui:field="aNotifications"
 						styleName="close-icon hand dropdown-toggle hide" title="Notifications"
@@ -56,7 +45,8 @@
 				</li>
 
 				<b:Dropdown ui:field="DropDownUser">
-					<d:UserWidget ui:field="divUserContainer" mobile="false"></d:UserWidget>
+					<d:UserWidget ui:field="divUserContainer" mobile="false">
+					</d:UserWidget>
 				</b:Dropdown>
 			</ul>
 		</div>

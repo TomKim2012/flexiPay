@@ -27,6 +27,9 @@ public class SmsHeader extends Composite {
 	
 	@UiField
 	SpanElement spnTillTotal;
+	
+	@UiField
+	SpanElement spnCost;
 
 
 	public SmsHeader() {
@@ -41,8 +44,9 @@ public class SmsHeader extends Composite {
 		}
 	}
 	
-	public void setSummary(String total){
+	public void setSummary(String total, String totalCost){
 		spnTillTotal.setInnerText(total);
+		spnCost.setInnerText(totalCost);
 	}
 	
 	public void setLeftMargin(Boolean status) {

@@ -60,7 +60,7 @@ public class SmsTableRow extends RowWidget {
 		this.smsLog = smsLog;
 		if (smsLog != null) {
 			bindText(divDate,
-					DateUtils.DATEFORMAT.format(smsLog.getTimeStamp()));
+					DateUtils.CREATEDFORMAT.format(smsLog.getTimeStamp()));
 			bindText(divMessage, smsLog.getMessage());
 			bindText(divDestination, smsLog.getDestination());
 			bindText(divtCode, smsLog.gettCode());
