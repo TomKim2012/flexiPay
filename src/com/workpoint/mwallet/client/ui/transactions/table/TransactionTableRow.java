@@ -163,11 +163,11 @@ public class TransactionTableRow extends RowWidget {
 			if (status) {
 				spnStatus.setText("posted");
 				html = "Transaction <strong>posted</strong>, "
-						+ "sms status undefined";
+						+ "sms status not provided";
 			} else {
-				spnStatus.setText("un-identified");
+				spnStatus.setText("un-provided");
 				html = "Transaction <strong>not posted</strong>, "
-						+ "sms status undefined";
+						+ "sms status not provided";
 			}
 		}
 		popoverStatus.setText(html);
