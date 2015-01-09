@@ -13,8 +13,14 @@
 			<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
 				<!--Action Buttons -->
 				<div class="action-buttons row-fluid">
-					<div class="span9">
-
+					<div class="span9 title" ui:field="divHeader">
+						<g:HTMLPanel styleName="row-fluid">
+							<g:HTMLPanel styleName="title-container span6">
+								<h4 ui:field="spnTitle" class="title">
+									SMS Log
+								</h4>
+							</g:HTMLPanel>
+						</g:HTMLPanel>
 					</div>
 
 					<div class="span3 right-side">
@@ -35,7 +41,7 @@
 
 
 				<div class="row-fluid">
-					<sms:SmsHeader ui:field="headerContainer" leftMargin="true"></sms:SmsHeader>
+					<sms:SmsHeader ui:field="headerContainer"></sms:SmsHeader>
 				</div>
 
 				<!-- BreadCrumb Panel -->

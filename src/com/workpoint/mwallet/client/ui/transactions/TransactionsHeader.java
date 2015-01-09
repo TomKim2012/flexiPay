@@ -59,7 +59,7 @@ public class TransactionsHeader extends Composite {
 			}
 		}
 
-		panelText.setInnerText("AVERAGE");
+		panelText.setInnerText("MERCHANT AVERAGE");
 	}
 
 	public void setLoggedUser(UserDTO user) {

@@ -2,22 +2,28 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'>
 
-	<g:HTMLPanel>
-		<div class="header row-fluid">
-			<div class="span9 title" ui:field="divHeader">
-				<g:FocusPanel ui:field='panelTitle'>
-					<g:HTMLPanel styleName="row-fluid">
-						<g:HTMLPanel styleName="title-container span6">
-							<h4 ui:field="spnTitle" class="title">
-								SMS Log (Total Number:
-								<span class="bold" ui:field="spnTillTotal" title="Total Number of Tills"></span>
-								, Total Cost:
-								<span ui:field="spnCost" class="bold"></span>
-								)
-							</h4>
-						</g:HTMLPanel>
-					</g:HTMLPanel>
-				</g:FocusPanel>
+	<g:HTMLPanel styleName="activities-page">
+		<div class="row-fluid summary-container">
+			<div class="span4">
+				<div class="big-text">
+					<span ui:field="spnSent" title="Total number of SMS Sent"></span>
+				</div>
+				<div class="bold muted helper-font-small">SMS SENT</div>
+			</div>
+
+			<div class="span4">
+				<div class="big-text">
+					<span class="" ui:field="spnCost" title="Total Cost for sending the sms"></span>
+				</div>
+				<div class="bold muted helper-font-small">TOTAL COST</div>
+			</div>
+
+			<div class="span4 no-border">
+				<div class="big-text">
+					<span class="" ui:field="spnAverage" title="Average Cost for the SMS sent">
+					</span>
+				</div>
+				<div class="bold muted helper-font-small">AVERAGE AMOUNT</div>
 			</div>
 		</div>
 	</g:HTMLPanel>

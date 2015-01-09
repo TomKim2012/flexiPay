@@ -152,11 +152,11 @@ public class UserView extends ViewImpl implements UserPresenter.MyView {
 	}
 
 	public void presentUserTotals(String totalUsers) {
-		spnTotalGroups.setInnerText(totalUsers);
+		spnTotalUsers.setInnerText("("+totalUsers+")");
 	}
 
 	public void presentGroupTotals(String totalGroups) {
-		spnTotalGroups.setInnerText(totalGroups);
+		spnTotalGroups.setInnerText("("+totalGroups+")");
 	}
 
 	@Override

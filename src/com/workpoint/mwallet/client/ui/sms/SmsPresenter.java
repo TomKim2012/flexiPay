@@ -28,6 +28,7 @@ import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
+import com.workpoint.mwallet.client.ui.sms.table.SmsStatus;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -47,7 +48,7 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 	public interface IActivitiesView extends View {
 		void presentData(SmsDTO log);
 
-		void presentSummary(String totalLogs, String totalCost);
+		void presentSummary(String totalLogs, String totalCost, String averageCost);
 
 		void clear();
 
@@ -96,15 +97,19 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 		Collections.sort(logs);
 
 		Double smsCost = 0.0;
+		int tSize = 0;
 		for (SmsDTO log : logs) {
 			getView().presentData(log);
 			smsCost = smsCost + log.getCost();
+			if (!log.getStatus().equals("Failed")) {
+				tSize = tSize + 1;
+			}
 		}
 
-		String formattedTotal = "Kes" + NumberUtils.NUMBERFORMAT.format(logs.size());
-		String formattedSmsCost = NumberUtils.CURRENCYFORMATSHORT
-				.format(smsCost);
-		getView().presentSummary(formattedTotal, formattedSmsCost);
+		String formattedTotal = NumberUtils.NUMBERFORMAT.format(tSize);
+		String formattedSmsCost = NumberUtils.CURRENCYFORMAT.format(smsCost);
+		String averageCost = NumberUtils.NUMBERFORMAT.format(smsCost/tSize);
+		getView().presentSummary(formattedTotal, formattedSmsCost, averageCost);
 	}
 
 	@Override

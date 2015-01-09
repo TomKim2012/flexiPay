@@ -27,15 +27,14 @@
 				<ul id="mytab" class="nav nav-tabs">
 					<li class="active" ui:field="liUser">
 						<g:Anchor href="#user" ui:field="aUserstab">
-							Users(
+							Users
 							<span ui:field="spnTotalUsers"></span>
-							)
 						</g:Anchor>
 					</li>
 					<li ui:field="liGroup">
-						<g:Anchor href="#groups" ui:field="aGroupstab">Groups(
+						<g:Anchor href="#groups" ui:field="aGroupstab">
+							Groups
 							<span ui:field="spnTotalGroups"></span>
-							)
 						</g:Anchor>
 					</li>
 				</ul>

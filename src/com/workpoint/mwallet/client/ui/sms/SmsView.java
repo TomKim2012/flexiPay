@@ -92,8 +92,8 @@ public class SmsView extends ViewImpl implements
 	}
 
 	@Override
-	public void presentSummary(String totalTills, String totalCost) {
-		headerContainer.setSummary(totalTills,totalCost);
+	public void presentSummary(String totalTills, String totalCost, String averageCost) {
+		headerContainer.setSummary(totalTills,totalCost, averageCost);
 	}
 
 	@Override
