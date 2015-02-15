@@ -8,9 +8,11 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.workpoint.mwallet.server.dao.TillDao;
+import com.workpoint.mwallet.server.dao.model.Category;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
@@ -34,7 +36,13 @@ public class GetTillsRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		TillDao dao = new TillDao(DB.getEntityManager());
 
-		List<TillModel> tills = dao.getAllTills(action.getFilter());
+		UserDTO currentUser = SessionHelper.getCurrentUser();
+		Category category = SessionHelper.getUserCategory();
+		
+		String userId = currentUser.getUserId();
+		boolean isSuperUser = category.getName().equals("*") && currentUser.isAdmin();
+		boolean isAdmin = currentUser.isAdmin();
+		List<TillModel> tills = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,category.getId());
 
 		List<TillDTO> dtos = new ArrayList<TillDTO>();
 
@@ -46,7 +54,8 @@ public class GetTillsRequestActionHandler extends
 			tillDTO.setId(tillmodel.getId());
 			tillDTO.setBusinessName(tillmodel.getBusinessName());
 			tillDTO.setPhoneNo(tillmodel.getPhoneNo());
-			tillDTO.setTillNo(tillmodel.getTillNo());
+			tillDTO.setTillNo(tillmodel.getTillNumber());
+			tillDTO.setAccountNo(tillmodel.getAccountNo());
 			
 			//Owner
 			User owner = tillmodel.getOwner();

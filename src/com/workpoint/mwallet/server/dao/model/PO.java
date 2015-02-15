@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -24,6 +28,12 @@ public abstract class PO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+
+	@XmlTransient
+	@Id
+	@GeneratedValue
+	private Long id;
+	
 	@XmlTransient
 	@Column
 	private String createdBy;
@@ -85,8 +95,6 @@ public abstract class PO implements Serializable{
 		this.updated = updated;
 	}
 	
-	public abstract Long getId();
-	
 	@PrePersist
 	public void onPrePersist(){
 		this.created=new Date();
@@ -114,4 +122,13 @@ public abstract class PO implements Serializable{
 		
 		return created;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }

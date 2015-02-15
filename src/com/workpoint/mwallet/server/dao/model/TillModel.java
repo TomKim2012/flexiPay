@@ -16,13 +16,18 @@ public class TillModel extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
 	private String businessName;
-	@Column(unique=true)
-	private String tillNo;
+
+	@Column(name="business_number")
+	private String tillNumber;
+	
+	@Column(name="mpesa_acc")
+	private String accountNo;
+	
+	@ManyToOne
+	@JoinColumn(name="categoryid")
+	private Category category;
+	
 	
 	@Column(length=10)
 	private String phoneNo;
@@ -37,25 +42,12 @@ public class TillModel extends PO{
 	
 	private boolean status;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
-
 	public String getBusinessName() {
 		return businessName;
 	}
 
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
-	}
-
-	public String getTillNo() {
-		return tillNo;
-	}
-
-	public void setTillNo(String tillNo) {
-		this.tillNo = tillNo;
 	}
 
 	public String getPhoneNo() {
@@ -74,10 +66,6 @@ public class TillModel extends PO{
 		this.status = status;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public User getSalesPerson() {
 		return salesPerson;
 	}
@@ -92,6 +80,30 @@ public class TillModel extends PO{
 
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public String getTillNumber() {
+		return tillNumber;
+	}
+
+	public void setTillNumber(String tillNumber) {
+		this.tillNumber = tillNumber;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
 	
 	

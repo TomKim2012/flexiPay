@@ -1,7 +1,5 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,10 +18,10 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent;
+import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent.HidePanelBoxHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
-import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent.HidePanelBoxHandler;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
@@ -37,8 +35,10 @@ import com.workpoint.mwallet.shared.model.TransactionDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class TransactionsPresenter extends
 		PresenterWidget<TransactionsPresenter.ITransactionView> implements
@@ -84,7 +84,20 @@ public class TransactionsPresenter extends
 	@Inject
 	PlaceManager placeManager;
 
+	//private List<TillDTO> tills = new ArrayList<TillDTO>();
+	private boolean isSalesPerson = false;
 	private SearchFilter filter = new SearchFilter();
+	private String setDateRange;
+
+	protected int uniqueCustomers;
+	protected int uniqueMerchants;
+	private String trxSize;
+
+	private String totals;
+
+	private double merchantAverage;
+
+	private double customerAverage;
 
 	@Inject
 	public TransactionsPresenter(final EventBus eventBus,
@@ -99,83 +112,92 @@ public class TransactionsPresenter extends
 		getView().setMiddleHeight();
 
 		// System.err.println("On Reset called");
+	}
 
-		if (AppContext.getContextUser() != null
-				|| AppContext.getContextUser().getGroups() != null) {
-			UserDTO user = AppContext.getContextUser();
-			getView().setLoggedUser(user);
-
-			getTills(user);
-
-		} else {
-			Window.alert("User details not found.");
-		}
+	public void loadAll(){
+		loadTills(AppContext.getContextUser());
+//		if (AppContext.getContextUser() != null
+//				|| AppContext.getContextUser().getGroups() != null) {
+//			UserDTO user = AppContext.getContextUser();
+//			getView().setLoggedUser(user);
+//
+//			loadTills(user);
+//
+//		} else {
+//			Window.alert("User details not found.");
+//		}
 
 	}
 
-	private List<TillDTO> tills = new ArrayList<TillDTO>();
-	private boolean isSalesPerson = false;
-
-	private void getTills(UserDTO user) {
+	private void loadTills(UserDTO user) {
+		if(user==null){
+			return;
+		}
+		getView().setLoggedUser(user);
+		
 		SearchFilter tillFilter = new SearchFilter();
 
 		if (AppContext.isCurrentUserAdmin()) {
 
 		} else if (user.hasGroup("Merchant")) {
-			tillFilter.setOwner(user);
+			//tillFilter.setOwner(user);
 		} else if (user.hasGroup("SalesPerson")) {
 			isSalesPerson = true;
 			getView().setSalesTable(isSalesPerson);// Set SalesPerson
-			tillFilter.setSalesPerson(user);
+			//tillFilter.setSalesPerson(user);
 		}
-		requestHelper.execute(new GetTillsRequest(tillFilter),
-				new TaskServiceCallback<GetTillsRequestResult>() {
+		
+		String passedDate="Last 7 Days";
+		this.setDateRange = passedDate;
+		getView().setDates(passedDate);
+		fireEvent(new ProcessingEvent());
+		filter.setStartDate(DateUtils.getDateByRange(DateRange
+				.getDateRange(passedDate)));
+		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
+			
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetTillsRequest(tillFilter));
+		action.addRequest(new GetTransactionsRequest(filter));
+		
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
-					public void processResult(GetTillsRequestResult aResponse) {
-						tills = aResponse.getTills();
-						setLoggedInUserTills();
-						loadData("Last 7 Days");
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i=0;
+						GetTillsRequestResult tillsResponse = (GetTillsRequestResult)aResponse.get(i++);
+						setUserTills(tillsResponse.getTills());
+						
+						GetTransactionsRequestResult trxResponse = (GetTransactionsRequestResult)aResponse.get(i++);
+						getResults(trxResponse);
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}
 
-	List<TransactionDTO> trxs = new ArrayList<TransactionDTO>();
-	private String setDateRange;
-
-	protected Long uniqueCustomers;
-	protected Long uniqueMerchants;
-	private String trxSize;
-
-	private String totals;
-
-	private double merchantAverage;
-
-	private double customerAverage;
 
 	private void loadData(String passedDate) {
 		this.setDateRange = passedDate;
-
 		getView().setDates(passedDate);
-
-		fireEvent(new ProcessingEvent());
-
+		
+		Window.alert("Passed Date Called!!");
 		filter.setStartDate(DateUtils.getDateByRange(DateRange
 				.getDateRange(passedDate)));
 		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
 
+		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(new GetTransactionsRequest(filter),
 				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
 					public void processResult(
 							GetTransactionsRequestResult aResponse) {
 						getResults(aResponse);
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 
 	}
 
 	protected void getResults(GetTransactionsRequestResult aResponse) {
-		trxs = aResponse.getTransactions();
 
 		uniqueCustomers = aResponse.getUniqueCustomers();
 		uniqueMerchants = aResponse.getUniqueMerchants();
@@ -183,17 +205,14 @@ public class TransactionsPresenter extends
 		// System.err.println("Unique Merchants>>" + uniqueMerchants);
 		// System.err.println("Unique Customers>>" + uniqueCustomers);
 
-		bindTransactions();
+		bindTransactions(aResponse.getTransactions());
 
-		fireEvent(new ProcessingCompletedEvent());
 	}
 
 	private static final Double SALESPERSONRATE = 0.25 / 100;
 
-	protected void bindTransactions() {
+	protected void bindTransactions(List<TransactionDTO> trxs) {
 		getView().clear();
-		Collections.sort(trxs);
-
 		Double totalAmount = 0.0;
 		for (TransactionDTO transaction : trxs) {
 			if (isSalesPerson) {
@@ -211,8 +230,9 @@ public class TransactionsPresenter extends
 
 		merchantAverage = totalAmount / uniqueMerchants;
 		customerAverage = totalAmount / uniqueCustomers;
+		
 		getView().presentSummary(trxSize, totals,
-				Long.toString(uniqueCustomers), Long.toString(uniqueMerchants),
+				Integer.toString(uniqueCustomers), Integer.toString(uniqueMerchants),
 				NumberUtils.CURRENCYFORMATSHORT.format(merchantAverage),
 				NumberUtils.CURRENCYFORMATSHORT.format(customerAverage));
 	}
@@ -257,24 +277,20 @@ public class TransactionsPresenter extends
 		}
 	}
 
-	private void setLoggedInUserTills() {
-		if (tills != null) {
-			if (!AppContext.isCurrentUserAdmin()) {
-				filter.setTills(tills);
-			}
-			getView().setTills(tills);
-		}
-
+	private void setUserTills(List<TillDTO> tills) {
+		filter.setTills(tills);
+		getView().setTills(tills);
 	}
 
 	public void performSearch(GetTransactionsRequest request) {
-		fireEvent(new ProcessingEvent());
+		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
 					public void processResult(
 							GetTransactionsRequestResult aResponse) {
 						getResults(aResponse);
+						fireEvent(new ProcessingCompletedEvent());
 					};
 				});
 	}

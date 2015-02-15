@@ -12,19 +12,10 @@ public class SettingModel extends PO{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
 	private String SettingKey;
 	private String SettingValue;
 	private String description;
 	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
 	public String getKey() {
 		return SettingKey;
 	}

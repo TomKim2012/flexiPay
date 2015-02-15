@@ -56,10 +56,11 @@ public class DB{
     public static EntityManager getEntityManager(){
     	
     	EntityManager em = entityManagers.get();
-    	
+    	        
         if (em != null && !em.isOpen()) {
             em = null;
         }
+        
         if (em == null) {
         	
         	synchronized(entityManagers){        		

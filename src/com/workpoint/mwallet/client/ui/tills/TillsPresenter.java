@@ -98,8 +98,6 @@ public class TillsPresenter extends
 
 	private CreateTillPresenter tillPopUp;
 
-	List<TillDTO> tills = new ArrayList<TillDTO>();
-
 	private TillDTO selected;
 
 	private List<UserDTO> users = new ArrayList<UserDTO>();
@@ -111,30 +109,30 @@ public class TillsPresenter extends
 		createTillPopUp = new StandardProvider<CreateTillPresenter>(
 				tillProvider);
 	}
+	
+	public void loadAll(){
+		loadUsers();
+		loadData();
+	}
 
 	private void loadData() {
-		fireEvent(new ProcessingEvent());
+		fireEvent(new ProcessingEvent("Loading.."));
 		requestHelper.execute(new GetTillsRequest(),
 				new TaskServiceCallback<GetTillsRequestResult>() {
 					@Override
 					public void processResult(GetTillsRequestResult aResponse) {
-						tills = aResponse.getTills();
-						bindTills();
+						bindTills(aResponse.getTills());
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 
 	}
 
-	protected void bindTills() {
+	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
-		// Sort
-		Collections.sort(tills);
-
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
-
 		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(tills.size()));
 	}
 
@@ -142,9 +140,8 @@ public class TillsPresenter extends
 	protected void onReset() {
 		super.onReset();
 		getView().setMiddleHeight();
-		loadUsers();
 		setInSlot(FILTER_SLOT, filterPresenter);
-		loadData();
+		
 	}
 
 	@Override
@@ -305,8 +302,7 @@ public class TillsPresenter extends
 					@Override
 					public void processResult(
 							GetTillsRequestResult aResponse) {
-						tills = aResponse.getTills();
-						bindTills();
+						bindTills(aResponse.getTills());
 						fireEvent(new ProcessingCompletedEvent());
 					};
 				});

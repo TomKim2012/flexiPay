@@ -4,17 +4,61 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;	
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="LipaNaMpesaIPN")
+
+/*@NamedNativeQueries({
+	@NamedNativeQuery(name="TransactionModel.GetSalesAgentTransactions",
+			query="select i.mpesa_sender,i.mpesa_msisdn, i.mpesa_amt, i.mpesa_code, i.tstamp,i.business_number,"
+					+ "i.mpesa_acc,i.isprocessed,i.ipaddress,i.isapproved,t.businessName "
+					+ "from LipaNaMpesaIPN i inner join TillModel t "
+					+ "on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
+					+ "inner join BUser u on (u.userId = t.salesPersonId and u.userId=:userId) "
+					+ "where (t.categoryid=:categoryId or :isSU)"
+			,resultSetMapping="trxMapping"),
+	
+		@NamedNativeQuery(name="TransactionModel.GetOwnerTransactions",
+			query="select i.mpesa_sender,i.mpesa_msisdn, i.mpesa_amt, i.mpesa_code, i.tstamp,i.business_number,"
+				+ "i.mpesa_acc,i.isprocessed,i.ipaddress,i.isapproved,t.businessName,"
+				+ "from LipaNaMpesaIPN i inner join TillModel t "
+				+ "on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
+				+ "inner join BUser u2 on (u2.userId=t.ownerId and u2.userId=:userId) "
+				+ "where (t.categoryid=:categoryId or :isSU)",
+	resultSetMapping="trxMapping"
+	)
+})
+
+@SqlResultSetMappings(value={
+		@SqlResultSetMapping(name="TransactionModel",
+				columns={
+				@ColumnResult(name="mpesa_sender"),
+				@ColumnResult(name="mpesa_msisdn"),
+				@ColumnResult(name="mpesa_amt"),
+				@ColumnResult(name="mpesa_code"),
+				@ColumnResult(name="tstamp"),
+				@ColumnResult(name="business_number"),
+				@ColumnResult(name="mpesa_acc"),
+				@ColumnResult(name="isprocessed"),
+				@ColumnResult(name="ipaddress"),
+				@ColumnResult(name="isapproved"),
+				@ColumnResult(name="businessName")
+		})
+})
+*/
 public class TransactionModel {
 
 	@Id
@@ -23,18 +67,28 @@ public class TransactionModel {
 	
 	@Column(name="mpesa_sender")
 	private String customerName;
+	
 	@Column(name="mpesa_msisdn")
 	private String phone;
+	
 	@Column(name="mpesa_amt")
 	private Double amount;
+	
 	@Column(name="mpesa_code", unique=true)
 	private String referenceId;
+	
 	@Column(name="tstamp")
 	private Date trxDate;
+	
 	@Column(name="business_number")
 	private String tillNumber;
+	
+	@Column(name="mpesa_acc")
+	private String accountNo;
+	
 	@Column(name="Isprocessed")
 	private boolean status;
+	
 	private String ipAddress;
 	private Boolean isApproved;
 	

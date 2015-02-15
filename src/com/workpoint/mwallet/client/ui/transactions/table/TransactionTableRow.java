@@ -69,15 +69,15 @@ public class TransactionTableRow extends RowWidget {
 		divDate.getElement().setInnerHTML(
 				DateUtils.CREATEDFORMAT.format(transaction.getTrxDate()));
 
-		String businessName = transaction.getTill().getBusinessName();
+		String businessName = transaction.getBusinessName();
 
-		if (transaction.getTill().getBusinessName().length() > 20) {
+		if (transaction.getBusinessName()!=null && transaction.getBusinessName().length() > 20) {
 			businessName = businessName.substring(0, 20);
 			businessName += "...";
 		}
 		divTills.getElement().setInnerHTML(
-				transaction.getTill().getTillNo() + " (" + businessName + ")");
-		divTills.getElement().setTitle(transaction.getTill().getBusinessName());
+				transaction.getBusinessNumber()+ " (" + businessName + ")");
+		divTills.getElement().setTitle(transaction.getBusinessName());
 		setStatus(transaction.getStatus(),
 				SmsStatus.getStatus(transaction.getSmsStatus()));
 

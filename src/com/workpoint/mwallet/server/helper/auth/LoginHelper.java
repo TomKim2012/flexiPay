@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.workpoint.mwallet.server.dao.model.Category;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
@@ -148,5 +149,10 @@ public class LoginHelper implements LoginIntf{
 
 	public boolean updatePassword(String username, String password) {
 		return impl.updatePassword(username, password);
+	}
+
+	public Category getCategory(String userId) {
+		
+		return impl.getCategory(userId);
 	}
 }

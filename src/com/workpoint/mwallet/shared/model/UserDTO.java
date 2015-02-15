@@ -1,6 +1,7 @@
 package com.workpoint.mwallet.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO implements Serializable, Listable, OrgEntity {

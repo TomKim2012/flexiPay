@@ -1,6 +1,5 @@
 package com.workpoint.mwallet.server.test;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,12 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.editor.client.Editor.Ignore;
-import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.TransactionDao;
 import com.workpoint.mwallet.server.dao.model.SettingModel;
-import com.workpoint.mwallet.server.dao.model.TransactionModel;
+import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TestDB {
 
@@ -25,27 +25,52 @@ public class TestDB {
 	public void setupDB() {
 		DB.beginTransaction();
 		em = DB.getEntityManager();
-
+	}
+	
+	@Test
+	public void getTills(){
+		TillDao dao = new TillDao(em);
+		List<TillModel> tills = dao.getAllTills(null, "James",true,true, 2L);
+		System.err.println("Tills = "+tills.size());
 	}
 
 	@Ignore
-	public void search() {
+	public void getTransactions() {
 		TransactionDao dao = new TransactionDao(em);
-
 		SearchFilter filter = new SearchFilter();
 
-		Date today = new Date();
-		CalendarUtil.addMonthsToDate(today, -12);
-		System.err.println("Start Date>>" + today);
-		filter.setStartDate(today);
-
-		System.err.println("End Date>>" + new Date());
-		filter.setEndDate(new Date());
-
-		List<TransactionModel> model = dao.getAllTrx(filter);
-
-		System.out.println(model.size());
+		int merchantCount = dao.getMerchantCount(filter, "James",false,true, 2L);
+		int customerCount = dao.getCustomerCount(filter, "James",false,true, 2L);
+		
+		List<TransactionDTO> models =  dao.getAll(filter, "James",false,true, 2L);
+		for(TransactionDTO model : models){
+			System.err.println(model);
+		}
+		
+		System.err.println("{trxCount="+models.size()+
+				", merchantCount="+merchantCount+", "
+						+ "customerCount="+customerCount+"}");
 	}
+
+
+//	@Ignore
+//	public void search() {
+//		TransactionDao dao = new TransactionDao(em);
+//
+//		SearchFilter filter = new SearchFilter();
+//
+//		Date today = new Date();
+//		CalendarUtil.addMonthsToDate(today, -12);
+//		System.err.println("Start Date>>" + today);
+//		filter.setStartDate(today);
+//
+//		System.err.println("End Date>>" + new Date());
+//		filter.setEndDate(new Date());
+//
+//		List<TransactionModel> model = dao.getAllTrx(filter);
+//
+//		System.out.println(model.size());
+//	}
 
 	@Ignore
 	public void callDB() {
@@ -60,16 +85,19 @@ public class TestDB {
 		// dao.save(model);
 	}
 
-	@Test
-	public void getTransactionSummaries() {
-		TransactionDao dao = new TransactionDao(em);
-		SearchFilter filter = new SearchFilter();
-		filter.setPhrase("815918");
-		dao.getAllTrx(filter);
-
-		System.err.println("Unique Merchants >>" + dao.getMerchants() + "\n"
-				+ "Unique Customers:" + dao.getCustomers());
-	}
+//	@Ignore
+//	public void getTransactionSummaries() {
+//		TransactionDao dao = new TransactionDao(em);
+//		SearchFilter filter = new SearchFilter();
+//		filter.setPhrase("Tom");
+//		List<TransactionModel> models =  dao.getAllTrx(filter);
+//		for(TransactionModel model : models){
+//			System.err.println(model.getTrxDate()+": "+model.getCustomerName());
+//		}
+//
+//		System.err.println("Unique Merchants >>" + dao.getMerchants() + "\n"
+//				+ "Unique Customers:" + dao.getCustomers());
+//	}
 
 	@After
 	public void commit() {

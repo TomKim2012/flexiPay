@@ -26,6 +26,7 @@ public class TransactionTable extends Composite {
 
 	public TransactionTable() {
 		initWidget(uiBinder.createAndBindUi(this));
+		tblView.setAutoNumber(true);
 		createHeader();
 	}
 

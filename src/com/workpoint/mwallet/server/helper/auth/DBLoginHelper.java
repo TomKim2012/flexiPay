@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.workpoint.mwallet.server.dao.UserGroupDaoImpl;
+import com.workpoint.mwallet.server.dao.model.Category;
 import com.workpoint.mwallet.server.dao.model.Group;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
@@ -308,6 +309,12 @@ public class DBLoginHelper implements LoginIntf{
 		dao.save(user);
 		
 		return true;
+	}
+
+	@Override
+	public Category getCategory(String userId) {
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		return dao.getUserCategory(userId);
 	}
 	
 }
