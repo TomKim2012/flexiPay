@@ -10,31 +10,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class TillModel extends PO{
+public class TillModel extends PO {
 
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String businessName;
-	@Column(unique=true)
-	private String tillNo;
-	
-	@Column(length=10)
+	@Column(unique = true)
+	private String business_number;
+
+	private String mpesa_acc;
+
+	@Column(length = 10)
 	private String phoneNo;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ownerId", referencedColumnName="userId",nullable=false)
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
 	private User owner;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="salesPersonId", referencedColumnName="userId",nullable=false)
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "salesPersonId", referencedColumnName = "userId", nullable = false)
 	private User salesPerson;
-	
+
 	private boolean status;
 
 	@Override
@@ -51,11 +53,11 @@ public class TillModel extends PO{
 	}
 
 	public String getTillNo() {
-		return tillNo;
+		return business_number;
 	}
 
 	public void setTillNo(String tillNo) {
-		this.tillNo = tillNo;
+		this.business_number = tillNo;
 	}
 
 	public String getPhoneNo() {
@@ -93,7 +95,13 @@ public class TillModel extends PO{
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	
-	
-	
+
+	public String getMpesa_acc() {
+		return mpesa_acc;
+	}
+
+	public void setMpesa_acc(String mpesa_acc) {
+		this.mpesa_acc = mpesa_acc;
+	}
+
 }

@@ -19,7 +19,7 @@ public class TillDao extends BaseDaoImpl {
 	public List<TillModel> getAllTills(SearchFilter filter) {
 		if (filter == null)
 			return getResultList(em
-					.createQuery("FROM TillModel t order by tillNo DESC"));
+					.createQuery("FROM TillModel t"));
 
 		StringBuffer jpql = new StringBuffer("FROM TillModel t ");
 		Map<String, Object> params = new HashMap<>();

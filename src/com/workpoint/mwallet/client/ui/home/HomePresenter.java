@@ -181,6 +181,7 @@ public class HomePresenter extends
 			smsLogFactory.get(new ServiceCallback<SmsPresenter>() {
 				@Override
 				public void processResult(SmsPresenter aResponse) {
+					aResponse.loadData();
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});

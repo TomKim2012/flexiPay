@@ -28,7 +28,6 @@ import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
-import com.workpoint.mwallet.client.ui.sms.table.SmsStatus;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -77,7 +76,7 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 		super(eventBus, view);
 	}
 
-	private void loadData() {
+	public void loadData() {
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new GetSMSLogRequest(),
 				new TaskServiceCallback<GetSMSLogRequestResult>() {
@@ -117,7 +116,6 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 		super.onReset();
 		getView().setMiddleHeight();
 		setInSlot(FILTER_SLOT, filterPresenter);
-		loadData();
 	}
 
 	@Override
