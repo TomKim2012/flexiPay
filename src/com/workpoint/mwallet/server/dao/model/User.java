@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Index;
 
 import com.workpoint.mwallet.server.util.CryptoUtils;
 
@@ -33,14 +37,14 @@ public class User extends PO {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(nullable = false, unique = true)
+	
+	@Basic(optional=false)
+    @Column(length=100, unique=true)
+    //@Index(name="idx_users_username")
 	private String userId;
 
+	@Basic(optional=false)
+    @Column(length=255)
 	private String password;
 
 	@Column(nullable = false)
@@ -64,6 +68,16 @@ public class User extends PO {
 	@OneToMany(mappedBy = "boss")
 	private Set<User> cashiers = new HashSet<User>();
 
+	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name="user_role",
+    joinColumns=@JoinColumn(name="userid"),
+    inverseJoinColumns=@JoinColumn(name="roleid"))
+    private Set<Role> roles = new HashSet<Role>();
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="categoryid")
+	private Category category;
+	
 	@ManyToOne
 	@JoinColumn(name = "bossId", referencedColumnName = "userId")
 	private User boss;
@@ -71,22 +85,15 @@ public class User extends PO {
 	private boolean isArchived;
 
 	private String linkCode;
-
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REFRESH })
-	@JoinTable(name = "bUserGroup", joinColumns = { @JoinColumn(name = "userid") }, inverseJoinColumns = { @JoinColumn(name = "groupid") })
-	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.PERSIST,
-			org.hibernate.annotations.CascadeType.MERGE })
+	@JoinTable(name = "bUserGroup", joinColumns = { @JoinColumn(name = "userid") },
+	inverseJoinColumns = { @JoinColumn(name = "groupid") })
 	private Collection<Group> groups = new HashSet<>();
 
 	public User() {
 		this.isArchived = false;
-	}
-
-	@Override
-	public Long getId() {
-		return id;
 	}
 
 	public void addGroup(Group group) {
@@ -124,11 +131,7 @@ public class User extends PO {
 	public void setArchived(boolean isArchived) {
 		this.isArchived = isArchived;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 	public boolean checkPassword(String plainPassword) {
 
 		assert plainPassword != null && password != null;
@@ -190,6 +193,14 @@ public class User extends PO {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

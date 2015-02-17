@@ -37,7 +37,8 @@ public class SaveTillRequestActionHandler extends
 			}
 			
 			tillModel.setBusinessName(till.getBusinessName());
-			tillModel.setTillNo(till.getTillNo());
+			tillModel.setTillNumber(till.getTillNo());
+			tillModel.setAccountNo(till.getAccountNo());
 			tillModel.setPhoneNo(till.getPhoneNo());
 
 			// Till Owner

@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 import com.workpoint.mwallet.server.dao.model.PO;
+import com.workpoint.mwallet.server.helper.session.SessionHelper;
 
 public class BaseDaoImpl {
 
@@ -26,6 +27,10 @@ public class BaseDaoImpl {
 		em.remove(po);
 	}
 	
+//	public String addOrgQuery(String sql){
+//		return sql.concat("organizationId=:organizationId");
+//	}
+	
 	@SuppressWarnings("unchecked")
 	public <T> T getSingleResultOrNull(Query query){
 		T value = null;
@@ -41,7 +46,9 @@ public class BaseDaoImpl {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getResultList(Query query){
 		List<T> values = null;
-		values = query.getResultList();
+		values = query
+				//.setParameter("organizationId", SessionHelper.getOrganizationId())
+				.getResultList();
 		return values;
 	}
 	

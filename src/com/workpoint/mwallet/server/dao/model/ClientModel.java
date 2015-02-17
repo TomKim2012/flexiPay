@@ -10,11 +10,6 @@ import javax.persistence.Table;
 @Table(name="Client")
 public class ClientModel {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@Column(name="Recid")
 	private Long id;
@@ -35,45 +30,27 @@ public class ClientModel {
 	@Column(name="clcode")
 	private String clCode;
 
-	public String getFirstName() {
-		return firstName;
+	public Long getId() {
+		return id;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public String getFirstName() {
+		return firstName;
 	}
 
 	public String getMiddleName() {
 		return middleName;
 	}
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
 	public String getSirName() {
 		return sirName;
-	}
-
-	public void setSirName(String sirName) {
-		this.sirName = sirName;
 	}
 
 	public String getPhoneNo() {
 		return phoneNo;
 	}
 
-	public void setPhoneNo(String phoneNo) {
-		this.phoneNo = phoneNo;
-	}
-
 	public String getClCode() {
 		return clCode;
 	}
-
-	public void setClCode(String clCode) {
-		this.clCode = clCode;
-	}
-	
-	
 }

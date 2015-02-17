@@ -37,6 +37,8 @@ public class TransactionTableRow extends RowWidget {
 	@UiField
 	HTMLPanel divTills;
 	@UiField
+	HTMLPanel divAccount;
+	@UiField
 	HTMLPanel divStatus;
 	@UiField
 	InlineLabel spnStatus;
@@ -69,15 +71,15 @@ public class TransactionTableRow extends RowWidget {
 		divDate.getElement().setInnerHTML(
 				DateUtils.CREATEDFORMAT.format(transaction.getTrxDate()));
 
-		String businessName = transaction.getTill().getBusinessName();
-
-		if (transaction.getTill().getBusinessName().length() > 20) {
+		String businessName = transaction.getBusinessName();
+		if (transaction.getBusinessName()!=null && transaction.getBusinessName().length() > 20) {
 			businessName = businessName.substring(0, 20);
 			businessName += "...";
 		}
 		divTills.getElement().setInnerHTML(
-				transaction.getTill().getTillNo() + " (" + businessName + ")");
-		divTills.getElement().setTitle(transaction.getTill().getBusinessName());
+				transaction.getBusinessNumber()+ " (" + businessName + ")");
+		divAccount.getElement().setInnerText(transaction.getAccountNumber());
+		divTills.getElement().setTitle(transaction.getBusinessName());
 		setStatus(transaction.getStatus(),
 				SmsStatus.getStatus(transaction.getSmsStatus()));
 

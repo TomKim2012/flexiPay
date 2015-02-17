@@ -16,6 +16,7 @@ public class SearchFilter implements Serializable {
 	private UserDTO cashier;
 	private Date startDate;
 	private Date endDate;
+	private boolean isSu;
 
 	public SearchFilter() {
 	}
@@ -93,6 +94,14 @@ public class SearchFilter implements Serializable {
 
 	public void setTills(List<TillDTO> tills) {
 		this.tills = tills;
+	}
+
+	public boolean isSu() {
+		return isSu;
+	}
+
+	public void setSu(boolean isSu) {
+		this.isSu = isSu;
 	}
 	
 

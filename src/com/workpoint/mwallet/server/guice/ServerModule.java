@@ -13,6 +13,7 @@ import com.workpoint.mwallet.server.actionhandlers.GetUsersRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.ImportClientRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.LoginRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.LogoutActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.MultiRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveGroupRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveTillRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveUserRequestActionHandler;
@@ -27,6 +28,7 @@ import com.workpoint.mwallet.shared.requests.GetUsersRequest;
 import com.workpoint.mwallet.shared.requests.ImportClientRequest;
 import com.workpoint.mwallet.shared.requests.LoginRequest;
 import com.workpoint.mwallet.shared.requests.LogoutAction;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.requests.SaveUserRequest;
@@ -68,5 +70,7 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(LogoutAction.class, LogoutActionHandler.class,
 				SessionValidator.class);
+		
+		bindHandler(MultiRequestAction.class,MultiRequestActionHandler.class, SessionValidator.class);
 	}
 }

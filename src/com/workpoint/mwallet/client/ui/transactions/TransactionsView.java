@@ -119,12 +119,9 @@ public class TransactionsView extends ViewImpl implements
 	private double leftStartPosition = -140;
 	private double leftEndPosition = 87;
 
-	private UserDTO loggedUser;
-
 	@Inject
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-
 		List<DateRange> dateRanges = new ArrayList<DateRange>();
 
 		panelDone.addMouseOverHandler(new MouseOverHandler() {
@@ -209,7 +206,7 @@ public class TransactionsView extends ViewImpl implements
 					boxDatePickerEnd.show();
 					boxDatePickerStart.show();
 				} else {
-					setDateRange(selected, null, null);
+					setDateRange(selected, null, null,true);
 				}
 			}
 		});
@@ -241,7 +238,7 @@ public class TransactionsView extends ViewImpl implements
 					startDate = DateUtils.getRange(boxDatePickerEnd.getValue(),
 							true);
 				}
-				setDateRange(null, startDate, endDate);
+				setDateRange(null, startDate, endDate,true);
 
 				panelDone.addStyleName("hide");
 			}
@@ -304,7 +301,7 @@ public class TransactionsView extends ViewImpl implements
 	}
 
 	public void setDateRange(String displayName, Date passedStart,
-			Date passedEnd) {
+			Date passedEnd, boolean  fireValueChangedEvent) {
 		Date startDate = null;
 		Date endDate = null;
 
@@ -327,7 +324,11 @@ public class TransactionsView extends ViewImpl implements
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);
 
-		AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
+		//This will be a problem - Use vaue Change handlers instead!!
+		if(fireValueChangedEvent){
+			AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
+		}
+		///
 	}
 
 	public Date getDateFromName(String displayName, boolean isStart) {
@@ -377,6 +378,7 @@ public class TransactionsView extends ViewImpl implements
 				+ "<span class='helper-font-small bold'>"
 				+ uniqueCustomers
 				+ "</span><br/>";
+		UserDTO loggedUser = AppContext.getContextUser();
 		if (loggedUser.hasGroup("Merchant")) {
 			headerContainer.getPopSummaries().setText(text1);
 		} else {
@@ -427,7 +429,7 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void setDates(String setDate) {
-		setDateRange(setDate, null, null);
+		setDateRange(setDate, null, null,false);
 	}
 
 	@Override
@@ -443,7 +445,6 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void setLoggedUser(UserDTO user) {
-		this.loggedUser = user;
 		headerContainer.setLoggedUser(user);
 	}
 

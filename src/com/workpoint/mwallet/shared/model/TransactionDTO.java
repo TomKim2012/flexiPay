@@ -16,7 +16,9 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	private Double amount;
 	private String referenceId;
 	private Date trxDate;
-	private TillDTO till;
+	private String businessName;
+	private String accountNumber;
+	private String businessNumber;
 	private boolean status;
 	private boolean isApproved;
 	private String ipAddress;
@@ -25,6 +27,24 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	public TransactionDTO() {
 	}
 	
+	public TransactionDTO(String mpesaSender, String mpesa_msisdn,
+			Double mpesa_amt, String mpesa_code, Date tstamp,
+			String business_number, String mpesa_acc, boolean isprocessed,
+			String ipaddress, boolean isapproved, String businessName) {
+		
+		this.customerName= mpesaSender;
+		this.phone=mpesa_msisdn;
+		this.amount=mpesa_amt;
+		this.referenceId=mpesa_code;
+		this.trxDate=tstamp;
+		this.businessNumber = business_number;
+		this.accountNumber = mpesa_acc;
+		this.status= isprocessed;
+		this.ipAddress = ipaddress;
+		this.isApproved = isapproved;
+		this.businessName = businessName;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -53,10 +73,6 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 		return trxDate;
 	}
 
-	public TillDTO getTill() {
-		return till;
-	}
-
 	public boolean getStatus() {
 		return status;
 	}
@@ -79,10 +95,6 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 
 	public void setTrxDate(Date trxDate) {
 		this.trxDate = trxDate;
-	}
-
-	public void setTill(TillDTO till) {
-		this.till = till;
 	}
 
 	public void setStatus(boolean status) {
@@ -119,4 +131,37 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 		this.smsStatus = smsStatus;
 	}
 
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
+
+	public String getBusinessNumber() {
+		return businessNumber;
+	}
+
+	public void setBusinessNumber(String businessNumber) {
+		this.businessNumber = businessNumber;
+	}
+
+	@Override
+	public String toString() {
+		return "{trxDate:"+trxDate+","
+				+ "trxNo:"+referenceId+","
+				+"customerName:"+customerName+","
+				+"businessno:"+businessNumber+","
+				+ "accountNo:"+accountNumber+","
+						+ "isApproved="+isApproved+"}";
+	}
 }

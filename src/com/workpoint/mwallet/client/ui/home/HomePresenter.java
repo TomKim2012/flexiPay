@@ -145,6 +145,7 @@ public class HomePresenter extends
 				@Override
 				public void processResult(TillsPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
+					aResponse.loadAll();
 				}
 			});
 
@@ -159,6 +160,7 @@ public class HomePresenter extends
 						public void processResult(
 								TransactionsPresenter aResponse) {
 							setInSlot(ACTIVITIES_SLOT, aResponse);
+							aResponse.loadAll();
 						}
 					});
 

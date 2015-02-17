@@ -7,9 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,11 +23,7 @@ public class Group extends PO {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
+
 	@Column(nullable=false)
 	private String name;
 	
@@ -47,11 +40,6 @@ public class Group extends PO {
 		this.isArchived=false;
 	}
 	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -66,10 +54,6 @@ public class Group extends PO {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public boolean isArchived() {

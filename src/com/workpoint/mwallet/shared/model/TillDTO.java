@@ -14,6 +14,7 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	private String businessName;
 	private String tillNo;
+	private String accountNo;
 	private String phoneNo;
 	private UserDTO owner;
 	private UserDTO salesPerson;
@@ -121,6 +122,14 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	@Override
 	public String toString() {
 		return tillNo;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
 
 }

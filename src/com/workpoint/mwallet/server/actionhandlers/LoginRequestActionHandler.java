@@ -10,6 +10,7 @@ import com.google.inject.Provider;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.workpoint.mwallet.server.ServerConstants;
+import com.workpoint.mwallet.server.dao.model.Category;
 import com.workpoint.mwallet.server.helper.auth.LoginHelper;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.LoginRequest;
@@ -43,6 +44,9 @@ public class LoginRequestActionHandler extends
 			session.setAttribute(ServerConstants.AUTHENTICATIONCOOKIE, sessionId);
 			
 			UserDTO user = LoginHelper.get().getUser(userId,true);
+			Category category = LoginHelper.get().getCategory(user.getUserId());
+			
+			session.setAttribute(ServerConstants.USERCATEGORY,category.clone());
 			session.setAttribute(ServerConstants.USER, user);				
 			result.setUser(user);
 			result.setValid(true);

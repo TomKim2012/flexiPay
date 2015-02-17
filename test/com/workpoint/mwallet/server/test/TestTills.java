@@ -67,7 +67,8 @@ public class TestTills {
 		model.setBusinessName("Nyahururu Traders Ltd");
 		model.setOwner(user);
 		model.setPhoneNo("0726523012");
-		model.setTillNo("815632");
+		model.setTillNumber("815632");
+		model.setAccountNo("815632");
 		model.setSalesPerson(salesPerson);
 		
 		em.persist(user);

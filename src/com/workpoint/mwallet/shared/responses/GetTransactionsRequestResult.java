@@ -9,8 +9,8 @@ import com.workpoint.mwallet.shared.model.TransactionDTO;
 public class GetTransactionsRequestResult extends BaseResponse {
 
 	private List<TransactionDTO> transactions;
-	private Long uniqueCustomers;
-	private Long uniqueMerchants;
+	private int uniqueCustomers;
+	private int uniqueMerchants;
 
 	@SuppressWarnings("unused")
 	private GetTransactionsRequestResult() {
@@ -31,19 +31,19 @@ public class GetTransactionsRequestResult extends BaseResponse {
 		this.transactions = transactions;
 	}
 	
-	public void setUniqueCustomers(Long uniqueCustomers) {
+	public void setUniqueCustomers(int uniqueCustomers) {
 		this.uniqueCustomers = uniqueCustomers;
 	}
 	
-	public void setUniqueMerchants(Long uniqueMerchants) {
+	public void setUniqueMerchants(int uniqueMerchants) {
 		this.uniqueMerchants = uniqueMerchants;
 	}
 	
-	public Long getUniqueCustomers() {
+	public int getUniqueCustomers() {
 		return uniqueCustomers;
 	}
 	
-	public Long getUniqueMerchants() {
+	public int getUniqueMerchants() {
 		return uniqueMerchants;
 	}
 
