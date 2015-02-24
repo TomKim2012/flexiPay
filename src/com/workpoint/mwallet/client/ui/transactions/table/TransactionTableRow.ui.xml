@@ -16,6 +16,8 @@
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divTills">
 		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divAccount">
+		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divStatus">
 			<b:Popover heading="Status"
 				ui:field="popoverStatus" placement="LEFT">

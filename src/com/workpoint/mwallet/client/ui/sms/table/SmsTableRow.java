@@ -81,18 +81,22 @@ public class SmsTableRow extends RowWidget {
 	}
 
 	private void setStatus(SmsStatus status) {
-		if (status == SmsStatus.FAILED) {
-			spnStatus.setClassName("label label-important");
-		} else if ((status == SmsStatus.REJECTED)) {
-			spnStatus.setClassName("label label-inverse");
-		} else if ((status == SmsStatus.SENT)
-				|| (status == SmsStatus.SUBMITTED)) {
-			spnStatus.setClassName("label label-info");
-		} else if (status == SmsStatus.SUCCESS) {
-			spnStatus.setClassName("label label-success");
+		if (status != null) {
+			if (status == SmsStatus.FAILED) {
+				spnStatus.setClassName("label label-important");
+			} else if ((status == SmsStatus.REJECTED)) {
+				spnStatus.setClassName("label label-inverse");
+			} else if ((status == SmsStatus.SENT)
+					|| (status == SmsStatus.SUBMITTED)) {
+				spnStatus.setClassName("label label-info");
+			} else if (status == SmsStatus.SUCCESS) {
+				spnStatus.setClassName("label label-success");
+			} else {
+				spnStatus.setClassName("label label-default");
+			}
+			spnStatus.setInnerText(status.getDisplayName());
+			divStatus.setTitle(status.getDescription());
 		}
-		spnStatus.setInnerText(status.getDisplayName());
-		divStatus.setTitle(status.getDescription());
 	}
 
 	public void bindText(HTMLPanel panel, String text) {

@@ -8,6 +8,7 @@ public enum SmsStatus {
 	BUFFERED("Buffered","The message has been queued by the MSP"),
 	REJECTED("Rejected","The message has been rejected by the MSP. This is a final status."),
 	SUCCESS("Success","The message has successfully been delivered to the receiver's handset. This is a final status."),
+	INSUFFICIENT("Insufficient Balance","No credit to send SMS"),
 	FAILED("Failed","The message could not be delivered to the receiver's handset. This is a final status");
 	
 	private String displayName;

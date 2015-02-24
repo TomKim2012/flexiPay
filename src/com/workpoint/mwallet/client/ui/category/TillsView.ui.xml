@@ -1,0 +1,120 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'
+	xmlns:programs='urn:import:com.workpoint.mwallet.client.ui.tills'
+	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.tills.table'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="activities-page">
+		<g:HTMLPanel styleName="full-page" ui:field="divMainContainer">
+
+			<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
+				<!--Action Buttons -->
+				<div class="action-buttons row-fluid">
+					<div class="span9">
+						<div class="span3">
+							<d:ActionLink ui:field="aCreate" styleName="btn btn-primary"
+								dataToggle="tooltip">
+								Create Till
+							</d:ActionLink>
+						</div>
+
+						<div class="span3">
+							<d:ActionLink ui:field="aEdit" styleName="btn btn-default"
+								dataToggle="tooltip" dataPlacement="bottom" title="Edit">
+								<i class="icon-pencil icon-button"></i>
+							</d:ActionLink>
+						</div>
+
+						<div class="span3">
+							<d:ActionLink ui:field="aDelete" styleName="btn btn-danger"
+								dataToggle="tooltip" dataPlacement="bottom" title="Delete">
+								<i class="icon-trash icon-button"></i>
+							</d:ActionLink>
+						</div>
+					</div>
+
+					<div class="span3 right-side">
+						<div class="till-search">
+							<div class="input-append">
+								<d:TextField ui:field="txtSearchBox" styleName="search-query"
+									placeholder="Search here"></d:TextField>
+								<g:Anchor styleName="icon-caret-down muted" ui:field="iFilterdropdown"></g:Anchor>
+								<d:ActionLink styleName="btn hide" ui:field="btnSearch">
+									<i class="icon-search"></i>
+								</d:ActionLink>
+							</div>
+							<g:HTMLPanel ui:field="divFilterBox" styleName="hide search-box tills">
+							</g:HTMLPanel>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row-fluid">
+					<programs:TillsHeader ui:field="headerContainer"
+						leftMargin="true"></programs:TillsHeader>
+				</div>
+
+				<!-- BreadCrumb Panel -->
+				<g:HTMLPanel styleName="row-fluid" ui:field="panelCrumbs">
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+
+
+			<div class="row-fluid full-page content-body">
+
+				<g:HTMLPanel ui:field="divNoContent" styleName="hidden">
+					<i class="icon-warning-sign helper-font-16"></i>
+					<span class="helper-font-16">
+						No Programs Added. Click
+						<a>Create Program</a>
+						to get started
+					</span>
+				</g:HTMLPanel>
+
+
+				<g:HTMLPanel ui:field="divMiddleContent"
+					styleName="tabbable tabs-below full-page overflow-y">
+					<d:MyHTMLPanel styleName="tab-content" ui:field="divContentTable">
+						<g:HTMLPanel>
+							<div ui:field="divTab1Content" class="tab-pane fade in active">
+								<table:TillsTable ui:field="tblView">
+								</table:TillsTable>
+							</div>
+						</g:HTMLPanel>
+					</d:MyHTMLPanel>
+
+					<g:HTMLPanel styleName="row-fluid tab-body hide"
+						ui:field="divContentBottom">
+						<div class="span2 controllers hide">
+							<d:ActionLink ui:field="aShow" styleName="span3">
+								<span class="icon-align-justify helper-font-16"></span>
+							</d:ActionLink>
+						</div>
+
+						<div class="span10 tabs-container">
+							<d:BulletListPanel ui:field="listPanel"
+								styleName="nav nav-tabs">
+							</d:BulletListPanel>
+						</div>
+						<div class="span2 controllers">
+							<d:ActionLink ui:field="aLeft" styleName="span3"
+								dataPlacement="top" title="Scroll Left">
+								<span class="icon-caret-left helper-font-16"></span>
+							</d:ActionLink>
+							<d:ActionLink ui:field="aRight" styleName="span3"
+								dataPlacement="top" title="Scroll Right">
+								<span class="icon-caret-right helper-font-16"></span>
+							</d:ActionLink>
+						</div>
+					</g:HTMLPanel>
+				</g:HTMLPanel>
+			</div>
+
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

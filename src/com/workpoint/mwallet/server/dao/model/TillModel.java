@@ -16,7 +16,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 @Entity
-public class TillModel extends PO{
+public class TillModel extends PO {
 
 	/**
 	 */
@@ -45,7 +45,7 @@ public class TillModel extends PO{
 	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE}, optional=false)
 	@JoinColumn(name="salesPersonId", referencedColumnName="userId",nullable=false)
 	private User salesPerson;
-	
+
 	private boolean status;
 
 	public String getBusinessName() {
@@ -111,7 +111,5 @@ public class TillModel extends PO{
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
 	}
-	
-	
 	
 }

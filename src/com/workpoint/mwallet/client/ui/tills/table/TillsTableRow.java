@@ -1,7 +1,5 @@
 package com.workpoint.mwallet.client.ui.tills.table;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -16,7 +14,6 @@ import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TillsTableRow extends RowWidget {
 
@@ -44,7 +41,7 @@ public class TillsTableRow extends RowWidget {
 	@UiField
 	HTMLPanel divAcquirer;
 	@UiField
-	HTMLPanel divCashier;
+	HTMLPanel divAccount;
 	@UiField
 	SpanElement spnStatus;
 	@UiField
@@ -84,7 +81,8 @@ public class TillsTableRow extends RowWidget {
 			bindText(divphoneNo, till.getPhoneNo());
 
 			String ownerNames = till.getOwner().getFullName();
-			List<UserDTO> cashiers = till.getCashiers();
+			
+			/*List<UserDTO> cashiers = till.getCashiers();
 
 			String cashierString = "";
 			int size = cashiers.size();
@@ -95,6 +93,9 @@ public class TillsTableRow extends RowWidget {
 				}
 			}
 			bindText(divCashier, cashierString);
+			*/
+			
+			bindText(divAccount, till.getAccountNo());
 
 			String acquirerNames = till.getSalesPerson().getFullName();
 

@@ -28,7 +28,6 @@ public class TillsTable extends Composite {
 	boolean isSummaryTable = false;
 	boolean isGoalsTable = false;
 	Long lastUpdatedId = null;
-	private Long tillId = null;
 
 	public TillsTable() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -57,11 +56,11 @@ public class TillsTable extends Composite {
 		List<TableHeader> th = new ArrayList<TableHeader>();
 		th.add(new TableHeader(""));
 		th.add(new TableHeader("Business Name"));
-		th.add(new TableHeader("Till No"));
+		th.add(new TableHeader("Business No"));
+		th.add(new TableHeader("Account No"));
 		th.add(new TableHeader("Phone No"));
 		th.add(new TableHeader("Owner"));
 		th.add(new TableHeader("Acquirer"));
-		th.add(new TableHeader("Cashiers"));
 		th.add(new TableHeader("Status"));
 		th.add(new TableHeader("Last Modified"));
 

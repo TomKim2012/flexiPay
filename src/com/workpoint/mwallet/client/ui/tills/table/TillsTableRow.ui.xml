@@ -9,13 +9,13 @@
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divtillNo">
 		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divAccount">
+		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divphoneNo">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divOwner">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divAcquirer">
-		</g:HTMLPanel>
-		<g:HTMLPanel styleName="td" ui:field="divCashier">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divStatus">
 			<span class="label label-success" ui:field="spnStatus"></span>

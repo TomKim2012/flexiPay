@@ -111,7 +111,6 @@ public class TransactionsPresenter extends
 
 		getView().setMiddleHeight();
 
-		// System.err.println("On Reset called");
 	}
 
 	public void loadAll(){

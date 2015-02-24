@@ -43,7 +43,8 @@ public class TransactionTable extends Composite {
 			th.add(new TableHeader("Amount"));
 			th.add(new TableHeader("Reference Id"));
 			th.add(new TableHeader("Date"));
-			th.add(new TableHeader("Till Number"));
+			th.add(new TableHeader("Business No"));
+			th.add(new TableHeader("Account No"));
 			th.add(new TableHeader("Status"));
 		}
 
