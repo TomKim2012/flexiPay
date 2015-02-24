@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -111,11 +112,13 @@ public class TillsPresenter extends
 	}
 	
 	public void loadAll(){
-		loadUsers();
+		//loadUsers();
 		loadData();
 	}
 
+	int i=0;
 	private void loadData() {
+		Window.alert("Called load data!! "+(++i));
 		fireEvent(new ProcessingEvent("Loading.."));
 		requestHelper.execute(new GetTillsRequest(),
 				new TaskServiceCallback<GetTillsRequestResult>() {
@@ -247,7 +250,7 @@ public class TillsPresenter extends
 	}
 
 	private void loadUsers() {
-		requestHelper.execute(new GetUsersRequest(),
+		requestHelper.execute(new GetUsersRequest(true),
 				new TaskServiceCallback<GetUsersResponse>() {
 					@Override
 					public void processResult(GetUsersResponse aResponse) {
@@ -296,6 +299,7 @@ public class TillsPresenter extends
 	}
 	
 	public void performSearch(GetTillsRequest request) {
+		Window.alert("Perform Search "+(++i));
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetTillsRequestResult>() {

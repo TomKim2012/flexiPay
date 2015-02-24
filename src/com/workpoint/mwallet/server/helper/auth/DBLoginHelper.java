@@ -316,5 +316,25 @@ public class DBLoginHelper implements LoginIntf{
 		UserGroupDaoImpl dao = DB.getUserGroupDao();
 		return dao.getUserCategory(userId);
 	}
+
+	public List<UserDTO> getUsers(String userId, boolean isLoadGroups, boolean isSuperUser,
+			boolean isAdmin,Long categoryId) {
+		
+		UserGroupDaoImpl dao = DB.getUserGroupDao();
+		List<User> users = dao.getAllUsers(userId,isSuperUser,
+				isAdmin,categoryId);
+		
+		List<UserDTO> UserDTOs = new ArrayList<>();
+		if(users!=null)
+			for(User user: users){
+				UserDTOs.add(get(user,isLoadGroups));
+			}
+		
+		return UserDTOs;
+	}
+
+	public static DBLoginHelper get() {
+		return new DBLoginHelper();
+	}
 	
 }

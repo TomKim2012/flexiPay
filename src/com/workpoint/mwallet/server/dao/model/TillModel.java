@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.server.dao.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 @Entity
 public class TillModel extends PO {
@@ -24,20 +30,20 @@ public class TillModel extends PO {
 	@Column(name="mpesa_acc")
 	private String accountNo;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="categoryid")
 	private CategoryModel categoryModel;
 	
 	
 	@Column(length=10)
 	private String phoneNo;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ownerId", referencedColumnName = "userId", nullable = false)
+	
+	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE},optional=false)
+	@JoinColumn(name="ownerId", referencedColumnName="userId",nullable=false)
 	private User owner;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "salesPersonId", referencedColumnName = "userId", nullable = false)
+	
+	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE}, optional=false)
+	@JoinColumn(name="salesPersonId", referencedColumnName="userId",nullable=false)
 	private User salesPerson;
 
 	private boolean status;

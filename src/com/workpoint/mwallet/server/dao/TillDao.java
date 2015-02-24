@@ -1,14 +1,20 @@
 package com.workpoint.mwallet.server.dao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.TransactionDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TillDao extends BaseDaoImpl {
 
@@ -16,15 +22,18 @@ public class TillDao extends BaseDaoImpl {
 		super(em);
 	}
 
-	public List<TillModel> getAllTills(SearchFilter filter,
+	public List<TillDTO> getAllTills(SearchFilter filter,
 			String userId,boolean isSU,
 			boolean isCategoryAdmin, Long categoryId) {
-		if(filter==null){
+		if (filter == null){
 			filter = new SearchFilter();
 		}
 		
-		
-		StringBuffer jpql = new StringBuffer("select t.* FROM TillModel t "
+		StringBuffer jpql = new StringBuffer("select t.id, t.businessName, t.business_number, "
+			+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,"
+			+ "u.userId salesperson_userid,u.firstname salesperson_firstname, u.lastname salesperson_lastname, "
+			+ "u.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname "
+			+ "FROM TillModel t "
 			+ "left join BUser u on (u.userId = t.salesPersonId) "
 			+ "left join BUser u2 on (u2.userId = t.ownerId) "
 			+ "where "
@@ -32,7 +41,7 @@ public class TillDao extends BaseDaoImpl {
 			+ "(t.categoryid=:categoryId "
 			+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
 			+ "or :isSU='Y') ");
-	
+		
 		
 		//or :isAdmin='Y'
 		//or :isSU='Y'
@@ -55,7 +64,7 @@ public class TillDao extends BaseDaoImpl {
 			isFirst = false;
 		}
 		
-		Query query = em.createNativeQuery(jpql.toString(),TillModel.class)
+		Query query = em.createNativeQuery(jpql.toString())
 		.setParameter("categoryId", categoryId)
 		.setParameter("userId", userId)
 		.setParameter("isAdmin", isCategoryAdmin? "Y" : "N")
@@ -65,7 +74,44 @@ public class TillDao extends BaseDaoImpl {
 			query.setParameter(key, params.get(key));
 		}
 		
-		return getResultList(query);
+		List<Object[]> rows = getResultList(query); 
+		List<TillDTO> tills = new ArrayList<>();
+		
+		byte boolTrue = 1;
+		for(Object[] row: rows){
+			int i=0;
+			Object value=null;
+			
+			Long tillId = (value=row[i++])==null? null: new Long(value.toString());
+			String businessName= (value=row[i++])==null? null: value.toString();
+			String business_number=(value=row[i++])==null? null: value.toString();
+			String mpesa_acc=(value=row[i++])==null? null:value.toString();
+			String phoneNo=(value=row[i++])==null? null: value.toString();
+			boolean status = (value=row[i++])==null? null: (byte)value== boolTrue;
+			int active = (value=row[i++])==null? null: (int)value;
+			Date created = (value=row[i++])==null? null: (Date)value;
+			Date updated = (value=row[i++])==null? null: (Date)value;
+			
+			String salesPersonUserId = (value=row[i++])==null? null: value.toString();
+			String salesPersonFirstName = (value=row[i++])==null? null: value.toString();
+			String salesPersonLastName = (value=row[i++])==null? null: value.toString();
+			
+			String ownerUserId = (value=row[i++])==null? null: value.toString();
+			String ownerFirstName = (value=row[i++])==null? null: value.toString();
+			String ownerLastName = (value=row[i++])==null? null: value.toString();
+			
+			TillDTO summary = new TillDTO(tillId,businessName, business_number,mpesa_acc,
+					phoneNo);
+			summary.setActive(active);
+			summary.setSalesPerson(new UserDTO(salesPersonUserId, salesPersonFirstName, salesPersonLastName));
+			summary.setOwner(new UserDTO(ownerUserId, ownerFirstName, ownerLastName));
+			
+			summary.setLastModified(updated==null? created: updated);
+			
+			tills.add(summary);
+		}
+		
+		return tills;
 
 	}
 	
