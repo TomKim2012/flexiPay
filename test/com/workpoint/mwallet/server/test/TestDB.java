@@ -12,9 +12,9 @@ import com.google.gwt.editor.client.Editor.Ignore;
 import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.TransactionDao;
 import com.workpoint.mwallet.server.dao.model.SettingModel;
-import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TestDB {
@@ -30,7 +30,7 @@ public class TestDB {
 	@Test
 	public void getTills(){
 		TillDao dao = new TillDao(em);
-		List<TillModel> tills = dao.getAllTills(null, "James",true,true, 2L);
+		List<TillDTO> tills = dao.getAllTills(null, "James",true,true, 2L);
 		System.err.println("Tills = "+tills.size());
 	}
 
@@ -47,6 +47,9 @@ public class TestDB {
 			System.err.println(model);
 		}
 		
+		/*
+		 *  Patrick - 
+		 */
 		System.err.println("{trxCount="+models.size()+
 				", merchantCount="+merchantCount+", "
 						+ "customerCount="+customerCount+"}");

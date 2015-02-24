@@ -1,14 +1,19 @@
 package com.workpoint.mwallet.server.dao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TillDao extends BaseDaoImpl {
 
@@ -16,15 +21,16 @@ public class TillDao extends BaseDaoImpl {
 		super(em);
 	}
 
-	public List<TillModel> getAllTills(SearchFilter filter,
+	public List<TillDTO> getAllTills(SearchFilter filter,
 			String userId,boolean isSU,
 			boolean isCategoryAdmin, Long categoryId) {
-		if(filter==null){
+		if (filter == null){
 			filter = new SearchFilter();
 		}
 		
-		
-		StringBuffer jpql = new StringBuffer("select t.* FROM TillModel t "
+		StringBuffer jpql = new StringBuffer("select t.id, t.businessName, t.business_number, "
+			+ "t.mpesa_acc,t.phoneNo,t.status "
+			+ "FROM TillModel t "
 			+ "left join BUser u on (u.userId = t.salesPersonId) "
 			+ "left join BUser u2 on (u2.userId = t.ownerId) "
 			+ "where "
@@ -32,7 +38,7 @@ public class TillDao extends BaseDaoImpl {
 			+ "(t.categoryid=:categoryId "
 			+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
 			+ "or :isSU='Y') ");
-	
+		
 		
 		//or :isAdmin='Y'
 		//or :isSU='Y'
@@ -55,7 +61,7 @@ public class TillDao extends BaseDaoImpl {
 			isFirst = false;
 		}
 		
-		Query query = em.createNativeQuery(jpql.toString(),TillModel.class)
+		Query query = em.createNativeQuery(jpql.toString())
 		.setParameter("categoryId", categoryId)
 		.setParameter("userId", userId)
 		.setParameter("isAdmin", isCategoryAdmin? "Y" : "N")
@@ -65,7 +71,26 @@ public class TillDao extends BaseDaoImpl {
 			query.setParameter(key, params.get(key));
 		}
 		
-		return getResultList(query);
+		List<Object[]> rows = getResultList(query); 
+		List<TillDTO> tills = new ArrayList<>();
+		
+		for(Object[] row: rows){
+			int i=0;
+			Object value=null;
+			
+			Long tillId = (value=row[i++])==null? null: new Long(value.toString());
+			String businessName= (value=row[i++])==null? null: value.toString();
+			String business_number=(value=row[i++])==null? null: value.toString();
+			String mpesa_acc=(value=row[i++])==null? null:value.toString();
+			String phoneNo=(value=row[i++])==null? null: value.toString();
+			
+			TillDTO summary = new TillDTO(tillId,businessName, business_number,mpesa_acc,
+					phoneNo);
+			
+			tills.add(summary);
+		}
+		
+		return tills;
 
 	}
 	

@@ -30,6 +30,15 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 		this.tillNo = tillNo;
 	}
 	
+	public TillDTO(Long tillId, String businessName, String businessNumber,
+			String mpesaAcc, String phoneNo) {
+		this.id = tillId;
+		this.businessName = businessName;
+		this.tillNo = businessNumber;
+		this.accountNo = mpesaAcc;
+		this.phoneNo = phoneNo;
+	}
+
 	public Long getId() {
 		return id;
 	}

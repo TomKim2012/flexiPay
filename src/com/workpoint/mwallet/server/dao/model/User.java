@@ -25,6 +25,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.workpoint.mwallet.server.util.CryptoUtils;
 
@@ -59,13 +61,13 @@ public class User extends PO {
 	@Column(length = 20)
 	private String phone;
 
-	@OneToMany(mappedBy = "owner")
+	@OneToMany(mappedBy = "owner", fetch=FetchType.LAZY)
 	private Set<TillModel> tillsOwned = new HashSet<TillModel>();
 
-	@OneToMany(mappedBy = "salesPerson")
+	@OneToMany(mappedBy = "salesPerson", fetch=FetchType.LAZY)
 	private Set<TillModel> salesPersonTills = new HashSet<TillModel>();
 
-	@OneToMany(mappedBy = "boss")
+	@OneToMany(mappedBy = "boss", fetch=FetchType.LAZY)
 	private Set<User> cashiers = new HashSet<User>();
 
 	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
@@ -74,11 +76,11 @@ public class User extends PO {
     inverseJoinColumns=@JoinColumn(name="roleid"))
     private Set<Role> roles = new HashSet<Role>();
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false,fetch=FetchType.LAZY)
 	@JoinColumn(name="categoryid")
 	private Category category;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "bossId", referencedColumnName = "userId")
 	private User boss;
 
