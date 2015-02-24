@@ -97,5 +97,25 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		User user = getUser(userId);
 		return user.getCategory();
 	}
+
+	public List<User> getAllUsers(String userId, boolean isSU,
+			boolean isCategoryAdmin, Long categoryId) {
+		
+		StringBuffer jpql = new StringBuffer("FROM BUser u "
+			+ "where "
+			+ "("
+			+ "(u.category.id=:categoryId "
+			+ "and (u.userId=:userId or :isAdmin='Y')) "
+			+ "or :isSU='Y') ");
+	
+
+		Query query = em.createQuery(jpql.toString())
+		.setParameter("categoryId", categoryId)
+		.setParameter("userId", userId)
+		.setParameter("isAdmin", isCategoryAdmin? "Y" : "N")
+		.setParameter("isSU", isSU? "Y": "N");
+
+		return query.getResultList();
+	}
 	
 }

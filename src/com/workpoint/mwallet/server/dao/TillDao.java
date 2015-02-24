@@ -14,6 +14,7 @@ import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TillDao extends BaseDaoImpl {
 
@@ -29,7 +30,9 @@ public class TillDao extends BaseDaoImpl {
 		}
 		
 		StringBuffer jpql = new StringBuffer("select t.id, t.businessName, t.business_number, "
-			+ "t.mpesa_acc,t.phoneNo,t.status "
+			+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,"
+			+ "u.userId salesperson_userid,u.firstname salesperson_firstname, u.lastname salesperson_lastname, "
+			+ "u.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname "
 			+ "FROM TillModel t "
 			+ "left join BUser u on (u.userId = t.salesPersonId) "
 			+ "left join BUser u2 on (u2.userId = t.ownerId) "
@@ -74,6 +77,7 @@ public class TillDao extends BaseDaoImpl {
 		List<Object[]> rows = getResultList(query); 
 		List<TillDTO> tills = new ArrayList<>();
 		
+		byte boolTrue = 1;
 		for(Object[] row: rows){
 			int i=0;
 			Object value=null;
@@ -83,9 +87,26 @@ public class TillDao extends BaseDaoImpl {
 			String business_number=(value=row[i++])==null? null: value.toString();
 			String mpesa_acc=(value=row[i++])==null? null:value.toString();
 			String phoneNo=(value=row[i++])==null? null: value.toString();
+			boolean status = (value=row[i++])==null? null: (byte)value== boolTrue;
+			int active = (value=row[i++])==null? null: (int)value;
+			Date created = (value=row[i++])==null? null: (Date)value;
+			Date updated = (value=row[i++])==null? null: (Date)value;
+			
+			String salesPersonUserId = (value=row[i++])==null? null: value.toString();
+			String salesPersonFirstName = (value=row[i++])==null? null: value.toString();
+			String salesPersonLastName = (value=row[i++])==null? null: value.toString();
+			
+			String ownerUserId = (value=row[i++])==null? null: value.toString();
+			String ownerFirstName = (value=row[i++])==null? null: value.toString();
+			String ownerLastName = (value=row[i++])==null? null: value.toString();
 			
 			TillDTO summary = new TillDTO(tillId,businessName, business_number,mpesa_acc,
 					phoneNo);
+			summary.setActive(active);
+			summary.setSalesPerson(new UserDTO(salesPersonUserId, salesPersonFirstName, salesPersonLastName));
+			summary.setOwner(new UserDTO(ownerUserId, ownerFirstName, ownerLastName));
+			
+			summary.setLastModified(updated==null? created: updated);
 			
 			tills.add(summary);
 		}

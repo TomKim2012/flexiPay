@@ -182,7 +182,7 @@ public class UserPresenter extends PresenterWidget<UserPresenter.MyView>
 	}
 
 	private void loadUsers() {
-		GetUsersRequest request = new GetUsersRequest();
+		GetUsersRequest request = new GetUsersRequest(false);
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetUsersResponse>() {

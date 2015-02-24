@@ -80,7 +80,7 @@ public class TillsTableRow extends RowWidget {
 			bindText(divtillNo, till.getTillNo());
 			bindText(divphoneNo, till.getPhoneNo());
 
-			String ownerNames = till.getOwner().getFullName();
+			String ownerNames = till.getOwner()==null? "" :till.getOwner().getFullName();
 			
 			/*List<UserDTO> cashiers = till.getCashiers();
 
@@ -97,12 +97,12 @@ public class TillsTableRow extends RowWidget {
 			
 			bindText(divAccount, till.getAccountNo());
 
-			String acquirerNames = till.getSalesPerson().getFullName();
+			String acquirerNames = till.getSalesPerson()==null? "": till.getSalesPerson().getFullName();
 
 			bindText(divOwner, ownerNames);
 			bindText(divAcquirer, acquirerNames);
 			bindText(divlastModified,
-					DateUtils.DATEFORMAT.format(till.getLastModified()));
+					till.getLastModified()==null? "":DateUtils.DATEFORMAT.format(till.getLastModified()));
 			setActive(till.isActive());
 		}
 	}

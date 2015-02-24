@@ -23,6 +23,13 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 		this.userId = id;
 	}
 
+	public UserDTO(String userId, String firstName,
+			String lastName) {
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	public String getFullName(){
 		return lastName+" "+firstName;
 	}

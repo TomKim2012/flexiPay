@@ -45,9 +45,11 @@ import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetUsersResponse;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
 public class TillsPresenter extends
@@ -111,18 +113,25 @@ public class TillsPresenter extends
 	}
 	
 	public void loadAll(){
-		loadUsers();
 		loadData();
 	}
 
 	private void loadData() {
 		fireEvent(new ProcessingEvent("Loading.."));
-		requestHelper.execute(new GetTillsRequest(),
-				new TaskServiceCallback<GetTillsRequestResult>() {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetTillsRequest());
+		action.addRequest(new GetUsersRequest(true));
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
-					public void processResult(GetTillsRequestResult aResponse) {
-						bindTills(aResponse.getTills());
+					public void processResult(MultiRequestActionResult aResponse) {
+						bindTills(((GetTillsRequestResult)aResponse.get(0)).getTills());
+						
+						users = ((GetUsersResponse)aResponse.get(1)).getUsers();
+						filterPresenter.setFilter(SearchType.Till, users);
+						
 						fireEvent(new ProcessingCompletedEvent());
+						
 					}
 				});
 
@@ -246,17 +255,17 @@ public class TillsPresenter extends
 				tillPopUp.getWidget(),saveOptionControl, "Save", "Cancel");
 	}
 
-	private void loadUsers() {
-		requestHelper.execute(new GetUsersRequest(),
-				new TaskServiceCallback<GetUsersResponse>() {
-					@Override
-					public void processResult(GetUsersResponse aResponse) {
-						users = aResponse.getUsers();
-						filterPresenter.setFilter(SearchType.Till, users);
-					}
-				});
-
-	}
+//	private void loadUsers() {
+//		requestHelper.execute(new GetUsersRequest(),
+//				new TaskServiceCallback<GetUsersResponse>() {
+//					@Override
+//					public void processResult(GetUsersResponse aResponse) {
+//						users = aResponse.getUsers();
+//						filterPresenter.setFilter(SearchType.Till, users);
+//					}
+//				});
+//
+//	}
 
 	protected void saveTill(TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
