@@ -1,14 +1,12 @@
 package com.workpoint.mwallet.server.actionhandlers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.workpoint.mwallet.server.dao.SMSLogDao;
-import com.workpoint.mwallet.server.dao.model.Category;
-import com.workpoint.mwallet.server.dao.model.SmsModel;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.model.SmsDTO;
@@ -34,15 +32,16 @@ public class GetSmsLogRequestActionHandler extends
 			ExecutionContext execContext) throws ActionException {
 		SMSLogDao dao = new SMSLogDao(DB.getEntityManager());
 
-UserDTO currentUser = SessionHelper.getCurrentUser();
-		
-		Category category = SessionHelper.getUserCategory();
-		
+		UserDTO currentUser = SessionHelper.getCurrentUser();
+
+		CategoryModel category = SessionHelper.getUserCategory();
+
 		String userId = currentUser.getUserId();
-		boolean isSuperUser = category.getName().equals("*") && currentUser.isAdmin();
+		boolean isSuperUser = category.getCategoryName().equals("*")
+				&& currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
-		List<SmsDTO> logs = dao.getSMSLog(userId,
-				isSuperUser,isAdmin,category.getId());
+		List<SmsDTO> logs = dao.getSMSLog(userId, isSuperUser, isAdmin,
+				category.getId());
 
 		((GetSMSLogRequestResult) actionResult).setLogs(logs);
 	}

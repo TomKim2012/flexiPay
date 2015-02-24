@@ -1,16 +1,12 @@
 package com.workpoint.mwallet.server.actionhandlers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.model.CategoryModel;
-import com.workpoint.mwallet.server.dao.model.TillModel;
-import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -42,13 +38,8 @@ public class GetSettingsRequestActionHandler extends
 		String userId = currentUser.getUserId();
 		boolean isSuperUser = categoryModel.getCategoryName().equals("*") && currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
-<<<<<<< HEAD
-		List<TillModel> tills = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,categoryModel.getId());
-=======
-		//List<TillModel> tills = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,category.getId());
->>>>>>> eea21a248bcc67f4cba5e151e5226b85f0b13bb9
 
-		List<TillDTO> dtos = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,category.getId());;
+		List<TillDTO> dtos = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,categoryModel.getId());;
 
 		// System.err.println("Cust Size>>"+trxs.size());
 

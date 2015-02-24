@@ -5,11 +5,8 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
-import com.workpoint.mwallet.server.dao.model.Category;
-import com.workpoint.mwallet.server.dao.model.User;
-import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.helper.auth.DBLoginHelper;
-import com.workpoint.mwallet.server.helper.auth.LoginHelper;
 import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
@@ -29,10 +26,10 @@ public class GetUsersRequestActionHandler extends
 		GetUsersResponse response = (GetUsersResponse)actionResult;
 
 		UserDTO currentUser = SessionHelper.getCurrentUser();
-		Category category = SessionHelper.getUserCategory();
+		CategoryModel category = SessionHelper.getUserCategory();
 		
 		String userId = currentUser.getUserId();
-		boolean isSuperUser = category.getName().equals("*") && currentUser.isAdmin();
+		boolean isSuperUser = category.getCategoryName().equals("*") && currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
 		
 		boolean isLoadGroupsToo=true;//Should come from the FE - Generates too many unecessary SQL statements
