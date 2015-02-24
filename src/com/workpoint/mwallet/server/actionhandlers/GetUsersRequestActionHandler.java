@@ -32,7 +32,7 @@ public class GetUsersRequestActionHandler extends
 		boolean isSuperUser = category.getCategoryName().equals("*") && currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
 		
-		boolean isLoadGroupsToo=true;//Should come from the FE - Generates too many unecessary SQL statements
+		boolean isLoadGroupsToo=action.isLoadGroups();//Should come from the FE - Generates too many unecessary SQL statements
 		List<UserDTO> users = DBLoginHelper.get().getUsers(userId, isLoadGroupsToo, isSuperUser, isAdmin,category.getId()); 
 		
 		response.setUsers(users);

@@ -104,7 +104,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		StringBuffer jpql = new StringBuffer("FROM BUser u "
 			+ "where "
 			+ "("
-			+ "(u.category.id=:categoryId "
+			+ "(u.categoryModel.id=:categoryId "
 			+ "and (u.userId=:userId or :isAdmin='Y')) "
 			+ "or :isSU='Y') ");
 	

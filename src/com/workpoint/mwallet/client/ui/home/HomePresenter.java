@@ -57,7 +57,6 @@ public class HomePresenter extends
 	@ProxyCodeSplit
 	@NameToken(NameTokens.home)
 	@UseGatekeeper(LoginGateKeeper.class)
-	
 	public interface MyProxy extends ProxyPlace<HomePresenter> {
 	}
 

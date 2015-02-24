@@ -87,6 +87,8 @@ public class TillsPresenter extends
 		HasKeyDownHandlers getSearchBox();
 
 		void showFilterView();
+		
+		HasClickHandlers getFilterActionLink();
 	}
 
 	@Inject
@@ -102,6 +104,8 @@ public class TillsPresenter extends
 	private TillDTO selected;
 
 	private List<UserDTO> users = new ArrayList<UserDTO>();
+	
+	boolean isUserListLoaded = false;
 
 	@Inject
 	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
@@ -110,15 +114,13 @@ public class TillsPresenter extends
 		createTillPopUp = new StandardProvider<CreateTillPresenter>(
 				tillProvider);
 	}
-	
+
 	public void loadAll(){
-		//loadUsers();
 		loadData();
 	}
 
 	int i=0;
 	private void loadData() {
-		Window.alert("Called load data!! "+(++i));
 		fireEvent(new ProcessingEvent("Loading.."));
 		requestHelper.execute(new GetTillsRequest(),
 				new TaskServiceCallback<GetTillsRequestResult>() {
@@ -126,6 +128,7 @@ public class TillsPresenter extends
 					public void processResult(GetTillsRequestResult aResponse) {
 						bindTills(aResponse.getTills());
 						fireEvent(new ProcessingCompletedEvent());
+						filterPresenter.setTills(aResponse.getTills());
 					}
 				});
 
@@ -185,6 +188,16 @@ public class TillsPresenter extends
 					GetTillsRequest request = new GetTillsRequest(
 							getView().getFilter());
 					performSearch(request);
+				}
+			}
+		});
+		
+		getView().getFilterActionLink().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(!isUserListLoaded){
+					isUserListLoaded=true;
+					loadUsers();
 				}
 			}
 		});
@@ -250,12 +263,14 @@ public class TillsPresenter extends
 	}
 
 	private void loadUsers() {
+		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(new GetUsersRequest(true),
 				new TaskServiceCallback<GetUsersResponse>() {
 					@Override
 					public void processResult(GetUsersResponse aResponse) {
 						users = aResponse.getUsers();
 						filterPresenter.setFilter(SearchType.Till, users);
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 
@@ -299,7 +314,6 @@ public class TillsPresenter extends
 	}
 	
 	public void performSearch(GetTillsRequest request) {
-		Window.alert("Perform Search "+(++i));
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetTillsRequestResult>() {
