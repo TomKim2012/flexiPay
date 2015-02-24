@@ -76,7 +76,7 @@ public class User extends PO {
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="categoryid")
-	private Category category;
+	private CategoryModel categoryModel;
 	
 	@ManyToOne
 	@JoinColumn(name = "bossId", referencedColumnName = "userId")
@@ -195,12 +195,12 @@ public class User extends PO {
 		this.phone = phone;
 	}
 
-	public Category getCategory() {
-		return category;
+	public CategoryModel getCategory() {
+		return categoryModel;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategory(CategoryModel categoryModel) {
+		this.categoryModel = categoryModel;
 	}
 
 }

@@ -630,3 +630,8 @@ body .home-reports .alert{
 	text-align: right;
 	font-size: inherit;
 }
+
+.settings-page{
+	padding:10px !important;
+	
+}

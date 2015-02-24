@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.server.ServerConstants;
-import com.workpoint.mwallet.server.dao.model.Category;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 
 /**
  * A utility class for retrieval and use of 
@@ -56,8 +56,8 @@ public class SessionHelper{
 		return request.get();
 	}
 
-	public static Category getUserCategory() {
+	public static CategoryModel getUserCategory() {
 		HttpSession session = request.get()==null? null: request.get().getSession(false);
-		return (Category)session.getAttribute(ServerConstants.USERCATEGORY);
+		return (CategoryModel)session.getAttribute(ServerConstants.USERCATEGORY);
 	}
 }

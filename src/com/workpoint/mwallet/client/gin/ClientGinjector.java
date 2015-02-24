@@ -26,7 +26,7 @@ public interface ClientGinjector extends Ginjector {
 
 	AsyncProvider<HeaderPresenter> getHeaderPresenter();
 
-	AsyncProvider<HomePresenter> getTaskListUIPresenter();
+	AsyncProvider<HomePresenter> getHomePresenter();
 
 	AsyncProvider<LoginPresenter> getLoginPresenter();
 	

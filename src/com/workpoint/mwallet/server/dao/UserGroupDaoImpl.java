@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.workpoint.mwallet.server.dao.model.Category;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.dao.model.Group;
 import com.workpoint.mwallet.server.dao.model.User;
 
@@ -93,7 +93,7 @@ public class UserGroupDaoImpl extends BaseDaoImpl{
 		return group.getMembers();
 	}
 
-	public Category getUserCategory(String userId) {
+	public CategoryModel getUserCategory(String userId) {
 		User user = getUser(userId);
 		return user.getCategory();
 	}

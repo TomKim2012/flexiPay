@@ -9,14 +9,8 @@ import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.MainPageView;
-import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
-import com.workpoint.mwallet.client.ui.admin.users.UserView;
-import com.workpoint.mwallet.client.ui.admin.users.groups.GroupPresenter;
-import com.workpoint.mwallet.client.ui.admin.users.groups.GroupView;
-import com.workpoint.mwallet.client.ui.admin.users.item.UserItemPresenter;
-import com.workpoint.mwallet.client.ui.admin.users.item.UserItemView;
-import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter;
-import com.workpoint.mwallet.client.ui.admin.users.save.UserSaveView;
+import com.workpoint.mwallet.client.ui.category.CategoryPresenter;
+import com.workpoint.mwallet.client.ui.category.CategoryView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
 import com.workpoint.mwallet.client.ui.error.ErrorPresenter;
@@ -33,6 +27,8 @@ import com.workpoint.mwallet.client.ui.popup.GenericPopupPresenter;
 import com.workpoint.mwallet.client.ui.popup.GenericPopupView;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
 import com.workpoint.mwallet.client.ui.profile.ProfileView;
+import com.workpoint.mwallet.client.ui.settings.SettingsPresenter;
+import com.workpoint.mwallet.client.ui.settings.SettingsView;
 import com.workpoint.mwallet.client.ui.sms.SmsPresenter;
 import com.workpoint.mwallet.client.ui.sms.SmsView;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
@@ -41,6 +37,14 @@ import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillView;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsView;
+import com.workpoint.mwallet.client.ui.users.UserPresenter;
+import com.workpoint.mwallet.client.ui.users.UserView;
+import com.workpoint.mwallet.client.ui.users.groups.GroupPresenter;
+import com.workpoint.mwallet.client.ui.users.groups.GroupView;
+import com.workpoint.mwallet.client.ui.users.item.UserItemPresenter;
+import com.workpoint.mwallet.client.ui.users.item.UserItemView;
+import com.workpoint.mwallet.client.ui.users.save.UserSavePresenter;
+import com.workpoint.mwallet.client.ui.users.save.UserSaveView;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.client.util.Definitions;
 
@@ -109,5 +113,12 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(ProfilePresenter.class,
 				ProfilePresenter.IProfileView.class, ProfileView.class);
+		
+		bindPresenterWidget(SettingsPresenter.class,
+				SettingsPresenter.ISettingsView.class, SettingsView.class);
+		
+		bindPresenterWidget(CategoryPresenter.class,
+				CategoryPresenter.ICategoryView.class, CategoryView.class);
+		
 	}
 }

@@ -53,6 +53,7 @@ public class CreateTillView extends ViewImpl implements
 		divTabs.setContent(Arrays.asList(new TabContent(tillDetails,
 				"till_details", true), new TabContent(userDetails,
 				"user_details", false)));
+		
 	}
 
 	@Override

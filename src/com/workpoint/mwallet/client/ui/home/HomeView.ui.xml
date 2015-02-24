@@ -60,7 +60,7 @@
 					</li>
 
 					<li ui:field="liSettings" class="hide">
-						<a href='#home;page=profile'>
+						<a href='#home;page=settings'>
 							<i class="icon-cogs"></i>
 							Settings
 						</a>

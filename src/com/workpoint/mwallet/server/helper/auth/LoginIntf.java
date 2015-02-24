@@ -3,7 +3,7 @@ package com.workpoint.mwallet.server.helper.auth;
 import java.io.Closeable;
 import java.util.List;
 
-import com.workpoint.mwallet.server.dao.model.Category;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
@@ -70,7 +70,7 @@ public interface LoginIntf extends Closeable {
 
 	public boolean updatePassword(String username, String password);
 
-	public Category getCategory(String userId);
+	public CategoryModel getCategory(String userId);
 	
 	
 }

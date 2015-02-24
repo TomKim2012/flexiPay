@@ -23,14 +23,15 @@ import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
-import com.workpoint.mwallet.client.ui.admin.users.UserPresenter;
-import com.workpoint.mwallet.client.ui.admin.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
+import com.workpoint.mwallet.client.ui.settings.SettingsPresenter;
 import com.workpoint.mwallet.client.ui.sms.SmsPresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
+import com.workpoint.mwallet.client.ui.users.UserPresenter;
+import com.workpoint.mwallet.client.ui.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
@@ -38,13 +39,6 @@ import com.workpoint.mwallet.shared.responses.GetContextRequestResult;
 
 public class HomePresenter extends
 		Presenter<HomePresenter.MyView, HomePresenter.MyProxy> {
-
-	/*
-	 * Other Handlers --> AfterSaveHandler, DocumentSelectionHandler,
-	 * ReloadHandler, AlertLoadHandler, ActivitiesSelectedHandler,
-	 * ProcessingHandler, ProcessingCompletedHandler, SearchHandler,
-	 * CreateProgramHandler,
-	 */
 
 	public interface MyView extends View {
 		void showmask(boolean mask);
@@ -63,6 +57,7 @@ public class HomePresenter extends
 	@ProxyCodeSplit
 	@NameToken(NameTokens.home)
 	@UseGatekeeper(LoginGateKeeper.class)
+	
 	public interface MyProxy extends ProxyPlace<HomePresenter> {
 	}
 
@@ -86,6 +81,7 @@ public class HomePresenter extends
 	private IndirectProvider<SmsPresenter> smsLogFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
 	private IndirectProvider<ProfilePresenter> profileFactory;
+	private IndirectProvider<SettingsPresenter> settingsFactory;
 
 	@Inject
 	public HomePresenter(final EventBus eventBus, final MyView view,
@@ -95,7 +91,8 @@ public class HomePresenter extends
 			Provider<UserPresenter> userProvider,
 			Provider<TillsPresenter> tillProvider,
 			Provider<SmsPresenter> smsProvider,
-			Provider<ProfilePresenter> profileProvider) {
+			Provider<ProfilePresenter> profileProvider,
+			Provider<SettingsPresenter> settingsProvider) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(
 				dashboardProvider);
@@ -105,7 +102,8 @@ public class HomePresenter extends
 		tillFactory = new StandardProvider<TillsPresenter>(tillProvider);
 		smsLogFactory = new StandardProvider<SmsPresenter>(smsProvider);
 		profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
-
+		settingsFactory = new StandardProvider<SettingsPresenter>(
+				settingsProvider);
 	}
 
 	@Override
@@ -188,12 +186,19 @@ public class HomePresenter extends
 				}
 			});
 			getView().setSelectedTab("SmsLog");
-		} else if (page != null
-				&& (page.equals("profile") || page.equals("settings"))) {
-			Window.setTitle("Profile Settings");
+		} else if (page != null && page.equals("profile")) {
+			Window.setTitle("User Profile");
 			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
 				@Override
 				public void processResult(ProfilePresenter aResponse) {
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+		} else if (page != null && page.equals("settings")) {
+			Window.setTitle("Organisational Settings");
+			settingsFactory.get(new ServiceCallback<SettingsPresenter>() {
+				@Override
+				public void processResult(SettingsPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});

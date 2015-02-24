@@ -26,7 +26,7 @@ public class TillModel extends PO {
 	
 	@ManyToOne
 	@JoinColumn(name="categoryid")
-	private Category category;
+	private CategoryModel categoryModel;
 	
 	
 	@Column(length=10)
@@ -82,12 +82,12 @@ public class TillModel extends PO {
 		this.owner = owner;
 	}
 
-	public Category getCategory() {
-		return category;
+	public CategoryModel getCategory() {
+		return categoryModel;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategory(CategoryModel categoryModel) {
+		this.categoryModel = categoryModel;
 	}
 
 	public String getTillNumber() {

@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.workpoint.mwallet.server.dao.TillDao;
-import com.workpoint.mwallet.server.dao.model.Category;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
@@ -37,12 +37,12 @@ public class GetTillsRequestActionHandler extends
 		TillDao dao = new TillDao(DB.getEntityManager());
 
 		UserDTO currentUser = SessionHelper.getCurrentUser();
-		Category category = SessionHelper.getUserCategory();
+		CategoryModel categoryModel = SessionHelper.getUserCategory();
 		
 		String userId = currentUser.getUserId();
-		boolean isSuperUser = category.getName().equals("*") && currentUser.isAdmin();
+		boolean isSuperUser = categoryModel.getCategoryName().equals("*") && currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
-		List<TillModel> tills = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,category.getId());
+		List<TillModel> tills = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,categoryModel.getId());
 
 		List<TillDTO> dtos = new ArrayList<TillDTO>();
 

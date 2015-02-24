@@ -3,6 +3,7 @@ package com.workpoint.mwallet.client.ui.events;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class ActivitySelectionChangedEvent extends
@@ -10,6 +11,7 @@ public class ActivitySelectionChangedEvent extends
 
 	public static Type<ActivitySelectionChangedHandler> TYPE = new Type<ActivitySelectionChangedHandler>();
 	private TillDTO till;
+	private CategoryDTO category;
 	private boolean isSelected;
 
 	public interface ActivitySelectionChangedHandler extends EventHandler {
@@ -21,10 +23,21 @@ public class ActivitySelectionChangedEvent extends
 		this.till = tillDetail;
 		this.isSelected = isSelected;
 	}
+	
+	public ActivitySelectionChangedEvent(CategoryDTO categoryDetail,
+			Boolean isSelected) {
+		this.category = categoryDetail;
+		this.isSelected = isSelected;
+	}
 
 	public TillDTO gettillDetail() {
 		return till;
 	}
+	
+	public CategoryDTO getCategory(){
+		return category;
+	}
+	
 
 	public boolean isSelected() {
 		return isSelected;
