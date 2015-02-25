@@ -1,7 +1,6 @@
 package com.workpoint.mwallet.client.ui.category.table;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -14,7 +13,6 @@ import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
-import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class CategoryTableRow extends RowWidget {
 
@@ -33,6 +31,10 @@ public class CategoryTableRow extends RowWidget {
 
 	@UiField
 	HTMLPanel divCategoryName;
+
+	@UiField
+	HTMLPanel divCategoryCode;
+
 	@UiField
 	HTMLPanel divCategoryType;
 	@UiField
@@ -51,8 +53,8 @@ public class CategoryTableRow extends RowWidget {
 		chkSelect.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-//				AppContext.fireEvent(new ActivitySelectionChangedEvent(
-//						CategoryTableRow.this.category, event.getValue()));
+				 AppContext.fireEvent(new ActivitySelectionChangedEvent(
+				 CategoryTableRow.this.category, event.getValue()));
 			}
 		});
 	}
@@ -67,10 +69,14 @@ public class CategoryTableRow extends RowWidget {
 	private void init(CategoryDTO category) {
 		this.category = category;
 		if (category != null) {
+			if (category.getId() != null)
+				bindText(divCategoryCode, Long.toString(category.getId()));
+			
 			bindText(divCategoryName, category.getCategoryName());
 			bindText(divCategoryType, category.getCategoryType());
-			bindText(divLastModified,
-					DateUtils.DATEFORMAT.format(category.getLastModified()));
+			if (category.getLastModified() != null)
+				bindText(divLastModified,
+						DateUtils.DATEFORMAT.format(category.getLastModified()));
 		}
 	}
 

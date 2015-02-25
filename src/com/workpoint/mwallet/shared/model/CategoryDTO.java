@@ -2,7 +2,6 @@ package com.workpoint.mwallet.shared.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class CategoryDTO implements Serializable, Listable, Comparable<CategoryDTO> {
 	/**

@@ -5,6 +5,9 @@
 		<g:HTMLPanel styleName="td">
 			<g:CheckBox ui:field="chkSelect"></g:CheckBox>
 		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divCategoryCode">
+		</g:HTMLPanel>
+		
 		<g:HTMLPanel styleName="td" ui:field="divCategoryName">
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divCategoryType">

@@ -21,6 +21,7 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	private List<UserDTO> cashiers;
 	private Date lastModified;
 	private int isActive;
+	private CategoryDTO category;
 
 	public TillDTO() {
 		// TODO Auto-generated constructor stub
@@ -139,6 +140,14 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
+	}
+
+	public CategoryDTO getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryDTO category) {
+		this.category = category;
 	}
 
 }

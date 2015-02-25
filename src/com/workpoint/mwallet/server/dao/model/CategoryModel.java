@@ -53,6 +53,11 @@ public class CategoryModel extends PO{
 		return categoryModel;
 	}
 	
+	@Override
+	public Long getId(){
+		return id;
+	}
+	
 
 	public String getCategoryType() {
 		return categoryType;

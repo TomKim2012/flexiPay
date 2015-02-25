@@ -24,8 +24,7 @@
 						<d:TextField ui:field="txtTillCode" placeholder="eg: Import Till Code">
 						</d:TextField>
 						<d:ActionLink ui:field="aPickTill" styleName="btn btn-primary">
-							<span class="icon-spinner icon-spin hide"
-								ui:field="spnSpinner"></span>
+							<span class="icon-spinner icon-spin hide" ui:field="spnSpinner"></span>
 							Import
 						</d:ActionLink>
 					</div>
@@ -47,6 +46,13 @@
 				<div class="controls">
 					<g:CheckBox ui:field="chckEnable" styleName="input-xlarge"></g:CheckBox>
 				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">
+					<b>Category:</b>
+				</label>
+				<d:DropDownList ui:field="lstCategoryType"></d:DropDownList>
 			</div>
 		</fieldset>
 	</g:HTMLPanel>

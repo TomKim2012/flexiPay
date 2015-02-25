@@ -49,11 +49,13 @@
 	padding:10px;
 	padding-left:0px;	
 	padding-right: 0px;
+	height: 100%;
 }
 .main-container .content-right .content-body .tabbable{
 	padding-left:10px
 ;
 	padding-right: 10px;
+	height: 200px;
 }
 
 

@@ -1,6 +1,5 @@
 package com.workpoint.mwallet.client.ui.category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,14 +28,11 @@ import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.Acti
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
-import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
-import com.workpoint.mwallet.shared.model.UserDTO;
-import com.workpoint.mwallet.shared.requests.GetTillsRequest;
-import com.workpoint.mwallet.shared.requests.GetUsersRequest;
+import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveCategoryRequest;
-import com.workpoint.mwallet.shared.responses.GetUsersResponse;
+import com.workpoint.mwallet.shared.responses.GetCategoriesRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveCategoryResponse;
 
@@ -81,8 +77,6 @@ public class CategoryPresenter extends
 
 	private CategoryDTO selected;
 
-	private List<UserDTO> users = new ArrayList<UserDTO>();
-
 	@Inject
 	public CategoryPresenter(final EventBus eventBus, final ICategoryView view,
 			Provider<CreateCategoryPresenter> categoryProvider) {
@@ -98,19 +92,12 @@ public class CategoryPresenter extends
 	private void loadData() {
 		fireEvent(new ProcessingEvent("Loading.."));
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetTillsRequest());
-		action.addRequest(new GetUsersRequest(true));
+		action.addRequest(new GetCategoriesRequest());
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
-//						bindCategories(((GetCategoryRequestResult) aResponse.get(0))
-//								.getTills());
-
-						users = ((GetUsersResponse) aResponse.get(1))
-								.getUsers();
-						filterPresenter.setFilter(SearchType.Till, users);
-
+						bindCategories((((GetCategoriesRequestResult) aResponse.get(0)).getCategories()));
 						fireEvent(new ProcessingCompletedEvent());
 
 					}
@@ -139,7 +126,7 @@ public class CategoryPresenter extends
 		getView().getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				showCateogoryPopUp(false);
+				showCategoryPopUp(false);
 			}
 		});
 
@@ -147,7 +134,7 @@ public class CategoryPresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-				showCateogoryPopUp(true);
+				showCategoryPopUp(true);
 			}
 		});
 
@@ -179,7 +166,7 @@ public class CategoryPresenter extends
 
 	}
 
-	protected void showCateogoryPopUp(boolean edit) {
+	protected void showCategoryPopUp(boolean edit) {
 		createCategoryPopUp.get(new ServiceCallback<CreateCategoryPresenter>() {
 			@Override
 			public void processResult(CreateCategoryPresenter aResponse) {
@@ -207,18 +194,6 @@ public class CategoryPresenter extends
 		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
 				categoryPopUp.getWidget(), saveOptionControl, "Save", "Cancel");
 	}
-
-	// private void loadUsers() {
-	// requestHelper.execute(new GetUsersRequest(),
-	// new TaskServiceCallback<GetUsersResponse>() {
-	// @Override
-	// public void processResult(GetUsersResponse aResponse) {
-	// users = aResponse.getUsers();
-	// filterPresenter.setFilter(SearchType.Till, users);
-	// }
-	// });
-	//
-	// }
 
 	protected void saveTill(CategoryDTO categoryDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));

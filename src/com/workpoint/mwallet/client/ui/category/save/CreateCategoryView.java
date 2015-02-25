@@ -75,10 +75,11 @@ public class CreateCategoryView extends ViewImpl implements
 		if (txtCategoryName.getValue().isEmpty()) {
 			issues.addError("Category Name cannot be Empty");
 			return false;
-		} else if (lstCategoryType.getValue() == null) {
-			issues.addError("Business Category cannot be Empty");
-			return false;
-		}
+		} 
+//		else if (lstCategoryType.getValue() == null) {
+//			issues.addError("Business Category cannot be Empty");
+//			return false;
+//		}
 		return true;
 	}
 
@@ -97,7 +98,7 @@ public class CreateCategoryView extends ViewImpl implements
 		}
 
 		categorySelected.setCategoryName(txtCategoryName.getValue());
-		categorySelected.setCategoryType(lstCategoryType.getValue().getName());
+//		categorySelected.setCategoryType(lstCategoryType.getValue().getName());
 
 		return categorySelected;
 	}

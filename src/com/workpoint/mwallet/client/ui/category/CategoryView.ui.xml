@@ -43,16 +43,6 @@
 
 			<div class="row-fluid full-page content-body">
 
-				<g:HTMLPanel ui:field="divNoContent" styleName="hidden">
-					<i class="icon-warning-sign helper-font-16"></i>
-					<span class="helper-font-16">
-						No Programs Added. Click
-						<a>Create Program</a>
-						to get started
-					</span>
-				</g:HTMLPanel>
-
-
 				<g:HTMLPanel ui:field="divMiddleContent"
 					styleName="tabbable tabs-below full-page overflow-y">
 					<d:MyHTMLPanel styleName="tab-content" ui:field="divContentTable">

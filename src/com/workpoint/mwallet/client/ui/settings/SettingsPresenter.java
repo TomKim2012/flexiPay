@@ -25,13 +25,13 @@ public class SettingsPresenter extends
 	public SettingsPresenter(final EventBus eventBus,
 			final ISettingsView view) {
 		super(eventBus, view);
-		
 	}
 
 	@Override
 	protected void onReset() {
 		super.onReset();
 		setInSlot(CATEGORY_SLOT,categoryPresenter);
+		categoryPresenter.loadAll();
 	}
 	
 	@Override

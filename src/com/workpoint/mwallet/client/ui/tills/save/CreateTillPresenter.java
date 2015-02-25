@@ -25,6 +25,7 @@ import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent.LoadUsersHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.users.save.UserSavePresenter;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.ClientDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -60,6 +61,8 @@ public class CreateTillPresenter extends
 		HasKeyDownHandlers getSearchBox();
 
 		void showImportProcessing(boolean show);
+
+		void setCategories(List<CategoryDTO> categories);
 	}
 
 	@Inject
@@ -253,6 +256,10 @@ public class CreateTillPresenter extends
 		getView().setSearchMessage("Merchant imported Successfully!",
 				"text-success");
 
+	}
+
+	public void setCategories(List<CategoryDTO> categories) {
+		getView().setCategories(categories);
 	}
 
 }

@@ -115,6 +115,14 @@
 						</label>
 						<a:AutoCompleteField ui:field="lstGroups" />
 					</div>
+
+
+					<div class="control-group">
+						<label class="control-label">
+							<b>Category:</b>
+						</label>
+						<d:DropDownList ui:field="lstCategoryType"></d:DropDownList>
+					</div>
 				</g:HTMLPanel>
 			</g:HTMLPanel>
 

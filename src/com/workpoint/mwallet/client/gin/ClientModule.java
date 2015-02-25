@@ -11,6 +11,8 @@ import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.MainPageView;
 import com.workpoint.mwallet.client.ui.category.CategoryPresenter;
 import com.workpoint.mwallet.client.ui.category.CategoryView;
+import com.workpoint.mwallet.client.ui.category.save.CreateCategoryPresenter;
+import com.workpoint.mwallet.client.ui.category.save.CreateCategoryView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
 import com.workpoint.mwallet.client.ui.error.ErrorPresenter;
@@ -98,6 +100,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(CreateTillPresenter.class,
 				CreateTillPresenter.MyView.class, CreateTillView.class);
+		
+		bindPresenterWidget(CreateCategoryPresenter.class,
+				CreateCategoryPresenter.MyView.class, CreateCategoryView.class);
 
 		bindPresenterWidget(UserPresenter.class, UserPresenter.MyView.class,
 				UserView.class);

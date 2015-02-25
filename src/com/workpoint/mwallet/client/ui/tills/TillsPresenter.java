@@ -1,7 +1,6 @@
 package com.workpoint.mwallet.client.ui.tills;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,7 +12,6 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -41,14 +39,19 @@ import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
+import com.workpoint.mwallet.shared.responses.GetCategoriesRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetUsersResponse;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
 public class TillsPresenter extends
@@ -60,6 +63,26 @@ public class TillsPresenter extends
 	
 	@Inject
 	FilterPresenter filterPresenter;
+	
+	private OptionControl saveOptionControl;
+	private OptionControl deleteOptionControl;
+	
+	protected List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
+	
+	@Inject
+	DispatchAsync requestHelper;
+
+	@Inject
+	PlaceManager placeManager;
+
+	private IndirectProvider<CreateTillPresenter> createTillPopUp;
+
+	private CreateTillPresenter tillPopUp;
+
+	private TillDTO selected;
+
+	private List<UserDTO> users = new ArrayList<UserDTO>();
+
 
 	public interface IActivitiesView extends View {
 		HasClickHandlers getAddButton();
@@ -87,22 +110,10 @@ public class TillsPresenter extends
 		HasKeyDownHandlers getSearchBox();
 
 		void showFilterView();
+
 	}
 
-	@Inject
-	DispatchAsync requestHelper;
-
-	@Inject
-	PlaceManager placeManager;
-
-	private IndirectProvider<CreateTillPresenter> createTillPopUp;
-
-	private CreateTillPresenter tillPopUp;
-
-	private TillDTO selected;
-
-	private List<UserDTO> users = new ArrayList<UserDTO>();
-
+	
 	@Inject
 	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
 			Provider<CreateTillPresenter> tillProvider) {
@@ -112,19 +123,34 @@ public class TillsPresenter extends
 	}
 	
 	public void loadAll(){
-		//loadUsers();
 		loadData();
 	}
 
-	int i=0;
 	private void loadData() {
-		Window.alert("Called load data!! "+(++i));
 		fireEvent(new ProcessingEvent("Loading.."));
-		requestHelper.execute(new GetTillsRequest(),
-				new TaskServiceCallback<GetTillsRequestResult>() {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetUsersRequest(true));
+		action.addRequest(new GetTillsRequest());
+		action.addRequest(new GetCategoriesRequest());
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
-					public void processResult(GetTillsRequestResult aResponse) {
-						bindTills(aResponse.getTills());
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i=0;
+						
+						//UsersResponse
+						GetUsersResponse uResponse = (GetUsersResponse)aResponse.get(i++);
+						users = uResponse.getUsers();
+						filterPresenter.setFilter(SearchType.Till, users);
+						
+						//Tills Response
+						GetTillsRequestResult tResponse = (GetTillsRequestResult)aResponse.get(i++);
+						bindTills(tResponse.getTills());
+						
+						//Categories Response
+						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult)aResponse.get(i++);
+						categories = cResponse.getCategories();
+						
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
@@ -201,9 +227,6 @@ public class TillsPresenter extends
 		}
 	};
 
-	private OptionControl saveOptionControl;
-	private OptionControl deleteOptionControl;
-
 	protected void showDeletePopup() {
 		deleteOptionControl = new OptionControl() {
 			@Override
@@ -225,6 +248,7 @@ public class TillsPresenter extends
 			public void processResult(CreateTillPresenter aResponse) {
 				tillPopUp = aResponse;
 				tillPopUp.setUsers(users);
+				tillPopUp.setCategories(categories);
 			}
 		});
 
@@ -249,17 +273,6 @@ public class TillsPresenter extends
 				tillPopUp.getWidget(),saveOptionControl, "Save", "Cancel");
 	}
 
-	private void loadUsers() {
-		requestHelper.execute(new GetUsersRequest(true),
-				new TaskServiceCallback<GetUsersResponse>() {
-					@Override
-					public void processResult(GetUsersResponse aResponse) {
-						users = aResponse.getUsers();
-						filterPresenter.setFilter(SearchType.Till, users);
-					}
-				});
-
-	}
 
 	protected void saveTill(TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
@@ -299,7 +312,7 @@ public class TillsPresenter extends
 	}
 	
 	public void performSearch(GetTillsRequest request) {
-		Window.alert("Perform Search "+(++i));
+		//Window.alert("Perform Search "+(++i));
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetTillsRequestResult>() {

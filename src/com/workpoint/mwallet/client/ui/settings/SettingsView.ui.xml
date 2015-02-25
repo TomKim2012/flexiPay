@@ -10,6 +10,7 @@
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="content-body settings-page" ui:field="mainContent">
-		<g:HTMLPanel ui:field="divCategories"></g:HTMLPanel>
+		<g:HTMLPanel ui:field="divCategories" styleName="full-body">
+		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

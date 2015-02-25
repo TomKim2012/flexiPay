@@ -3,6 +3,7 @@ package com.workpoint.mwallet.server.guice;
 import com.gwtplatform.dispatch.server.guice.HandlerModule;
 import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.workpoint.mwallet.server.ServerConstants;
+import com.workpoint.mwallet.server.actionhandlers.GetCategoriesRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetContextRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetGroupsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetSmsLogRequestActionHandler;
@@ -19,6 +20,7 @@ import com.workpoint.mwallet.server.actionhandlers.SaveGroupRequestActionHandler
 import com.workpoint.mwallet.server.actionhandlers.SaveTillRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.SaveUserRequestActionHandler;
 import com.workpoint.mwallet.server.actionvalidator.SessionValidator;
+import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.requests.GetSMSLogRequest;
@@ -34,6 +36,7 @@ import com.workpoint.mwallet.shared.requests.SaveCategoryRequest;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.requests.SaveUserRequest;
+import com.workpoint.mwallet.shared.responses.GetCategoriesRequestResult;
 
 public class ServerModule extends HandlerModule {
 
@@ -49,15 +52,19 @@ public class ServerModule extends HandlerModule {
 				SaveGroupRequestActionHandler.class, SessionValidator.class);
 		bindHandler(SaveTillRequest.class, SaveTillRequestActionHandler.class,
 				SessionValidator.class);
-		bindHandler(SaveCategoryRequest.class, SaveCategoryRequestActionHandler.class,
-				SessionValidator.class);
+		bindHandler(SaveCategoryRequest.class,
+				SaveCategoryRequestActionHandler.class, SessionValidator.class);
 		bindHandler(GetUsersRequest.class, GetUsersRequestActionHandler.class,
 				SessionValidator.class);
-		bindHandler(GetSMSLogRequest.class, GetSmsLogRequestActionHandler.class,
-				SessionValidator.class);
+		bindHandler(GetSMSLogRequest.class,
+				GetSmsLogRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(GetCategoriesRequest.class,
+				GetCategoriesRequestActionHandler.class, SessionValidator.class);
+
 		bindHandler(GetGroupsRequest.class,
 				GetGroupsRequestActionHandler.class, SessionValidator.class);
-		
+
 		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class,
 				SessionValidator.class);
 		bindHandler(GetTransactionsRequest.class,
@@ -74,7 +81,8 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(LogoutAction.class, LogoutActionHandler.class,
 				SessionValidator.class);
-		
-		bindHandler(MultiRequestAction.class,MultiRequestActionHandler.class, SessionValidator.class);
+
+		bindHandler(MultiRequestAction.class, MultiRequestActionHandler.class,
+				SessionValidator.class);
 	}
 }

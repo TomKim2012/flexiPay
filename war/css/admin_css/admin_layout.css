@@ -321,6 +321,7 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 	/* height: 392px; */
+	height: 100%;
 }
 
 .content-body .table .action-commands a {

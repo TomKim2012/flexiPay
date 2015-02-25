@@ -15,6 +15,7 @@ import com.workpoint.mwallet.client.ui.component.IssuesPanel;
 import com.workpoint.mwallet.client.ui.component.tabs.TabContent;
 import com.workpoint.mwallet.client.ui.component.tabs.TabHeader;
 import com.workpoint.mwallet.client.ui.component.tabs.TabPanel;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 
@@ -112,6 +113,11 @@ public class CreateTillView extends ViewImpl implements
 	@Override
 	public HasKeyDownHandlers getSearchBox() {
 		return tillDetails.getSearchBox();
+	}
+
+	@Override
+	public void setCategories(List<CategoryDTO> categories) {
+		tillDetails.setCategories(categories);
 	}
 
 }
