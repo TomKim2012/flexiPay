@@ -234,7 +234,7 @@ public class CreateTillPresenter extends
 			@Override
 			public void processResult(final UserSavePresenter result) {
 				result.setType(type, user);
-				result.loadGroups();
+				result.loadData();
 
 				mainPagePresenter.addToPopupSlot(result, false);
 
@@ -259,6 +259,7 @@ public class CreateTillPresenter extends
 	}
 
 	public void setCategories(List<CategoryDTO> categories) {
+		System.err.println("set categories called!");
 		getView().setCategories(categories);
 	}
 

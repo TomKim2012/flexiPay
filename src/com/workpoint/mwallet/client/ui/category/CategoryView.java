@@ -121,7 +121,7 @@ public class CategoryView extends ViewImpl implements
 		int middleHeight = totalHeight - topHeight - 10;
 
 		if (middleHeight > 0) {
-			divContentTable.setHeight(middleHeight + "px");
+			divContentTable.setHeight("450px");
 		}
 	}
 

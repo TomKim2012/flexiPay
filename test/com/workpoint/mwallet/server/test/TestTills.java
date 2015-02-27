@@ -16,6 +16,7 @@ import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TestTills {
 
@@ -26,7 +27,7 @@ public class TestTills {
 		em = DB.getEntityManager();
 	}
 	
-	@Test
+	@Ignore
 	public void searchClientByTill(){
 		ClientDocModel model = new ClientDao(em).getClientByTillCode("80576000");
 		
@@ -34,11 +35,16 @@ public class TestTills {
 	}
 	
 	
-	@Ignore
+	@Test
 	public void search(){
-		List<TillModel> models = new TillDao(em).getTillsByName("Nya");
-		Assert.assertNotSame(0,models.size());
-		System.err.println(models.size()+" ");
+		List<TillDTO> tills = new TillDao(em).getAllTills(null, "TomKim", false, true, 7L);
+		
+		for(TillDTO till: tills){
+			System.err.println("Till Name:"+till.getBusinessName()+"-"+till.getCategory().getId()+
+								"-"+ till.getId());
+		}
+		Assert.assertNotSame(0,tills.size());
+		System.err.println(tills.size()+" ");
 	}
 	
 	@Ignore

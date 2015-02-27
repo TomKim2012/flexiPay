@@ -19,6 +19,11 @@ public class CategoryDTO implements Serializable, Listable, Comparable<CategoryD
 		// TODO Auto-generated constructor stub
 	}
 	
+	public CategoryDTO(Long catId, String categoryName2) {
+		id = catId;
+		categoryName = categoryName2;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -60,13 +65,11 @@ public class CategoryDTO implements Serializable, Listable, Comparable<CategoryD
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return categoryName;
 	}
 
 	@Override
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
 		return categoryName;
 	}
 

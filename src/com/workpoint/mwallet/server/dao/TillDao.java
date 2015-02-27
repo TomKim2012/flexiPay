@@ -10,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TransactionDTO;
@@ -32,10 +34,12 @@ public class TillDao extends BaseDaoImpl {
 		StringBuffer jpql = new StringBuffer("select t.id, t.businessName, t.business_number, "
 			+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,"
 			+ "u.userId salesperson_userid,u.firstname salesperson_firstname, u.lastname salesperson_lastname, "
-			+ "u.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname "
+			+ "u.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname, "
+			+ "c.id, c.categoryName "
 			+ "FROM TillModel t "
 			+ "left join BUser u on (u.userId = t.salesPersonId) "
 			+ "left join BUser u2 on (u2.userId = t.ownerId) "
+			+ "left join categoryModel c on (c.id = t.categoryId)"
 			+ "where "
 			+ "("
 			+ "(t.categoryid=:categoryId "
@@ -100,11 +104,17 @@ public class TillDao extends BaseDaoImpl {
 			String ownerFirstName = (value=row[i++])==null? null: value.toString();
 			String ownerLastName = (value=row[i++])==null? null: value.toString();
 			
+			Long catId = (value=row[i++])==null? null: new Long(value.toString());
+			String categoryName = (value=row[i++])==null? null: value.toString();
+			
+//			System.err.println("Category Id:"+catId+"Till Id:"+tillId);
+			
 			TillDTO summary = new TillDTO(tillId,businessName, business_number,mpesa_acc,
 					phoneNo);
 			summary.setActive(active);
 			summary.setSalesPerson(new UserDTO(salesPersonUserId, salesPersonFirstName, salesPersonLastName));
 			summary.setOwner(new UserDTO(ownerUserId, ownerFirstName, ownerLastName));
+			summary.setCategory(new CategoryDTO(catId, categoryName));
 			
 			summary.setLastModified(updated==null? created: updated);
 			
@@ -115,53 +125,6 @@ public class TillDao extends BaseDaoImpl {
 
 	}
 	
-//	public List<TillModel> getAllTills(SearchFilter filter) {
-//		if (filter == null)
-//			return getResultList(em
-//					.createQuery("FROM TillModel t "
-//							+ " order by tillNo DESC"));
-//
-//		StringBuffer jpql = new StringBuffer("FROM TillModel t ");
-//		Map<String, Object> params = new HashMap<>();
-//
-//		boolean isFirst = true;
-//		
-//		if(filter.getTill()!=null){
-//			jpql.append(isFirst? " Where" : " And");
-//			jpql.append(" t.tillNo = :tillNumber");
-//			params.put("tillNumber", filter.getTill().getTillNo());
-//			isFirst = false;
-//		}
-//		
-//		if(filter.getPhrase()!=null){
-//			jpql.append(isFirst? " Where" : " And");
-//			jpql.append(" (t.tillNo like :phrase or t.businessName like :phrase or " +
-//					"t.owner like :phrase or t.salesPerson like :phrase)");
-//			params.put("phrase", "%"+filter.getPhrase()+"%");
-//			isFirst = false;
-//		}
-//		
-//		if(filter.getOwner()!=null){
-//			jpql.append(isFirst? " Where" : " And");
-//			jpql.append("(t.owner.userId = :owner)");
-//			params.put("owner", filter.getOwner().getUserId());
-//			isFirst = false;
-//		}
-//		
-//		if(filter.getSalesPerson()!=null){
-//			jpql.append(isFirst? " Where" : " And");
-//			jpql.append(" (t.salesPerson.userId = :salesPerson)");
-//			params.put("salesPerson", filter.getSalesPerson().getUserId());
-//			isFirst = false;
-//		}
-//		
-//		Query query = em.createQuery(jpql.toString());
-//		for(String key: params.keySet()){
-//			query.setParameter(key, params.get(key));
-//		}
-//		
-//		return getResultList(query);
-//	}
 
 	public List<TillModel> getTillsByName(String name) {
 		String jpql = "FROM TillModel t where t.businessName like :bizName "
@@ -184,4 +147,5 @@ public class TillDao extends BaseDaoImpl {
 	public void saveTill(TillModel till) {
 		save(till);
 	}
+
 }

@@ -196,5 +196,9 @@ public class TillsView extends ViewImpl implements
 	public HasKeyDownHandlers getSearchBox() {
 		return txtSearchBox;
 	}
+	
+	public HasClickHandlers getFilterActionLink(){
+		return iFilterdropdown;
+	}
 
 }

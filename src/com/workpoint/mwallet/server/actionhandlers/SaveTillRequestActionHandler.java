@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
 import com.workpoint.mwallet.server.dao.TillDao;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
@@ -30,16 +31,21 @@ public class SaveTillRequestActionHandler extends
 		TillDao dao = new TillDao(DB.getEntityManager());
 		TillDTO till = action.getTill();
 		TillModel tillModel = new TillModel();
-		
+
 		if (!action.isDelete()) {
-			if(till.getId()!=null){
+			if (till.getId() != null) {
 				tillModel = dao.getById(TillModel.class, till.getId());
 			}
-			
+
 			tillModel.setBusinessName(till.getBusinessName());
 			tillModel.setTillNumber(till.getTillNo());
 			tillModel.setAccountNo(till.getAccountNo());
 			tillModel.setPhoneNo(till.getPhoneNo());
+
+			if (till.getCategory() != null){
+				CategoryModel catModel = dao.getById(CategoryModel.class, till.getCategory().getId());
+				tillModel.setCategory(catModel);
+			}
 
 			// Till Owner
 			UserDTO ownerDTO = till.getOwner();
@@ -51,7 +57,8 @@ public class SaveTillRequestActionHandler extends
 			System.err.println("Cashiers Size>>" + cashiersDTO.size());
 			List<User> cashiersModel = new ArrayList<User>();
 			for (UserDTO cashier : cashiersDTO) {
-				User cashierModel = DB.getUserGroupDao().getUser(cashier.getUserId());
+				User cashierModel = DB.getUserGroupDao().getUser(
+						cashier.getUserId());
 				cashiersModel.add(cashierModel);
 				System.err.println("Cashiers >>" + cashierModel.getFirstName());
 			}
@@ -67,8 +74,8 @@ public class SaveTillRequestActionHandler extends
 
 			SaveTillResponse response = (SaveTillResponse) actionResult;
 			response.setSaved(true);
-		}else{
-			if(till.getId()!=null){
+		} else {
+			if (till.getId() != null) {
 				tillModel = dao.getById(TillModel.class, till.getId());
 			}
 			dao.delete(tillModel);

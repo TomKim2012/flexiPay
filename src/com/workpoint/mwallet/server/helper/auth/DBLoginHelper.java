@@ -10,6 +10,7 @@ import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.dao.model.Group;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
 
@@ -56,6 +57,12 @@ public class DBLoginHelper implements LoginIntf{
 		UserDTO.setLastName(user.getLastName());
 		UserDTO.setPhoneNo(user.getPhone());
 		UserDTO.setId(user.getId());
+		CategoryModel category = user.getCategory();
+		CategoryDTO catDTO = new CategoryDTO();
+		catDTO.setCategoryName(category.getCategoryName());
+		catDTO.setCategoryType(category.getCategoryType());
+		catDTO.setId(category.getId());
+		UserDTO.setCategory(catDTO);
 		
 		if(loadGroups)
 			UserDTO.setGroups(getFromDb(user.getGroups()));	
@@ -142,6 +149,9 @@ public class DBLoginHelper implements LoginIntf{
 		user.setUserId(UserDTO.getUserId());
 		user.setPhone(UserDTO.getPhoneNo());
 		user.setGroups(get(UserDTO.getGroups()));
+		
+		CategoryModel categoryModel = dao.getById(CategoryModel.class,UserDTO.getCategory().getId());
+		user.setCategory(categoryModel);
 		
 		dao.saveUser(user);
 		

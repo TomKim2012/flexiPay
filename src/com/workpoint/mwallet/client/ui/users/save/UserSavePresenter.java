@@ -19,16 +19,20 @@ import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
-import com.workpoint.mwallet.client.ui.users.importuser.ImportUser;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.ClientDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.model.UserGroup;
+import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.requests.ImportClientRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveGroupRequest;
 import com.workpoint.mwallet.shared.requests.SaveUserRequest;
+import com.workpoint.mwallet.shared.responses.GetCategoriesRequestResult;
 import com.workpoint.mwallet.shared.responses.GetGroupsResponse;
 import com.workpoint.mwallet.shared.responses.ImportClientResponse;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveGroupResponse;
 import com.workpoint.mwallet.shared.responses.SaveUserResponse;
 
@@ -65,6 +69,8 @@ public class UserSavePresenter extends
 
 		void setToWidget(boolean isWidget);
 
+		void setCategories(List<CategoryDTO> categories);
+
 	}
 
 	public enum TYPE {
@@ -80,7 +86,6 @@ public class UserSavePresenter extends
 	@Inject
 	DispatchAsync requestHelper;
 
-	private ImportUser importWidget;
 
 	@Inject
 	public UserSavePresenter(final EventBus eventBus, final IUserSaveView view) {
@@ -129,11 +134,10 @@ public class UserSavePresenter extends
 				searchUser();
 			}
 		});
-		
+
 		getView().getSearchBox().addKeyDownHandler(keyHandler);
 	}
-	
-	
+
 	public void saveUser() {
 		if (getView().isValid()) {
 			UserGroup userGroup = getView().getGroup();
@@ -143,8 +147,7 @@ public class UserSavePresenter extends
 			requestHelper.execute(request,
 					new TaskServiceCallback<SaveGroupResponse>() {
 						@Override
-						public void processResult(
-								SaveGroupResponse result) {
+						public void processResult(SaveGroupResponse result) {
 							group = result.getGroup();
 							getView().setGroup(group);
 
@@ -154,7 +157,7 @@ public class UserSavePresenter extends
 					});
 		}
 	}
-		
+
 	KeyDownHandler keyHandler = new KeyDownHandler() {
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
@@ -163,31 +166,29 @@ public class UserSavePresenter extends
 			}
 		}
 	};
-	
-	public void searchUser(){
+
+	public void searchUser() {
 		String clCode = getView().getClientCode();
-		if(clCode == null){
+		if (clCode == null) {
 			return;
 		}
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(new ImportClientRequest(clCode),
 				new TaskServiceCallback<ImportClientResponse>() {
 					@Override
-					public void processResult(
-							ImportClientResponse aResponse) {
+					public void processResult(ImportClientResponse aResponse) {
 						fireEvent(new ProcessingCompletedEvent());
 						ClientDTO client = aResponse.getClient();
 						if (client == null) {
-							getView().setMessage(
-									"No Client Record found.",
+							getView().setMessage("No Client Record found.",
 									"text-error");
 							return;
 						}
 						getView().setMessage("", "hide");
 						UserDTO user = new UserDTO();
 						user.setFirstName(client.getFirstName());
-						user.setLastName(client.getMiddleName().trim()
-								+ " " + client.getSirName().trim());
+						user.setLastName(client.getMiddleName().trim() + " "
+								+ client.getSirName().trim());
 						user.setPhoneNo(client.getPhoneNo());
 						user.setUserId(client.getClCode());
 						user.setPassword(client.getPhoneNo());
@@ -200,29 +201,41 @@ public class UserSavePresenter extends
 	@Override
 	protected void onReveal() {
 		super.onReveal();
-		loadGroups();
 		setToWidget(false);
 	}
-	
-	
+
 	@Override
 	protected void onReset() {
 		super.onReset();
 	}
-	
-	
-	public void setToWidget(boolean isWidget){
+
+	public void setToWidget(boolean isWidget) {
 		getView().setToWidget(isWidget);
 	}
-	
-	public void loadGroups(){
-		GetGroupsRequest request = new GetGroupsRequest();
-		requestHelper.execute(request,
-				new TaskServiceCallback<GetGroupsResponse>() {
+
+	public void loadData() {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetGroupsRequest());
+		action.addRequest(new GetCategoriesRequest());
+
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
-					public void processResult(GetGroupsResponse result) {
-						List<UserGroup> groups = result.getGroups();
-						getView().setGroups(groups);
+					public void processResult(MultiRequestActionResult result) {
+						int i = 0;
+						// Groups
+						GetGroupsResponse gResponse = (GetGroupsResponse) result
+								.get(i++);
+						getView().setGroups(gResponse.getGroups());
+
+						// Categories Response
+						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult) result
+								.get(i++);
+						List<CategoryDTO> categories = cResponse.getCategories();
+						getView().setCategories(categories);
+						
+						getView().setUser(user);
+ 
 					}
 				});
 	}
@@ -233,7 +246,7 @@ public class UserSavePresenter extends
 		if (value != null) {
 			if (type == TYPE.USER) {
 				user = (UserDTO) value;
-				getView().setUser(user);
+				loadData();
 			} else {
 				group = (UserGroup) value;
 				getView().setGroup(group);
@@ -241,4 +254,5 @@ public class UserSavePresenter extends
 		}
 
 	}
+	
 }

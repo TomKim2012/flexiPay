@@ -15,6 +15,7 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 	private String password;
 	private String phoneNo;
 	private List<UserGroup> groups;
+	private CategoryDTO category;
 	
 	public UserDTO() {
 	}
@@ -159,5 +160,13 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	public CategoryDTO getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryDTO category) {
+		this.category = category;
 	}
 }

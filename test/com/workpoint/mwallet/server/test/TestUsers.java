@@ -41,8 +41,6 @@ public class TestUsers {
 		user.setLastName("Kimani");
 		user.setUserId("TomKim");
 		user.setGroups(Arrays.asList(group));
-		
-		
 		dao.saveUser(user);
 	}
 	

@@ -56,32 +56,18 @@ import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
 public class TillsPresenter extends
 		PresenterWidget<TillsPresenter.IActivitiesView> implements
-		ActivitySelectionChangedHandler, SearchHandler, HidePanelBoxHandler{
+		ActivitySelectionChangedHandler, SearchHandler, HidePanelBoxHandler {
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
-	
+
 	@Inject
 	FilterPresenter filterPresenter;
-	
+
 	private OptionControl saveOptionControl;
 	private OptionControl deleteOptionControl;
-	
+
 	protected List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
-	
-	@Inject
-	DispatchAsync requestHelper;
-
-	@Inject
-	PlaceManager placeManager;
-
-	private IndirectProvider<CreateTillPresenter> createTillPopUp;
-
-	private CreateTillPresenter tillPopUp;
-
-	private TillDTO selected;
-
-	private List<UserDTO> users = new ArrayList<UserDTO>();
 
 
 	public interface IActivitiesView extends View {
@@ -111,9 +97,25 @@ public class TillsPresenter extends
 
 		void showFilterView();
 
+		HasClickHandlers getFilterActionLink();
 	}
 
-	
+	@Inject
+	DispatchAsync requestHelper;
+
+	@Inject
+	PlaceManager placeManager;
+
+	private IndirectProvider<CreateTillPresenter> createTillPopUp;
+
+	private CreateTillPresenter tillPopUp;
+
+	private TillDTO selected;
+
+	private List<UserDTO> users = new ArrayList<UserDTO>();
+
+	boolean isUserListLoaded = false;
+
 	@Inject
 	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
 			Provider<CreateTillPresenter> tillProvider) {
@@ -121,8 +123,8 @@ public class TillsPresenter extends
 		createTillPopUp = new StandardProvider<CreateTillPresenter>(
 				tillProvider);
 	}
-	
-	public void loadAll(){
+
+	public void loadAll() {
 		loadData();
 	}
 
@@ -136,22 +138,26 @@ public class TillsPresenter extends
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
-						int i=0;
-						
-						//UsersResponse
-						GetUsersResponse uResponse = (GetUsersResponse)aResponse.get(i++);
+						int i = 0;
+
+						// UsersResponse
+						GetUsersResponse uResponse = (GetUsersResponse) aResponse
+								.get(i++);
 						users = uResponse.getUsers();
 						filterPresenter.setFilter(SearchType.Till, users);
-						
-						//Tills Response
-						GetTillsRequestResult tResponse = (GetTillsRequestResult)aResponse.get(i++);
+
+						// Tills Response
+						GetTillsRequestResult tResponse = (GetTillsRequestResult) aResponse
+								.get(i++);
 						bindTills(tResponse.getTills());
-						
-						//Categories Response
-						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult)aResponse.get(i++);
+
+						// Categories Response
+						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult) aResponse
+								.get(i++);
 						categories = cResponse.getCategories();
 						
 						fireEvent(new ProcessingCompletedEvent());
+//						filterPresenter.setTills(aResponse.getTills());
 					}
 				});
 
@@ -170,7 +176,7 @@ public class TillsPresenter extends
 		super.onReset();
 		getView().setMiddleHeight();
 		setInSlot(FILTER_SLOT, filterPresenter);
-		
+
 	}
 
 	@Override
@@ -201,27 +207,37 @@ public class TillsPresenter extends
 				showDeletePopup();
 			}
 		});
-		
+
 		getView().getSearchBox().addKeyDownHandler(keyHandler);
-		
+
 		getView().getSearchButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (getView().getFilter() != null) {
-					GetTillsRequest request = new GetTillsRequest(
-							getView().getFilter());
+					GetTillsRequest request = new GetTillsRequest(getView()
+							.getFilter());
 					performSearch(request);
 				}
 			}
 		});
+
+		getView().getFilterActionLink().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if (!isUserListLoaded) {
+					isUserListLoaded = true;
+//					loadUsers();
+				}
+			}
+		});
 	}
-	
+
 	KeyDownHandler keyHandler = new KeyDownHandler() {
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				GetTillsRequest request = new GetTillsRequest(
-						getView().getFilter());
+				GetTillsRequest request = new GetTillsRequest(getView()
+						.getFilter());
 				performSearch(request);
 			}
 		}
@@ -238,7 +254,8 @@ public class TillsPresenter extends
 		};
 		AppManager
 				.showPopUp("Confirm Delete", "Confirm that you want to Delete "
-						+ selected.getBusinessName(),deleteOptionControl, "Confirm", "Cancel");
+						+ selected.getBusinessName(), deleteOptionControl,
+						"Confirm", "Cancel");
 
 	}
 
@@ -255,24 +272,22 @@ public class TillsPresenter extends
 		if (edit) {
 			tillPopUp.setTillDetails(selected);
 		}
-		
-		saveOptionControl = new OptionControl() {
-				@Override
-				public void onSelect(String name) {
-					if (name.equals("Save")) {
-						if (tillPopUp.getView().isValid()) {
-							saveTill(tillPopUp.getView().getTillDTO(),
-									false);
-						}
-					} else {
-						hide();
-					}
-				}
-			};
-		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
-				tillPopUp.getWidget(),saveOptionControl, "Save", "Cancel");
-	}
 
+		saveOptionControl = new OptionControl() {
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Save")) {
+					if (tillPopUp.getView().isValid()) {
+						saveTill(tillPopUp.getView().getTillDTO(), false);
+					}
+				} else {
+					hide();
+				}
+			}
+		};
+		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
+				tillPopUp.getWidget(), saveOptionControl, "Save", "Cancel");
+	}
 
 	protected void saveTill(TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
@@ -305,20 +320,17 @@ public class TillsPresenter extends
 	@Override
 	public void onSearch(SearchEvent event) {
 		if (event.getSearchType() == SearchType.Till) {
-			GetTillsRequest request = new GetTillsRequest(
-					event.getFilter());
+			GetTillsRequest request = new GetTillsRequest(event.getFilter());
 			performSearch(request);
 		}
 	}
-	
+
 	public void performSearch(GetTillsRequest request) {
-		//Window.alert("Perform Search "+(++i));
 		fireEvent(new ProcessingEvent());
 		requestHelper.execute(request,
 				new TaskServiceCallback<GetTillsRequestResult>() {
 					@Override
-					public void processResult(
-							GetTillsRequestResult aResponse) {
+					public void processResult(GetTillsRequestResult aResponse) {
 						bindTills(aResponse.getTills());
 						fireEvent(new ProcessingCompletedEvent());
 					};
@@ -327,7 +339,7 @@ public class TillsPresenter extends
 
 	@Override
 	public void onHidePanelBox(HidePanelBoxEvent event) {
-		if(event.getEventSource().equals("tills")){
+		if (event.getEventSource().equals("tills")) {
 			getView().showFilterView();
 		}
 	}
