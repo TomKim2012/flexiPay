@@ -37,12 +37,8 @@ public class TestTills {
 	
 	@Test
 	public void search(){
-		List<TillDTO> tills = new TillDao(em).getAllTills(null, "TomKim", false, true, 7L);
+		List<TillDTO> tills = new TillDao(em).getAllTills(null, "David", false, true, 9L);
 		
-		for(TillDTO till: tills){
-			System.err.println("Till Name:"+till.getBusinessName()+"-"+till.getCategory().getId()+
-								"-"+ till.getId());
-		}
 		Assert.assertNotSame(0,tills.size());
 		System.err.println(tills.size()+" ");
 	}

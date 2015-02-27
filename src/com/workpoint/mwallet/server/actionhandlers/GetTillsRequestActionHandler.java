@@ -36,15 +36,18 @@ public class GetTillsRequestActionHandler extends
 		CategoryModel categoryModel = SessionHelper.getUserCategory();
 
 		String userId = currentUser.getUserId();
+
 		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
 				&& currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
+
 		// List<TillModel> tills =
 		// dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,category.getId());
 
+		// System.err.println("userId::"+userId+",isSu:"+isSuperUser+"isAdmin:"+isAdmin+";categoryId:"+categoryModel.getId());
+
 		List<TillDTO> dtos = dao.getAllTills(action.getFilter(), userId,
 				isSuperUser, isAdmin, categoryModel.getId());
-
 
 		((GetTillsRequestResult) actionResult).setTills(dtos);
 	}
