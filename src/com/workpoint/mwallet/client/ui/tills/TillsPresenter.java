@@ -1,6 +1,7 @@
 package com.workpoint.mwallet.client.ui.tills;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -165,6 +166,8 @@ public class TillsPresenter extends
 
 	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
+		Collections.sort(tills);
+		
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
@@ -289,7 +292,7 @@ public class TillsPresenter extends
 				tillPopUp.getWidget(), saveOptionControl, "Save", "Cancel");
 	}
 
-	protected void saveTill(TillDTO tillDTO, boolean isDelete) {
+	protected void saveTill(final TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
 		SaveTillRequest saveRequest = new SaveTillRequest(tillDTO, isDelete);
 		requestHelper.execute(saveRequest,
@@ -301,7 +304,8 @@ public class TillsPresenter extends
 						saveOptionControl.hide();
 						fireEvent(new ProcessingCompletedEvent());
 						fireEvent(new ActivitySavedEvent(
-								"Till successfully saved"));
+								"Till "+tillDTO.getBusinessName()+" successfully saved"));
+						System.err.println("Till Successfully saved!");
 					}
 				});
 

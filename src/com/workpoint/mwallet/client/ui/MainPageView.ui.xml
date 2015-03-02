@@ -14,7 +14,6 @@
 			<i class="icon-ok-sign"/>
 			<span ui:field="spnAlertContent"></span>
 			<strong ui:field="spnSubject" class="hidden"></strong>
-			<g:Anchor styleName="hand muted hide" ui:field="aView">View Document</g:Anchor>
 		</div>
 
 		<g:HTMLPanel ui:field="pHeader" styleName="top-header"></g:HTMLPanel>

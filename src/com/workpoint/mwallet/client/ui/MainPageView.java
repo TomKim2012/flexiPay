@@ -34,8 +34,6 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	@UiField
 	SpanElement spnAlertContent;
 	@UiField
-	Anchor aView;
-	@UiField
 	Element spnSubject;
 	@UiField
 	HTMLPanel divBody;
@@ -125,7 +123,6 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 		divAlert.removeClassName("hidden");
 		spnAlertContent.setInnerText(statement);
 		spnSubject.setInnerText(subject);
-		aView.setHref(url);
 		timer.cancel();
 		timer.schedule(10000);
 	}

@@ -15,6 +15,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.LoadGroupsEvent;
 import com.workpoint.mwallet.client.ui.events.LoadUsersEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
@@ -86,7 +87,6 @@ public class UserSavePresenter extends
 	@Inject
 	DispatchAsync requestHelper;
 
-
 	@Inject
 	public UserSavePresenter(final EventBus eventBus, final IUserSaveView view) {
 		super(eventBus, view);
@@ -114,6 +114,9 @@ public class UserSavePresenter extends
 									getView().setUser(user);
 									getView().hide();
 									fireEvent(new LoadUsersEvent(user));
+									fireEvent(new ActivitySavedEvent(
+											"successfully saved User "
+													+ user.getDisplayName()));
 								}
 							});
 				}
@@ -124,7 +127,7 @@ public class UserSavePresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-				saveUser();
+				saveUserGroup();
 			}
 		});
 
@@ -138,7 +141,7 @@ public class UserSavePresenter extends
 		getView().getSearchBox().addKeyDownHandler(keyHandler);
 	}
 
-	public void saveUser() {
+	public void saveUserGroup() {
 		if (getView().isValid()) {
 			UserGroup userGroup = getView().getGroup();
 
@@ -152,6 +155,7 @@ public class UserSavePresenter extends
 							getView().setGroup(group);
 
 							fireEvent(new LoadGroupsEvent());
+							fireEvent(new ActivitySavedEvent("Successfully saved group "+group.getDisplayName()));
 							getView().hide();
 						}
 					});
@@ -231,11 +235,12 @@ public class UserSavePresenter extends
 						// Categories Response
 						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult) result
 								.get(i++);
-						List<CategoryDTO> categories = cResponse.getCategories();
+						List<CategoryDTO> categories = cResponse
+								.getCategories();
 						getView().setCategories(categories);
-						
+
 						getView().setUser(user);
- 
+
 					}
 				});
 	}
@@ -251,10 +256,10 @@ public class UserSavePresenter extends
 				group = (UserGroup) value;
 				getView().setGroup(group);
 			}
-		}else{
+		} else {
 			loadData();
 		}
 
 	}
-	
+
 }

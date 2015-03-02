@@ -107,8 +107,6 @@ public class TillDao extends BaseDaoImpl {
 			Long catId = (value=row[i++])==null? null: new Long(value.toString());
 			String categoryName = (value=row[i++])==null? null: value.toString();
 			
-//			System.err.println("Category Id:"+catId+"Till Id:"+tillId);
-			
 			TillDTO summary = new TillDTO(tillId,businessName, business_number,mpesa_acc,
 					phoneNo);
 			summary.setActive(active);
@@ -123,25 +121,6 @@ public class TillDao extends BaseDaoImpl {
 		
 		return tills;
 
-	}
-	
-
-	public List<TillModel> getTillsByName(String name) {
-		String jpql = "FROM TillModel t where t.businessName like :bizName "
-				+ " order by tillNo Desc";
-
-		Query query = em.createQuery(jpql).setParameter("bizName",
-				"%" + name + "%");
-
-		return getResultList(query);
-	}
-	
-	public TillModel getTillByTillNo(String tillNo){
-		String jpql = "FROM TillModel t where t.tillNo like :tillNo ";
-		
-		Query query = em.createQuery(jpql).setParameter("tillNo", tillNo);
-
-		return getSingleResultOrNull(query);
 	}
 
 	public void saveTill(TillModel till) {

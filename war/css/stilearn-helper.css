@@ -120,11 +120,11 @@ input:focus {
 	position: absolute;
 	left: 50%;
 	top: 2%;
-	/* z-index: 10; */
+	z-index: 10;
 	margin-left: -130px;
-	max-width: 30%;
+	max-width: 58%;
 	font-weight: bold;
-	width: 200px;
+	width: 255px;
 	transition: reveal .2s ease-out;
    -moz-transition: reveal .2s ease-out;
 	-webkit-transition: reveal .2s ease-out;

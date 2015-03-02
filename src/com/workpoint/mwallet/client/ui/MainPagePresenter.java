@@ -144,6 +144,7 @@ public class MainPagePresenter extends
 	@Override
 	public void OnActivitySaved(ActivitySavedEvent event) {
 		getView().setAlertVisible(event.getMessage());
+		System.err.println("Activity event called!");
 	}
 
 }
