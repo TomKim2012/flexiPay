@@ -11,12 +11,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
-import com.workpoint.mwallet.server.dao.TillDao;
+import com.workpoint.mwallet.server.dao.TransactionDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
-import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TestTills {
 
@@ -37,10 +37,14 @@ public class TestTills {
 	
 	@Test
 	public void search(){
-		List<TillDTO> tills = new TillDao(em).getAllTills(null, "David", false, true, 9L);
+		//List<TillDTO> tills = new TillDao(em).getAllTills(null, "David", false, true, 9L);
+		// Assert.assertNotSame(0,tills.size());
+		// System.err.println(tills.size()+" ");
 		
-		Assert.assertNotSame(0,tills.size());
-		System.err.println(tills.size()+" ");
+		
+		List<TransactionDTO> trxs = new TransactionDao(em).getAll(null, "TomKim", true, false,9L);
+		 System.err.println(trxs.size()+" ");
+		
 	}
 	
 	@Ignore

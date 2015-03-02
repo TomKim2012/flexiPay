@@ -108,14 +108,18 @@ public class TransactionDao extends BaseDaoImpl {
 	 */
 	public List<TransactionDTO> getAll(SearchFilter filter, String userId,boolean isSU,
 			boolean isCategoryAdmin, Long categoryId){
+		if(filter==null){
+			filter= new SearchFilter();
+		}
 		StringBuffer sqlBuffer = new StringBuffer("select i.mpesa_sender,i.mpesa_msisdn, "
 				+ "i.mpesa_amt, i.mpesa_code, "
 				+ "i.tstamp,i.business_number,"
-				+ "i.mpesa_acc,i.isprocessed,i.ipaddress,i.isapproved,t.businessName "
+				+ "i.mpesa_acc,i.isprocessed,i.ipaddress,i.isapproved,t.businessName,s.status "
 				+ "from LipaNaMpesaIPN i "
 				+ "left join TillModel t on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
 				+ "left join BUser u on (u.userId = t.salesPersonId) "
 				+ "left join BUser u2 on (u2.userId = t.ownerId) "
+				+ "inner join SMSModel s on (i.smsStatus_FK = s.id)"
 				+ "where "
 				+ "("
 				+ "(t.categoryid=:categoryId "
@@ -154,10 +158,11 @@ public class TransactionDao extends BaseDaoImpl {
 			String ipaddress=(value=row[i++])==null? null: value.toString();
 			boolean isapproved=(value=row[i++])==null? null: boolTrue==(Byte)value; //Check mssql datatype - Retrieved as byte
 			String businessName=(value=row[i++])==null? null: value.toString();
+			String smsStatus=(value=row[i++])==null? null: value.toString();
 			
 			TransactionDTO summary = new TransactionDTO(
 					mpesaSender,mpesa_msisdn, mpesa_amt, mpesa_code, tstamp,business_number,
-					mpesa_acc,isprocessed,ipaddress, isapproved,businessName);
+					mpesa_acc,isprocessed,ipaddress, isapproved,businessName,smsStatus);
 			
 			trxs.add(summary);
 		}

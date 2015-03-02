@@ -7,6 +7,7 @@ import java.util.List;
 public class UserDTO implements Serializable, Listable, OrgEntity {
 
 	private static final long serialVersionUID = -5249516544970187459L;
+	
 	private Long id;
 	private String firstName;
 	private String userId;

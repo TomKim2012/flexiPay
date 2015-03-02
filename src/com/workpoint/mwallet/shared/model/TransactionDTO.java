@@ -30,7 +30,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	public TransactionDTO(String mpesaSender, String mpesa_msisdn,
 			Double mpesa_amt, String mpesa_code, Date tstamp,
 			String business_number, String mpesa_acc, boolean isprocessed,
-			String ipaddress, boolean isapproved, String businessName) {
+			String ipaddress, boolean isapproved, String businessName, String smsStatus) {
 		
 		this.customerName= mpesaSender;
 		this.phone=mpesa_msisdn;
@@ -43,6 +43,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 		this.ipAddress = ipaddress;
 		this.isApproved = isapproved;
 		this.businessName = businessName;
+		this.smsStatus = smsStatus;
 	}
 
 	public Long getId() {

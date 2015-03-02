@@ -251,6 +251,8 @@ public class UserSavePresenter extends
 				group = (UserGroup) value;
 				getView().setGroup(group);
 			}
+		}else{
+			loadData();
 		}
 
 	}
