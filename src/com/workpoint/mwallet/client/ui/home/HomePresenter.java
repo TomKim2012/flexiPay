@@ -33,6 +33,8 @@ import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.client.ui.users.UserPresenter;
 import com.workpoint.mwallet.client.ui.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.util.AppContext;
+import com.workpoint.mwallet.server.dao.model.CategoryModel;
+import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
 import com.workpoint.mwallet.shared.responses.GetContextRequestResult;
@@ -250,7 +252,11 @@ public class HomePresenter extends
 	}
 
 	private void setNavigations(UserDTO user) {
-		if (!AppContext.isCurrentUserAdmin()) {
+		CategoryModel categoryModel = SessionHelper.getUserCategory();
+		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
+				&& user.isAdmin();
+		
+		if (!isSuperUser) {
 			if (user.hasGroup("Merchant")) {
 				System.err.println("Navigations for Merchant");
 				getView().setTabs("Merchant");

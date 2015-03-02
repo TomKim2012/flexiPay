@@ -144,9 +144,12 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		showTab(liSettings, false);
 		if (group.equals("Merchant")) {
 			showTab(liDashboard, true);
+			showTab(liTills, true);
 			showTab(liTransactions, true);
 		} else if (group.equals("SalesPerson")) {
 			showTab(liDashboard, true);
+			showTab(liTills,true);
+			showTab(liSmsLog,true);
 			showTab(liTransactions, true);
 		} else if (group.equals("Admin")) {
 			showTab(liDashboard, true);
