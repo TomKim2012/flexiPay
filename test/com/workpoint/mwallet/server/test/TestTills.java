@@ -1,22 +1,17 @@
 package com.workpoint.mwallet.server.test;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
-import com.workpoint.mwallet.server.dao.TransactionDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
-import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TestTills {
 
@@ -42,8 +37,8 @@ public class TestTills {
 		// System.err.println(tills.size()+" ");
 		
 		
-		List<TransactionDTO> trxs = new TransactionDao(em).getAll(null, "TomKim", true, false,9L);
-		 System.err.println(trxs.size()+" ");
+//		List<TransactionDTO> trxs = new TransactionDao(em).getAll(null, "TomKim", true, false,9L);
+//		 System.err.println(trxs.size()+" ");
 		
 	}
 	

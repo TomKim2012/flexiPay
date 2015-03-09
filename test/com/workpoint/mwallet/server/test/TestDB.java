@@ -60,17 +60,17 @@ public class TestDB {
 		int merchantCount = dao.getMerchantCount(filter, "James",false,true, 2L);
 		int customerCount = dao.getCustomerCount(filter, "James",false,true, 2L);
 		
-		List<TransactionDTO> models =  dao.getAll(filter, "James",false,true, 2L);
-		for(TransactionDTO model : models){
-			System.err.println(model);
-		}
+//		//List<TransactionDTO> models =  dao.getAll(filter, "James",false,true, 2L);
+//		for(TransactionDTO model : models){
+//			System.err.println(model);
+//		}
 		
 		/*
 		 *  Patrick - 
 		 */
-		System.err.println("{trxCount="+models.size()+
-				", merchantCount="+merchantCount+", "
-						+ "customerCount="+customerCount+"}");
+//		System.err.println("{trxCount="+models.size()+
+//				", merchantCount="+merchantCount+", "
+//						+ "customerCount="+customerCount+"}");
 	}
 
 
