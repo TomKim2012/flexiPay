@@ -170,4 +170,8 @@ public class UserDTO implements Serializable, Listable, OrgEntity {
 	public void setCategory(CategoryDTO category) {
 		this.category = category;
 	}
+
+	public boolean isMerchant() {
+		return hasGroup("Merchant");
+	}
 }
