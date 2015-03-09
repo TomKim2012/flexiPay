@@ -107,7 +107,7 @@ public class TransactionDao extends BaseDaoImpl {
 	 * @return All Transactions accessible by userId
 	 */
 	public List<TransactionDTO> getAll(SearchFilter filter, String userId,boolean isSU,
-			boolean isCategoryAdmin, Long categoryId){
+			boolean isCategoryAdmin, Long categoryId,boolean isMerchant){
 		if(filter==null){
 			filter= new SearchFilter();
 		}
@@ -122,7 +122,7 @@ public class TransactionDao extends BaseDaoImpl {
 				+ "inner join SMSModel s on (i.smsStatus_FK = s.id)"
 				+ "where "
 				+ "("
-				+ "(t.categoryid=:categoryId "
+				+ "((t.categoryid=:categoryId or :isMerchant='Y') "
 				+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
 				+ "or :isSU='Y') ");
 		
@@ -133,6 +133,7 @@ public class TransactionDao extends BaseDaoImpl {
 		.setParameter("categoryId", categoryId)
 		.setParameter("userId", userId)
 		.setParameter("isAdmin", isCategoryAdmin? 'Y' : 'N')
+		.setParameter("isMerchant",isMerchant?'Y':'N')
 		.setParameter("isSU", isSU? 'Y': 'N');
 		
 		for(String key: params.keySet()){

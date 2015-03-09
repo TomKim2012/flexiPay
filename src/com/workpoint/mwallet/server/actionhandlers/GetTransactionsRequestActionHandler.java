@@ -27,7 +27,7 @@ public class GetTransactionsRequestActionHandler extends
 	public Class<GetTransactionsRequest> getActionType() {
 		return GetTransactionsRequest.class;
 	}
-	
+
 	@Override
 	public void execute(GetTransactionsRequest action,
 			BaseResponse actionResult, ExecutionContext execContext)
@@ -35,23 +35,30 @@ public class GetTransactionsRequestActionHandler extends
 		TransactionDao dao = new TransactionDao(DB.getEntityManager());
 		SearchFilter trxFilter = action.getFilter();
 		UserDTO currentUser = SessionHelper.getCurrentUser();
-		
+
 		CategoryModel categoryModel = SessionHelper.getUserCategory();
-		
+
 		String userId = currentUser.getUserId();
-		boolean isSuperUser = categoryModel.getCategoryName().equals("*") && currentUser.isAdmin();
+		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
+				&& currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
-		
-		List<TransactionDTO> dtos = dao.getAll(trxFilter,userId,
-				isSuperUser,isAdmin,categoryModel.getId());
-		int uniqueCustomers = dao.getCustomerCount(trxFilter,userId,
-				isSuperUser,isAdmin,categoryModel.getId());
-		int uniqueMerchants = dao.getMerchantCount(trxFilter,userId,
-				isSuperUser,isAdmin,categoryModel.getId());
-		
+		boolean isMerchant = currentUser.isMerchant();
+
+		System.err.println("UserId:" + userId + "\nisSU:" + isSuperUser
+				+ "\nisAdmin:" + isAdmin + "\ncategoryId:" + categoryModel.getId());
+
+		List<TransactionDTO> dtos = dao.getAll(trxFilter, userId, isSuperUser,
+				isAdmin, categoryModel.getId(), isMerchant);
+		int uniqueCustomers = dao.getCustomerCount(trxFilter, userId,
+				isSuperUser, isAdmin, categoryModel.getId());
+		int uniqueMerchants = dao.getMerchantCount(trxFilter, userId,
+				isSuperUser, isAdmin, categoryModel.getId());
+
 		((GetTransactionsRequestResult) actionResult).setTransactions(dtos);
-		((GetTransactionsRequestResult) actionResult).setUniqueCustomers(uniqueCustomers);
-		((GetTransactionsRequestResult) actionResult).setUniqueMerchants(uniqueMerchants);
+		((GetTransactionsRequestResult) actionResult)
+				.setUniqueCustomers(uniqueCustomers);
+		((GetTransactionsRequestResult) actionResult)
+				.setUniqueMerchants(uniqueMerchants);
 	}
 
 }

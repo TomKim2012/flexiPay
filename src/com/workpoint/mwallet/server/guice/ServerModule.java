@@ -67,6 +67,10 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class,
 				SessionValidator.class);
+		
+//		bindHandler(CheckPasswordRequest.class, CheckPasswordRe.class,
+//				SessionValidator.class);
+		
 		bindHandler(GetTransactionsRequest.class,
 				GetTransactionsRequestActionHandler.class,
 				SessionValidator.class);

@@ -109,7 +109,7 @@ public class MainPagePresenter extends
 
 				result.setMessage(message, event.getId());
 
-				MainPagePresenter.this.addToPopupSlot(result,false);
+				MainPagePresenter.this.addToPopupSlot(result, false);
 
 			}
 		});
@@ -144,7 +144,7 @@ public class MainPagePresenter extends
 	@Override
 	public void OnActivitySaved(ActivitySavedEvent event) {
 		getView().setAlertVisible(event.getMessage());
-		System.err.println("Activity event called!");
+		// System.err.println("Activity event called!");
 	}
 
 }

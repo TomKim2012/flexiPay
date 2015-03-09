@@ -66,22 +66,23 @@ public class TillUserDetails extends Composite {
 
 	public TillDTO getTillUserInfo(TillDTO till) {
 		tillSelected = till;
+
 		if (tillSelected == null) {
 			tillSelected = new TillDTO();
 		}
 
-		System.err.println("Owners" + aOwners.getSelectedItems().size());
 		for (UserDTO owner : aOwners.getSelectedItems()) {
-			// System.err.println("Owner>>" + owner.getUserId());
 			tillSelected.setOwner(owner);
 		}
 
 		for (UserDTO salesPerson : aSalesPersons.getSelectedItems()) {
-			// System.err.println("SalesPerson>>" + salesPerson.getFullName());
 			tillSelected.setSalesPerson(salesPerson);
 		}
 
 		tillSelected.setCashiers(aCashiers.getSelectedItems());
+
+		System.err.println("Category Selected:"
+				+ tillSelected.getCategory().getName());
 
 		return tillSelected;
 	}
