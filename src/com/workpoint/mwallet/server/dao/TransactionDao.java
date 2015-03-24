@@ -119,7 +119,7 @@ public class TransactionDao extends BaseDaoImpl {
 				+ "left join TillModel t on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
 				+ "left join BUser u on (u.userId = t.salesPersonId) "
 				+ "left join BUser u2 on (u2.userId = t.ownerId) "
-				+ "inner join SMSModel s on (i.smsStatus_FK = s.id)"
+				+ "left join SMSModel s on (i.smsStatus_FK = s.id)"
 				+ "where "
 				+ "("
 				+ "((t.categoryid=:categoryId or :isMerchant='Y') "

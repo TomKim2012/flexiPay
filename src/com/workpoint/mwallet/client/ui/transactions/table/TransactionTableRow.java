@@ -31,6 +31,8 @@ public class TransactionTableRow extends RowWidget {
 	@UiField
 	HTMLPanel divAmount;
 	@UiField
+	HTMLPanel divCommission;
+	@UiField
 	HTMLPanel divReferenceId;
 	@UiField
 	HTMLPanel divDate;
@@ -58,15 +60,20 @@ public class TransactionTableRow extends RowWidget {
 		this();
 
 		if (!transaction.isApproved()) {
-			row.setTitle("unAllowed ipAddress::"
+			row.setTitle("This transaction came from unAllowed ipAddress::"
 					+ transaction.getIpAddress());
 			row.addStyleName("error");
 		}
 
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
+		
 		divAmount.getElement().setInnerHTML(
 				NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
+		
+		divCommission.getElement().setInnerHTML(
+				NumberUtils.CURRENCYFORMAT.format(transaction.getCommission()));
+		
 		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
 		divDate.getElement().setInnerHTML(
 				DateUtils.CREATEDFORMAT.format(transaction.getTrxDate()));
@@ -87,9 +94,11 @@ public class TransactionTableRow extends RowWidget {
 			show(divCustNames, false);
 			show(divPhone, false);
 			show(divStatus, false);
+			show(divCommission,true);
 		} else {
 			show(divCustNames, true);
 			show(divPhone, true);
+			show(divCommission,false);
 		}
 
 	}

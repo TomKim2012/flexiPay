@@ -55,7 +55,7 @@ public class TransactionsPresenter extends
 
 		void clear();
 
-		void presentSummary(String transactions, String amount,
+		void presentSummary(String transactions, String amount, String commission, boolean isSalesPerson,
 				String uniqueCustomers, String uniqueMerchants,
 				String merchantAverage, String customerAverage);
 
@@ -99,6 +99,8 @@ public class TransactionsPresenter extends
 
 	private double customerAverage;
 
+	private String commissionTotal;
+
 	@Inject
 	public TransactionsPresenter(final EventBus eventBus,
 			final ITransactionView view) {
@@ -115,16 +117,16 @@ public class TransactionsPresenter extends
 
 	public void loadAll(){
 		loadTills(AppContext.getContextUser());
-//		if (AppContext.getContextUser() != null
-//				|| AppContext.getContextUser().getGroups() != null) {
-//			UserDTO user = AppContext.getContextUser();
-//			getView().setLoggedUser(user);
-//
-//			loadTills(user);
-//
-//		} else {
-//			Window.alert("User details not found.");
-//		}
+	//		if (AppContext.getContextUser() != null
+	//				|| AppContext.getContextUser().getGroups() != null) {
+	//			UserDTO user = AppContext.getContextUser();
+	//			getView().setLoggedUser(user);
+	//
+	//			loadTills(user);
+	//
+	//		} else {
+	//			Window.alert("User details not found.");
+	//		}
 
 	}
 
@@ -213,10 +215,12 @@ public class TransactionsPresenter extends
 	protected void bindTransactions(List<TransactionDTO> trxs) {
 		getView().clear();
 		Double totalAmount = 0.0;
+		Double totalCommission = 0.0;
 		for (TransactionDTO transaction : trxs) {
 			if (isSalesPerson) {
 				Double commission = SALESPERSONRATE * transaction.getAmount();
-				transaction.setAmount(commission);
+				transaction.setCommission(commission);
+				totalCommission = totalCommission + commission; 
 				getView().presentData(transaction, isSalesPerson);
 			} else {
 				getView().presentData(transaction);
@@ -226,11 +230,12 @@ public class TransactionsPresenter extends
 
 		trxSize = NumberUtils.NUMBERFORMAT.format(trxs.size());
 		totals = NumberUtils.CURRENCYFORMATSHORT.format(totalAmount);
-
+		commissionTotal = NumberUtils.CURRENCYFORMAT.format(totalCommission);
+			
 		merchantAverage = totalAmount / uniqueMerchants;
 		customerAverage = totalAmount / uniqueCustomers;
 		
-		getView().presentSummary(trxSize, totals,
+		getView().presentSummary(trxSize, totals,commissionTotal,isSalesPerson,
 				Integer.toString(uniqueCustomers), Integer.toString(uniqueMerchants),
 				NumberUtils.CURRENCYFORMATSHORT.format(merchantAverage),
 				NumberUtils.CURRENCYFORMATSHORT.format(customerAverage));

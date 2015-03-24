@@ -206,7 +206,7 @@ public class TransactionsView extends ViewImpl implements
 					boxDatePickerEnd.show();
 					boxDatePickerStart.show();
 				} else {
-					setDateRange(selected, null, null,true);
+					setDateRange(selected, null, null, true);
 				}
 			}
 		});
@@ -238,7 +238,7 @@ public class TransactionsView extends ViewImpl implements
 					startDate = DateUtils.getRange(boxDatePickerEnd.getValue(),
 							true);
 				}
-				setDateRange(null, startDate, endDate,true);
+				setDateRange(null, startDate, endDate, true);
 
 				panelDone.addStyleName("hide");
 			}
@@ -301,7 +301,7 @@ public class TransactionsView extends ViewImpl implements
 	}
 
 	public void setDateRange(String displayName, Date passedStart,
-			Date passedEnd, boolean  fireValueChangedEvent) {
+			Date passedEnd, boolean fireValueChangedEvent) {
 		Date startDate = null;
 		Date endDate = null;
 
@@ -324,11 +324,12 @@ public class TransactionsView extends ViewImpl implements
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);
 
-		//This will be a problem - Use vaue Change handlers instead!!
-		if(fireValueChangedEvent){
-			AppContext.fireEvent(new SearchEvent(filter, SearchType.Transaction));
+		// This will be a problem - Use vaue Change handlers instead!!
+		if (fireValueChangedEvent) {
+			AppContext
+					.fireEvent(new SearchEvent(filter, SearchType.Transaction));
 		}
-		///
+		// /
 	}
 
 	public Date getDateFromName(String displayName, boolean isStart) {
@@ -371,8 +372,9 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void presentSummary(String transactions, String amount,
-			String uniqueCustomers, String uniqueMerchants,
-			String merchantAverage, String customerAverage) {
+			String commission, boolean isSalesPerson, String uniqueCustomers,
+			String uniqueMerchants, String merchantAverage,
+			String customerAverage) {
 
 		String text1 = "<span class='helper-font-small color-blue'>Customers:</span>"
 				+ "<span class='helper-font-small bold'>"
@@ -393,8 +395,9 @@ public class TransactionsView extends ViewImpl implements
 			headerContainer.getPopSummaries().setText(text1 + text2 + text3);
 		}
 
-		headerContainer.presentSummary(transactions, amount, uniqueMerchants,
-				merchantAverage, customerAverage);
+		headerContainer.presentSummary(transactions, amount, commission,
+				isSalesPerson, uniqueMerchants, merchantAverage,
+				customerAverage);
 	}
 
 	@Override
@@ -429,7 +432,7 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void setDates(String setDate) {
-		setDateRange(setDate, null, null,false);
+		setDateRange(setDate, null, null, false);
 	}
 
 	@Override

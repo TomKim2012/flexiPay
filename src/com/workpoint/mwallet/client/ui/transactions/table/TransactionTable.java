@@ -33,10 +33,12 @@ public class TransactionTable extends Composite {
 	public void createHeader() {
 		List<TableHeader> th = new ArrayList<TableHeader>();
 		if (isSalesTable) {
+			th.add(new TableHeader("Amount"));
 			th.add(new TableHeader("Commission"));
 			th.add(new TableHeader("Reference Id"));
 			th.add(new TableHeader("Date & Time"));
-			th.add(new TableHeader("Till Number"));
+			th.add(new TableHeader("Business Number"));
+			th.add(new TableHeader("Account No"));
 		} else {
 			th.add(new TableHeader("Customer Names"));
 			th.add(new TableHeader("Phone Number"));

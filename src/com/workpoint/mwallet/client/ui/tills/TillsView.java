@@ -18,8 +18,10 @@ import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
 import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTable;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTableRow;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TillsView extends ViewImpl implements
 		TillsPresenter.IActivitiesView {
@@ -93,7 +95,7 @@ public class TillsView extends ViewImpl implements
 	}
 
 	public void initControlButtons() {
-		show(aCreate, true);
+		show(aCreate, false);
 		show(aEdit, false);
 		show(aDelete, false);
 	}
@@ -199,6 +201,16 @@ public class TillsView extends ViewImpl implements
 	
 	public HasClickHandlers getFilterActionLink(){
 		return iFilterdropdown;
+	}
+	
+	@Override
+	public void setAllowedButtons(UserDTO userGroup,boolean selection){
+		CategoryDTO category = userGroup.getCategory();
+		boolean isSuperUser = category.getCategoryName().equals("*") && userGroup.isAdmin();
+
+		if (isSuperUser) {
+			setSelection(selection);
+		}
 	}
 
 }

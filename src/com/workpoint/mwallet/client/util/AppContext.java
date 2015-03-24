@@ -116,6 +116,7 @@ public class AppContext {
 		user.setEmail(htuser.getEmail());
 		user.setLastName(htuser.getLastName());
 		user.setId(htuser.getId());
+		user.setCategory(htuser.getCategory());
 	}
 
 	public static DispatchAsync getDispatcher() {

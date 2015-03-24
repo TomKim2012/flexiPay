@@ -44,8 +44,8 @@ public class GetTransactionsRequestActionHandler extends
 		boolean isAdmin = currentUser.isAdmin();
 		boolean isMerchant = currentUser.isMerchant();
 
-		System.err.println("UserId:" + userId + "\nisSU:" + isSuperUser
-				+ "\nisAdmin:" + isAdmin + "\ncategoryId:" + categoryModel.getId());
+//		System.err.println("UserId:" + userId + "\nisSU:" + isSuperUser
+//				+ "\nisAdmin:" + isAdmin + "\ncategoryId:" + categoryModel.getId());
 
 		List<TransactionDTO> dtos = dao.getAll(trxFilter, userId, isSuperUser,
 				isAdmin, categoryModel.getId(), isMerchant);

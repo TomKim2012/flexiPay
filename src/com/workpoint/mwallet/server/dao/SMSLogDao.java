@@ -23,7 +23,7 @@ public class SMSLogDao extends BaseDaoImpl {
 			StringBuffer jpql = new StringBuffer("SELECT "
 				+ "s.id,s.cost,s.destination,s.message,s.status,s.tstamp,s.transactionId,s.messageId "
 				+"FROM "
-				+"mobileBanking.dbo.SmsModel s "
+				+"SmsModel s "
 				+ "inner join LipaNaMpesaIPN ipn on (s.transactionid=ipn.mpesa_code) "
 				+ "inner join TillModel t on (ipn.mpesa_acc=t.mpesa_acc and ipn.business_number=t.business_number) "
 				+ "left join BUser u on (u.userId = t.salesPersonId) "

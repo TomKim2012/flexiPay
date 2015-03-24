@@ -40,6 +40,7 @@ import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
+import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -70,7 +71,6 @@ public class TillsPresenter extends
 
 	protected List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
 
-
 	public interface IActivitiesView extends View {
 		HasClickHandlers getAddButton();
 
@@ -99,6 +99,8 @@ public class TillsPresenter extends
 		void showFilterView();
 
 		HasClickHandlers getFilterActionLink();
+
+		void setAllowedButtons(UserDTO userGroup,boolean selection);
 	}
 
 	@Inject
@@ -127,11 +129,13 @@ public class TillsPresenter extends
 
 	public void loadAll() {
 		loadData();
+		getView().setAllowedButtons(AppContext.getContextUser(),false);
 	}
 
 	private void loadData() {
 		fireEvent(new ProcessingEvent("Loading.."));
 		MultiRequestAction action = new MultiRequestAction();
+
 		action.addRequest(new GetUsersRequest(true));
 		action.addRequest(new GetTillsRequest());
 		action.addRequest(new GetCategoriesRequest());
@@ -156,9 +160,8 @@ public class TillsPresenter extends
 						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult) aResponse
 								.get(i++);
 						categories = cResponse.getCategories();
-						
+
 						fireEvent(new ProcessingCompletedEvent());
-//						filterPresenter.setTills(aResponse.getTills());
 					}
 				});
 
@@ -167,7 +170,7 @@ public class TillsPresenter extends
 	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
 		Collections.sort(tills);
-		
+
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
@@ -229,7 +232,7 @@ public class TillsPresenter extends
 			public void onClick(ClickEvent event) {
 				if (!isUserListLoaded) {
 					isUserListLoaded = true;
-//					loadUsers();
+					// loadUsers();
 				}
 			}
 		});
@@ -303,8 +306,9 @@ public class TillsPresenter extends
 						getView().initControlButtons();
 						saveOptionControl.hide();
 						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new ActivitySavedEvent(
-								"Till "+tillDTO.getBusinessName()+" successfully saved"));
+						fireEvent(new ActivitySavedEvent("Till "
+								+ tillDTO.getBusinessName()
+								+ " successfully saved"));
 						System.err.println("Till Successfully saved!");
 					}
 				});
@@ -315,9 +319,9 @@ public class TillsPresenter extends
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
 			this.selected = event.gettillDetail();
-			getView().setSelection(true);
+			getView().setAllowedButtons(AppContext.getContextUser(),true);
 		} else {
-			getView().setSelection(false);
+			getView().setAllowedButtons(AppContext.getContextUser(),false);
 		}
 	}
 

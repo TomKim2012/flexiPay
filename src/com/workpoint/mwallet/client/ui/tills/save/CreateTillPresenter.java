@@ -125,7 +125,7 @@ public class CreateTillPresenter extends
 
 		getView().showImportProcessing(true);
 
-		// Check Existance of Till
+		// Step 1 :: Check Existance of Till
 		SearchFilter filter = new SearchFilter();
 		TillDTO till = new TillDTO();
 		till.setTillNo(tillCode);

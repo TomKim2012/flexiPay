@@ -14,6 +14,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	private String customerName;
 	private String phone;
 	private Double amount;
+	private Double commission;
 	private String referenceId;
 	private Date trxDate;
 	private String businessName;
@@ -164,5 +165,13 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 				+"businessno:"+businessNumber+","
 				+ "accountNo:"+accountNumber+","
 						+ "isApproved="+isApproved+"}";
+	}
+
+	public Double getCommission() {
+		return commission;
+	}
+
+	public void setCommission(Double commission) {
+		this.commission = commission;
 	}
 }

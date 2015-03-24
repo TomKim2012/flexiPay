@@ -42,24 +42,28 @@ public class TransactionsHeader extends Composite {
 	}
 
 	public void presentSummary(String transactions, String amount,
-			String uniqueMerchants, String merchantAverage,
-			String customerAverage) {
+			String commission, boolean isSalesPerson, String uniqueMerchants,
+			String merchantAverage, String customerAverage) {
 
 		popSummaries.reconfigure();
 		spnTransactions.setInnerHTML(transactions);
 		spnAmount.setInnerHTML(amount);
 
-		if (LoggedUser.hasGroup("Merchant")) {
+		if (isSalesPerson) {
+			spnTills.getElement().setInnerText(commission);
+			panelText.setInnerText("TOTAL COMMISSION");
+			
+		} else if (LoggedUser.hasGroup("Merchant")) {
 			spnTills.getElement().setInnerText(customerAverage);
+			panelText.setInnerText("CUSTOMER AVERAGE");
 		} else {
 			if (uniqueMerchants.equals("1")) {
 				spnTills.getElement().setInnerText(customerAverage);
 			} else {
 				spnTills.getElement().setInnerText(merchantAverage);
 			}
+			panelText.setInnerText("MERCHANT AVERAGE");
 		}
-
-		panelText.setInnerText("MERCHANT AVERAGE");
 	}
 
 	public void setLoggedUser(UserDTO user) {

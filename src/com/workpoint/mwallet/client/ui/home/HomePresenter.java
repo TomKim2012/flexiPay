@@ -33,8 +33,7 @@ import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.client.ui.users.UserPresenter;
 import com.workpoint.mwallet.client.ui.users.save.UserSavePresenter.TYPE;
 import com.workpoint.mwallet.client.util.AppContext;
-import com.workpoint.mwallet.server.dao.model.CategoryModel;
-import com.workpoint.mwallet.server.helper.session.SessionHelper;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
 import com.workpoint.mwallet.shared.responses.GetContextRequestResult;
@@ -113,6 +112,7 @@ public class HomePresenter extends
 	}
 
 	String searchTerm = "";
+	private boolean isSuperUser;
 
 	@Override
 	protected void onBind() {
@@ -195,7 +195,8 @@ public class HomePresenter extends
 					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
-		} else if (page != null && page.equals("settings")) {
+		} else if (page != null && page.equals("settings")
+				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Organisational Settings");
 			settingsFactory.get(new ServiceCallback<SettingsPresenter>() {
 				@Override
@@ -207,20 +208,34 @@ public class HomePresenter extends
 		}
 	}
 
+	/*
+	 * Check whether a user is Allowed to view a Particular Page
+	 */
 	private boolean isCurrentUserAllowed(String page) {
 		if ((AppContext.getContextUser() != null)
 				&& (AppContext.getContextUser().getGroups() != null)) {
 			UserDTO user = AppContext.getContextUser();
+			boolean isMerchant = user.hasGroup("Merchant");
+			boolean isSalesPerson = user.hasGroup("SalesPerson");
 
-			if (AppContext.isCurrentUserAdmin()) {
-				return true;
-			} else if (((user.hasGroup("Merchant")) || (user
-					.hasGroup("SalesPerson")))
-					&& ((page.equals("dashboard")) || (page
-							.equals("transactions")))) {
-				// System.err.println("User Has Been Allowed!");
+			boolean isDashboardPage = page.equals("dashboard");
+			boolean isTransactionPage = page.equals("transactions");
+			boolean isTillsPage = page.equals("tills");
+			boolean isSmsPage = page.equals("smsLog");
+
+			// DEFINATIONS
+			boolean isMerchantAllowed = (isMerchant && isDashboardPage)
+					|| (isMerchant && isTransactionPage)
+					|| (isMerchant && isSmsPage);
+			boolean isSalesPersonAllowed = (isSalesPerson && isDashboardPage)
+					|| (isSalesPerson && isTillsPage)
+					|| (isSalesPerson && isTransactionPage)
+					|| (isSalesPerson && isSmsPage);
+
+			if (isSuperUser || isMerchantAllowed || isSalesPersonAllowed) {
 				return true;
 			} else {
+				Window.alert("You are not allowed to view this Page");
 				return false;
 			}
 		}
@@ -252,16 +267,13 @@ public class HomePresenter extends
 	}
 
 	private void setNavigations(UserDTO user) {
-		CategoryModel categoryModel = SessionHelper.getUserCategory();
-		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
-				&& user.isAdmin();
-		
+		CategoryDTO category = user.getCategory();
+		isSuperUser = category.getCategoryName().equals("*") && user.isAdmin();
+
 		if (!isSuperUser) {
 			if (user.hasGroup("Merchant")) {
-				System.err.println("Navigations for Merchant");
 				getView().setTabs("Merchant");
 			} else if (user.hasGroup("SalesPerson")) {
-				System.err.println("Navigations for Sales Person");
 				getView().setTabs("SalesPerson");
 			}
 		} else {
