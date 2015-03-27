@@ -67,24 +67,28 @@ public class TransactionTableRow extends RowWidget {
 
 		divCustNames.getElement().setInnerHTML(transaction.getCustomerName());
 		divPhone.getElement().setInnerHTML(transaction.getPhone());
-		
+
 		divAmount.getElement().setInnerHTML(
 				NumberUtils.CURRENCYFORMAT.format(transaction.getAmount()));
-		
-		divCommission.getElement().setInnerHTML(
-				NumberUtils.CURRENCYFORMAT.format(transaction.getCommission()));
-		
+
+		if (transaction.getCommission() != null) {
+			divCommission.getElement().setInnerHTML(
+					NumberUtils.CURRENCYFORMAT.format(transaction
+							.getCommission()));
+		}
+
 		divReferenceId.getElement().setInnerHTML(transaction.getReferenceId());
 		divDate.getElement().setInnerHTML(
 				DateUtils.CREATEDFORMAT.format(transaction.getTrxDate()));
 
 		String businessName = transaction.getBusinessName();
-		if (transaction.getBusinessName()!=null && transaction.getBusinessName().length() > 20) {
+		if (transaction.getBusinessName() != null
+				&& transaction.getBusinessName().length() > 20) {
 			businessName = businessName.substring(0, 20);
 			businessName += "...";
 		}
 		divTills.getElement().setInnerHTML(
-				transaction.getBusinessNumber()+ " (" + businessName + ")");
+				transaction.getBusinessNumber() + " (" + businessName + ")");
 		divAccount.getElement().setInnerText(transaction.getAccountNumber());
 		divTills.getElement().setTitle(transaction.getBusinessName());
 		setStatus(transaction.getStatus(),
@@ -94,11 +98,11 @@ public class TransactionTableRow extends RowWidget {
 			show(divCustNames, false);
 			show(divPhone, false);
 			show(divStatus, false);
-			show(divCommission,true);
+			show(divCommission, true);
 		} else {
 			show(divCustNames, true);
 			show(divPhone, true);
-			show(divCommission,false);
+			show(divCommission, false);
 		}
 
 	}
@@ -127,8 +131,8 @@ public class TransactionTableRow extends RowWidget {
 			if (status) {
 				spnStatus.setText("sms submitted");
 				html = "Transaction <strong>posted</strong>"
-						+ " and sms <strong>submitted</strong> to Mobile Provider " +
-						"but awaiting delivery to phone";
+						+ " and sms <strong>submitted</strong> to Mobile Provider "
+						+ "but awaiting delivery to phone";
 			} else {
 				spnStatus.setText("not-posted");
 				html = "Transaction <strong>not posted </strong> but"
@@ -157,7 +161,7 @@ public class TransactionTableRow extends RowWidget {
 				html = "Transaction <strong>not posted</strong>, "
 						+ "but sms sent by sms gateway";
 			}
-		}  else if ((smsStatus == SmsStatus.FAILED)
+		} else if ((smsStatus == SmsStatus.FAILED)
 				|| (smsStatus == SmsStatus.REJECTED)) {
 			spnStatus.setStyleName("label label-important");
 			if (status) {
@@ -169,7 +173,7 @@ public class TransactionTableRow extends RowWidget {
 				html = "Transaction <strong>not posted </strong>, and sms not sent."
 						+ "It failed or was rejected";
 			}
-		}else {
+		} else {
 			spnStatus.setStyleName("label label-important");
 			if (status) {
 				spnStatus.setText("posted");
