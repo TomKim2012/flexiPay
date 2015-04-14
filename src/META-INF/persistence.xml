@@ -11,16 +11,6 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 		<class>com.workpoint.mwallet.server.dao.model.User</class>
 		<class>com.workpoint.mwallet.server.dao.model.SettingModel</class>
 
-		<!-- properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/mobilebanking" />
-            <property name="hibernate.connection.username" value="root" />
-            <property name="hibernate.connection.password" value="root" />
-            <property name="hibernate.max_fetch_depth" value="3" />
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.show_sql" value="true" />
-        </properties-->
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
 			<property name="hibernate.connection.driver_class"
@@ -30,7 +20,8 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 			<property name="hibernate.connection.username" value="TomKim" />
 			<property name="hibernate.connection.password" value="g11taru09!" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="eclipselink.logging.parameters" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>

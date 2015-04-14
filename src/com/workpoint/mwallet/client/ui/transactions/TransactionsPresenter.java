@@ -37,7 +37,7 @@ import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
-import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
+import com.workpoint.mwallet.shared.responses.GetVerificationRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class TransactionsPresenter extends
@@ -117,16 +117,6 @@ public class TransactionsPresenter extends
 
 	public void loadAll(){
 		loadTills(AppContext.getContextUser());
-	//		if (AppContext.getContextUser() != null
-	//				|| AppContext.getContextUser().getGroups() != null) {
-	//			UserDTO user = AppContext.getContextUser();
-	//			getView().setLoggedUser(user);
-	//
-	//			loadTills(user);
-	//
-	//		} else {
-	//			Window.alert("User details not found.");
-	//		}
 
 	}
 
@@ -168,7 +158,7 @@ public class TransactionsPresenter extends
 						GetTillsRequestResult tillsResponse = (GetTillsRequestResult)aResponse.get(i++);
 						setUserTills(tillsResponse.getTills());
 						
-						GetTransactionsRequestResult trxResponse = (GetTransactionsRequestResult)aResponse.get(i++);
+						GetVerificationRequestResult trxResponse = (GetVerificationRequestResult)aResponse.get(i++);
 						getResults(trxResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -187,10 +177,10 @@ public class TransactionsPresenter extends
 
 		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(new GetTransactionsRequest(filter),
-				new TaskServiceCallback<GetTransactionsRequestResult>() {
+				new TaskServiceCallback<GetVerificationRequestResult>() {
 					@Override
 					public void processResult(
-							GetTransactionsRequestResult aResponse) {
+							GetVerificationRequestResult aResponse) {
 						getResults(aResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -198,7 +188,7 @@ public class TransactionsPresenter extends
 
 	}
 
-	protected void getResults(GetTransactionsRequestResult aResponse) {
+	protected void getResults(GetVerificationRequestResult aResponse) {
 
 		uniqueCustomers = aResponse.getUniqueCustomers();
 		uniqueMerchants = aResponse.getUniqueMerchants();
@@ -289,10 +279,10 @@ public class TransactionsPresenter extends
 	public void performSearch(GetTransactionsRequest request) {
 		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(request,
-				new TaskServiceCallback<GetTransactionsRequestResult>() {
+				new TaskServiceCallback<GetVerificationRequestResult>() {
 					@Override
 					public void processResult(
-							GetTransactionsRequestResult aResponse) {
+							GetVerificationRequestResult aResponse) {
 						getResults(aResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					};

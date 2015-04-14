@@ -119,7 +119,8 @@ public class TransactionDao extends BaseDaoImpl {
 				+ "left join TillModel t on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
 				+ "left join BUser u on (u.userId = t.salesPersonId) "
 				+ "left join BUser u2 on (u2.userId = t.ownerId) "
-				+ "left join SMSModel s on (i.smsStatus_FK = s.id)"
+				+ "left join SMSModel s on (i.smsStatus_FK = s.id) "
+				+ "left join Verifications v on (i.id=v.transaction_id) "
 				+ "where "
 				+ "("
 				+ "((t.categoryid=:categoryId or :isMerchant='Y') "
@@ -139,6 +140,8 @@ public class TransactionDao extends BaseDaoImpl {
 		for(String key: params.keySet()){
 			query.setParameter(key, params.get(key));
 		}
+		
+		System.err.println("SQL>>"+query);
 		
 		List<Object[]> rows = getResultList(query); 
 		List<TransactionDTO> trxs = new ArrayList<>();
@@ -207,107 +210,17 @@ public class TransactionDao extends BaseDaoImpl {
 			params.put("tillNumber", "%" + searchTerm + "%");
 			isFirst = false;
 		}
+		
+		if(filter.getVerificationCode() != null){
+			String verificationCode = filter.getVerificationCode().trim();
+			sqlQuery.append(isFirst ? " Where" : " And");
+			sqlQuery.append(" (v.verification_code = :verificationCode)");
+			params.put("verificationCode", verificationCode);
+			isFirst = false;
+		}
 
 		return params;
 	}
 
-
-//	public List<TransactionModel> getAllTrx(SearchFilter filter) {
-//		StringBuffer jpqlMerchants = new StringBuffer(
-//				"select count(DISTINCT t.tillNumber) FROM TransactionModel t");
-//
-//		StringBuffer jpqlCustomers = new StringBuffer(
-//				"select count(DISTINCT t.phone) FROM TransactionModel t");
-//
-//		StringBuffer jpql = new StringBuffer("FROM TransactionModel t ");
-//
-//		if (filter == null) {
-//			uniqueMerchants = (Long) em.createQuery(jpqlMerchants.toString())
-//					.getSingleResult();
-//
-//			uniqueCustomers = (Long) em.createQuery(jpqlCustomers.toString())
-//					.getSingleResult();
-//			
-//			return getResultList(em
-//					.createQuery("FROM TransactionModel t order by tstamp ASC"));
-//		} else {
-//
-//			uniqueMerchants = getSingleResultOrNull(getQuery(filter,
-//					jpqlMerchants));
-//			
-//			uniqueCustomers = getSingleResultOrNull(getQuery(filter,
-//					jpqlCustomers));
-//			return getResultList(getQuery(filter, jpql));
-//		}
-//	}
-
-
-//	private Query getQuery(SearchFilter filter, StringBuffer jpql) {
-//		Map<String, Object> params = new HashMap<>();
-//		boolean isFirst = true;
-//
-//		// System.err.println("Filter Query\n"+"---------------\n");
-//		if (filter.getStartDate() != null) {
-//			jpql.append(isFirst ? " Where" : " And");
-//			jpql.append(" t.trxDate>=:startDate");
-//			params.put("startDate", filter.getStartDate());
-//			// System.out.println("Start Date>>" + filter.getStartDate());
-//			isFirst = false;
-//		}
-//
-//		if (filter.getEndDate() != null) {
-//			jpql.append(isFirst ? " Where" : " And");
-//			jpql.append(" t.trxDate<=:endDate");
-//			params.put("endDate", filter.getEndDate());
-//			// System.out.println("End Date >>" + filter.getEndDate());
-//			isFirst = false;
-//		}
-//
-//		if (filter.getTill() != null) {
-//			// System.out.println(">>Till:"+filter.getTill());
-//			jpql.append(isFirst ? " Where" : " And");
-//			jpql.append(" t.tillNumber = :tillNumber");
-//			params.put("tillNumber", filter.getTill().getTillNo());
-//			isFirst = false;
-//		}
-//
-//		if (filter.getTills() != null) {
-//			// System.err.println(">>Till Filter applied");
-//			jpql.append(isFirst ? " Where" : " And");
-//			List<String> tillNos = new ArrayList<String>();
-//			if (filter.getTills().size() > 0) {
-//				for (TillDTO till : filter.getTills()) {
-//					tillNos.add(till.getTillNo());
-//				}
-//			} else {
-//				tillNos.add("");
-//			}
-//			jpql.append(" t.tillNumber IN (:tillNumbers)");
-//			params.put("tillNumbers", tillNos);
-//			isFirst = false;
-//		}
-//
-//		if (filter.getPhrase() != null) {
-//			String searchTerm = filter.getPhrase().trim();
-//			// System.out.println(">>Search Phrase:"+filter.getPhrase());
-//			jpql.append(isFirst ? " Where" : " And");
-//			jpql.append(" (t.customerName like :customerName or t.referenceId like :referenceId or "
-//					+ "t.tillNumber like :tillNumber)");
-//			params.put("customerName", "%" + searchTerm + "%");
-//			params.put("referenceId", "%" + searchTerm + "%");
-//			params.put("tillNumber", "%" + searchTerm + "%");
-//			isFirst = false;
-//		}
-//
-//		// System.err.println("End of Query:\n"+"---------------\n"+jpql.toString());
-//
-//		Query query = em.createQuery(jpql.toString());
-//		// .setFirstResult(0).setMaxResults(20);
-//		for (String key : params.keySet()) {
-//			query.setParameter(key, params.get(key));
-//		}
-//		return query;
-//
-//	}
 
 }

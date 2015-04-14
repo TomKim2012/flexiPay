@@ -12,6 +12,7 @@ import com.workpoint.mwallet.client.ui.header.HeaderPresenter;
 import com.workpoint.mwallet.client.ui.home.HomePresenter;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.login.LoginPresenter;
+import com.workpoint.mwallet.client.ui.payment.WebsiteClientPresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -27,6 +28,8 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<HeaderPresenter> getHeaderPresenter();
 
 	AsyncProvider<HomePresenter> getHomePresenter();
+	
+	AsyncProvider<WebsiteClientPresenter> getWebsiteClientPresenter();
 
 	AsyncProvider<LoginPresenter> getLoginPresenter();
 	
