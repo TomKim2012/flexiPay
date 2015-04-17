@@ -37,7 +37,7 @@ import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
-import com.workpoint.mwallet.shared.responses.GetVerificationRequestResult;
+import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class TransactionsPresenter extends
@@ -158,7 +158,7 @@ public class TransactionsPresenter extends
 						GetTillsRequestResult tillsResponse = (GetTillsRequestResult)aResponse.get(i++);
 						setUserTills(tillsResponse.getTills());
 						
-						GetVerificationRequestResult trxResponse = (GetVerificationRequestResult)aResponse.get(i++);
+						GetTransactionsRequestResult trxResponse = (GetTransactionsRequestResult)aResponse.get(i++);
 						getResults(trxResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -177,10 +177,10 @@ public class TransactionsPresenter extends
 
 		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(new GetTransactionsRequest(filter),
-				new TaskServiceCallback<GetVerificationRequestResult>() {
+				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
 					public void processResult(
-							GetVerificationRequestResult aResponse) {
+							GetTransactionsRequestResult aResponse) {
 						getResults(aResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -188,7 +188,7 @@ public class TransactionsPresenter extends
 
 	}
 
-	protected void getResults(GetVerificationRequestResult aResponse) {
+	protected void getResults(GetTransactionsRequestResult aResponse) {
 
 		uniqueCustomers = aResponse.getUniqueCustomers();
 		uniqueMerchants = aResponse.getUniqueMerchants();
@@ -279,10 +279,10 @@ public class TransactionsPresenter extends
 	public void performSearch(GetTransactionsRequest request) {
 		fireEvent(new ProcessingEvent("Loading..."));
 		requestHelper.execute(request,
-				new TaskServiceCallback<GetVerificationRequestResult>() {
+				new TaskServiceCallback<GetTransactionsRequestResult>() {
 					@Override
 					public void processResult(
-							GetVerificationRequestResult aResponse) {
+							GetTransactionsRequestResult aResponse) {
 						getResults(aResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					};
