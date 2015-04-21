@@ -24,6 +24,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	private boolean isApproved;
 	private String ipAddress;
 	private String smsStatus;
+	private String ipnAddress;
 
 	public TransactionDTO() {
 	}
@@ -31,7 +32,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	public TransactionDTO(String mpesaSender, String mpesa_msisdn,
 			Double mpesa_amt, String mpesa_code, Date tstamp,
 			String business_number, String mpesa_acc, boolean isprocessed,
-			String ipaddress, boolean isapproved, String businessName, String smsStatus) {
+			String ipaddress, boolean isapproved, String businessName, String smsStatus, String ipnAddress) {
 		
 		this.customerName= mpesaSender;
 		this.phone=mpesa_msisdn;
@@ -45,6 +46,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 		this.isApproved = isapproved;
 		this.businessName = businessName;
 		this.smsStatus = smsStatus;
+		this.ipnAddress = ipnAddress;
 	}
 
 	public Long getId() {
@@ -173,5 +175,13 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 
 	public void setCommission(Double commission) {
 		this.commission = commission;
+	}
+
+	public String getIpnAddress() {
+		return ipnAddress;
+	}
+
+	public void setIpnAddress(String ipnAddress) {
+		this.ipnAddress = ipnAddress;
 	}
 }

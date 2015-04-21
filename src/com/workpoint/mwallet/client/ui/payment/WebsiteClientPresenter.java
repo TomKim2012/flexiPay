@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -63,6 +64,9 @@ public class WebsiteClientPresenter
 
 	private String submittedAccountNo;
 
+	private String referenceId;
+
+
 	@Inject
 	public WebsiteClientPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
@@ -114,6 +118,12 @@ public class WebsiteClientPresenter
 		if (trxs.size() >= 1) {
 			// Confirm amounts here;
 			TransactionDTO trx = trxs.get(0);
+			
+			if(submittedAmount.isEmpty()){
+				MaterialToast.alert("No values submitted by merchant");
+				return;
+			}
+			
 			boolean isAmountCorrect = String.valueOf(
 					NumberUtils.NUMBERFORMAT.format(trx.getAmount())).equals(
 					NumberUtils.NUMBERFORMAT.format(Double
@@ -133,19 +143,30 @@ public class WebsiteClientPresenter
 			boolean isAccountNoCorrect = submittedAccountNo
 					.equals(readAccountNo);
 
-			System.err.println("isAmountCorrect>>"
-					+ isAmountCorrect
-					+ submittedAmount
-					+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
-							.getAmount())) + "\nisBusinessNoCorrect>>"
-					+ isBusinessNoCorrect + "\nisAccountNoCorrect>>"
-					+ isAccountNoCorrect + submittedAccountNo + readAccountNo);
+			System.err.println("<<isAmountCorrect>>"
+					+ isAmountCorrect + 
+					"\nsubmittedAmt::"+submittedAmount+
+					"\nReadAmt::"+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
+							.getAmount())) 
+					+ "\n<<isBusinessNoCorrect>>"
+					+ isBusinessNoCorrect + 
+					"\nisAccountNoCorrect>>"+ isAccountNoCorrect+
+					"\nsubmittedAccountNo::"+ submittedAccountNo + 
+					"\nreadAccountNo::"+readAccountNo);
 			if (isAmountCorrect && isBusinessNoCorrect && isAccountNoCorrect) {
 				MaterialToast
 						.alert("Your payment has been confirmed. You will be directed to the next step in a short while");
-			
-				//Do necessary re-direction
-			
+
+				System.err.println("IPN Address"+trx.getIpnAddress());
+				// Do necessary re-direction
+				if (trx.getIpnAddress() != null) {
+					Window.Location.replace(trx.getIpnAddress() + "&refId="
+							+ referenceId + "&status=COMPLETED");
+				}else{
+					MaterialToast
+					.alert("No callback set by merchant.");
+				}
+
 			} else {
 				MaterialToast
 						.alert("Transaction exist but the parameters entered did not match with the Merchants Request");
@@ -164,6 +185,7 @@ public class WebsiteClientPresenter
 		submittedAccountNo = request.getParameter("accountNo", "");
 		submittedAmount = request.getParameter("amount", "");
 		String orgName = request.getParameter("orgName", "");
+		referenceId = request.getParameter("refId", "");
 
 		getView().setParameters(submittedBusinessNo, submittedAccountNo,
 				submittedAmount, orgName);

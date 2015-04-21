@@ -15,7 +15,6 @@ import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
-import com.workpoint.mwallet.shared.responses.GetVerificationRequestResult;
 
 public class GetTransactionsRequestActionHandler extends
 		BaseActionHandler<GetTransactionsRequest, GetTransactionsRequestResult> {
@@ -55,10 +54,10 @@ public class GetTransactionsRequestActionHandler extends
 		int uniqueMerchants = dao.getMerchantCount(trxFilter, userId,
 				isSuperUser, isAdmin, categoryModel.getId());
 
-		((GetVerificationRequestResult) actionResult).setTransactions(dtos);
-		((GetVerificationRequestResult) actionResult)
+		((GetTransactionsRequestResult) actionResult).setTransactions(dtos);
+		((GetTransactionsRequestResult) actionResult)
 				.setUniqueCustomers(uniqueCustomers);
-		((GetVerificationRequestResult) actionResult)
+		((GetTransactionsRequestResult) actionResult)
 				.setUniqueMerchants(uniqueMerchants);
 	}
 

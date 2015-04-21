@@ -54,13 +54,11 @@ public class SaveTillRequestActionHandler extends
 
 			// Till Cashiers
 			List<UserDTO> cashiersDTO = till.getCashiers();
-			System.err.println("Cashiers Size>>" + cashiersDTO.size());
 			List<User> cashiersModel = new ArrayList<User>();
 			for (UserDTO cashier : cashiersDTO) {
 				User cashierModel = DB.getUserGroupDao().getUser(
 						cashier.getUserId());
 				cashiersModel.add(cashierModel);
-				System.err.println("Cashiers >>" + cashierModel.getFirstName());
 			}
 
 			// Till SalesPerson
