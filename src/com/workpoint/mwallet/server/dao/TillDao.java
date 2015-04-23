@@ -136,7 +136,8 @@ public class TillDao extends BaseDaoImpl {
 		if (filter.getPhrase() != null) {
 			sqlQuery.append(isFirst ? " Where" : " And");
 			sqlQuery.append(" (t.business_number like :phrase or t.businessName like :phrase or "
-					+ "t.ownerId like :phrase or u.userId like :phrase or u2.userId like :phrase)");
+					+ "t.ownerId like :phrase or u.userId like :phrase or u2.userId like :phrase "
+					+ "or u.firstName like :phrase or u2.firstName like :phrase)");
 			params.put("phrase", "%" + filter.getPhrase() + "%");
 			isFirst = false;
 		}
