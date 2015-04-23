@@ -53,7 +53,7 @@ public class TillsTableRow extends RowWidget {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public TillsTableRow(TillDTO till) {
+	public TillsTableRow(final TillDTO till) {
 		this();
 		init(till);
 

@@ -25,9 +25,6 @@ public class TillsTable extends Composite {
 	@UiField
 	TableView tblView;
 	CheckBox selected = null;
-	boolean isSummaryTable = false;
-	boolean isGoalsTable = false;
-	Long lastUpdatedId = null;
 
 	public TillsTable() {
 		initWidget(uiBinder.createAndBindUi(this));

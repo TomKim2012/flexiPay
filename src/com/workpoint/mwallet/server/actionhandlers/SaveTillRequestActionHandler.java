@@ -3,6 +3,8 @@ package com.workpoint.mwallet.server.actionhandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
+
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -41,10 +43,14 @@ public class SaveTillRequestActionHandler extends
 			tillModel.setTillNumber(till.getTillNo());
 			tillModel.setAccountNo(till.getAccountNo());
 			tillModel.setPhoneNo(till.getPhoneNo());
-
+			
+			
+			System.err.println("Saved Category at ActionHandler:"+ till.getCategory().getCategoryName());
 			if (till.getCategory() != null){
 				CategoryModel catModel = dao.getById(CategoryModel.class, till.getCategory().getId());
 				tillModel.setCategory(catModel);
+				assert catModel!=null;
+				//System.err.println("Saved Category inside the model:"+ tillModel.getCategory().getCategoryName());
 			}
 
 			// Till Owner
@@ -54,13 +60,11 @@ public class SaveTillRequestActionHandler extends
 
 			// Till Cashiers
 			List<UserDTO> cashiersDTO = till.getCashiers();
-			System.err.println("Cashiers Size>>" + cashiersDTO.size());
 			List<User> cashiersModel = new ArrayList<User>();
 			for (UserDTO cashier : cashiersDTO) {
 				User cashierModel = DB.getUserGroupDao().getUser(
 						cashier.getUserId());
 				cashiersModel.add(cashierModel);
-				System.err.println("Cashiers >>" + cashierModel.getFirstName());
 			}
 
 			// Till SalesPerson
@@ -79,7 +83,6 @@ public class SaveTillRequestActionHandler extends
 				tillModel = dao.getById(TillModel.class, till.getId());
 			}
 			dao.delete(tillModel);
-			System.err.println("Executed Delete");
 		}
 
 	}

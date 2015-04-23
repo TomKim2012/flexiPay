@@ -297,6 +297,9 @@ public class TillsPresenter extends
 
 	protected void saveTill(final TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
+		
+		System.err.println("Saved Category at Presenter:"+ tillDTO.getCategory().getId());
+		
 		SaveTillRequest saveRequest = new SaveTillRequest(tillDTO, isDelete);
 		requestHelper.execute(saveRequest,
 				new TaskServiceCallback<SaveTillResponse>() {
@@ -309,7 +312,6 @@ public class TillsPresenter extends
 						fireEvent(new ActivitySavedEvent("Till "
 								+ tillDTO.getBusinessName()
 								+ " successfully saved"));
-						System.err.println("Till Successfully saved!");
 					}
 				});
 
@@ -319,6 +321,7 @@ public class TillsPresenter extends
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
 			this.selected = event.gettillDetail();
+			System.err.println("Category Id at Presenter>>>"+ selected.getCategory().getId());
 			getView().setAllowedButtons(AppContext.getContextUser(),true);
 		} else {
 			getView().setAllowedButtons(AppContext.getContextUser(),false);

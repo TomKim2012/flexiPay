@@ -180,6 +180,7 @@ public class TransactionDao extends BaseDaoImpl {
 	private Map<String, Object> appendParameters(SearchFilter filter,StringBuffer sqlQuery) {
 		boolean isFirst = false;
 		Map<String, Object> params = new HashMap<>();
+		
 		if (filter.getStartDate() != null) {
 			sqlQuery.append(isFirst ? " Where" : " And");
 			sqlQuery.append(" i.tstamp>=:startDate");
