@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TestTills {
 
@@ -41,13 +39,14 @@ public class TestTills {
 	public void search(){
 		
 		SearchFilter filter = new SearchFilter();
-		filter.setPhrase("Tom");
+		
+		boolean status = new TillDao(em).updateGradesView("2014-01-01", "2015-04-30");
 		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim", true, false, 9L);
 		
-		for (TillDTO till : tills) {
-			System.err.println("Till Id:"+till.getId()+"Owner:"+till.getCategory().getId());
-		}
-		
+//		for (TillDTO till : tills) {
+//			System.err.println("Till Id:"+till.getId()+"Grade:");
+//		}
+//		
 		
 		
 //		List<TransactionDTO> trxs = new TransactionDao(em).getAll(null, "TomKim", true, false,9L);

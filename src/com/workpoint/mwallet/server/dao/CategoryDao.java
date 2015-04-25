@@ -23,7 +23,7 @@ public class CategoryDao extends BaseDaoImpl {
 
 		for (CategoryModel categoryModel : categories) {
 			CategoryDTO categoryDTO = new CategoryDTO();
-			// System.err.println("Category Id::"+categoryModel.getId());
+			// //System.err.println("Category Id::"+categoryModel.getId());
 			categoryDTO.setId(categoryModel.getId());
 			categoryDTO.setCategoryName(categoryModel.getCategoryName());
 			categoryDTO.setCategoryType(categoryModel.getCategoryType());

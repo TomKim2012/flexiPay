@@ -2,6 +2,8 @@ package com.workpoint.mwallet.client.ui.tills;
 
 import static com.workpoint.mwallet.client.ui.tills.TillsPresenter.FILTER_SLOT;
 
+import java.util.List;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -15,6 +17,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTable;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTableRow;
@@ -39,6 +42,9 @@ public class TillsView extends ViewImpl implements
 
 	@UiField
 	ActionLink aEdit;
+	
+	@UiField
+	ActionLink aConfigure;
 
 	@UiField
 	ActionLink aDelete;
@@ -79,7 +85,7 @@ public class TillsView extends ViewImpl implements
 				showFilterView();
 			}
 		});
-
+		
 		initControlButtons();
 
 	}
@@ -124,7 +130,12 @@ public class TillsView extends ViewImpl implements
 	public void presentData(TillDTO till) {
 		tblView.createRow(new TillsTableRow(till));
 	}
-
+	
+	@Override
+	public void setHeaders(List<TableHeader> tableHeaders) {
+		tblView.createHeader(tableHeaders);
+	}
+	
 	@Override
 	public void presentSummary(String totalTills) {
 		headerContainer.setSummary(totalTills);
@@ -201,6 +212,10 @@ public class TillsView extends ViewImpl implements
 	
 	public HasClickHandlers getFilterActionLink(){
 		return iFilterdropdown;
+	}
+	
+	public HasClickHandlers getConfigureButton(){
+		return aConfigure;
 	}
 	
 	@Override

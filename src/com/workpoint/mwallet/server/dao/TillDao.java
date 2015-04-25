@@ -32,11 +32,14 @@ public class TillDao extends BaseDaoImpl {
 						+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,"
 						+ "u.userId salesperson_userid,u.firstname salesperson_firstname, u.lastname salesperson_lastname, "
 						+ "u2.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname, "
-						+ "cm.id categoryId, cm.categoryName "
+						+ "cm.id categoryId, cm.categoryName, "
+						+ "tg.grade,tg.tillAverage,tr.description,tr.min_value,tr.max_value "
 						+ "FROM TillModel t "
 						+ "left join BUser u on (u.userId = t.salesPersonId) "
 						+ "left join BUser u2 on (u2.userId = t.ownerId) "
-						+ "left join categoryModel cm on (t.categoryId = cm.id)"
+						+ "left join categoryModel cm on (t.categoryId = cm.id) "
+						+ "left join [TillGrades] tg on (t.business_number= tg.business_number) "
+						+ "left join TillRanges tr on (tg.grade=tr.grade) "
 						+ "where "
 						+ "("
 						+ "(t.categoryid=:categoryId "
@@ -72,6 +75,7 @@ public class TillDao extends BaseDaoImpl {
 					.toString();
 			String business_number = (value = row[i++]) == null ? null : value
 					.toString();
+
 			String mpesa_acc = (value = row[i++]) == null ? null : value
 					.toString();
 			String phoneNo = (value = row[i++]) == null ? null : value
@@ -103,9 +107,22 @@ public class TillDao extends BaseDaoImpl {
 			String categoryName = (value = row[i++]) == null ? null : value
 					.toString();
 
+			// Grade & Average
+			String tillGrade = (value = row[i++]) == null ? null : value
+					.toString();
+			Double tillAverage = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			String GradeDesc = (value = row[i++]) == null ? null : value
+					.toString();
+			Double minValue = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			Double maxValue =(value = row[i++]) == null ? null
+					: new Double(value.toString());
+
 			TillDTO summary = new TillDTO(tillId, businessName,
-					business_number, mpesa_acc, phoneNo);
+					business_number, mpesa_acc, phoneNo, tillGrade, tillAverage, GradeDesc,minValue,maxValue);
 			summary.setActive(active);
+			
 			summary.setSalesPerson(new UserDTO(salesPersonUserId,
 					salesPersonFirstName, salesPersonLastName));
 			summary.setOwner(new UserDTO(ownerUserId, ownerFirstName,
@@ -141,27 +158,49 @@ public class TillDao extends BaseDaoImpl {
 			params.put("phrase", "%" + filter.getPhrase() + "%");
 			isFirst = false;
 		}
-		
+
 		if (filter.getOwner() != null) {
 			sqlQuery.append(isFirst ? " Where " : " And ");
 			sqlQuery.append("t.ownerId = :ownerId");
 			params.put("ownerId", filter.getOwner().getUserId());
 			isFirst = false;
 		}
-		
+
 		if (filter.getSalesPerson() != null) {
 			sqlQuery.append(isFirst ? " Where " : " And ");
 			sqlQuery.append("t.salesPersonId = :salesPersonId");
 			params.put("salesPersonId", filter.getSalesPerson().getUserId());
 			isFirst = false;
 		}
-		
+
 		return params;
 
 	}
 
 	public void saveTill(TillModel till) {
 		save(till);
+	}
+
+	public boolean updateGradesView(String startDate, String endDate) {
+		String dropView = "DROP VIEW TillGrades";
+		Query dropquery = em.createNativeQuery(dropView);
+		dropquery.executeUpdate();
+
+		String sqlBuffer = "CREATE VIEW [TillGrades] AS "
+				+ "select business_number, "
+				+ "dbo.fn_getTillAverage(business_number,'" + startDate + "','"
+				+ endDate + "')" + " as tillAverage, "
+				+"dbo.fn_GetTillRank(business_number,'"
+				+startDate+"','"+endDate+"') as grade "
+				+ "from TillModel ";
+
+		System.out.println(sqlBuffer);
+
+		int viewQuery = em.createNativeQuery(sqlBuffer.toString())
+				.executeUpdate();
+		
+		return true;
+
 	}
 
 }

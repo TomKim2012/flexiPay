@@ -96,7 +96,7 @@ public class MainPagePresenter extends
 		super.onReset();
 		setInSlot(HEADER_content, headerPresenter);
 		getView().clearDisconnectionMsg();
-		// System.err.println("Main Page - Reset called......");
+		// //System.err.println("Main Page - Reset called......");
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class MainPagePresenter extends
 	@Override
 	public void OnActivitySaved(ActivitySavedEvent event) {
 		getView().setAlertVisible(event.getMessage());
-		// System.err.println("Activity event called!");
+		// //System.err.println("Activity event called!");
 	}
 
 }

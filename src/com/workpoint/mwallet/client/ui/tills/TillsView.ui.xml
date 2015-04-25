@@ -35,6 +35,13 @@
 								<i class="icon-trash icon-button"></i>
 							</d:ActionLink>
 						</div>
+						
+						<div class="span3">
+							<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
+								dataToggle="tooltip">
+								<i class="icon-cogs icon-button"></i>
+							</d:ActionLink>
+						</div>
 					</div>
 
 					<div class="span3 right-side">

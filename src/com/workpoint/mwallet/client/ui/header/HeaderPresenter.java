@@ -119,14 +119,13 @@ public class HeaderPresenter extends
 	}
 
 	protected void logout() {
-		// System.err.println("Logout Called");
 		dispatcher.execute(new LogoutAction(),
 				new TaskServiceCallback<LogoutActionResult>() {
 					@Override
 					public void processResult(LogoutActionResult result) {
 						AppContext.destroy();
 						placeManager.revealErrorPlace("login");
-						// System.err.println("Executed Logout");
+						// //System.err.println("Executed Logout");
 					}
 				});
 	}

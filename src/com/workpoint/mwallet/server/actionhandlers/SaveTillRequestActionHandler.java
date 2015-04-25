@@ -45,12 +45,11 @@ public class SaveTillRequestActionHandler extends
 			tillModel.setPhoneNo(till.getPhoneNo());
 			
 			
-			System.err.println("Saved Category at ActionHandler:"+ till.getCategory().getCategoryName());
 			if (till.getCategory() != null){
 				CategoryModel catModel = dao.getById(CategoryModel.class, till.getCategory().getId());
 				tillModel.setCategory(catModel);
 				assert catModel!=null;
-				//System.err.println("Saved Category inside the model:"+ tillModel.getCategory().getCategoryName());
+				////System.err.println("Saved Category inside the model:"+ tillModel.getCategory().getCategoryName());
 			}
 
 			// Till Owner

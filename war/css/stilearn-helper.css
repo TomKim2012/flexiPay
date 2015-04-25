@@ -104,6 +104,9 @@ input:focus {
 	z-index: 10;
 	margin-left: -100px;
 }
+.hide{
+	display:none !important;
+}
 
 .full-page {
 	height: 100%;

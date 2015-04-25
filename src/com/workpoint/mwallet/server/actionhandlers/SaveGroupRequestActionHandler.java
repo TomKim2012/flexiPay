@@ -27,8 +27,6 @@ public class SaveGroupRequestActionHandler extends
 			
 			group = LoginHelper.get().createGroup(group);
 			
-			System.err.println("Group Detail>>"+group.getName());
-			
 			//save
 			SaveGroupResponse response = (SaveGroupResponse)actionResult;
 			response.setGroup(group);

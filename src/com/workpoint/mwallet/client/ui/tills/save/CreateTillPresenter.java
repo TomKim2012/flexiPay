@@ -259,7 +259,6 @@ public class CreateTillPresenter extends
 	}
 
 	public void setCategories(List<CategoryDTO> categories) {
-		System.err.println("set categories called!");
 		getView().setCategories(categories);
 	}
 

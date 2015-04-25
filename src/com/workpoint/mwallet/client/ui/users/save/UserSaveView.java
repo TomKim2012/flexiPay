@@ -195,7 +195,7 @@ public class UserSaveView extends PopupViewImpl implements
 	UserDTO user;
 
 	public void setUser(UserDTO user) {
-		// System.err.println("Called setUser");
+		// //System.err.println("Called setUser");
 
 		txtEmail.setValue(user.getEmail());
 		txtFirstname.setValue(user.getFirstName());
@@ -329,7 +329,7 @@ public class UserSaveView extends PopupViewImpl implements
 
 	@Override
 	public void setCategories(List<CategoryDTO> categories) {
-		// System.err.println("Loaded Categories");
+		// //System.err.println("Loaded Categories");
 		lstCategoryType.setItems(categories);
 	}
 

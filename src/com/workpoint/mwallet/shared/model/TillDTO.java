@@ -23,21 +23,59 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	private int isActive;
 	private CategoryDTO category;
 
+	private String tillGrade;
+	private Double tillAverage;
+	private String gradeDesc;
+
+	private Double minValue;
+
+	private Double maxValue;
+
 	public TillDTO() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public TillDTO(String tillNo){
+
+	public TillDTO(String tillNo) {
 		this.tillNo = tillNo;
 	}
-	
+
+	public int getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}
+
+	public Double getTillAverage() {
+		return tillAverage;
+	}
+
+	public void setTillAverage(Double tillAverage) {
+		this.tillAverage = tillAverage;
+	}
+
+	public String getGradeDesc() {
+		return gradeDesc;
+	}
+
+	public void setGradeDesc(String gradeDesc) {
+		this.gradeDesc = gradeDesc;
+	}
+
 	public TillDTO(Long tillId, String businessName, String businessNumber,
-			String mpesaAcc, String phoneNo) {
+			String mpesaAcc, String phoneNo, String tillGrade,
+			Double tillAverage, String gradeDesc, Double minValue, Double maxValue) {
 		this.id = tillId;
 		this.businessName = businessName;
 		this.tillNo = businessNumber;
 		this.accountNo = mpesaAcc;
 		this.phoneNo = phoneNo;
+		this.setMinValue(minValue);
+		this.setMaxValue(maxValue);
+		this.setTillGrade(tillGrade);
+		this.tillAverage = tillAverage;
+		this.gradeDesc = gradeDesc;
 	}
 
 	public Long getId() {
@@ -148,6 +186,30 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	public void setCategory(CategoryDTO category) {
 		this.category = category;
+	}
+
+	public String getTillGrade() {
+		return tillGrade;
+	}
+
+	public void setTillGrade(String tillGrade) {
+		this.tillGrade = tillGrade;
+	}
+
+	public Double getMinValue() {
+		return minValue;
+	}
+
+	public void setMinValue(Double minValue) {
+		this.minValue = minValue;
+	}
+
+	public Double getMaxValue() {
+		return maxValue;
+	}
+
+	public void setMaxValue(Double maxValue) {
+		this.maxValue = maxValue;
 	}
 
 }

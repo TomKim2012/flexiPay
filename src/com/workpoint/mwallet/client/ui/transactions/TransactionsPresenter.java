@@ -203,8 +203,8 @@ public class TransactionsPresenter extends
 		uniqueCustomers = aResponse.getUniqueCustomers();
 		uniqueMerchants = aResponse.getUniqueMerchants();
 
-		// System.err.println("Unique Merchants>>" + uniqueMerchants);
-		// System.err.println("Unique Customers>>" + uniqueCustomers);
+		// //System.err.println("Unique Merchants>>" + uniqueMerchants);
+		// //System.err.println("Unique Customers>>" + uniqueCustomers);
 
 		bindTransactions(aResponse.getTransactions());
 

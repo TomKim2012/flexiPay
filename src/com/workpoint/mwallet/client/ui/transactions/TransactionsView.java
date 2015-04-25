@@ -127,7 +127,7 @@ public class TransactionsView extends ViewImpl implements
 		panelDone.addMouseOverHandler(new MouseOverHandler() {
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
-				// System.err.println("passedOver = true");
+				// //System.err.println("passedOver = true");
 				isPassedOver = true;
 			}
 		});
@@ -135,7 +135,7 @@ public class TransactionsView extends ViewImpl implements
 		panelDone.addMouseOutHandler(new MouseOutHandler() {
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
-				// System.err.println("passedOver = false");
+				// //System.err.println("passedOver = false");
 				isPassedOver = false;
 			}
 		});
@@ -318,8 +318,8 @@ public class TransactionsView extends ViewImpl implements
 		boxDatePickerStart.setValue(startDate);
 		boxDatePickerEnd.setValue(endDate);
 
-		// System.err.println("Start Date::" + startDate);
-		// System.err.println("End Date::" + endDate);
+		// //System.err.println("Start Date::" + startDate);
+		// //System.err.println("End Date::" + endDate);
 
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);
@@ -443,7 +443,7 @@ public class TransactionsView extends ViewImpl implements
 	@Override
 	public void setTills(List<TillDTO> tills) {
 		lstTills.setItems(tills);
-		// System.err.println("Set Tills called");
+		// //System.err.println("Set Tills called");
 	}
 
 	@Override
