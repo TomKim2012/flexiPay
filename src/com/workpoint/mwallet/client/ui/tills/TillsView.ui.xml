@@ -38,7 +38,7 @@
 						
 						<div class="span3">
 							<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
-								dataToggle="tooltip">
+								dataToggle="tooltip" title="Configure Columns">
 								<i class="icon-cogs icon-button"></i>
 							</d:ActionLink>
 						</div>

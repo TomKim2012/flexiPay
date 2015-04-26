@@ -29,7 +29,7 @@ public class TillDao extends BaseDaoImpl {
 
 		StringBuffer jpql = new StringBuffer(
 				"select t.id, t.businessName, t.business_number, "
-						+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,"
+						+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,t.updatedBy,t.createdBy,"
 						+ "u.userId salesperson_userid,u.firstname salesperson_firstname, u.lastname salesperson_lastname, "
 						+ "u2.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname, "
 						+ "cm.id categoryId, cm.categoryName, "
@@ -37,6 +37,8 @@ public class TillDao extends BaseDaoImpl {
 						+ "FROM TillModel t "
 						+ "left join BUser u on (u.userId = t.salesPersonId) "
 						+ "left join BUser u2 on (u2.userId = t.ownerId) "
+						+ "left join BUser u3 on (u3.userId = t.updatedBy) "
+						+ "left join BUser u4 on (u4.userId = t.createdBy) "
 						+ "left join categoryModel cm on (t.categoryId = cm.id) "
 						+ "left join [TillGrades] tg on (t.business_number= tg.business_number) "
 						+ "left join TillRanges tr on (tg.grade=tr.grade) "
@@ -85,6 +87,10 @@ public class TillDao extends BaseDaoImpl {
 			int active = (value = row[i++]) == null ? null : (int) value;
 			Date created = (value = row[i++]) == null ? null : (Date) value;
 			Date updated = (value = row[i++]) == null ? null : (Date) value;
+			String createdBy = (value = row[i++]) == null ? null : value
+					.toString();
+			String updatedBy = (value = row[i++]) == null ? null : value
+					.toString();
 
 			String salesPersonUserId = (value = row[i++]) == null ? null
 					: value.toString();
@@ -130,6 +136,7 @@ public class TillDao extends BaseDaoImpl {
 			summary.setCategory(new CategoryDTO(catId, categoryName));
 
 			summary.setLastModified(updated == null ? created : updated);
+			summary.setLastModifiedBy(updatedBy==null? createdBy: updatedBy);
 
 			tills.add(summary);
 		}

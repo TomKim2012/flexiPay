@@ -182,18 +182,19 @@ public class TillsPresenter extends
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
-		
+
 		tableHeaders = Arrays.asList(new TableHeader("", true),
 				new TableHeader("Business Name", true), new TableHeader(
 						"Business No", true), new TableHeader("Account No",
-						true), new TableHeader("Phone No", true),
+						false), new TableHeader("Phone No", false),
 				new TableHeader("Owner", true), new TableHeader("Acquirer",
-						true), new TableHeader("Status", true),
+						true), new TableHeader("Category", false),
+				new TableHeader("Status", false),
 				new TableHeader("Grade", true), new TableHeader(
-						"Last Modified", true));
+						"Last Modified", false));
 
 		getView().setHeaders(tableHeaders);
-		
+
 		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(tills.size()));
 	}
 
@@ -287,10 +288,9 @@ public class TillsPresenter extends
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Save")) {
-					tableHeaders= tablePopUp
-							.getConfiguredHeaders();
+					tableHeaders = tablePopUp.getConfiguredHeaders();
 					getView().setHeaders(tableHeaders);
-					
+
 				}
 				configureOptionControl.hide();
 			}

@@ -37,20 +37,20 @@ public class ConfigureTablePopUp extends Composite {
 
 		int counter = 0;
 		for (TableHeader header : headers) {
-			counter++;
 			CheckBox checkbox = new CheckBox(header.getTitleName());
 			checkbox.setValue(header.getisDisplayed());
 			checkbox.setName(Integer.toString(counter));
+			counter++;
 
 			checkbox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 				@Override
 				public void onValueChange(ValueChangeEvent<Boolean> event) {
-//					System.err.println(((CheckBox) event.getSource()).getName()
-//							+ ">>>" + event.getValue());
 					String id = ((CheckBox) event.getSource()).getName();
 					int i = Integer.parseInt(id);
 					localHeaders.get(i).setisDisplayed(event.getValue());
+
+					// System.err.println(i+">>"+localHeaders.get(i).getisDisplayed());
 				}
 			});
 

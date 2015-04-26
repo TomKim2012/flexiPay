@@ -40,7 +40,7 @@ public class TestTills {
 		
 		SearchFilter filter = new SearchFilter();
 		
-		boolean status = new TillDao(em).updateGradesView("2014-01-01", "2015-04-30");
+		//boolean status = new TillDao(em).updateGradesView("2014-01-01", "2015-04-30");
 		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim", true, false, 9L);
 		
 //		for (TillDTO till : tills) {

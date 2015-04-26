@@ -44,6 +44,7 @@ public class ErrorView extends PopupViewImpl implements ErrorPresenter.MyView {
 				hide();
 			}
 		});
+		
 		lnkError.addDomHandler(new ClickHandler() {
 			
 			@Override

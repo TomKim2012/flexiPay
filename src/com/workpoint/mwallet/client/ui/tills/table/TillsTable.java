@@ -50,7 +50,7 @@ public class TillsTable extends Composite {
 	public void createHeader(List<TableHeader> headers) {
 		tblView.setTableHeaders(headers);
 		
-		System.err.println("Row size:"+ rows.size());
+//		System.err.println("Row size:"+ rows.size());
 		
 		for(TillsTableRow row: rows){
 			row.reconfigure(headers);

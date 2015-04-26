@@ -48,6 +48,10 @@ public class TillsTableRow extends RowWidget {
 	HTMLPanel divOwner;
 	@UiField
 	HTMLPanel divAcquirer;
+	
+	@UiField
+	HTMLPanel divCategory;
+	
 	@UiField
 	HTMLPanel divAccount;
 	@UiField
@@ -57,6 +61,8 @@ public class TillsTableRow extends RowWidget {
 	InlineLabel spnGrade;
 	@UiField
 	Popover popoverGrade;
+	
+	
 
 	@UiField
 	HTMLPanel divlastModified;
@@ -112,8 +118,12 @@ public class TillsTableRow extends RowWidget {
 
 			bindText(divOwner, ownerNames);
 			bindText(divAcquirer, acquirerNames);
-			bindText(divlastModified, till.getLastModified() == null ? ""
-					: DateUtils.DATEFORMAT.format(till.getLastModified()));
+			String modifiedDate = till.getLastModified() == null ? ""
+					: DateUtils.CREATEDFORMAT.format(till.getLastModified());
+			bindText(divlastModified, modifiedDate, till.getLastModifiedBy());
+			
+			bindText(divCategory, till.getCategory().getCategoryName());
+			
 			setActive(till.isActive());
 
 			String maxValue = NumberFormat.getCurrencyFormat("KES").format(
@@ -130,7 +140,7 @@ public class TillsTableRow extends RowWidget {
 	public void reconfigure(List<TableHeader> headers) {
 		int counter = 0;
 		for (TableHeader header : headers) {
-			System.err.println(counter+">"+header.getisDisplayed()+row.getWidget(counter));
+			System.err.println(counter+">>"+header.getisDisplayed());
 			if (header.getisDisplayed()) {
 				row.getWidget(counter).getElement().removeClassName("hide");
 			} else {
@@ -186,10 +196,10 @@ public class TillsTableRow extends RowWidget {
 	private void setActive(int active) {
 		if (active == 1) {
 			spnStatus.setClassName("label label-success");
-			spnStatus.setInnerText("Active");
+			spnStatus.setInnerText("Enabled");
 		} else {
-			spnStatus.setClassName("label label-default");
-			spnStatus.setInnerText("In-Active");
+			spnStatus.setClassName("label label-important");
+			spnStatus.setInnerText("Disabled");
 		}
 	}
 

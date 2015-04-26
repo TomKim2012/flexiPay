@@ -20,6 +20,7 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	private UserDTO salesPerson;
 	private List<UserDTO> cashiers;
 	private Date lastModified;
+	private String lastModifiedBy;
 	private int isActive;
 	private CategoryDTO category;
 
@@ -28,7 +29,6 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	private String gradeDesc;
 
 	private Double minValue;
-
 	private Double maxValue;
 
 	public TillDTO() {
@@ -37,6 +37,21 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	public TillDTO(String tillNo) {
 		this.tillNo = tillNo;
+	}
+	
+	public TillDTO(Long tillId, String businessName, String businessNumber,
+			String mpesaAcc, String phoneNo, String tillGrade,
+			Double tillAverage, String gradeDesc, Double minValue, Double maxValue) {
+		this.id = tillId;
+		this.businessName = businessName;
+		this.tillNo = businessNumber;
+		this.accountNo = mpesaAcc;
+		this.phoneNo = phoneNo;
+		this.setMinValue(minValue);
+		this.setMaxValue(maxValue);
+		this.setTillGrade(tillGrade);
+		this.tillAverage = tillAverage;
+		this.gradeDesc = gradeDesc;
 	}
 
 	public int getIsActive() {
@@ -60,21 +75,6 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	}
 
 	public void setGradeDesc(String gradeDesc) {
-		this.gradeDesc = gradeDesc;
-	}
-
-	public TillDTO(Long tillId, String businessName, String businessNumber,
-			String mpesaAcc, String phoneNo, String tillGrade,
-			Double tillAverage, String gradeDesc, Double minValue, Double maxValue) {
-		this.id = tillId;
-		this.businessName = businessName;
-		this.tillNo = businessNumber;
-		this.accountNo = mpesaAcc;
-		this.phoneNo = phoneNo;
-		this.setMinValue(minValue);
-		this.setMaxValue(maxValue);
-		this.setTillGrade(tillGrade);
-		this.tillAverage = tillAverage;
 		this.gradeDesc = gradeDesc;
 	}
 
@@ -210,6 +210,14 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	public void setMaxValue(Double maxValue) {
 		this.maxValue = maxValue;
+	}
+
+	public String getLastModifiedBy() {
+		return lastModifiedBy;
+	}
+
+	public void setLastModifiedBy(String lastModifiedBy) {
+		this.lastModifiedBy = lastModifiedBy;
 	}
 
 }
