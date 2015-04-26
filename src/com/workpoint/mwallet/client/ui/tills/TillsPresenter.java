@@ -42,6 +42,8 @@ import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.tills.table.ConfigureTablePopUp;
+import com.workpoint.mwallet.client.ui.util.DateRange;
+import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
@@ -74,6 +76,7 @@ public class TillsPresenter extends
 
 	protected List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
 	List<TableHeader> tableHeaders = new ArrayList<TableHeader>();
+	private SearchFilter filter = new SearchFilter();
 
 	public interface IActivitiesView extends View {
 		HasClickHandlers getAddButton();
@@ -109,6 +112,8 @@ public class TillsPresenter extends
 		HasClickHandlers getConfigureButton();
 
 		void setHeaders(List<TableHeader> tableHeaders);
+
+		void setDates(DateRange thisquarter);
 	}
 
 	@Inject
@@ -127,6 +132,8 @@ public class TillsPresenter extends
 
 	boolean isUserListLoaded = false;
 
+	private DateRange setDateRange;
+
 	@Inject
 	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
 			Provider<CreateTillPresenter> tillProvider) {
@@ -142,10 +149,17 @@ public class TillsPresenter extends
 
 	private void loadData() {
 		fireEvent(new ProcessingEvent("Loading.."));
+		
+		this.setDateRange = DateRange.THISQUARTER;
+		
+		filter.setStartDate(DateUtils.getDateByRange(DateRange.THISQUARTER));
+		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
+		
+		getView().setDates(DateRange.THISQUARTER);
+		
 		MultiRequestAction action = new MultiRequestAction();
-
 		action.addRequest(new GetUsersRequest(true));
-		action.addRequest(new GetTillsRequest());
+		action.addRequest(new GetTillsRequest(filter));
 		action.addRequest(new GetCategoriesRequest());
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -182,7 +196,9 @@ public class TillsPresenter extends
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
-
+		
+		String gradeDate = setDateRange.getDisplayName();
+		
 		tableHeaders = Arrays.asList(new TableHeader("", true),
 				new TableHeader("Business Name", true), new TableHeader(
 						"Business No", true), new TableHeader("Account No",
@@ -190,7 +206,7 @@ public class TillsPresenter extends
 				new TableHeader("Owner", true), new TableHeader("Acquirer",
 						true), new TableHeader("Category", false),
 				new TableHeader("Status", false),
-				new TableHeader("Grade", true), new TableHeader(
+				new TableHeader("Grade("+gradeDate+")", true), new TableHeader(
 						"Last Modified", false));
 
 		getView().setHeaders(tableHeaders);
@@ -381,7 +397,8 @@ public class TillsPresenter extends
 	@Override
 	public void onSearch(SearchEvent event) {
 		if (event.getSearchType() == SearchType.Till) {
-			GetTillsRequest request = new GetTillsRequest(event.getFilter());
+			filter = event.getFilter();
+			GetTillsRequest request = new GetTillsRequest(filter);
 			performSearch(request);
 		}
 	}

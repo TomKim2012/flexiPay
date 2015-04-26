@@ -141,16 +141,16 @@ public class TransactionsPresenter extends
 		if (AppContext.isCurrentUserAdmin()) {
 
 		} else if (user.hasGroup("Merchant")) {
-			//tillFilter.setOwner(user);
+			
 		} else if (user.hasGroup("SalesPerson")) {
 			isSalesPerson = true;
 			getView().setSalesTable(isSalesPerson);// Set SalesPerson
-			//tillFilter.setSalesPerson(user);
 		}
 		
 		String passedDate="Last 7 Days";
 		this.setDateRange = passedDate;
 		getView().setDates(passedDate);
+		
 		fireEvent(new ProcessingEvent());
 		filter.setStartDate(DateUtils.getDateByRange(DateRange
 				.getDateRange(passedDate)));
@@ -180,7 +180,8 @@ public class TransactionsPresenter extends
 		this.setDateRange = passedDate;
 		getView().setDates(passedDate);
 		
-		Window.alert("Passed Date Called!!");
+//		Window.alert("Passed Date Called!!");
+	
 		filter.setStartDate(DateUtils.getDateByRange(DateRange
 				.getDateRange(passedDate)));
 		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));

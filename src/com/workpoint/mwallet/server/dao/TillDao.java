@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.server.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -120,15 +121,16 @@ public class TillDao extends BaseDaoImpl {
 					: new Double(value.toString());
 			String GradeDesc = (value = row[i++]) == null ? null : value
 					.toString();
-			Double minValue = (value = row[i++]) == null ? null
-					: new Double(value.toString());
-			Double maxValue =(value = row[i++]) == null ? null
-					: new Double(value.toString());
+			Double minValue = (value = row[i++]) == null ? null : new Double(
+					value.toString());
+			Double maxValue = (value = row[i++]) == null ? null : new Double(
+					value.toString());
 
 			TillDTO summary = new TillDTO(tillId, businessName,
-					business_number, mpesa_acc, phoneNo, tillGrade, tillAverage, GradeDesc,minValue,maxValue);
+					business_number, mpesa_acc, phoneNo, tillGrade,
+					tillAverage, GradeDesc, minValue, maxValue);
 			summary.setActive(active);
-			
+
 			summary.setSalesPerson(new UserDTO(salesPersonUserId,
 					salesPersonFirstName, salesPersonLastName));
 			summary.setOwner(new UserDTO(ownerUserId, ownerFirstName,
@@ -136,7 +138,7 @@ public class TillDao extends BaseDaoImpl {
 			summary.setCategory(new CategoryDTO(catId, categoryName));
 
 			summary.setLastModified(updated == null ? created : updated);
-			summary.setLastModifiedBy(updatedBy==null? createdBy: updatedBy);
+			summary.setLastModifiedBy(updatedBy == null ? createdBy : updatedBy);
 
 			tills.add(summary);
 		}
@@ -164,6 +166,16 @@ public class TillDao extends BaseDaoImpl {
 					+ "or u.firstName like :phrase or u2.firstName like :phrase)");
 			params.put("phrase", "%" + filter.getPhrase() + "%");
 			isFirst = false;
+		}
+
+		if (filter.getStartDate() != null && filter.getEndDate() != null) {
+
+			String startDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
+					.getStartDate());
+			String endDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
+					.getEndDate());
+
+			updateGradesView(startDate, endDate);
 		}
 
 		if (filter.getOwner() != null) {
@@ -197,15 +209,14 @@ public class TillDao extends BaseDaoImpl {
 				+ "select business_number, "
 				+ "dbo.fn_getTillAverage(business_number,'" + startDate + "','"
 				+ endDate + "')" + " as tillAverage, "
-				+"dbo.fn_GetTillRank(business_number,'"
-				+startDate+"','"+endDate+"') as grade "
-				+ "from TillModel ";
+				+ "dbo.fn_GetTillRank(business_number,'" + startDate + "','"
+				+ endDate + "') as grade " + "from TillModel ";
 
-		System.out.println(sqlBuffer);
+		// System.out.println(sqlBuffer);
 
 		int viewQuery = em.createNativeQuery(sqlBuffer.toString())
 				.executeUpdate();
-		
+
 		return true;
 
 	}

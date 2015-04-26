@@ -48,10 +48,10 @@ public class TillsTableRow extends RowWidget {
 	HTMLPanel divOwner;
 	@UiField
 	HTMLPanel divAcquirer;
-	
+
 	@UiField
 	HTMLPanel divCategory;
-	
+
 	@UiField
 	HTMLPanel divAccount;
 	@UiField
@@ -61,8 +61,6 @@ public class TillsTableRow extends RowWidget {
 	InlineLabel spnGrade;
 	@UiField
 	Popover popoverGrade;
-	
-	
 
 	@UiField
 	HTMLPanel divlastModified;
@@ -121,17 +119,24 @@ public class TillsTableRow extends RowWidget {
 			String modifiedDate = till.getLastModified() == null ? ""
 					: DateUtils.CREATEDFORMAT.format(till.getLastModified());
 			bindText(divlastModified, modifiedDate, till.getLastModifiedBy());
-			
+
 			bindText(divCategory, till.getCategory().getCategoryName());
-			
+
 			setActive(till.isActive());
 
-			String maxValue = NumberFormat.getCurrencyFormat("KES").format(
-					till.getMaxValue());
+			String maxValue = "";
+			String range = "";
 			String minValue = NumberFormat.getCurrencyFormat("KES").format(
 					till.getMinValue());
+			
+			if (till.getMaxValue() != null) {
+				maxValue = NumberFormat.getCurrencyFormat("KES").format(
+						till.getMaxValue());
+				range = minValue + "-" + maxValue;
+			} else {
+				range = "Above "+ minValue;
+			}
 
-			String range = minValue + "-" + maxValue;
 			setGrade(till.getGradeDesc(), till.getTillGrade(),
 					till.getTillAverage(), range);
 		}
@@ -140,7 +145,7 @@ public class TillsTableRow extends RowWidget {
 	public void reconfigure(List<TableHeader> headers) {
 		int counter = 0;
 		for (TableHeader header : headers) {
-			System.err.println(counter+">>"+header.getisDisplayed());
+			// System.err.println(counter + ">>" + header.getisDisplayed());
 			if (header.getisDisplayed()) {
 				row.getWidget(counter).getElement().removeClassName("hide");
 			} else {

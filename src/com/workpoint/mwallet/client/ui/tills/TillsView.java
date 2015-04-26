@@ -21,6 +21,7 @@ import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.component.TextField;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTable;
 import com.workpoint.mwallet.client.ui.tills.table.TillsTableRow;
+import com.workpoint.mwallet.client.ui.util.DateRange;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -226,6 +227,11 @@ public class TillsView extends ViewImpl implements
 		if (isSuperUser) {
 			setSelection(selection);
 		}
+	}
+
+	@Override
+	public void setDates(DateRange passedDate) {
+		//Set the String in the View
 	}
 
 }
