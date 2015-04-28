@@ -10,58 +10,77 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
+import com.workpoint.mwallet.server.dao.DashboardDao;
 import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
+import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TestTills {
 
 	EntityManager em;
+
 	@Before
-	public void setupDB(){
+	public void setupDB() {
 		DB.beginTransaction();
 		em = DB.getEntityManager();
 	}
-	
+
 	@Ignore
-	public void searchClientByTill(){
-		ClientDocModel model = new ClientDao(em).getClientByTillCode("80576000");
-		
-		System.err.println("Client Code >>"+ model.getClientcode());
+	public void searchClientByTill() {
+		ClientDocModel model = new ClientDao(em)
+				.getClientByTillCode("80576000");
+
+		System.err.println("Client Code >>" + model.getClientcode());
 	}
-	
-	
-	@Test
-	public void search(){
-		
+
+	@Ignore
+	public void search() {
+
 		SearchFilter filter = new SearchFilter();
-		
-		//boolean status = new TillDao(em).updateGradesView("2014-01-01", "2015-04-30");
-		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim", true, false, 9L);
-		
-//		for (TillDTO till : tills) {
-//			System.err.println("Till Id:"+till.getId()+"Grade:");
-//		}
-//		
-		
-		
-//		List<TransactionDTO> trxs = new TransactionDao(em).getAll(null, "TomKim", true, false,9L);
-//		 System.err.println(trxs.size()+" ");
-		
+
+		// boolean status = new TillDao(em).updateGradesView("2014-01-01",
+		// "2015-04-30");
+		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim",
+				true, false, 9L);
+
+		// for (TillDTO till : tills) {
+		// System.err.println("Till Id:"+till.getId()+"Grade:");
+		// }
+		//
+
+		// List<TransactionDTO> trxs = new TransactionDao(em).getAll(null,
+		// "TomKim", true, false,9L);
+		// System.err.println(trxs.size()+" ");
+
 	}
-	
+
+	@Test
+	public void search2() {
+
+		DashboardDao dao = new DashboardDao(em);
+		
+		dao.updateGradesCount();
+		List<GradeCountDTO> grades = dao.getAllGradeCount(null,true);
+		
+		for (GradeCountDTO grade : grades) {
+			System.err.println("Grade Count:" + grade.getGradeCount());
+		}
+
+	}
+
 	@Ignore
-	public void saveTills(){
+	public void saveTills() {
 		User user = new User();
 		user.setEmail("kamu@wira.io");
 		user.setUserId("Kamau");
 		user.setLastName("Kamau");
 		user.setFirstName("William");
-		
+
 		User user1 = new User();
 		user1.setEmail("njoroge@wira.io");
 		user1.setUserId("Njoroge");
@@ -75,7 +94,7 @@ public class TestTills {
 		salesPerson.setLastName("Wahito");
 		salesPerson.setFirstName("Priscilla");
 		em.persist(salesPerson);
-		
+
 		TillModel model = new TillModel();
 		model.setBusinessName("Nyahururu Traders Ltd");
 		model.setOwner(user);
@@ -83,15 +102,15 @@ public class TestTills {
 		model.setTillNumber("815632");
 		model.setAccountNo("815632");
 		model.setSalesPerson(salesPerson);
-		
+
 		em.persist(user);
 		em.persist(user1);
 		em.persist(model);
-		
+
 	}
-	
+
 	@After
-	public void commit(){
+	public void commit() {
 		DB.commitTransaction();
 		DB.closeSession();
 	}

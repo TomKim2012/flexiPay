@@ -49,6 +49,9 @@ public class TillDao extends BaseDaoImpl {
 						+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
 						+ "or :isSU='Y') ");
 
+		String orderBy = "ORDER BY tg.tillAverage DESC";
+		jpql.append(orderBy);
+
 		// or :isAdmin='Y'
 		// or :isSU='Y'
 		Map<String, Object> params = appendParameters(filter, jpql);

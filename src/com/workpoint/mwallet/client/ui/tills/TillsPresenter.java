@@ -149,14 +149,14 @@ public class TillsPresenter extends
 
 	private void loadData() {
 		fireEvent(new ProcessingEvent("Loading.."));
-		
+
 		this.setDateRange = DateRange.THISQUARTER;
-		
+
 		filter.setStartDate(DateUtils.getDateByRange(DateRange.THISQUARTER));
 		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
-		
+
 		getView().setDates(DateRange.THISQUARTER);
-		
+
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetUsersRequest(true));
 		action.addRequest(new GetTillsRequest(filter));
@@ -191,22 +191,22 @@ public class TillsPresenter extends
 
 	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
-		Collections.sort(tills);
+		//Collections.sort(tills);
 
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
-		
+
 		String gradeDate = setDateRange.getDisplayName();
-		
+
 		tableHeaders = Arrays.asList(new TableHeader("", true),
 				new TableHeader("Business Name", true), new TableHeader(
 						"Business No", true), new TableHeader("Account No",
 						false), new TableHeader("Phone No", false),
 				new TableHeader("Owner", true), new TableHeader("Acquirer",
 						true), new TableHeader("Category", false),
-				new TableHeader("Status", false),
-				new TableHeader("Grade("+gradeDate+")", true), new TableHeader(
+				new TableHeader("Status", false), new TableHeader("Grade("
+						+ gradeDate + ")", true), new TableHeader(
 						"Last Modified", false));
 
 		getView().setHeaders(tableHeaders);
