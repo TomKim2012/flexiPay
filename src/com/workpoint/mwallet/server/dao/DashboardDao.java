@@ -23,10 +23,10 @@ public class DashboardDao extends BaseDaoImpl {
 
 		StringBuffer jpql = new StringBuffer(
 
-		"select tr.min_value,tr.max_value,tr.grade,tr.description,gc.gradeCount"
-				+ " from [GradeCount] gc "
-				+ "INNER JOIN TillRanges tr ON (gc.grade = tr.grade) "
-				+ "where " + ":isSU='Y' ");
+				"select tr.min_value,tr.max_value,tr.grade,tr.description,gc.gradeCount,tr.color"
+						+ " from [GradeCount] gc "
+						+ "INNER JOIN TillRanges tr ON (gc.grade = tr.grade) "
+						+ "where " + ":isSU='Y' ");
 
 		Query query = em.createNativeQuery(jpql.toString()).setParameter(
 				"isSU", isSU ? "Y" : "N");
@@ -47,11 +47,12 @@ public class DashboardDao extends BaseDaoImpl {
 			String grade = (value = row[i++]) == null ? null : value.toString();
 			String gradeDesc = (value = row[i++]) == null ? null : value
 					.toString();
-			Integer gradeCount = (value = row[i++]) == null ? null : new Integer(
-					value.toString());
+			Integer gradeCount = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			String color = (value = row[i++]) == null ? null : value.toString();
 
 			GradeCountDTO summary = new GradeCountDTO(grade, minValue,
-					maxValue, gradeDesc, gradeCount);
+					maxValue, gradeDesc, gradeCount, color);
 
 			grades.add(summary);
 		}

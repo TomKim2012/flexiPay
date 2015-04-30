@@ -133,6 +133,7 @@ public class HomePresenter extends
 				@Override
 				public void processResult(DashboardPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
+					aResponse.loadData();
 					getView().setSelectedTab("Dashboard");
 				}
 			});

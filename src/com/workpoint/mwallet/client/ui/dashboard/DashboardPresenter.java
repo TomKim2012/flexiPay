@@ -1,37 +1,30 @@
-
 package com.workpoint.mwallet.client.ui.dashboard;
 
+import java.util.List;
+
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.shared.model.GradeCountDTO;
+import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
+import com.workpoint.mwallet.shared.responses.GetGradeCountRequestResult;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class DashboardPresenter extends
 		PresenterWidget<DashboardPresenter.MyView> {
 
 	public interface MyView extends View {
 
-		/*void generate(List<ProgramAnalysis> list);
+		void setGradeCount(List<GradeCountDTO> gradeCount);
 
-		void setAnalysis(List<PerformanceModel> budgetsPerfomance,
-				List<PerformanceModel> targetsPerfomance,
-				List<PerformanceModel> timelinesPerfomance,
-				List<PerformanceModel> throughputPerfomance);
-		*/
 	}
-	
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> PROGRAM_ANALYSIS = new Type<RevealContentHandler<?>>();
+	@Inject
+	DispatchAsync requestHelper;
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> OVERALLTURNAROUND_SLOT = new Type<RevealContentHandler<?>>();
-	
-	@Inject DispatchAsync requestHelper;
-	
 	@Inject
 	public DashboardPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -41,35 +34,22 @@ public class DashboardPresenter extends
 	protected void onBind() {
 		super.onBind();
 	}
-	
-	public void loadData(){
-		/*MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetAnalysisDataRequest(null));
-		action.addRequest(new GetPerformanceDataRequest(Metric.BUDGET));
-		action.addRequest(new GetPerformanceDataRequest(Metric.TARGETS));
-		action.addRequest(new GetPerformanceDataRequest(Metric.TIMELINES));
-		action.addRequest(new GetPerformanceDataRequest(Metric.THROUGHPUT));
-		
+
+	public void loadData() {
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetGradeCountRequest());
+
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
-			@Override
-			public void processResult(MultiRequestActionResult aResponse) {
-				int i=0;
-				List<ProgramAnalysis> list = ((GetAnalysisDataResponse)aResponse.get(i++)).getData();
-				generateViews(list);
-				
-				List<PerformanceModel> budgetsPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				List<PerformanceModel> targetsPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				List<PerformanceModel> timelinesPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				List<PerformanceModel> throughputPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				
-				
-				getView().setAnalysis(budgetsPerfomance, targetsPerfomance, timelinesPerfomance, throughputPerfomance);
-			}
-		});*/
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
+						GetGradeCountRequestResult dashboardResponse = (GetGradeCountRequestResult) aResponse
+								.get(i++);
+
+						getView().setGradeCount(dashboardResponse.getGradeCount());
+					}
+				});
 	}
 
-	/*protected void generateViews(List<ProgramAnalysis> list) {
-		getView().generate(list);
-	}*/
 }

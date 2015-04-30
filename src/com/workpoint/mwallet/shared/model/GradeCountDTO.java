@@ -1,6 +1,8 @@
 package com.workpoint.mwallet.shared.model;
 
-public class GradeCountDTO {
+import java.io.Serializable;
+
+public class GradeCountDTO implements Serializable{
 	/**
 	 * 
 	 */
@@ -14,12 +16,15 @@ public class GradeCountDTO {
 
 	private Integer gradeCount;
 
+	private String color;
+
 	public GradeCountDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public GradeCountDTO(String Grade, Double minValue,
-			Double maxValue,String gradeDesc, Integer gradeCount) {
+			Double maxValue,String gradeDesc, Integer gradeCount, String color) {
+		this.setColor(color);
 		this.setGradeCount(gradeCount);
 		this.setMinValue(minValue);
 		this.setMaxValue(maxValue);
@@ -65,6 +70,14 @@ public class GradeCountDTO {
 
 	public void setGradeCount(Integer gradeCount) {
 		this.gradeCount = gradeCount;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }
