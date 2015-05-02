@@ -19,6 +19,7 @@ import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class TestTills {
 
@@ -64,12 +65,18 @@ public class TestTills {
 
 		DashboardDao dao = new DashboardDao(em);
 		
-		dao.updateGradesCount();
-		List<GradeCountDTO> grades = dao.getAllGradeCount(null,true);
+		dao.updateGetTrendView("2014-10-01", "2015-04-01");
+		//dao.updateGradesCount();
 		
-		for (GradeCountDTO grade : grades) {
-			System.err.println("Grade Count:" + grade.getGradeCount());
+		List<TrendDTO> trends = dao.getTrend(null, true);
+		for (TrendDTO trend : trends) {
+			System.err.println("Trend:" + trend.getTotalAmount());
 		}
+		
+//		List<GradeCountDTO> grades = dao.getAllGradeCount(null,true);
+//		for (GradeCountDTO grade : grades) {
+//			System.err.println("Grade Count:" + grade.getGradeCount());
+//		}
 
 	}
 

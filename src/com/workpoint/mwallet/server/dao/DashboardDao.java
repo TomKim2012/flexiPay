@@ -1,6 +1,7 @@
 package com.workpoint.mwallet.server.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,11 +9,62 @@ import javax.persistence.Query;
 
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class DashboardDao extends BaseDaoImpl {
 
 	public DashboardDao(EntityManager em) {
 		super(em);
+	}
+
+	public List<TrendDTO> getTrend(SearchFilter filter, boolean isSU) {
+
+		if (filter == null) {
+			filter = new SearchFilter();
+		}
+
+		StringBuffer jpql = new StringBuffer(
+
+		"select * from [TrendView] tv where " + ":isSU='Y' ");
+
+		Query query = em.createNativeQuery(jpql.toString()).setParameter(
+				"isSU", isSU ? "Y" : "N");
+
+		List<Object[]> rows = getResultList(query);
+		List<TrendDTO> trends = new ArrayList<TrendDTO>();
+
+
+		for (Object[] row : rows) {
+			int i = 0;
+			Object value = null;
+
+			Long monthId = (value = row[i++]) == null ? null : new Long(
+					value.toString());
+			Integer totalTrxs = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			
+			Double totalAmount = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			Integer uniqueMerchants = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			Integer uniqueCustomers = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			Double customerAverage = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			Double merchantAverage = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			Date startDate = (value = row[i++]) == null ? null : (Date) value;
+			Date endDate = (value = row[i++]) == null ? null : (Date) value;
+			
+			
+			TrendDTO summary = new TrendDTO(monthId,totalTrxs,totalAmount,
+					uniqueMerchants, uniqueCustomers, customerAverage,
+					merchantAverage, startDate, endDate);
+
+			trends.add(summary);
+		}
+
+		return trends;
 	}
 
 	public List<GradeCountDTO> getAllGradeCount(SearchFilter filter,
@@ -34,7 +86,6 @@ public class DashboardDao extends BaseDaoImpl {
 		List<Object[]> rows = getResultList(query);
 		List<GradeCountDTO> grades = new ArrayList<>();
 
-		byte boolTrue = 1;
 
 		for (Object[] row : rows) {
 			int i = 0;
@@ -87,6 +138,18 @@ public class DashboardDao extends BaseDaoImpl {
 		String sqlBuffer = "CREATE VIEW [GradeCount] AS "
 				+ "select tr.grade,COUNT(*) as gradeCount from TillRanges "
 				+ "tr INNER JOIN TillGrades tg on (tg.grade=tr.grade) GROUP BY tr.grade";
+
+		int viewQuery = em.createNativeQuery(sqlBuffer.toString())
+				.executeUpdate();
+	}
+
+	public void updateGetTrendView(String startDate, String endDate) {
+		String dropView = "DROP VIEW TrendView";
+		Query dropquery = em.createNativeQuery(dropView);
+		dropquery.executeUpdate();
+
+		String sqlBuffer = "CREATE VIEW [TrendView] AS " + "select * from "
+				+ "dbo.getTrends('" + startDate + "','" + endDate + "')";
 
 		int viewQuery = em.createNativeQuery(sqlBuffer.toString())
 				.executeUpdate();

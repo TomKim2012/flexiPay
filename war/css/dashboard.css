@@ -275,7 +275,7 @@
   background-color: #555;
 }
 .portlet .portlet-content {
-  padding: 0px 0px;
+  padding: 0px 45px;
   background: #FFF;
   border: 1px solid #D5D5D5;
   -webkit-border-radius: 4px;

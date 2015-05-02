@@ -8,10 +8,15 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
+import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
+import com.workpoint.mwallet.shared.model.TrendDTO;
 import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
+import com.workpoint.mwallet.shared.requests.GetTrendRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.responses.GetGradeCountRequestResult;
+import com.workpoint.mwallet.shared.responses.GetTrendRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class DashboardPresenter extends
@@ -21,7 +26,10 @@ public class DashboardPresenter extends
 
 		void setGradeCount(List<GradeCountDTO> gradeCount);
 
+		void setTrend(List<TrendDTO> trends);
+
 	}
+
 	@Inject
 	DispatchAsync requestHelper;
 
@@ -36,8 +44,10 @@ public class DashboardPresenter extends
 	}
 
 	public void loadData() {
+		fireEvent(new ProcessingEvent());
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetGradeCountRequest());
+		action.addRequest(new GetTrendRequest());
 
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -46,8 +56,13 @@ public class DashboardPresenter extends
 						int i = 0;
 						GetGradeCountRequestResult dashboardResponse = (GetGradeCountRequestResult) aResponse
 								.get(i++);
+						getView().setGradeCount(
+								dashboardResponse.getGradeCount());
 
-						getView().setGradeCount(dashboardResponse.getGradeCount());
+						GetTrendRequestResult trendResponse = (GetTrendRequestResult) aResponse
+								.get(i++);
+						getView().setTrend(trendResponse.getTrends());
+						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}
