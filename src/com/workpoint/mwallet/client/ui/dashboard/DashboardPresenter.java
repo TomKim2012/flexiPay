@@ -1,16 +1,23 @@
 package com.workpoint.mwallet.client.ui.dashboard;
 
+import java.util.Date;
 import java.util.List;
 
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.component.DateBoxDropDown;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
+import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TrendDTO;
 import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
 import com.workpoint.mwallet.shared.requests.GetTrendRequest;
@@ -28,10 +35,15 @@ public class DashboardPresenter extends
 
 		void setTrend(List<TrendDTO> trends);
 
+		HasChangeHandlers getPeriodDropDown();
+
+		SearchFilter setDateRange(String displayName, Date passedStart,
+				Date passedEnd);
 	}
 
 	@Inject
 	DispatchAsync requestHelper;
+	private SearchFilter filter = new SearchFilter();
 
 	@Inject
 	public DashboardPresenter(final EventBus eventBus, final MyView view) {
@@ -41,13 +53,30 @@ public class DashboardPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
+
+		getView().getPeriodDropDown().addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				String selected = ((DropdownButton) event.getSource())
+						.getLastSelectedNavLink().getText().trim();
+
+				filter = getView().setDateRange(selected, null, null);
+				loadData(filter);
+			}
+		});
 	}
 
 	public void loadData() {
+		filter = getView().setDateRange("Last 6 Months", null, null);
+		loadData(filter);
+	}
+
+	public void loadData(SearchFilter filter) {
 		fireEvent(new ProcessingEvent());
+
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetGradeCountRequest());
-		action.addRequest(new GetTrendRequest());
+		action.addRequest(new GetGradeCountRequest(filter));
+		action.addRequest(new GetTrendRequest(filter));
 
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {

@@ -22,7 +22,7 @@
 			</div>
 		</div>
 
-		<g:HTMLPanel styleName="content-top hide" ui:field="divContentTop">
+		<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
 			<!--Action Buttons -->
 			<div class="action-buttons row-fluid">
 				<div class="span6 till-box">
@@ -38,50 +38,13 @@
 				</div>
 
 				<div class="span6 date-box">
-					<b:Form type="HORIZONTAL">
-						<b:ControlGroup>
-							<b:ControlLabel>Choose Date(s):</b:ControlLabel>
-							<b:Controls>
-								<b:NavPills>
-									<b:DropdownButton ui:field="periodDropdown"></b:DropdownButton>
-								</b:NavPills>
-							</b:Controls>
-						</b:ControlGroup>
-					</b:Form>
-					<g:HTMLPanel styleName="row-fluid" ui:field="panelDates">
-						<b:Row>
-							<g:HTMLPanel ui:field="panelDatePicker1" styleName="relative">
-								<d:CustomDateBox format="dd/mm/yyyy" autoClose="false"
-									ui:field="boxDatePickerStart" />
-							</g:HTMLPanel>
-							<g:HTMLPanel ui:field="panelDatePicker2" styleName="relative">
-								<d:CustomDateBox format="dd/mm/yyyy" autoClose="false"
-									ui:field="boxDatePickerEnd" />
-							</g:HTMLPanel>
-						</b:Row>
-						<b:Row>
-							<g:FocusPanel styleName="row-button hide" ui:field="panelDone">
-								<b:Column size="4" styleName="pull-right">
-									<b:Button text="Done" ui:field="btnDone" type="PRIMARY"
-										styleName="btn">
-									</b:Button>
-								</b:Column>
-							</g:FocusPanel>
-						</b:Row>
-					</g:HTMLPanel>
-
-					<div class="span1 pull-right">
-						<d:ActionLink ui:field="aRefresh" styleName="btn"
-							dataToggle="tooltip" title="Refresh">
-							<span class="icon-refresh"></span>
-						</d:ActionLink>
-					</div>
+					<d:DateBoxDropDown ui:field="boxDatePick"></d:DateBoxDropDown>
 				</div>
 			</div>
 		</g:HTMLPanel>
 
 
-		<div class="row-fluid top-section section">
+		<div class="row-fluid top-section section hide">
 			<div class="span4">
 				<a class="dashboard-stat tertiary">
 					<div class="visual">
@@ -135,10 +98,23 @@
 
 			</div> <!-- /.col-md-3 -->
 		</div>
-		<g:HTMLPanel>
-			<b:NavPills>
-				<b:DropdownButton ui:field="TrendsDropdown"></b:DropdownButton>
-			</b:NavPills>
+		<g:HTMLPanel styleName="selection-section">
+			<div class="span2">
+				<strong> Compare:</strong>
+			</div>
+			<div class="span2">
+				<b:NavPills>
+					<b:DropdownButton ui:field="TrendsDropdown"></b:DropdownButton>
+				</b:NavPills>
+			</div>
+			<div class="span1">
+				<strong>Vs:</strong>
+			</div>
+			<div class="span2">
+				<b:NavPills>
+					<b:DropdownButton ui:field="TrendsDropdown2"></b:DropdownButton>
+				</b:NavPills>
+			</div>
 		</g:HTMLPanel>
 
 		<g:HTMLPanel ui:field="panelTrends" styleName="row-fluid span12">

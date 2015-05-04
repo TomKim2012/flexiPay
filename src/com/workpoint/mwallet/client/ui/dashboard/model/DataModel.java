@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.dashboard;
+package com.workpoint.mwallet.client.ui.dashboard.model;
 
 public class DataModel {
 	private int id;

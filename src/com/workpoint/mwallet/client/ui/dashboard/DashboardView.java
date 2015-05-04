@@ -1,6 +1,7 @@
 package com.workpoint.mwallet.client.ui.dashboard;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -31,6 +33,7 @@ import com.sencha.gxt.chart.client.chart.series.Series.LabelPosition;
 import com.sencha.gxt.chart.client.chart.series.SeriesLabelConfig;
 import com.sencha.gxt.chart.client.chart.series.SeriesLabelProvider;
 import com.sencha.gxt.chart.client.chart.series.SeriesToolTipConfig;
+import com.sencha.gxt.chart.client.draw.Color;
 import com.sencha.gxt.chart.client.draw.Gradient;
 import com.sencha.gxt.chart.client.draw.RGB;
 import com.sencha.gxt.chart.client.draw.Stop;
@@ -42,10 +45,17 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.workpoint.mwallet.client.ui.charts.PieChart;
+import com.workpoint.mwallet.client.ui.component.DateBoxDropDown;
 import com.workpoint.mwallet.client.ui.dashboard.linegraph.data.ToolTip;
+import com.workpoint.mwallet.client.ui.dashboard.model.Data;
+import com.workpoint.mwallet.client.ui.dashboard.model.DataModel;
+import com.workpoint.mwallet.client.ui.dashboard.model.DataModelProperties;
+import com.workpoint.mwallet.client.ui.dashboard.model.DataPropertyAccess;
+import com.workpoint.mwallet.client.ui.dashboard.model.Trends;
 import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
+import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class DashboardView extends ViewImpl implements
@@ -63,7 +73,9 @@ public class DashboardView extends ViewImpl implements
 	@UiField
 	SpanElement spnRemaining;
 
-	//
+	@UiField
+	DateBoxDropDown boxDatePick;
+
 	@UiField
 	PieChart pieTillAnalysis;
 
@@ -75,32 +87,45 @@ public class DashboardView extends ViewImpl implements
 
 	@UiField
 	DropdownButton TrendsDropdown;
+	@UiField
+	DropdownButton TrendsDropdown2;
 
 	@Inject
 	public DashboardView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
+		addDropDownChangeHandler();
 	}
-	
-//	private void configureSelectedTrend(){
-//		if (trend.equals(selectedTrend)) {
-//			InlineLabel label = new InlineLabel();
-//			label.setStyleName("icon icon-ok pull-left");
-//			link.add(label);
-//		}
-//	}
-	
+
 	private void setTrendsDropDown(Trends selectedTrend) {
 		TrendsDropdown.clear();
 		for (Trends trend : Trends.values()) {
 			NavLink link = new NavLink();
 			link.setText(trend.getDisplayName());
-//			if (trend.equals(selectedTrend)) {
-//				InlineLabel label = new InlineLabel();
-//				label.setStyleName("icon icon-ok pull-left");
-//				link.add(label);
-//			}
+			if (trend.equals(selectedTrend)) {
+				InlineLabel label = new InlineLabel();
+				label.setStyleName("icon icon-ok pull-left");
+				link.add(label);
+			}
 			TrendsDropdown.add(link);
 		}
+	}
+
+	private void setTrendsDropDown2(Trends selectedTrend) {
+		TrendsDropdown2.clear();
+		for (Trends trend : Trends.values()) {
+			NavLink link = new NavLink();
+			link.setText(trend.getDisplayName());
+			if (selectedTrend == null) {
+			} else if (trend.equals(selectedTrend)) {
+				InlineLabel label = new InlineLabel();
+				label.setStyleName("icon icon-ok pull-left");
+				link.add(label);
+			}
+			TrendsDropdown2.add(link);
+		}
+	}
+
+	private void addDropDownChangeHandler() {
 		TrendsDropdown.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -108,10 +133,20 @@ public class DashboardView extends ViewImpl implements
 						.getText().trim();
 
 				Trends selectedTrend = Trends.getTrendFromName(selected);
-				configureTrend(selectedTrend);
+				configureTrend(selectedTrend, null, leftAxis);
 			}
 		});
 
+		TrendsDropdown2.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				String selected = TrendsDropdown2.getLastSelectedNavLink()
+						.getText().trim();
+
+				Trends selectedTrend = Trends.getTrendFromName(selected);
+				configureTrend(null, selectedTrend, rightAxis);
+			}
+		});
 	}
 
 	private static final DataPropertyAccess dataAccess = GWT
@@ -139,7 +174,8 @@ public class DashboardView extends ViewImpl implements
 	private NumericAxis<Data> rightAxis;
 
 	List<LineSeries<Data>> allSeries = new ArrayList<>();
-	List<LineSeries<Data>> displayedSeries = new ArrayList<>();
+	List<LineSeries<Data>> leftDisplayedSeries = new ArrayList<>();
+	List<LineSeries<Data>> rightDisplayedSeries = new ArrayList<>();
 
 	@Override
 	public void setGradeCount(List<GradeCountDTO> gradeCounts) {
@@ -164,6 +200,7 @@ public class DashboardView extends ViewImpl implements
 
 	@Override
 	public void setTrend(List<TrendDTO> trends) {
+		panelTrends.clear();
 		List<Data> data = new ArrayList<Data>();
 		store = new ListStore<Data>(dataAccess.nameKey());
 		for (TrendDTO trend : trends) {
@@ -194,14 +231,12 @@ public class DashboardView extends ViewImpl implements
 					+ NumberUtils.NUMBERFORMAT.format(uniqueMerchants);
 
 			String toolTipMerchantAvg = "Merchant Average:"
-					+ NumberUtils.CURRENCYFORMAT.format(trend
-							.getMerchantAverage());
+					+ NumberUtils.CURRENCYFORMAT.format(merchantAvg);
 			String toolTipCustomers = "Customers:"
 					+ NumberUtils.NUMBERFORMAT.format(uniqueCustomers);
 
 			String toolTipCustomerAvg = "Customer Average:"
-					+ NumberUtils.CURRENCYFORMAT.format(trend
-							.getCustomerAverage());
+					+ NumberUtils.CURRENCYFORMAT.format(customerAvg);
 
 			ToolTip toolTips = new ToolTip(toolTipTrxs, toolTipSales,
 					toolTipMerchants, toolTipMerchantAvg, toolTipCustomers,
@@ -215,15 +250,19 @@ public class DashboardView extends ViewImpl implements
 		configureLineChart();
 
 		// Configure To only Display Total Sales
-		configureTrend(Trends.TOTALSALES);
+		configureTrend(Trends.TOTALSALES, null, leftAxis);
 		setTrendsDropDown(Trends.TOTALSALES);
 	}
 
 	Map<Integer, ValueProvider<Data, Double>> allProviders = new HashMap<Integer, ValueProvider<Data, Double>>();
-	Map<Integer, ValueProvider<Data, Double>> displayedProviders = new HashMap<Integer, ValueProvider<Data, Double>>();
+	Map<Integer, ValueProvider<Data, Double>> leftDisplayedProviders = new HashMap<Integer, ValueProvider<Data, Double>>();
+	Map<Integer, ValueProvider<Data, Double>> rightDisplayedProviders = new HashMap<Integer, ValueProvider<Data, Double>>();
+
+	private Object selectedTrend;
+
+	private SearchFilter filter = new SearchFilter();
 
 	public void configureLineChart() {
-
 		allProviders.put(1, dataAccess.data1());
 		allProviders.put(2, dataAccess.data2());
 		allProviders.put(3, dataAccess.data3());
@@ -231,23 +270,15 @@ public class DashboardView extends ViewImpl implements
 		allProviders.put(5, dataAccess.data5());
 		allProviders.put(6, dataAccess.data6());
 
-		TextSprite salesVolume = new TextSprite("Sales Volume");
-		salesVolume.setFontSize(18);
-
-		TextSprite merchantAverage = new TextSprite("Merchants/Customers");
-		merchantAverage.setFontSize(18);
-
 		TextSprite titleMonthYear = new TextSprite("Month of the Year");
 		titleMonthYear.setFontSize(18);
 
 		leftAxis = new NumericAxis<Data>();
 		leftAxis.setPosition(Position.LEFT);
 		leftAxis.setDisplayGrid(true);
-		leftAxis.setTitleConfig(salesVolume);
 
 		rightAxis = new NumericAxis<Data>();
 		rightAxis.setPosition(Position.RIGHT);
-		rightAxis.setTitleConfig(merchantAverage);
 
 		// Axis that displays months at the bottom
 		CategoryAxis<Data, String> catAxis = new CategoryAxis<Data, String>();
@@ -303,6 +334,10 @@ public class DashboardView extends ViewImpl implements
 				return item.getToolTips().getToolTipSales();
 			}
 		});
+
+		// Marker
+		marker = Primitives.diamond(0, 0, 6);
+		marker.setFill(new RGB(32, 68, 186));
 
 		LineSeries<Data> seriesSales = new LineSeries<Data>();
 		seriesSales.setYField(dataAccess.data2());
@@ -437,7 +472,7 @@ public class DashboardView extends ViewImpl implements
 
 		// Legend Configuration
 		Legend<Data> legend = new Legend<Data>();
-		legend.setPosition(Position.RIGHT);
+		legend.setPosition(Position.TOP);
 		legend.setItemHighlighting(true);
 		legend.setItemHiding(true);
 		legend.getBorderConfig().setStrokeWidth(0);
@@ -452,6 +487,7 @@ public class DashboardView extends ViewImpl implements
 		lineChart.addAxis(catAxis);
 		lineChart.setLegend(legend);
 		lineChart.setAnimated(true);
+		lineChart.redrawChart();
 
 		lineChart.setHeight(400);
 		lineChart.setWidth(1050);
@@ -460,62 +496,112 @@ public class DashboardView extends ViewImpl implements
 		panelTrends.add(lineChart);
 	}
 
+	/*
+	 * Remove Field from an Axis
+	 */
 	public void removeField(NumericAxis<Data> passedAxis) {
-		for (Integer key : displayedProviders.keySet()) {
-			System.err.println("Removed Axis:"
-					+ displayedProviders.get(key).getPath());
-			passedAxis.removeField(displayedProviders.get(key));
+		if (passedAxis.equals(leftAxis)) {
+			clearField(passedAxis, leftDisplayedProviders);
+			leftDisplayedProviders.clear();
+			removeSeries(leftDisplayedSeries);
+		} else {
+			clearField(passedAxis, rightDisplayedProviders);
+			rightDisplayedProviders.clear();
+			removeSeries(rightDisplayedSeries);
 		}
-		displayedProviders.clear();
 	}
 
-	public void removeSeries() {
-		if (displayedSeries.size() > 0) {
-			for (LineSeries<Data> series : displayedSeries) {
+	private void clearField(NumericAxis<Data> passedAxis,
+			Map<Integer, ValueProvider<Data, Double>> passedDisplayedProvider) {
+		for (Integer key : passedDisplayedProvider.keySet()) {
+			System.err.println("Removed Axis:"
+					+ passedDisplayedProvider.get(key).getPath());
+			passedAxis.removeField(passedDisplayedProvider.get(key));
+		}
+	}
+
+	public void removeSeries(List<LineSeries<Data>> passedDisplayedSeries) {
+		if (passedDisplayedSeries.size() > 0) {
+			for (LineSeries<Data> series : passedDisplayedSeries) {
 				lineChart.removeSeries(series);
 				System.err.println("Removed Series:"
 						+ series.getLegendTitles().get(0));
 			}
-			displayedSeries.clear();
+			passedDisplayedSeries.clear();
 		}
 	}
 
-	public void configureTrend(Trends passedTrend) {
+	/*
+	 * Configure Trends.Sales,null,leftAxis
+	 */
+	public void configureTrend(Trends passedTrend, Trends passedTrend2,
+			NumericAxis<Data> passedAxis) {
+
+		// Configures the Name on the Axis
+		String displayName = "";
+		if (passedTrend != null) {
+			displayName = passedTrend.getDisplayName();
+		} else {
+			displayName = passedTrend2.getDisplayName();
+		}
+
+		TextSprite trendName = new TextSprite(displayName);
+		trendName.setFontSize(18);
+		passedAxis.clear();
+		passedAxis.setTitleConfig(trendName);
+
+		// Loop through the Trend to get the Axis Configuration and the Series
 		int i = 1;
 		for (Trends trend1 : Trends.values()) {
-			if (trend1 == passedTrend) {
+			Trends comparedTrend = (passedTrend == null ? passedTrend2
+					: passedTrend);
+			if (trend1 == comparedTrend) {
 				ValueProvider<Data, Double> item = allProviders.get(i);
 
-				//
-				// if (i == 2 || i == 5 || i == 6) {
-				// removeField(i, leftAxis);
-				// leftAxis.addField(item);
-				// } else {
-				// removeField(i, rightAxis);
-				// rightAxis.addField(item);
-				// }
-
-				removeField(leftAxis);
-				leftAxis.addField(item);
+				removeField(passedAxis);
+				passedAxis.addField(item);
 				System.err.println("Axis Added:" + item.getPath());
-				displayedProviders.put(i, item);
 
-				removeSeries();
 				lineChart.addSeries(allSeries.get(i - 1));
-				allSeries.get(i - 1).setYAxisPosition(Position.LEFT);
+
+				if (passedAxis.equals(leftAxis)) {
+					addProvider(leftDisplayedProviders, i, item);
+					allSeries.get(i - 1).setYAxisPosition(Position.LEFT);
+					leftDisplayedSeries.add(allSeries.get(i - 1));
+				} else {
+					addProvider(rightDisplayedProviders, i, item);
+					allSeries.get(i - 1).setYAxisPosition(Position.RIGHT);
+					allSeries.get(i - 1).setFill(Color.NONE);
+					rightDisplayedSeries.add(allSeries.get(i - 1));
+				}
 				System.err.println("Series Added:"
 						+ allSeries.get(i - 1).getLegendTitles().get(0));
-				displayedSeries.add(allSeries.get(i - 1));
 			}
 			i++;
 		}
-		TrendsDropdown.setText(passedTrend.getDisplayName());
-//		setTrendsDropDown(passedTrend);
+		if (passedTrend != null) {
+			TrendsDropdown.setText(passedTrend.getDisplayName());
+		}
+		if (passedTrend2 == null && selectedTrend == null) {
+			TrendsDropdown2.setText("--Select---");
+		} else {
+			TrendsDropdown2.setText(passedTrend2.getDisplayName());
+			selectedTrend = passedTrend2;
+		}
+
+		setTrendsDropDown(passedTrend);
+		setTrendsDropDown2(passedTrend2);
+
 		lineChart.redrawChart();
 	}
 
-	public void configurePieChart() {
+	private void addProvider(
+			Map<Integer, ValueProvider<Data, Double>> passedProvider, int i,
+			ValueProvider<Data, Double> item) {
+		passedProvider.put(i, item);
+	}
 
+	public void configurePieChart() {
 		// Setup the chart list store
 		listStore = new ListStore<DataModel>(dataModelProperties.id());
 
@@ -528,6 +614,7 @@ public class DashboardView extends ViewImpl implements
 		Legend<DataModel> legend = new Legend<DataModel>();
 		legend.setPosition(Position.RIGHT);
 		legend.setItemHighlighting(true);
+		legend.setItemHiding(true);
 		pieChart.setLegend(legend);
 
 		series = new PieSeries<DataModel>();
@@ -592,6 +679,43 @@ public class DashboardView extends ViewImpl implements
 			++i;
 		}
 
+	}
+
+	@Override
+	public SearchFilter setDateRange(String displayName, Date passedStart,
+			Date passedEnd) {
+		Date startDate = null;
+		Date endDate = null;
+
+		if (displayName != null) {
+			startDate = boxDatePick.getDateFromName(displayName, true);
+			endDate = boxDatePick.getDateFromName(displayName, false);
+			boxDatePick.setDateString(displayName);
+		} else {
+			startDate = passedStart;
+			endDate = passedEnd;
+		}
+
+		boxDatePick.setStartDate(startDate);
+		boxDatePick.setEndDate(endDate);
+		
+		boxDatePick.setDateString(displayName);
+		
+
+		filter.setFormatedStartDate(DateUtils.SHORTTIMESTAMP.format(startDate));
+		filter.setFormatedEndDate(DateUtils.SHORTTIMESTAMP.format(endDate));
+
+		System.err.println("startDate:"
+				+ DateUtils.SHORTTIMESTAMP.format(startDate));
+		System.err.println("endDate:"
+				+ DateUtils.SHORTTIMESTAMP.format(endDate));
+
+		return filter;
+	}
+
+	@Override
+	public HasChangeHandlers getPeriodDropDown() {
+		return boxDatePick.getPeriodDropDown();
 	}
 
 }

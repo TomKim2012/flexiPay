@@ -14,7 +14,7 @@ import java.util.List;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Random;
 import com.sencha.gxt.core.client.util.DateWrapper;
-import com.workpoint.mwallet.client.ui.dashboard.Data;
+import com.workpoint.mwallet.client.ui.dashboard.model.Data;
 import com.workpoint.mwallet.client.ui.dashboard.samples.model.BaseDto;
 import com.workpoint.mwallet.client.ui.dashboard.samples.model.Country;
 import com.workpoint.mwallet.client.ui.dashboard.samples.model.FolderDto;

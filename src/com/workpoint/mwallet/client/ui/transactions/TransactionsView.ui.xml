@@ -27,44 +27,8 @@
 					</div>
 
 					<div class="span6 date-box">
-						<b:Form type="HORIZONTAL">
-							<b:ControlGroup>
-								<b:ControlLabel>Choose Date(s):</b:ControlLabel>
-								<b:Controls>
-									<b:NavPills>
-										<b:DropdownButton ui:field="periodDropdown"></b:DropdownButton>
-									</b:NavPills>
-								</b:Controls>
-							</b:ControlGroup>
-						</b:Form>
-						<g:HTMLPanel styleName="row-fluid" ui:field="panelDates">
-							<b:Row>
-								<g:HTMLPanel ui:field="panelDatePicker1" styleName="relative">
-									<d:CustomDateBox format="dd/mm/yyyy" autoClose="false"
-										ui:field="boxDatePickerStart" />
-								</g:HTMLPanel>
-								<g:HTMLPanel ui:field="panelDatePicker2" styleName="relative">
-									<d:CustomDateBox format="dd/mm/yyyy" autoClose="false"
-										ui:field="boxDatePickerEnd" />
-								</g:HTMLPanel>
-							</b:Row>
-							<b:Row>
-								<g:FocusPanel styleName="row-button hide" ui:field="panelDone">
-									<b:Column size="4" styleName="pull-right">
-										<b:Button text="Done" ui:field="btnDone" type="PRIMARY"
-											styleName="btn">
-										</b:Button>
-									</b:Column>
-								</g:FocusPanel>
-							</b:Row>
-						</g:HTMLPanel>
-
-						<div class="span1 pull-right">
-							<d:ActionLink ui:field="aRefresh" styleName="btn"
-								dataToggle="tooltip" title="Refresh">
-								<span class="icon-refresh"></span>
-							</d:ActionLink>
-						</div>
+						<d:DateBoxDropDown ui:field="boxDateBox"></d:DateBoxDropDown>
+						<d:ActionLink ui:field="aRefresh"></d:ActionLink>
 					</div>
 				</div>
 

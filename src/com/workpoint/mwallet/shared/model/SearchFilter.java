@@ -15,6 +15,8 @@ public class SearchFilter implements Serializable {
 	private UserDTO salesPerson;
 	private UserDTO cashier;
 	private Date startDate;
+	private String formatedStartDate;
+	private String formatedendDate;
 	private Date endDate;
 	private boolean isSu;
 
@@ -103,6 +105,21 @@ public class SearchFilter implements Serializable {
 	public void setSu(boolean isSu) {
 		this.isSu = isSu;
 	}
-	
+
+	public String getFormatedEndDate() {
+		return formatedendDate;
+	}
+
+	public void setFormatedEndDate(String formatedendDate) {
+		this.formatedendDate = formatedendDate;
+	}
+
+	public String getFormatedStartDate() {
+		return formatedStartDate;
+	}
+
+	public void setFormatedStartDate(String formatedStartDate) {
+		this.formatedStartDate = formatedStartDate;
+	}
 
 }

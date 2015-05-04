@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.dashboard;
+package com.workpoint.mwallet.client.ui.dashboard.model;
 
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;

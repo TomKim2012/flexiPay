@@ -65,18 +65,23 @@ public class TestTills {
 
 		DashboardDao dao = new DashboardDao(em);
 		
-		dao.updateGetTrendView("2014-10-01", "2015-04-01");
+//		dao.updateGetTrendView("2014-10-01", "2015-04-01");
 		//dao.updateGradesCount();
 		
-		List<TrendDTO> trends = dao.getTrend(null, true);
-		for (TrendDTO trend : trends) {
-			System.err.println("Trend:" + trend.getTotalAmount());
-		}
-		
-//		List<GradeCountDTO> grades = dao.getAllGradeCount(null,true);
-//		for (GradeCountDTO grade : grades) {
-//			System.err.println("Grade Count:" + grade.getGradeCount());
+		SearchFilter filter = new SearchFilter();
+		filter.setFormatedStartDate("2015-01-01");
+		filter.setFormatedEndDate("2015-04-01");
+//		dao.updateGetTrendView(filter);
+//		
+//		List<TrendDTO> trends = dao.getTrend(filter, true);
+//		for (TrendDTO trend : trends) {
+//			System.err.println("Trend:" + trend.getTotalAmount());
 //		}
+//		
+		List<GradeCountDTO> grades = dao.getAllGradeCount(filter,true);
+		for (GradeCountDTO grade : grades) {
+			System.err.println("Grade Count:" + grade.getGradeCount());
+		}
 
 	}
 

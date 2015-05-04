@@ -23,6 +23,8 @@ public class DashboardDao extends BaseDaoImpl {
 			filter = new SearchFilter();
 		}
 
+		updateGetTrendView(filter);
+
 		StringBuffer jpql = new StringBuffer(
 
 		"select * from [TrendView] tv where " + ":isSU='Y' ");
@@ -33,7 +35,6 @@ public class DashboardDao extends BaseDaoImpl {
 		List<Object[]> rows = getResultList(query);
 		List<TrendDTO> trends = new ArrayList<TrendDTO>();
 
-
 		for (Object[] row : rows) {
 			int i = 0;
 			Object value = null;
@@ -42,7 +43,7 @@ public class DashboardDao extends BaseDaoImpl {
 					value.toString());
 			Integer totalTrxs = (value = row[i++]) == null ? null
 					: new Integer(value.toString());
-			
+
 			Double totalAmount = (value = row[i++]) == null ? null
 					: new Double(value.toString());
 			Integer uniqueMerchants = (value = row[i++]) == null ? null
@@ -55,9 +56,8 @@ public class DashboardDao extends BaseDaoImpl {
 					: new Double(value.toString());
 			Date startDate = (value = row[i++]) == null ? null : (Date) value;
 			Date endDate = (value = row[i++]) == null ? null : (Date) value;
-			
-			
-			TrendDTO summary = new TrendDTO(monthId,totalTrxs,totalAmount,
+
+			TrendDTO summary = new TrendDTO(monthId, totalTrxs, totalAmount,
 					uniqueMerchants, uniqueCustomers, customerAverage,
 					merchantAverage, startDate, endDate);
 
@@ -73,8 +73,10 @@ public class DashboardDao extends BaseDaoImpl {
 			filter = new SearchFilter();
 		}
 
-		StringBuffer jpql = new StringBuffer(
+		updateGradesView(filter);
+		updateGradesCount();
 
+		StringBuffer jpql = new StringBuffer(
 				"select tr.min_value,tr.max_value,tr.grade,tr.description,gc.gradeCount,tr.color"
 						+ " from [GradeCount] gc "
 						+ "INNER JOIN TillRanges tr ON (gc.grade = tr.grade) "
@@ -85,7 +87,6 @@ public class DashboardDao extends BaseDaoImpl {
 
 		List<Object[]> rows = getResultList(query);
 		List<GradeCountDTO> grades = new ArrayList<>();
-
 
 		for (Object[] row : rows) {
 			int i = 0;
@@ -111,27 +112,33 @@ public class DashboardDao extends BaseDaoImpl {
 		return grades;
 	}
 
-	public boolean updateGradesView(String startDate, String endDate) {
-		String dropView = "DROP VIEW TillGrades";
+	public boolean updateGradesView(SearchFilter filter) {
+		String dropView =  "IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME ='"
+				+ "TillGrades') "+"DROP VIEW TillGrades";
 		Query dropquery = em.createNativeQuery(dropView);
 		dropquery.executeUpdate();
 
-		String sqlBuffer = "CREATE VIEW [TillGrades] AS "
-				+ "select business_number, "
-				+ "dbo.fn_getTillAverage(business_number,'" + startDate + "','"
-				+ endDate + "')" + " as tillAverage, "
-				+ "dbo.fn_GetTillRank(business_number,'" + startDate + "','"
-				+ endDate + "') as grade " + "from TillModel ";
+		if (filter.getFormatedStartDate() != null && filter.getFormatedEndDate() != null) {
+			String sqlBuffer = "CREATE VIEW [TillGrades] AS "
+					+ "select business_number, "
+					+ "dbo.fn_getTillAverage(business_number,'"
+					+ filter.getFormatedStartDate() + "','" + filter.getFormatedEndDate()
+					+ "')" + " as tillAverage, "
+					+ "dbo.fn_GetTillRank(business_number,'"
+					+ filter.getFormatedStartDate() + "','" + filter.getFormatedEndDate()
+					+ "') as grade " + "from TillModel ";
 
-		// System.out.println(sqlBuffer);
+			// System.out.println(sqlBuffer);
 
-		int viewQuery = em.createNativeQuery(sqlBuffer.toString())
-				.executeUpdate();
+			int viewQuery = em.createNativeQuery(sqlBuffer.toString())
+					.executeUpdate();
+		}
 		return true;
 	}
 
 	public void updateGradesCount() {
-		String dropView = "DROP VIEW GradeCount";
+		String dropView = "IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME ='"
+				+ "GradeCount') " + "DROP VIEW GradeCount";
 		Query dropquery = em.createNativeQuery(dropView);
 		dropquery.executeUpdate();
 
@@ -143,16 +150,20 @@ public class DashboardDao extends BaseDaoImpl {
 				.executeUpdate();
 	}
 
-	public void updateGetTrendView(String startDate, String endDate) {
-		String dropView = "DROP VIEW TrendView";
+	public void updateGetTrendView(SearchFilter filter) {
+		String dropView = "IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME ='"
+				+ "TrendView') " +"DROP VIEW TrendView";
 		Query dropquery = em.createNativeQuery(dropView);
 		dropquery.executeUpdate();
 
-		String sqlBuffer = "CREATE VIEW [TrendView] AS " + "select * from "
-				+ "dbo.getTrends('" + startDate + "','" + endDate + "')";
+		if (filter.getFormatedStartDate() != null && filter.getFormatedEndDate() != null) {
+			String sqlBuffer = "CREATE VIEW [TrendView] AS " + "select * from "
+					+ "dbo.getTrends('" + filter.getFormatedStartDate() + "','"
+					+ filter.getFormatedEndDate() + "')";
 
-		int viewQuery = em.createNativeQuery(sqlBuffer.toString())
-				.executeUpdate();
+			int viewQuery = em.createNativeQuery(sqlBuffer.toString())
+					.executeUpdate();
+		}
 	}
 
 }

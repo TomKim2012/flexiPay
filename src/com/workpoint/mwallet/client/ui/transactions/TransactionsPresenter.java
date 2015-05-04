@@ -10,7 +10,6 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
@@ -117,17 +116,6 @@ public class TransactionsPresenter extends
 
 	public void loadAll(){
 		loadTills(AppContext.getContextUser());
-	//		if (AppContext.getContextUser() != null
-	//				|| AppContext.getContextUser().getGroups() != null) {
-	//			UserDTO user = AppContext.getContextUser();
-	//			getView().setLoggedUser(user);
-	//
-	//			loadTills(user);
-	//
-	//		} else {
-	//			Window.alert("User details not found.");
-	//		}
-
 	}
 
 	private void loadTills(UserDTO user) {

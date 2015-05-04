@@ -582,21 +582,32 @@ body .home-reports .alert {
 	padding: 0px 10px 0px 20px !important;
 }
 
-.home-reports .content-header {
-	padding-top: 5px;
-	font-size: 14px;
-	color: #222;
-
-	/* border-bottom:1px solid #CCCCCC; */
-/* padding-bottom: 20px; */
+.home-reports .content-top {
+	margin-top: 10px;
 }
 
-.home-reports .content-header .icon-dashboard {
-	margin-top: 10px;
+.home-reports .content-top .date-box {
+	float:right;	
+}
+
+.home-reports .form-horizontal .control-group {
+	margin-bottom: 0px;
+}
+
+.home-reports .form-horizontal .control-label {
+	width: initial;
+}
+
+.home-reports .form-horizontal .controls {
+	margin-left: initial;
 }
 
 .home-reports .top-section {
 	padding-top: 20px;
+}
+
+.home-reports .selection-section [class *="span"] {
+	width: initial;
 }
 
 .home-reports a.dashboard-stat {
