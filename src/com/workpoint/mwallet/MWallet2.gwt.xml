@@ -14,7 +14,6 @@
 	<inherits name="gwtupload.GWTUpload" />
 
 	<!-- Other module inherits -->
-	<!-- Include GWTUpload library -->
 	<inherits name='com.gwtplatform.mvp.Mvp' />
 	<inherits name='com.gwtplatform.dispatch.Dispatch' />
 	<inherits name="gwtupload.GWTUpload" />
