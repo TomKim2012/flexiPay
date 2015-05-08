@@ -41,7 +41,7 @@ public class GetSettingsRequestActionHandler extends
 
 		List<TillDTO> dtos = dao.getAllTills(action.getFilter(),userId,isSuperUser,isAdmin,categoryModel.getId());;
 
-		// System.err.println("Cust Size>>"+trxs.size());
+		// //System.err.println("Cust Size>>"+trxs.size());
 
 //		for (TillModel tillmodel : tills) {
 //

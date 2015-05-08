@@ -1,6 +1,7 @@
 package com.workpoint.mwallet.client.ui.tills;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.OptionControl;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.ActivitySelectionChangedHandler;
@@ -39,6 +41,9 @@ import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
+import com.workpoint.mwallet.client.ui.tills.table.ConfigureTablePopUp;
+import com.workpoint.mwallet.client.ui.util.DateRange;
+import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
@@ -70,6 +75,8 @@ public class TillsPresenter extends
 	private OptionControl deleteOptionControl;
 
 	protected List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
+	List<TableHeader> tableHeaders = new ArrayList<TableHeader>();
+	private SearchFilter filter = new SearchFilter();
 
 	public interface IActivitiesView extends View {
 		HasClickHandlers getAddButton();
@@ -100,7 +107,13 @@ public class TillsPresenter extends
 
 		HasClickHandlers getFilterActionLink();
 
-		void setAllowedButtons(UserDTO userGroup,boolean selection);
+		void setAllowedButtons(UserDTO userGroup, boolean selection);
+
+		HasClickHandlers getConfigureButton();
+
+		void setHeaders(List<TableHeader> tableHeaders);
+
+		void setDates(DateRange thisquarter);
 	}
 
 	@Inject
@@ -119,6 +132,8 @@ public class TillsPresenter extends
 
 	boolean isUserListLoaded = false;
 
+	private DateRange setDateRange;
+
 	@Inject
 	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
 			Provider<CreateTillPresenter> tillProvider) {
@@ -129,15 +144,22 @@ public class TillsPresenter extends
 
 	public void loadAll() {
 		loadData();
-		getView().setAllowedButtons(AppContext.getContextUser(),false);
+		getView().setAllowedButtons(AppContext.getContextUser(), false);
 	}
 
 	private void loadData() {
 		fireEvent(new ProcessingEvent("Loading.."));
-		MultiRequestAction action = new MultiRequestAction();
 
+		this.setDateRange = DateRange.THISQUARTER;
+
+		filter.setStartDate(DateUtils.getDateByRange(DateRange.THISQUARTER));
+		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
+
+		getView().setDates(DateRange.THISQUARTER);
+
+		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetUsersRequest(true));
-		action.addRequest(new GetTillsRequest());
+		action.addRequest(new GetTillsRequest(filter));
 		action.addRequest(new GetCategoriesRequest());
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -169,11 +191,26 @@ public class TillsPresenter extends
 
 	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
-		Collections.sort(tills);
+		//Collections.sort(tills);
 
 		for (TillDTO till : tills) {
 			getView().presentData(till);
 		}
+
+		String gradeDate = setDateRange.getDisplayName();
+
+		tableHeaders = Arrays.asList(new TableHeader("", true),
+				new TableHeader("Business Name", true), new TableHeader(
+						"Business No", true), new TableHeader("Account No",
+						false), new TableHeader("Phone No", false),
+				new TableHeader("Owner", true), new TableHeader("Acquirer",
+						true), new TableHeader("Category", false),
+				new TableHeader("Status", false), new TableHeader("Grade("
+						+ gradeDate + ")", true), new TableHeader(
+						"Last Modified", false));
+
+		getView().setHeaders(tableHeaders);
+
 		getView().presentSummary(NumberUtils.NUMBERFORMAT.format(tills.size()));
 	}
 
@@ -204,6 +241,14 @@ public class TillsPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				showtillPopUp(true);
+			}
+		});
+
+		getView().getConfigureButton().addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				showConfigurePopUp();
 			}
 		});
 
@@ -248,6 +293,28 @@ public class TillsPresenter extends
 			}
 		}
 	};
+
+	private OptionControl configureOptionControl;
+
+	private void showConfigurePopUp() {
+		final ConfigureTablePopUp tablePopUp = new ConfigureTablePopUp();
+		tablePopUp.setHeaders(tableHeaders);
+
+		configureOptionControl = new OptionControl() {
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Save")) {
+					tableHeaders = tablePopUp.getConfiguredHeaders();
+					getView().setHeaders(tableHeaders);
+
+				}
+				configureOptionControl.hide();
+			}
+		};
+
+		AppManager.showPopUp("Configure Columns", tablePopUp.asWidget(),
+				configureOptionControl, "Save", "Cancel");
+	}
 
 	protected void showDeletePopup() {
 		deleteOptionControl = new OptionControl() {
@@ -297,6 +364,7 @@ public class TillsPresenter extends
 
 	protected void saveTill(final TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
+
 		SaveTillRequest saveRequest = new SaveTillRequest(tillDTO, isDelete);
 		requestHelper.execute(saveRequest,
 				new TaskServiceCallback<SaveTillResponse>() {
@@ -309,7 +377,6 @@ public class TillsPresenter extends
 						fireEvent(new ActivitySavedEvent("Till "
 								+ tillDTO.getBusinessName()
 								+ " successfully saved"));
-						System.err.println("Till Successfully saved!");
 					}
 				});
 
@@ -319,16 +386,19 @@ public class TillsPresenter extends
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
 			this.selected = event.gettillDetail();
-			getView().setAllowedButtons(AppContext.getContextUser(),true);
+			// System.err.println("Category Id at Presenter>>>"+
+			// selected.getCategory().getId());
+			getView().setAllowedButtons(AppContext.getContextUser(), true);
 		} else {
-			getView().setAllowedButtons(AppContext.getContextUser(),false);
+			getView().setAllowedButtons(AppContext.getContextUser(), false);
 		}
 	}
 
 	@Override
 	public void onSearch(SearchEvent event) {
 		if (event.getSearchType() == SearchType.Till) {
-			GetTillsRequest request = new GetTillsRequest(event.getFilter());
+			filter = event.getFilter();
+			GetTillsRequest request = new GetTillsRequest(filter);
 			performSearch(request);
 		}
 	}

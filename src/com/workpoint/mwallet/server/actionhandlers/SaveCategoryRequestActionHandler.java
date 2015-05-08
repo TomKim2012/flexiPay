@@ -43,7 +43,7 @@ public class SaveCategoryRequestActionHandler extends
 				categoryModel = dao.getById(CategoryModel.class, category.getId());
 			}
 			dao.delete(categoryModel);
-//			System.err.println("Executed Delete");
+//			//System.err.println("Executed Delete");
 		}
 
 	}

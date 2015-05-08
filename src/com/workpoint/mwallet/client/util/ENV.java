@@ -40,7 +40,7 @@ public class ENV {
 	public static boolean containsObservable(String name){
 		
 		boolean contained = observableFields.keySet().contains(name);
-		//System.err.println("Contains : "+name+" : "+contained);
+		////System.err.println("Contains : "+name+" : "+contained);
 		return contained;
 	}
 	

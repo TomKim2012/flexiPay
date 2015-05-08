@@ -45,7 +45,6 @@ public class CategoryModel extends PO{
 		return categoryModel;
 	}
 	
-
 	public String getCategoryType() {
 		return categoryType;
 	}

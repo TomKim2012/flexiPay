@@ -15,6 +15,10 @@ import com.workpoint.mwallet.client.ui.category.save.CreateCategoryPresenter;
 import com.workpoint.mwallet.client.ui.category.save.CreateCategoryView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
+import com.workpoint.mwallet.client.ui.dashboard.charts.PieChartPresenter;
+import com.workpoint.mwallet.client.ui.dashboard.charts.PieChartView;
+import com.workpoint.mwallet.client.ui.dashboard.linegraph.LineGraphPresenter;
+import com.workpoint.mwallet.client.ui.dashboard.linegraph.LineGraphView;
 import com.workpoint.mwallet.client.ui.error.ErrorPresenter;
 import com.workpoint.mwallet.client.ui.error.ErrorView;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
@@ -90,6 +94,14 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenterWidget(TransactionsPresenter.class,
 				TransactionsPresenter.ITransactionView.class,
 				TransactionsView.class);
+		
+		
+		bindPresenterWidget(PieChartPresenter.class, PieChartPresenter.IPieChartView.class,
+				PieChartView.class);
+		
+		bindPresenterWidget(LineGraphPresenter.class, LineGraphPresenter.ILineGraphView.class,
+				LineGraphView.class);
+
 
 		bindPresenterWidget(UserItemPresenter.class,
 				UserItemPresenter.MyView.class, UserItemView.class);

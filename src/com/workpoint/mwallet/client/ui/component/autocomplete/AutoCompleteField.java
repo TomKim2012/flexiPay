@@ -137,7 +137,6 @@ public class AutoCompleteField<T extends Listable> extends Composite {
 	
     private void deselectItem(final TextBox itemBox, final BulletListPanel list) {
         if (itemBox.getValue() != null && !"".equals(itemBox.getValue().trim())) {
-        	//System.err.println(":::::::: loaded");
             /** Change to the following structure:
              * <li class="token-input-token-facebook">
              * <p>What's New Scooby-Doo?</p>

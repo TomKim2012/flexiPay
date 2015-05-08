@@ -6,6 +6,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -46,11 +48,21 @@ public class TillDetails extends Composite {
 
 	private String errorMessage;
 
+	private CategoryDTO category;
+
 	interface TillDetailsUiBinder extends UiBinder<Widget, TillDetails> {
 	}
 
 	public TillDetails() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+	lstCategoryType.addValueChangeHandler(new ValueChangeHandler<CategoryDTO>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<CategoryDTO> event) {
+				category = lstCategoryType.getValue();
+			}
+		});
 	}
 
 	public void setTillInfo(TillDTO tillSelected) {
@@ -62,7 +74,8 @@ public class TillDetails extends Composite {
 			txtTillCode.getElement().setAttribute("readonly", "true");
 			txtPhone.setValue(tillSelected.getPhoneNo());
 			chckEnable.setValue(tillSelected.isActive() == 1 ? true : false);
-			lstCategoryType.setValue(tillSelected.getCategory());
+			category = tillSelected.getCategory();
+			lstCategoryType.setValue(category);
 		}
 	}
 
@@ -74,7 +87,8 @@ public class TillDetails extends Composite {
 		tillSelected.setTillNo(txtTillCode.getValue());
 		tillSelected.setPhoneNo(txtPhone.getValue());
 		tillSelected.setActive(chckEnable.getValue() ? 1 : 0);
-		tillSelected.setCategory(lstCategoryType.getValue());
+		
+		tillSelected.setCategory(category);
 		return tillSelected;
 	}
 
@@ -89,7 +103,10 @@ public class TillDetails extends Composite {
 				|| txtPhone.getValue().length() < 10) {
 			issues.addError("Enter a correct Phone Number");
 			return false;
-		} else {
+		} else if (lstCategoryType.getValue()==null) {
+			issues.addError("Till must belong to a Category. Select category");
+			return false;
+		}else {
 			return true;
 		}
 	}

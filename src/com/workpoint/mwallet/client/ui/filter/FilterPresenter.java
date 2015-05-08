@@ -38,7 +38,6 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 		void setUsers(List<UserDTO> users);
 	}
 
-
 	@Inject
 	DispatchAsync requestHelper;
 	private SearchType searchType;
@@ -47,7 +46,7 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 	public FilterPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 	}
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
@@ -56,10 +55,10 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 			@Override
 			public void onClick(ClickEvent event) {
 				SearchFilter filter = getView().getSearchFilter();
-				fireEvent(new SearchEvent(filter,searchType));
+				fireEvent(new SearchEvent(filter, searchType));
 			}
 		});
-		
+
 		getView().getCloseButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -72,11 +71,11 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 	protected void onReveal() {
 		super.onReveal();
 	}
-	
-	public void setTills(List<TillDTO> tills){
+
+	public void setTills(List<TillDTO> tills) {
 		getView().setTills(tills);
 	}
-	
+
 	private void loadTills() {
 		GetTillsRequest requests = new GetTillsRequest();
 
@@ -90,21 +89,19 @@ public class FilterPresenter extends PresenterWidget<FilterPresenter.MyView> {
 	}
 
 	public void setFilter(SearchType searchType) {
-		setFilter(searchType,null);
+		setFilter(searchType, null);
 	}
-	
-	
-	
+
 	public void setFilter(SearchType searchType, List<UserDTO> users) {
 		this.searchType = searchType;
-		if(users!=null){
+		if (users != null) {
 			getView().setUsers(users);
 		}
 		getView().showFilter(searchType);
 	}
-	
-	public enum SearchType{
-		Till,Transaction
+
+	public enum SearchType {
+		Till, Transaction, Dashboard
 	}
-	
+
 }

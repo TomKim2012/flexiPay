@@ -1,47 +1,31 @@
 package com.workpoint.mwallet.client.ui.transactions;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.DropdownButton;
-import com.github.gwtbootstrap.client.ui.NavLink;
-import com.github.gwtbootstrap.client.ui.event.HideEvent;
-import com.github.gwtbootstrap.client.ui.event.HideHandler;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyDownHandlers;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
-import com.workpoint.mwallet.client.ui.component.CustomDateBox;
+import com.workpoint.mwallet.client.ui.component.DateBoxDropDown;
 import com.workpoint.mwallet.client.ui.component.DropDownList;
 import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
 import com.workpoint.mwallet.client.ui.component.TextField;
-import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.transactions.table.TransactionTable;
 import com.workpoint.mwallet.client.ui.transactions.table.TransactionTableRow;
-import com.workpoint.mwallet.client.ui.util.DateRange;
-import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
@@ -66,13 +50,10 @@ public class TransactionsView extends ViewImpl implements
 	HTMLPanel divContentTop;
 
 	@UiField
-	HTMLPanel panelDatePicker1;
-
-	@UiField
-	HTMLPanel panelDatePicker2;
-
-	@UiField
 	TransactionTable tblView;
+
+	@UiField
+	DateBoxDropDown boxDateBox;
 
 	@UiField
 	ActionLink aRefresh;
@@ -84,21 +65,7 @@ public class TransactionsView extends ViewImpl implements
 	TransactionsHeader headerContainer;
 
 	@UiField
-	DropdownButton periodDropdown;
-
-	@UiField
-	Button btnDone;
-
-	@UiField
-	FocusPanel panelDone;
-
-	@UiField
 	DropDownList<TillDTO> lstTills;
-
-	@UiField
-	CustomDateBox boxDatePickerEnd;
-	@UiField
-	CustomDateBox boxDatePickerStart;
 
 	@UiField
 	TextField txtSearchBox;
@@ -110,106 +77,11 @@ public class TransactionsView extends ViewImpl implements
 
 	protected boolean isNotDisplayed;
 
-	protected boolean specificRangeSelected = false;
-
 	private SearchFilter filter = new SearchFilter();
-
-	protected static boolean isPassedOver = true;
-
-	private double leftStartPosition = -140;
-	private double leftEndPosition = 87;
 
 	@Inject
 	public TransactionsView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		List<DateRange> dateRanges = new ArrayList<DateRange>();
-
-		panelDone.addMouseOverHandler(new MouseOverHandler() {
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				// System.err.println("passedOver = true");
-				isPassedOver = true;
-			}
-		});
-
-		panelDone.addMouseOutHandler(new MouseOutHandler() {
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				// System.err.println("passedOver = false");
-				isPassedOver = false;
-			}
-		});
-
-		boxDatePickerEnd.getElement().getStyle()
-				.setLeft(leftEndPosition, Unit.PX);
-		boxDatePickerStart.getElement().getStyle()
-				.setLeft(leftStartPosition, Unit.PX);
-
-		boxDatePickerEnd.setEndDate(DateUtils.DATEFORMAT.format(new Date()));
-		boxDatePickerStart.setEndDate(DateUtils.DATEFORMAT.format(new Date()));
-
-		boxDatePickerEnd.addHideHandler(new HideHandler() {
-			@Override
-			public void onHide(HideEvent hideEvent) {
-				if (!isPassedOver) {
-					AppContext.fireEvent(new HidePanelBoxEvent("transactions"));
-				}
-			}
-		});
-
-		for (DateRange date : DateRange.values()) {
-			if (date != DateRange.NOW) {
-				dateRanges.add(date);
-				NavLink link = new NavLink();
-				link.setText(date.getDisplayName());
-
-				if (date == DateRange.INBETWEEN || date == DateRange.SPECIFIC) {
-					if (date == DateRange.SPECIFIC) {
-						NavLink link1 = new NavLink();
-						link1.setStyleName("divider");
-						periodDropdown.add(link1);
-					}
-
-					InlineLabel caret = new InlineLabel();
-					caret.setStyleName("icon-caret-right pull-right");
-					link.add(caret);
-
-					link.addClickHandler(new ClickHandler() {
-						@Override
-						public void onClick(ClickEvent event) {
-							event.stopPropagation();
-						}
-					});
-				}
-
-				periodDropdown.add(link);
-			}
-		}
-
-		changeDateString();
-
-		periodDropdown.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent event) {
-				String selected = periodDropdown.getLastSelectedNavLink()
-						.getText().trim();
-				if (selected.equals("Specific Date")) {
-					specificRangeSelected = true;
-					setDonePanelSmall(true);
-					panelDone.removeStyleName("hide");
-					boxDatePickerEnd.show();
-
-				} else if (selected.equals("DateRange")) {
-					specificRangeSelected = false;
-					panelDone.removeStyleName("hide");
-					setDonePanelSmall(false);
-					boxDatePickerEnd.show();
-					boxDatePickerStart.show();
-				} else {
-					setDateRange(selected, null, null, true);
-				}
-			}
-		});
 
 		lstTills.addValueChangeHandler(new ValueChangeHandler<TillDTO>() {
 			@Override
@@ -225,79 +97,23 @@ public class TransactionsView extends ViewImpl implements
 			}
 
 		});
-
-		btnDone.addClickHandler(new ClickHandler() {
-
+		boxDateBox.getDoneButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Date startDate = DateUtils.getRange(
-						boxDatePickerStart.getValue(), true);
-				Date endDate = DateUtils.getRange(boxDatePickerEnd.getValue(),
-						false);
-				if (specificRangeSelected) {
-					startDate = DateUtils.getRange(boxDatePickerEnd.getValue(),
-							true);
-				}
+				Date startDate = boxDateBox.getStartDateSelected();
+				Date endDate = boxDateBox.getEndDateSelected();
 				setDateRange(null, startDate, endDate, true);
-
-				panelDone.addStyleName("hide");
 			}
 		});
-	}
-
-	private void changeDateString() {
-		ValueChangeHandler<Date> dateBoxHandler = new ValueChangeHandler<Date>() {
+		
+		boxDateBox.getPeriodDropDown().addChangeHandler(new ChangeHandler() {
 			@Override
-			public void onValueChange(ValueChangeEvent<Date> event) {
-				String displayDate = "";
-
-				// Start Date
-				if (specificRangeSelected) {
-					displayDate += DateUtils.DATEFORMAT.format(boxDatePickerEnd
-							.getValue()) + "-";
-				} else {
-					displayDate += DateUtils.DATEFORMAT
-							.format(boxDatePickerStart.getValue()) + "-";
+			public void onChange(ChangeEvent event) {
+				if(boxDateBox.getCallChangeEvent()){
+					setDateRange(boxDateBox.getSelected(), null, null, true);
 				}
-
-				// End Date
-				displayDate += DateUtils.DATEFORMAT.format(boxDatePickerEnd
-						.getValue());
-				periodDropdown.setText(displayDate);
-
 			}
-		};
-		boxDatePickerEnd.addValueChangeHandler(dateBoxHandler);
-		boxDatePickerStart.addValueChangeHandler(dateBoxHandler);
-	}
-
-	protected void setDonePanelSmall(boolean isSmall) {
-		if (isSmall) {
-			String width = Integer.toString(boxDatePickerEnd.getOffsetWidth());
-			panelDone.setWidth(width + "px");
-			panelDone.getElement().getStyle()
-					.setLeft(leftEndPosition + 3, Unit.PX);
-		} else {
-			String width = Integer
-					.toString(boxDatePickerEnd.getOffsetWidth() * 2);
-			panelDone.setWidth(width + "px");
-			panelDone.getElement().getStyle()
-					.setLeft(leftStartPosition + 5, Unit.PX);
-		}
-	}
-
-	public void setDateString(String passedDate) {
-		Date startDate = DateUtils.getDateByRange(DateRange
-				.getDateRange(passedDate));
-		Date endDate = getDateFromName(passedDate, false);
-
-		String displayDate = "";
-		displayDate += DateUtils.DATEFORMAT.format(startDate);
-
-		displayDate += " - " + DateUtils.DATEFORMAT.format(endDate);
-
-		periodDropdown.setText(displayDate);
-
+		});
 	}
 
 	public void setDateRange(String displayName, Date passedStart,
@@ -306,48 +122,24 @@ public class TransactionsView extends ViewImpl implements
 		Date endDate = null;
 
 		if (displayName != null) {
-			startDate = getDateFromName(displayName, true);
-			endDate = getDateFromName(displayName, false);
-			setDateString(displayName);
-
+			startDate = boxDateBox.getDateFromName(displayName, true);
+			endDate = boxDateBox.getDateFromName(displayName, false);
+			boxDateBox.setDateString(displayName);
 		} else {
 			startDate = passedStart;
 			endDate = passedEnd;
 		}
 
-		boxDatePickerStart.setValue(startDate);
-		boxDatePickerEnd.setValue(endDate);
-
-		// System.err.println("Start Date::" + startDate);
-		// System.err.println("End Date::" + endDate);
+		boxDateBox.setStartDate(startDate);
+		boxDateBox.setEndDate(endDate);
 
 		filter.setStartDate(startDate);
 		filter.setEndDate(endDate);
 
-		// This will be a problem - Use vaue Change handlers instead!!
+		// This will be a problem - Use value Change handlers instead!!
 		if (fireValueChangedEvent) {
 			AppContext
 					.fireEvent(new SearchEvent(filter, SearchType.Transaction));
-		}
-		// /
-	}
-
-	public Date getDateFromName(String displayName, boolean isStart) {
-		DateRange compare = DateRange.getDateRange(displayName);
-		if (compare == DateRange.YESTERDAY) {
-			if (isStart) {
-				Date yesterday = DateUtils.getDateByRange(
-						DateRange.getDateRange(displayName), true);
-				return DateUtils.getOneDayBefore(yesterday);
-			} else {
-				return DateUtils.getDateByRange(DateRange
-						.getDateRange(displayName));
-			}
-		} else if (isStart) {
-			return DateUtils
-					.getDateByRange(DateRange.getDateRange(displayName));
-		} else {
-			return DateUtils.getDateByRange(DateRange.NOW);
 		}
 	}
 
@@ -443,7 +235,7 @@ public class TransactionsView extends ViewImpl implements
 	@Override
 	public void setTills(List<TillDTO> tills) {
 		lstTills.setItems(tills);
-		// System.err.println("Set Tills called");
+		// //System.err.println("Set Tills called");
 	}
 
 	@Override
@@ -453,6 +245,6 @@ public class TransactionsView extends ViewImpl implements
 
 	@Override
 	public void hideDoneBox() {
-		panelDone.addStyleName("hide");
+		boxDateBox.hideDoneBox();
 	}
 }

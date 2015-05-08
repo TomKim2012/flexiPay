@@ -46,15 +46,11 @@ public class TillUserDetails extends Composite {
 		this.tillSelected = tillSelected;
 		if (tillSelected != null) {
 			if (tillSelected.getOwner() != null) {
-				System.err.println("Added Owner::"
-						+ tillSelected.getOwner().getUserId());
 				owners.add(tillSelected.getOwner());
 				aOwners.setValues(owners);
 				aOwners.select(Arrays.asList(tillSelected.getOwner()));
 			}
-			if (tillSelected.getCashiers() != null) {
-				aCashiers.select(tillSelected.getCashiers());
-			}
+
 			if (tillSelected.getSalesPerson() != null) {
 				salesPerson.add(tillSelected.getSalesPerson());
 				aOwners.setValues(owners);
@@ -80,9 +76,6 @@ public class TillUserDetails extends Composite {
 		}
 
 		tillSelected.setCashiers(aCashiers.getSelectedItems());
-
-		System.err.println("Category Selected:"
-				+ tillSelected.getCategory().getName());
 
 		return tillSelected;
 	}

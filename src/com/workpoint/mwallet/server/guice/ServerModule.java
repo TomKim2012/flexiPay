@@ -5,10 +5,12 @@ import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.workpoint.mwallet.server.ServerConstants;
 import com.workpoint.mwallet.server.actionhandlers.GetCategoriesRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetContextRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.GetGradeCountRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetGroupsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetSmsLogRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetTillsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetTransactionsRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.GetTrendRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetUserRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetUsersRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetVerificationRequestActionHandler;
@@ -23,10 +25,12 @@ import com.workpoint.mwallet.server.actionhandlers.SaveUserRequestActionHandler;
 import com.workpoint.mwallet.server.actionvalidator.SessionValidator;
 import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
+import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
 import com.workpoint.mwallet.shared.requests.GetSMSLogRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
+import com.workpoint.mwallet.shared.requests.GetTrendRequest;
 import com.workpoint.mwallet.shared.requests.GetUserRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
 import com.workpoint.mwallet.shared.requests.GetVerificationRequest;
@@ -66,6 +70,12 @@ public class ServerModule extends HandlerModule {
 
 		bindHandler(GetGroupsRequest.class,
 				GetGroupsRequestActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetGradeCountRequest.class,
+				GetGradeCountRequestActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetTrendRequest.class,
+				GetTrendRequestActionHandler.class, SessionValidator.class);
 
 		bindHandler(GetUserRequest.class, GetUserRequestActionHandler.class,
 				SessionValidator.class);

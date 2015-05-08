@@ -67,7 +67,7 @@ public class SmsTableRow extends RowWidget {
 			bindText(divCost,
 					NumberUtils.CURRENCYFORMAT.format(smsLog.getCost()));
 
-			// System.err.println("SMS Log:"+ smsLog.getStatus());
+			// //System.err.println("SMS Log:"+ smsLog.getStatus());
 
 			setStatus(SmsStatus.getStatus(smsLog.getStatus()));
 		}

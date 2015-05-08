@@ -11,8 +11,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class TillsTable extends Composite {
 
@@ -25,13 +25,10 @@ public class TillsTable extends Composite {
 	@UiField
 	TableView tblView;
 	CheckBox selected = null;
-	boolean isSummaryTable = false;
-	boolean isGoalsTable = false;
-	Long lastUpdatedId = null;
+	
 
 	public TillsTable() {
 		initWidget(uiBinder.createAndBindUi(this));
-		createHeader();
 	}
 
 	ValueChangeHandler<Boolean> handler = new ValueChangeHandler<Boolean>() {
@@ -42,32 +39,26 @@ public class TillsTable extends Composite {
 				if (selected != null) {
 					selected.setValue(false);
 				}
-
 				selected = (CheckBox) event.getSource();
 			} else {
 				selected = null;
 			}
 		}
 	};
+	private List<TillsTableRow> rows = new ArrayList<TillsTableRow>();
 
-	public void createHeader() {
-		// System.err.println(">>>Created Header");
-
-		List<TableHeader> th = new ArrayList<TableHeader>();
-		th.add(new TableHeader(""));
-		th.add(new TableHeader("Business Name"));
-		th.add(new TableHeader("Business No"));
-		th.add(new TableHeader("Account No"));
-		th.add(new TableHeader("Phone No"));
-		th.add(new TableHeader("Owner"));
-		th.add(new TableHeader("Acquirer"));
-		th.add(new TableHeader("Status"));
-		th.add(new TableHeader("Last Modified"));
-
-		tblView.setTableHeaders(th);
+	public void createHeader(List<TableHeader> headers) {
+		tblView.setTableHeaders(headers);
+		
+//		System.err.println("Row size:"+ rows.size());
+		
+		for(TillsTableRow row: rows){
+			row.reconfigure(headers);
+		}
 	}
 
 	public void createRow(TillsTableRow row) {
+		rows.add(row);
 		tblView.addRow(row);
 		row.setSelectionChangeHandler(handler);
 	}

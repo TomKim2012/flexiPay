@@ -133,6 +133,7 @@ public class HomePresenter extends
 				@Override
 				public void processResult(DashboardPresenter aResponse) {
 					setInSlot(ACTIVITIES_SLOT, aResponse);
+					aResponse.loadData();
 					getView().setSelectedTab("Dashboard");
 				}
 			});
@@ -217,12 +218,15 @@ public class HomePresenter extends
 			UserDTO user = AppContext.getContextUser();
 			boolean isMerchant = user.hasGroup("Merchant");
 			boolean isSalesPerson = user.hasGroup("SalesPerson");
-
+			boolean isCategoryAdmin = user.isAdmin() && !user.getCategory().getCategoryName().equals('*');
+			
+			
 			boolean isDashboardPage = page.equals("dashboard");
 			boolean isTransactionPage = page.equals("transactions");
 			boolean isTillsPage = page.equals("tills");
 			boolean isSmsPage = page.equals("smsLog");
-
+			boolean isUsersPage = page.equals("users");
+			
 			// DEFINATIONS
 			boolean isMerchantAllowed = (isMerchant && isDashboardPage)
 					|| (isMerchant && isTransactionPage)
@@ -231,8 +235,16 @@ public class HomePresenter extends
 					|| (isSalesPerson && isTillsPage)
 					|| (isSalesPerson && isTransactionPage)
 					|| (isSalesPerson && isSmsPage);
+			
+			boolean isCategoryAdminAllowed =(isCategoryAdmin && isDashboardPage)
+					|| (isCategoryAdmin && isTillsPage)
+					|| (isCategoryAdmin && isTransactionPage)
+					|| (isCategoryAdmin && isSmsPage)
+					|| (isCategoryAdmin && isUsersPage); 
+			
+			////System.err.println("isSalesPerson Allowed:"+isSalesPersonAllowed);
 
-			if (isSuperUser || isMerchantAllowed || isSalesPersonAllowed) {
+			if (isSuperUser || isMerchantAllowed || isSalesPersonAllowed || isCategoryAdminAllowed) {
 				return true;
 			} else {
 				Window.alert("You are not allowed to view this Page");

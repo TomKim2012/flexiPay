@@ -1,37 +1,50 @@
-
 package com.workpoint.mwallet.client.ui.dashboard;
 
+import java.util.Date;
+import java.util.List;
+
+import com.github.gwtbootstrap.client.ui.DropdownButton;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.workpoint.mwallet.client.service.TaskServiceCallback;
+import com.workpoint.mwallet.client.ui.component.DateBoxDropDown;
+import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
+import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
+import com.workpoint.mwallet.shared.model.GradeCountDTO;
+import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TrendDTO;
+import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
+import com.workpoint.mwallet.shared.requests.GetTrendRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
+import com.workpoint.mwallet.shared.responses.GetGradeCountRequestResult;
+import com.workpoint.mwallet.shared.responses.GetTrendRequestResult;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class DashboardPresenter extends
 		PresenterWidget<DashboardPresenter.MyView> {
 
 	public interface MyView extends View {
 
-		/*void generate(List<ProgramAnalysis> list);
+		void setGradeCount(List<GradeCountDTO> gradeCount);
 
-		void setAnalysis(List<PerformanceModel> budgetsPerfomance,
-				List<PerformanceModel> targetsPerfomance,
-				List<PerformanceModel> timelinesPerfomance,
-				List<PerformanceModel> throughputPerfomance);
-		*/
+		void setTrend(List<TrendDTO> trends);
+
+		HasChangeHandlers getPeriodDropDown();
+
+		SearchFilter setDateRange(String displayName, Date passedStart,
+				Date passedEnd);
 	}
-	
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> PROGRAM_ANALYSIS = new Type<RevealContentHandler<?>>();
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> OVERALLTURNAROUND_SLOT = new Type<RevealContentHandler<?>>();
-	
-	@Inject DispatchAsync requestHelper;
-	
+	@Inject
+	DispatchAsync requestHelper;
+	private SearchFilter filter = new SearchFilter();
+
 	@Inject
 	public DashboardPresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
@@ -40,36 +53,47 @@ public class DashboardPresenter extends
 	@Override
 	protected void onBind() {
 		super.onBind();
-	}
-	
-	public void loadData(){
-		/*MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetAnalysisDataRequest(null));
-		action.addRequest(new GetPerformanceDataRequest(Metric.BUDGET));
-		action.addRequest(new GetPerformanceDataRequest(Metric.TARGETS));
-		action.addRequest(new GetPerformanceDataRequest(Metric.TIMELINES));
-		action.addRequest(new GetPerformanceDataRequest(Metric.THROUGHPUT));
-		
-		requestHelper.execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
+
+		getView().getPeriodDropDown().addChangeHandler(new ChangeHandler() {
 			@Override
-			public void processResult(MultiRequestActionResult aResponse) {
-				int i=0;
-				List<ProgramAnalysis> list = ((GetAnalysisDataResponse)aResponse.get(i++)).getData();
-				generateViews(list);
-				
-				List<PerformanceModel> budgetsPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				List<PerformanceModel> targetsPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				List<PerformanceModel> timelinesPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				List<PerformanceModel> throughputPerfomance = ((GetPerformanceDataResponse)aResponse.get(i++)).getData();
-				
-				
-				getView().setAnalysis(budgetsPerfomance, targetsPerfomance, timelinesPerfomance, throughputPerfomance);
+			public void onChange(ChangeEvent event) {
+				String selected = ((DropdownButton) event.getSource())
+						.getLastSelectedNavLink().getText().trim();
+
+				filter = getView().setDateRange(selected, null, null);
+				loadData(filter);
 			}
-		});*/
+		});
 	}
 
-	/*protected void generateViews(List<ProgramAnalysis> list) {
-		getView().generate(list);
-	}*/
+	public void loadData() {
+		filter = getView().setDateRange("Last 6 Months", null, null);
+		loadData(filter);
+	}
+
+	public void loadData(SearchFilter filter) {
+		fireEvent(new ProcessingEvent());
+
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetGradeCountRequest(filter));
+		action.addRequest(new GetTrendRequest(filter));
+
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
+						GetGradeCountRequestResult dashboardResponse = (GetGradeCountRequestResult) aResponse
+								.get(i++);
+						getView().setGradeCount(
+								dashboardResponse.getGradeCount());
+
+						GetTrendRequestResult trendResponse = (GetTrendRequestResult) aResponse
+								.get(i++);
+						getView().setTrend(trendResponse.getTrends());
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
+	}
+
 }

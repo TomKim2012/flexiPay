@@ -155,7 +155,7 @@ public class LoginPresenter extends
 										
 									}else{
 										placeManager.revealDefaultPlace();
-										//System.err.println("No Redirect");
+										////System.err.println("No Redirect");
 //										if(result.getUser().isAdmin()){
 //											placeManager.revealPlace(new PlaceRequest(NameTokens.adminhome));
 //										}else{

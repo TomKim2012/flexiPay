@@ -11,8 +11,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class CategoryTable extends Composite {
 
@@ -48,8 +48,6 @@ public class CategoryTable extends Composite {
 	};
 
 	public void createHeader() {
-		// System.err.println(">>>Created Header");
-
 		List<TableHeader> th = new ArrayList<TableHeader>();
 		th.add(new TableHeader(""));
 		th.add(new TableHeader("Category Id"));

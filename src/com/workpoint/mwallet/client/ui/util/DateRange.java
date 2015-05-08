@@ -7,8 +7,10 @@ public enum DateRange implements Listable{
 	TODAY("Today"),
 	YESTERDAY("Yesterday"),
 	THISWEEK("Last 7 Days"),
+	LASTMONTH("Last Month"),
 	THISMONTH("This Month"),
 	THISQUARTER("Last 3 Months"),
+	HALFYEAR("Last 6 Months"),
 	THISYEAR("This Year"),
 	SPECIFIC("Specific Date"),
 	INBETWEEN("DateRange");

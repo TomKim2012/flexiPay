@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
-import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class TableView extends Composite {
 
@@ -52,32 +51,24 @@ public class TableView extends Composite {
 		setHeaderWidgets(widgets);
 	}
 
-	/*public void setTableHeaders(List<TableHeader> headers) {
-		panelHeader.clear();
-		// for (TableHeader header : headers) {
-		// InlineLabel label = new InlineLabel(header.getTitleName());
-		for (TableHeader header : headers) {
-			// th
-			HTMLPanel th = new HTMLPanel("");
-			th.addStyleName("th");
-
-			// Label
-			InlineLabel label = new InlineLabel(header.getTitleName());
-			th.add(label);
-
-			// add to row
-			if (header.getWidth() != null) {
-				th.getElement().getStyle()
-						.setWidth(header.getWidth(), Unit.PCT);
-			}
-
-			if (header.getStyleName() != null) {
-				th.addStyleName(header.getStyleName());
-			}
-
-			panelHeader.add(th);
-		}
-	}*/
+	/*
+	 * public void setTableHeaders(List<TableHeader> headers) {
+	 * panelHeader.clear(); // for (TableHeader header : headers) { //
+	 * InlineLabel label = new InlineLabel(header.getTitleName()); for
+	 * (TableHeader header : headers) { // th HTMLPanel th = new HTMLPanel("");
+	 * th.addStyleName("th");
+	 * 
+	 * // Label InlineLabel label = new InlineLabel(header.getTitleName());
+	 * th.add(label);
+	 * 
+	 * // add to row if (header.getWidth() != null) { th.getElement().getStyle()
+	 * .setWidth(header.getWidth(), Unit.PCT); }
+	 * 
+	 * if (header.getStyleName() != null) {
+	 * th.addStyleName(header.getStyleName()); }
+	 * 
+	 * panelHeader.add(th); } }
+	 */
 
 	@Override
 	public Widget asWidget() {
@@ -265,8 +256,11 @@ public class TableView extends Composite {
 			if (header.getStyleName() != null) {
 				th.addStyleName(header.getStyleName());
 			}
-
-			panelHeader.add(th);
+			
+			//isDiplayed
+			if (header.getisDisplayed()) {
+				panelHeader.add(th);
+			}
 		}
 	}
 }

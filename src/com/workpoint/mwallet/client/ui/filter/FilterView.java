@@ -117,7 +117,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	private void clear() {
-		System.err.println(owners.size());
 		cashiers.clear();
 		owners.clear();
 		salesPerson.clear();

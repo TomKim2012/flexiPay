@@ -7,7 +7,7 @@ import java.util.List;
 public class SearchFilter implements Serializable {
 
 	private static final long serialVersionUID = -8494519116994121416L;
-	
+
 	private String phrase;
 	private TillDTO till;
 	private String verificationCode;
@@ -16,6 +16,8 @@ public class SearchFilter implements Serializable {
 	private UserDTO salesPerson;
 	private UserDTO cashier;
 	private Date startDate;
+	private String formatedStartDate;
+	private String formatedendDate;
 	private Date endDate;
 	private boolean isSu;
 
@@ -105,6 +107,22 @@ public class SearchFilter implements Serializable {
 		this.isSu = isSu;
 	}
 
+	public String getFormatedEndDate() {
+		return formatedendDate;
+	}
+
+	public void setFormatedEndDate(String formatedendDate) {
+		this.formatedendDate = formatedendDate;
+	}
+
+	public String getFormatedStartDate() {
+		return formatedStartDate;
+	}
+
+	public void setFormatedStartDate(String formatedStartDate) {
+		this.formatedStartDate = formatedStartDate;
+	}
+
 	public String getVerificationCode() {
 		return verificationCode;
 	}
@@ -112,5 +130,5 @@ public class SearchFilter implements Serializable {
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
 	}
-	
+
 }

@@ -37,7 +37,6 @@ public class ErrorPageView extends ViewImpl implements
 	@Override
 	public void setError(Date errorDate, String message, String stack, String userAgent, String address) {
 		String[] strs = stack.split("\r\n");
-		System.err.println("Size ## "+strs.length);
 		
 		String errDate = DateUtils.CREATEDFORMAT.format(errorDate);
 		spnErrorDate.setInnerText(errDate);

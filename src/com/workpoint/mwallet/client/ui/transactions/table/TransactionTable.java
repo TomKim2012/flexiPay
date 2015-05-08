@@ -2,12 +2,14 @@ package com.workpoint.mwallet.client.ui.transactions.table;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.component.TableView;
 
 public class TransactionTable extends Composite {

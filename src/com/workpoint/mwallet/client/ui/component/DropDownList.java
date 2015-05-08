@@ -93,9 +93,6 @@ public class DropDownList<T extends Listable> extends Composite implements
 			return;
 		}
 
-		System.err.println("Selected Value:" + value.getName()
-				+ "\n item Count:" + listBox.getItemCount());
-
 		for (int i = 0; i < listBox.getItemCount(); i++) {
 
 			if (listBox.getValue(i).equals(value.getName())) {

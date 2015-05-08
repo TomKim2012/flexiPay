@@ -180,8 +180,19 @@ public class DateUtils {
 		case THISMONTH:
 			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
+			
+		case LASTMONTH:
+			CalendarUtil.addMonthsToDate(today, -1);
+			CalendarUtil.setToFirstDayOfMonth(today);
+			return setToMidnight(today);
+			
 		case THISQUARTER:
 			CalendarUtil.addMonthsToDate(today, -3);
+			CalendarUtil.setToFirstDayOfMonth(today);
+			return setToMidnight(today);
+			
+		case HALFYEAR:
+			CalendarUtil.addMonthsToDate(today, -6);
 			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
 		case THISYEAR:

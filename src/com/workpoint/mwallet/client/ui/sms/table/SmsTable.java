@@ -8,8 +8,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.component.TableView;
-import com.workpoint.mwallet.client.ui.transactions.table.TableHeader;
 
 public class SmsTable extends Composite {
 
@@ -30,7 +30,7 @@ public class SmsTable extends Composite {
 
 
 	public void createHeader() {
-		// System.err.println(">>>Created Header");
+		// //System.err.println(">>>Created Header");
 
 		List<TableHeader> th = new ArrayList<TableHeader>();
 		th.add(new TableHeader("Date & Time"));
