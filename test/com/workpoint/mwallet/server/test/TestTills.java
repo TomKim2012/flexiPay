@@ -10,24 +10,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
-<<<<<<< HEAD
-import com.workpoint.mwallet.server.dao.TransactionDao;
-=======
 import com.workpoint.mwallet.server.dao.DashboardDao;
 import com.workpoint.mwallet.server.dao.TillDao;
->>>>>>> TillRanking
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
-<<<<<<< HEAD
-import com.workpoint.mwallet.shared.model.SearchFilter;
-import com.workpoint.mwallet.shared.model.TransactionDTO;
-=======
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class TestTills {
 
