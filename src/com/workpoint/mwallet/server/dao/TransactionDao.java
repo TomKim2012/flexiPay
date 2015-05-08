@@ -181,7 +181,7 @@ public class TransactionDao extends BaseDaoImpl {
 			TransactionDTO summary = new TransactionDTO(mpesaSender,
 					mpesa_msisdn, mpesa_amt, mpesa_code, tstamp,
 					business_number, mpesa_acc, isprocessed, ipaddress,
-					isapproved, businessName, smsStatus);
+					isapproved, businessName, smsStatus );
 
 			trxs.add(summary);
 		}
@@ -227,8 +227,8 @@ public class TransactionDao extends BaseDaoImpl {
 			params.put("tillNumber", "%" + searchTerm + "%");
 			isFirst = false;
 		}
-		
-		if(filter.getVerificationCode() != null){
+
+		if (filter.getVerificationCode() != null) {
 			String verificationCode = filter.getVerificationCode().trim();
 			sqlQuery.append(isFirst ? " Where" : " And");
 			sqlQuery.append(" (v.verification_code = :verificationCode)");
@@ -239,8 +239,4 @@ public class TransactionDao extends BaseDaoImpl {
 		return params;
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> TillRanking
 }
