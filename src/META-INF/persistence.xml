@@ -6,10 +6,6 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 
 	<persistence-unit name="mwallet-pu" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>com.workpoint.mwallet.server.dao.model.TransactionModel</class>
-		<class>com.workpoint.mwallet.server.dao.model.TillModel</class>
-		<class>com.workpoint.mwallet.server.dao.model.User</class>
-		<class>com.workpoint.mwallet.server.dao.model.SettingModel</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
@@ -17,11 +13,15 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 				value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 			<property name="hibernate.connection.url"
 				value="jdbc:sqlserver://localhost:1433;databaseName=mobileBanking" />
+
+			<!-- <property name="hibernate.connection.url" -->
+			<!-- value="jdbc:sqlserver://197.248.2.44:1433;databaseName=mobileBanking" 
+				/> -->
 			<property name="hibernate.connection.username" value="TomKim" />
 			<property name="hibernate.connection.password" value="g11taru09!" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="false" />
-			<property name="eclipselink.logging.parameters" value="true"/>
+			<property name="eclipselink.logging.parameters" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>

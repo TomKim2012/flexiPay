@@ -12,6 +12,8 @@
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divtCode">
 		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divRetries">
+		</g:HTMLPanel>
 		<g:HTMLPanel styleName="td" ui:field="divStatus">
 			<span class="label label-success" ui:field="spnStatus"></span>
 		</g:HTMLPanel>

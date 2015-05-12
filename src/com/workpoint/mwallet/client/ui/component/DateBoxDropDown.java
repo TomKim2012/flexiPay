@@ -93,7 +93,7 @@ public class DateBoxDropDown extends Composite {
 
 	}
 
-	private void configurePeriodDropDown() {
+	public void configurePeriodDropDown() {
 		for (DateRange date : DateRange.values()) {
 			if (date != DateRange.NOW) {
 				dateRanges.add(date);
@@ -101,7 +101,7 @@ public class DateBoxDropDown extends Composite {
 				link.setText(date.getDisplayName());
 
 				if (date == DateRange.INBETWEEN || date == DateRange.SPECIFIC) {
-					if (date == DateRange.SPECIFIC) {
+					if (date == DateRange.SPECIFIC || date == DateRange.THISWEEK) {
 						NavLink link1 = new NavLink();
 						link1.setStyleName("divider");
 						periodDropdown.add(link1);

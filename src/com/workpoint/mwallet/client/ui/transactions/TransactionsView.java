@@ -97,6 +97,7 @@ public class TransactionsView extends ViewImpl implements
 			}
 
 		});
+		
 		boxDateBox.getDoneButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {

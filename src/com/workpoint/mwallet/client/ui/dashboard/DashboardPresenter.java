@@ -7,6 +7,9 @@ import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -18,11 +21,14 @@ import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TrendDTO;
 import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
+import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTrendRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.responses.GetGradeCountRequestResult;
+import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTrendRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
@@ -39,6 +45,10 @@ public class DashboardPresenter extends
 
 		SearchFilter setDateRange(String displayName, Date passedStart,
 				Date passedEnd);
+
+		void setTills(List<TillDTO> tills);
+
+		HasValueChangeHandlers<TillDTO> getLstTills();
 	}
 
 	@Inject
@@ -64,6 +74,16 @@ public class DashboardPresenter extends
 				loadData(filter);
 			}
 		});
+		getView().getLstTills().addValueChangeHandler(
+				new ValueChangeHandler<TillDTO>() {
+					@Override
+					public void onValueChange(ValueChangeEvent<TillDTO> event) {
+						if (event.getValue() != null) {
+							filter.setTill(event.getValue());
+							loadData(filter);
+						}
+					}
+				});
 	}
 
 	public void loadData() {
@@ -75,6 +95,7 @@ public class DashboardPresenter extends
 		fireEvent(new ProcessingEvent());
 
 		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetTillsRequest());
 		action.addRequest(new GetGradeCountRequest(filter));
 		action.addRequest(new GetTrendRequest(filter));
 
@@ -83,6 +104,10 @@ public class DashboardPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
+						GetTillsRequestResult tillsResponse = (GetTillsRequestResult) aResponse
+								.get(i++);
+						setUserTills(tillsResponse.getTills());
+
 						GetGradeCountRequestResult dashboardResponse = (GetGradeCountRequestResult) aResponse
 								.get(i++);
 						getView().setGradeCount(
@@ -94,6 +119,11 @@ public class DashboardPresenter extends
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
+	}
+
+	private void setUserTills(List<TillDTO> tills) {
+		filter.setTills(tills);
+		getView().setTills(tills);
 	}
 
 }

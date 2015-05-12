@@ -35,6 +35,8 @@ public class SmsTableRow extends RowWidget {
 	HTMLPanel divtCode;
 	@UiField
 	HTMLPanel divStatus;
+	@UiField
+	HTMLPanel divRetries;
 
 	@UiField
 	SpanElement spnStatus;
@@ -64,11 +66,9 @@ public class SmsTableRow extends RowWidget {
 			bindText(divMessage, smsLog.getMessage());
 			bindText(divDestination, smsLog.getDestination());
 			bindText(divtCode, smsLog.gettCode());
+			bindText(divRetries, Integer.toString(smsLog.getRetries()));
 			bindText(divCost,
 					NumberUtils.CURRENCYFORMAT.format(smsLog.getCost()));
-
-			// //System.err.println("SMS Log:"+ smsLog.getStatus());
-
 			setStatus(SmsStatus.getStatus(smsLog.getStatus()));
 		}
 	}

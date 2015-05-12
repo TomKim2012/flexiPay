@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
 import com.workpoint.mwallet.server.dao.DashboardDao;
+import com.workpoint.mwallet.server.dao.SMSLogDao;
 import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
@@ -18,6 +19,7 @@ import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.SmsDTO;
 import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TestTills {
@@ -38,16 +40,21 @@ public class TestTills {
 		System.err.println("Client Code >>" + model.getClientcode());
 	}
 
-	@Ignore
+	@Test
 	public void search() {
 
 		SearchFilter filter = new SearchFilter();
 
 		// boolean status = new TillDao(em).updateGradesView("2014-01-01",
 		// "2015-04-30");
-		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim",
-				true, false, 9L);
+//		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim",
+//				true, false, 9L);
 
+		
+		List<SmsDTO> sms = new SMSLogDao(em).getSMSLog("TomKim",
+				true, false, 9L);
+		
+		
 		// for (TillDTO till : tills) {
 		// System.err.println("Till Id:"+till.getId()+"Grade:");
 		// }
@@ -55,11 +62,11 @@ public class TestTills {
 
 		// List<TransactionDTO> trxs = new TransactionDao(em).getAll(null,
 		// "TomKim", true, false,9L);
-		// System.err.println(trxs.size()+" ");
+		 System.err.println(sms.size()+" ");
 
 	}
 
-	@Test
+	@Ignore
 	public void search2() {
 
 		DashboardDao dao = new DashboardDao(em);

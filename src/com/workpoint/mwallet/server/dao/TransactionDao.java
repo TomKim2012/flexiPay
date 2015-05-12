@@ -181,7 +181,7 @@ public class TransactionDao extends BaseDaoImpl {
 			TransactionDTO summary = new TransactionDTO(mpesaSender,
 					mpesa_msisdn, mpesa_amt, mpesa_code, tstamp,
 					business_number, mpesa_acc, isprocessed, ipaddress,
-					isapproved, businessName, smsStatus );
+					isapproved, businessName, smsStatus,ipaddress );
 
 			trxs.add(summary);
 		}
@@ -213,6 +213,13 @@ public class TransactionDao extends BaseDaoImpl {
 			sqlQuery.append(" i.tstamp<=:endDate");
 			params.put("endDate", filter.getEndDate());
 			// System.out.println("End Date >>" + filter.getEndDate());
+			isFirst = false;
+		}
+		
+		if (filter.getTill() != null) {
+			sqlQuery.append(isFirst ? " Where" : " And");
+			sqlQuery.append(" i.business_number<=:businessNo");
+			params.put("businessNo", filter.getTill());
 			isFirst = false;
 		}
 

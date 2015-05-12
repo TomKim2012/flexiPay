@@ -29,6 +29,7 @@ public class SmsModel{
 	@Column(columnDefinition = "varchar(255) default='Failed'")
 	private String status;
 	private String messageId;
+	private int retries;
 	
 	@OneToOne(mappedBy="smsStatus", fetch=FetchType.EAGER)
 	private TransactionModel transaction;
@@ -119,5 +120,13 @@ public class SmsModel{
 
 	public void setTransaction(TransactionModel transaction) {
 		this.transaction = transaction;
+	}
+
+	public int getRetries() {
+		return retries;
+	}
+
+	public void setRetries(int retries) {
+		this.retries = retries;
 	}
 }

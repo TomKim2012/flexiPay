@@ -10,11 +10,11 @@ import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -46,6 +46,7 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.workpoint.mwallet.client.ui.charts.PieChart;
 import com.workpoint.mwallet.client.ui.component.DateBoxDropDown;
+import com.workpoint.mwallet.client.ui.component.DropDownList;
 import com.workpoint.mwallet.client.ui.dashboard.linegraph.data.ToolTip;
 import com.workpoint.mwallet.client.ui.dashboard.model.Data;
 import com.workpoint.mwallet.client.ui.dashboard.model.DataModel;
@@ -56,6 +57,7 @@ import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class DashboardView extends ViewImpl implements
@@ -65,13 +67,6 @@ public class DashboardView extends ViewImpl implements
 	}
 
 	private final Widget widget;
-
-	@UiField
-	SpanElement spnTotalFunding;
-	@UiField
-	SpanElement spnActual;
-	@UiField
-	SpanElement spnRemaining;
 
 	@UiField
 	DateBoxDropDown boxDatePick;
@@ -89,6 +84,9 @@ public class DashboardView extends ViewImpl implements
 	DropdownButton TrendsDropdown;
 	@UiField
 	DropdownButton TrendsDropdown2;
+
+	@UiField
+	DropDownList<TillDTO> lstTills;
 
 	@Inject
 	public DashboardView(final Binder binder) {
@@ -698,9 +696,8 @@ public class DashboardView extends ViewImpl implements
 
 		boxDatePick.setStartDate(startDate);
 		boxDatePick.setEndDate(endDate);
-		
+
 		boxDatePick.setDateString(displayName);
-		
 
 		filter.setFormatedStartDate(DateUtils.SHORTTIMESTAMP.format(startDate));
 		filter.setFormatedEndDate(DateUtils.SHORTTIMESTAMP.format(endDate));
@@ -718,4 +715,12 @@ public class DashboardView extends ViewImpl implements
 		return boxDatePick.getPeriodDropDown();
 	}
 
+	@Override
+	public void setTills(List<TillDTO> tills) {
+		lstTills.setItems(tills);
+	}
+	
+	public HasValueChangeHandlers<TillDTO> getLstTills() {
+		return lstTills;
+	}
 }

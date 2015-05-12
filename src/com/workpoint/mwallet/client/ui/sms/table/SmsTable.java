@@ -38,6 +38,7 @@ public class SmsTable extends Composite {
 		th.add(new TableHeader("Destination"));
 		th.add(new TableHeader("Cost"));
 		th.add(new TableHeader("Transaction Code"));
+		th.add(new TableHeader("Retries"));
 		th.add(new TableHeader("Status"));
 
 		tblView.setTableHeaders(th);

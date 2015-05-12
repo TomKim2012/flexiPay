@@ -54,7 +54,8 @@ public class TransactionsPresenter extends
 
 		void clear();
 
-		void presentSummary(String transactions, String amount, String commission, boolean isSalesPerson,
+		void presentSummary(String transactions, String amount,
+				String commission, boolean isSalesPerson,
 				String uniqueCustomers, String uniqueMerchants,
 				String merchantAverage, String customerAverage);
 
@@ -83,7 +84,7 @@ public class TransactionsPresenter extends
 	@Inject
 	PlaceManager placeManager;
 
-	//private List<TillDTO> tills = new ArrayList<TillDTO>();
+	// private List<TillDTO> tills = new ArrayList<TillDTO>();
 	private boolean isSalesPerson = false;
 	private SearchFilter filter = new SearchFilter();
 	private String setDateRange;
@@ -114,62 +115,59 @@ public class TransactionsPresenter extends
 
 	}
 
-	public void loadAll(){
+	public void loadAll() {
 		loadTills(AppContext.getContextUser());
 	}
 
 	private void loadTills(UserDTO user) {
-		if(user==null){
+		if (user == null) {
 			return;
 		}
 		getView().setLoggedUser(user);
-		
-		SearchFilter tillFilter = new SearchFilter();
 
 		if (AppContext.isCurrentUserAdmin()) {
 
 		} else if (user.hasGroup("Merchant")) {
-			
+
 		} else if (user.hasGroup("SalesPerson")) {
 			isSalesPerson = true;
 			getView().setSalesTable(isSalesPerson);// Set SalesPerson
 		}
-		
-		String passedDate="Last 7 Days";
+
+		String passedDate = "Last 7 Days";
 		this.setDateRange = passedDate;
 		getView().setDates(passedDate);
-		
+
 		fireEvent(new ProcessingEvent());
 		filter.setStartDate(DateUtils.getDateByRange(DateRange
 				.getDateRange(passedDate)));
 		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
-			
+
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetTillsRequest(tillFilter));
+		action.addRequest(new GetTillsRequest());
 		action.addRequest(new GetTransactionsRequest(filter));
-		
+
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
-						int i=0;
-						GetTillsRequestResult tillsResponse = (GetTillsRequestResult)aResponse.get(i++);
+						int i = 0;
+						GetTillsRequestResult tillsResponse = (GetTillsRequestResult) aResponse
+								.get(i++);
 						setUserTills(tillsResponse.getTills());
-						
-						GetTransactionsRequestResult trxResponse = (GetTransactionsRequestResult)aResponse.get(i++);
+
+						GetTransactionsRequestResult trxResponse = (GetTransactionsRequestResult) aResponse
+								.get(i++);
 						getResults(trxResponse);
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
 	}
 
-
 	private void loadData(String passedDate) {
 		this.setDateRange = passedDate;
 		getView().setDates(passedDate);
-		
-//		Window.alert("Passed Date Called!!");
-	
+
 		filter.setStartDate(DateUtils.getDateByRange(DateRange
 				.getDateRange(passedDate)));
 		filter.setEndDate(DateUtils.getDateByRange(DateRange.NOW));
@@ -188,12 +186,8 @@ public class TransactionsPresenter extends
 	}
 
 	protected void getResults(GetTransactionsRequestResult aResponse) {
-
 		uniqueCustomers = aResponse.getUniqueCustomers();
 		uniqueMerchants = aResponse.getUniqueMerchants();
-
-		// //System.err.println("Unique Merchants>>" + uniqueMerchants);
-		// //System.err.println("Unique Customers>>" + uniqueCustomers);
 
 		bindTransactions(aResponse.getTransactions());
 
@@ -209,7 +203,7 @@ public class TransactionsPresenter extends
 			if (isSalesPerson) {
 				Double commission = SALESPERSONRATE * transaction.getAmount();
 				transaction.setCommission(commission);
-				totalCommission = totalCommission + commission; 
+				totalCommission = totalCommission + commission;
 				getView().presentData(transaction, isSalesPerson);
 			} else {
 				getView().presentData(transaction);
@@ -220,12 +214,13 @@ public class TransactionsPresenter extends
 		trxSize = NumberUtils.NUMBERFORMAT.format(trxs.size());
 		totals = NumberUtils.CURRENCYFORMATSHORT.format(totalAmount);
 		commissionTotal = NumberUtils.CURRENCYFORMAT.format(totalCommission);
-			
+
 		merchantAverage = totalAmount / uniqueMerchants;
 		customerAverage = totalAmount / uniqueCustomers;
-		
-		getView().presentSummary(trxSize, totals,commissionTotal,isSalesPerson,
-				Integer.toString(uniqueCustomers), Integer.toString(uniqueMerchants),
+
+		getView().presentSummary(trxSize, totals, commissionTotal,
+				isSalesPerson, Integer.toString(uniqueCustomers),
+				Integer.toString(uniqueMerchants),
 				NumberUtils.CURRENCYFORMATSHORT.format(merchantAverage),
 				NumberUtils.CURRENCYFORMATSHORT.format(customerAverage));
 	}

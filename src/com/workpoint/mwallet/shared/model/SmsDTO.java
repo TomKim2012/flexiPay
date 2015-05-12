@@ -17,6 +17,7 @@ public class SmsDTO implements Serializable, Comparable<SmsDTO> {
 	private Double cost;
 	private String tCode;
 	private String status;
+	private int retries;
 
 	public SmsDTO() {
 		// TODO Auto-generated constructor stub
@@ -87,6 +88,14 @@ public class SmsDTO implements Serializable, Comparable<SmsDTO> {
 		if (getTimeStamp() == null || smsLog.getTimeStamp() == null)
 			return 0;
 		return -getTimeStamp().compareTo(smsLog.getTimeStamp());
+	}
+
+	public int getRetries() {
+		return retries;
+	}
+
+	public void setRetries(int retries) {
+		this.retries = retries;
 	}
 
 

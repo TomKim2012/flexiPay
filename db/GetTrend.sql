@@ -1,7 +1,7 @@
 
 --CREATE
 ALTER
- FUNCTION GetTrends(@startDate varchar(50),@endDate varchar(50))
+ FUNCTION GetTrends(@startDate varchar(50),@endDate varchar(50),@businessNos varchar(500))
 	RETURNS @trendTable TABLE (
 		MonthId Int,
 		totalTransactions numeric(35,0) default 0,
@@ -42,6 +42,8 @@ ALTER
 			
 			SELECT @tempSum = SUM(mpesa_amt), @totalTransactions = COUNT(mpesa_amt) from LipaNaMpesaIPN 
 			where tstamp>=@tempStartDate and tstamp<=@tempEndDate
+			if(@businessNos !=null)
+			and business_number=@businessNos
 			--print 'Total Sum'+ CAST (@tempSum as varchar)
 			
 			SELECT @uniqueCustomers = count(distinct mpesa_msisdn) from LipaNaMpesaIPN where tstamp>=@tempStartDate
