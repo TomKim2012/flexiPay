@@ -10,6 +10,7 @@ public class SearchFilter implements Serializable {
 	
 	private String phrase;
 	private TillDTO till;
+	private String verificationCode;
 	private List<TillDTO> tills;
 	private UserDTO owner;
 	private UserDTO salesPerson;
@@ -103,6 +104,13 @@ public class SearchFilter implements Serializable {
 	public void setSu(boolean isSu) {
 		this.isSu = isSu;
 	}
-	
 
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
+	
 }

@@ -10,13 +10,20 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
+<<<<<<< HEAD
 import com.workpoint.mwallet.server.dao.TillDao;
+=======
+import com.workpoint.mwallet.server.dao.TransactionDao;
+>>>>>>> 0cc3ccbfa9b7dd3a3d4aea5bcaa341a7551472b5
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+<<<<<<< HEAD
 import com.workpoint.mwallet.shared.model.TillDTO;
+=======
+import com.workpoint.mwallet.shared.model.TransactionDTO;
 
 public class TestTills {
 
@@ -37,7 +44,6 @@ public class TestTills {
 	
 	@Test
 	public void search(){
-		
 		SearchFilter filter = new SearchFilter();
 		
 		//boolean status = new TillDao(em).updateGradesView("2014-01-01", "2015-04-30");
@@ -48,9 +54,9 @@ public class TestTills {
 //		}
 //		
 		
-		
-//		List<TransactionDTO> trxs = new TransactionDao(em).getAll(null, "TomKim", true, false,9L);
-//		 System.err.println(trxs.size()+" ");
+		filter.setVerificationCode("WI996");
+		List<TransactionDTO> trxs = new TransactionDao(em).getAll(filter, "TomKim", true, false,9L,false);
+		 System.err.println(trxs.size()+" ");
 		
 	}
 	

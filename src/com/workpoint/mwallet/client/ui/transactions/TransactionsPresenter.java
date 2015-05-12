@@ -117,16 +117,6 @@ public class TransactionsPresenter extends
 
 	public void loadAll(){
 		loadTills(AppContext.getContextUser());
-	//		if (AppContext.getContextUser() != null
-	//				|| AppContext.getContextUser().getGroups() != null) {
-	//			UserDTO user = AppContext.getContextUser();
-	//			getView().setLoggedUser(user);
-	//
-	//			loadTills(user);
-	//
-	//		} else {
-	//			Window.alert("User details not found.");
-	//		}
 
 	}
 

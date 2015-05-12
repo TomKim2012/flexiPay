@@ -21,6 +21,7 @@
 	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
 	<inherits name="gwtupload.GWTUpload"/>
 	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
+	<inherits name="gwt.material.design.Gwt_material_design" />
 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='com.workpoint.mwallet.client.MWallet2'/>

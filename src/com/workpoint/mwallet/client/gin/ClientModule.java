@@ -25,6 +25,8 @@ import com.workpoint.mwallet.client.ui.home.HomePresenter;
 import com.workpoint.mwallet.client.ui.home.HomeView;
 import com.workpoint.mwallet.client.ui.login.LoginPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginView;
+import com.workpoint.mwallet.client.ui.payment.WebsiteClientPresenter;
+import com.workpoint.mwallet.client.ui.payment.WebsiteClientView;
 import com.workpoint.mwallet.client.ui.popup.GenericPopupPresenter;
 import com.workpoint.mwallet.client.ui.popup.GenericPopupView;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
@@ -69,6 +71,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(HomePresenter.class, HomePresenter.MyView.class,
 				HomeView.class, HomePresenter.MyProxy.class);
+		
+		bindPresenter(WebsiteClientPresenter.class, WebsiteClientPresenter.MyView.class,
+				WebsiteClientView.class, WebsiteClientPresenter.MyProxy.class);
 
 		bindPresenterWidget(GroupPresenter.class, GroupPresenter.MyView.class,
 				GroupView.class);

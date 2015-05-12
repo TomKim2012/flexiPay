@@ -11,6 +11,7 @@ import com.workpoint.mwallet.server.actionhandlers.GetTillsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetTransactionsRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetUserRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetUsersRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.GetVerificationRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.ImportClientRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.LoginRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.LogoutActionHandler;
@@ -28,6 +29,7 @@ import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.GetTransactionsRequest;
 import com.workpoint.mwallet.shared.requests.GetUserRequest;
 import com.workpoint.mwallet.shared.requests.GetUsersRequest;
+import com.workpoint.mwallet.shared.requests.GetVerificationRequest;
 import com.workpoint.mwallet.shared.requests.ImportClientRequest;
 import com.workpoint.mwallet.shared.requests.LoginRequest;
 import com.workpoint.mwallet.shared.requests.LogoutAction;
@@ -74,6 +76,10 @@ public class ServerModule extends HandlerModule {
 		bindHandler(GetTransactionsRequest.class,
 				GetTransactionsRequestActionHandler.class,
 				SessionValidator.class);
+		
+		bindHandler(GetVerificationRequest.class,
+				GetVerificationRequestActionHandler.class);
+		
 		bindHandler(GetTillsRequest.class, GetTillsRequestActionHandler.class,
 				SessionValidator.class);
 		bindHandler(ImportClientRequest.class,
