@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class DashboardDao extends BaseDaoImpl {
@@ -17,20 +18,21 @@ public class DashboardDao extends BaseDaoImpl {
 		super(em);
 	}
 
-	public List<TrendDTO> getTrend(SearchFilter filter, boolean isSU) {
+	public List<TrendDTO> getTrend(SearchFilter filter, boolean isSU,
+			String userId) {
 
 		if (filter == null) {
 			filter = new SearchFilter();
 		}
 
-		updateGetTrendView(filter);
+		updateGetTrendView(filter, userId);
 
 		StringBuffer jpql = new StringBuffer(
-
-		"select * from [TrendView] tv where " + ":isSU='Y' ");
+				"select * from TrendView tv where userId=:userId "
+						+ "and :isSU='Y' ");
 
 		Query query = em.createNativeQuery(jpql.toString()).setParameter(
-				"isSU", isSU ? "Y" : "N");
+				"isSU", isSU ? "Y" : "N").setParameter("userId", userId);
 
 		List<Object[]> rows = getResultList(query);
 		List<TrendDTO> trends = new ArrayList<TrendDTO>();
@@ -113,20 +115,22 @@ public class DashboardDao extends BaseDaoImpl {
 	}
 
 	public boolean updateGradesView(SearchFilter filter) {
-		String dropView =  "IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME ='"
-				+ "TillGrades') "+"DROP VIEW TillGrades";
+		String dropView = "IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME ='"
+				+ "TillGrades') " + "DROP VIEW TillGrades";
 		Query dropquery = em.createNativeQuery(dropView);
 		dropquery.executeUpdate();
 
-		if (filter.getFormatedStartDate() != null && filter.getFormatedEndDate() != null) {
+		if (filter.getFormatedStartDate() != null
+				&& filter.getFormatedEndDate() != null) {
 			String sqlBuffer = "CREATE VIEW [TillGrades] AS "
 					+ "select business_number, "
 					+ "dbo.fn_getTillAverage(business_number,'"
-					+ filter.getFormatedStartDate() + "','" + filter.getFormatedEndDate()
-					+ "')" + " as tillAverage, "
+					+ filter.getFormatedStartDate() + "','"
+					+ filter.getFormatedEndDate() + "')" + " as tillAverage, "
 					+ "dbo.fn_GetTillRank(business_number,'"
-					+ filter.getFormatedStartDate() + "','" + filter.getFormatedEndDate()
-					+ "') as grade " + "from TillModel ";
+					+ filter.getFormatedStartDate() + "','"
+					+ filter.getFormatedEndDate() + "') as grade "
+					+ "from TillModel ";
 
 			// System.out.println(sqlBuffer);
 
@@ -150,16 +154,30 @@ public class DashboardDao extends BaseDaoImpl {
 				.executeUpdate();
 	}
 
-	public void updateGetTrendView(SearchFilter filter) {
-		String dropView = "IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME ='"
-				+ "TrendView') " +"DROP VIEW TrendView";
-		Query dropquery = em.createNativeQuery(dropView);
-		dropquery.executeUpdate();
+	public void updateGetTrendView(SearchFilter filter, String userId) {
+		String tillsList = "";
+		int counter = 1;
+		if (filter.getTills() != null) {
+			for (TillDTO till : filter.getTills()) {
+				tillsList = tillsList + till.getTillNo();
+				if (filter.getTills().size() != counter) {
+					tillsList += ",";
+				}
+				counter++;
+			}
+		} else {
+			tillsList = "ALL";
+		}
 
-		if (filter.getFormatedStartDate() != null && filter.getFormatedEndDate() != null) {
-			String sqlBuffer = "CREATE VIEW [TrendView] AS " + "select * from "
-					+ "dbo.getTrends('" + filter.getFormatedStartDate() + "','"
-					+ filter.getFormatedEndDate() + "')";
+		if (filter.getFormatedStartDate() != null
+				&& filter.getFormatedEndDate() != null && filter.getViewBy() !=null) {
+
+			String sqlBuffer = "EXEC dbo.sp_GetTrends '"
+					+ filter.getFormatedStartDate() + "','"
+					+ filter.getFormatedEndDate() + "','" + tillsList + "','"
+					+ userId + "','"+filter.getViewBy()+"'";
+
+			System.err.println(sqlBuffer);
 
 			int viewQuery = em.createNativeQuery(sqlBuffer.toString())
 					.executeUpdate();

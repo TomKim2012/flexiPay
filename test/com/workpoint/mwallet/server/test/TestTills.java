@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.server.test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -40,7 +41,7 @@ public class TestTills {
 		System.err.println("Client Code >>" + model.getClientcode());
 	}
 
-	@Test
+	@Ignore
 	public void search() {
 
 		SearchFilter filter = new SearchFilter();
@@ -66,17 +67,24 @@ public class TestTills {
 
 	}
 
-	@Ignore
+	@Test
 	public void search2() {
 
 		DashboardDao dao = new DashboardDao(em);
 		
-//		dao.updateGetTrendView("2014-10-01", "2015-04-01");
+		SearchFilter filter = new SearchFilter();
+		filter.setFormatedStartDate("2014-10-01");
+		filter.setFormatedEndDate("2015-02-20");
+//		filter.setTills(Arrays.asList(new TillDTO("893512"), new TillDTO("893513")));
+		//dao.updateGetTrendView(filter,"TomKim");
+		
+		dao.getTrend(filter, true, "TomKim");
+		
 		//dao.updateGradesCount();
 		
-		SearchFilter filter = new SearchFilter();
-		filter.setFormatedStartDate("2015-01-01");
-		filter.setFormatedEndDate("2015-04-01");
+//		SearchFilter filter = new SearchFilter();
+//		filter.setFormatedStartDate("2015-01-01");
+//		filter.setFormatedEndDate("2015-04-01");
 //		dao.updateGetTrendView(filter);
 //		
 //		List<TrendDTO> trends = dao.getTrend(filter, true);
@@ -84,10 +92,10 @@ public class TestTills {
 //			System.err.println("Trend:" + trend.getTotalAmount());
 //		}
 //		
-		List<GradeCountDTO> grades = dao.getAllGradeCount(filter,true);
-		for (GradeCountDTO grade : grades) {
-			System.err.println("Grade Count:" + grade.getGradeCount());
-		}
+//		List<GradeCountDTO> grades = dao.getAllGradeCount(filter,true);
+//		for (GradeCountDTO grade : grades) {
+//			System.err.println("Grade Count:" + grade.getGradeCount());
+//		}
 
 	}
 

@@ -18,6 +18,7 @@ public class SearchFilter implements Serializable {
 	private Date startDate;
 	private String formatedStartDate;
 	private String formatedendDate;
+	private String viewBy;
 	private Date endDate;
 	private boolean isSu;
 
@@ -122,6 +123,10 @@ public class SearchFilter implements Serializable {
 	public void setFormatedStartDate(String formatedStartDate) {
 		this.formatedStartDate = formatedStartDate;
 	}
+	
+	public void setViewBy(String viewBy) {
+		this.viewBy = viewBy;
+	}
 
 	public String getVerificationCode() {
 		return verificationCode;
@@ -130,5 +135,10 @@ public class SearchFilter implements Serializable {
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
 	}
+
+	public String getViewBy() {
+		return viewBy;
+	}
+
 
 }

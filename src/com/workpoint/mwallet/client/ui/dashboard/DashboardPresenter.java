@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.client.ui.dashboard;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class DashboardPresenter extends
 	@Inject
 	DispatchAsync requestHelper;
 	private SearchFilter filter = new SearchFilter();
+	private boolean isTillsLoaded =false;
 
 	@Inject
 	public DashboardPresenter(final EventBus eventBus, final MyView view) {
@@ -79,7 +81,7 @@ public class DashboardPresenter extends
 					@Override
 					public void onValueChange(ValueChangeEvent<TillDTO> event) {
 						if (event.getValue() != null) {
-							filter.setTill(event.getValue());
+							filter.setTills(Arrays.asList(event.getValue()));
 							loadData(filter);
 						}
 					}
@@ -88,6 +90,7 @@ public class DashboardPresenter extends
 
 	public void loadData() {
 		filter = getView().setDateRange("Last 6 Months", null, null);
+		filter.setViewBy("MONTH");
 		loadData(filter);
 	}
 
@@ -95,7 +98,9 @@ public class DashboardPresenter extends
 		fireEvent(new ProcessingEvent());
 
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetTillsRequest());
+		if (!isTillsLoaded) {
+			action.addRequest(new GetTillsRequest());
+		}
 		action.addRequest(new GetGradeCountRequest(filter));
 		action.addRequest(new GetTrendRequest(filter));
 
@@ -104,9 +109,13 @@ public class DashboardPresenter extends
 					@Override
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
-						GetTillsRequestResult tillsResponse = (GetTillsRequestResult) aResponse
-								.get(i++);
-						setUserTills(tillsResponse.getTills());
+						
+						if (!isTillsLoaded) {
+							GetTillsRequestResult tillsResponse = (GetTillsRequestResult) aResponse
+									.get(i++);
+							setUserTills(tillsResponse.getTills());
+							isTillsLoaded = true;
+						}
 
 						GetGradeCountRequestResult dashboardResponse = (GetGradeCountRequestResult) aResponse
 								.get(i++);

@@ -115,7 +115,15 @@
 					<b:DropdownButton ui:field="TrendsDropdown2"></b:DropdownButton>
 				</b:NavPills>
 			</div>
+
+			<b:ButtonGroup toggle="radio" ui:field='btnViewBy' styleName="hide">
+				<b:Button ui:field="btnDay">DAYS</b:Button>
+				<b:Button ui:field="btnWeek">WEEKS</b:Button>
+				<b:Button active="true" ui:field="btnMonth">MONTH</b:Button>
+				<b:Button ui:field="btnYear">YEAR</b:Button>
+			</b:ButtonGroup>
 		</g:HTMLPanel>
+
 
 		<g:HTMLPanel ui:field="panelTrends" styleName="row-fluid span12">
 		</g:HTMLPanel>

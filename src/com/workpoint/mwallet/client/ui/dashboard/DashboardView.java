@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.ButtonGroup;
 import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
@@ -88,10 +90,17 @@ public class DashboardView extends ViewImpl implements
 	@UiField
 	DropDownList<TillDTO> lstTills;
 
+	@UiField
+	ButtonGroup btnViewBy;
+
+	@UiField
+	Button btnWeek;
+
 	@Inject
 	public DashboardView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		addDropDownChangeHandler();
+		// btnViewBy.
 	}
 
 	private void setTrendsDropDown(Trends selectedTrend) {
@@ -106,6 +115,7 @@ public class DashboardView extends ViewImpl implements
 			}
 			TrendsDropdown.add(link);
 		}
+
 	}
 
 	private void setTrendsDropDown2(Trends selectedTrend) {
@@ -583,8 +593,10 @@ public class DashboardView extends ViewImpl implements
 		if (passedTrend2 == null && selectedTrend == null) {
 			TrendsDropdown2.setText("--Select---");
 		} else {
-			TrendsDropdown2.setText(passedTrend2.getDisplayName());
-			selectedTrend = passedTrend2;
+			if (passedTrend2 != null) {
+				TrendsDropdown2.setText(passedTrend2.getDisplayName());
+				selectedTrend = passedTrend2;
+			}
 		}
 
 		setTrendsDropDown(passedTrend);
@@ -719,7 +731,7 @@ public class DashboardView extends ViewImpl implements
 	public void setTills(List<TillDTO> tills) {
 		lstTills.setItems(tills);
 	}
-	
+
 	public HasValueChangeHandlers<TillDTO> getLstTills() {
 		return lstTills;
 	}
