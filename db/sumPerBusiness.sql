@@ -1,0 +1,1 @@
+select business_number, SUM(mpesa_amt) from LipaNaMpesaIPN group by business_number 
