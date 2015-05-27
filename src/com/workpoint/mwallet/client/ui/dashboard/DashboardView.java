@@ -12,6 +12,7 @@ import com.github.gwtbootstrap.client.ui.DropdownButton;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.base.InlineLabel;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -59,8 +60,8 @@ import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.SummaryDTO;
 import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.TrendDTO;
 
 public class DashboardView extends ViewImpl implements
 		DashboardPresenter.MyView {
@@ -89,6 +90,21 @@ public class DashboardView extends ViewImpl implements
 
 	@UiField
 	DropDownList<TillDTO> lstTills;
+
+	@UiField
+	SpanElement spnMoneyIn;
+	@UiField
+	SpanElement spnMoneyOut;
+	@UiField
+	SpanElement spnBalance;
+	@UiField
+	SpanElement spnCustomers;
+	@UiField
+	SpanElement spnCustomerAvg;
+	@UiField
+	SpanElement spnMerchant;
+	@UiField
+	SpanElement spnMerchantAvg;
 
 	@UiField
 	ButtonGroup btnViewBy;
@@ -207,11 +223,11 @@ public class DashboardView extends ViewImpl implements
 	}
 
 	@Override
-	public void setTrend(List<TrendDTO> trends) {
+	public void setTrend(List<SummaryDTO> trends) {
 		panelTrends.clear();
 		List<Data> data = new ArrayList<Data>();
 		store = new ListStore<Data>(dataAccess.nameKey());
-		for (TrendDTO trend : trends) {
+		for (SummaryDTO trend : trends) {
 			String month = DateUtils.MONTHYEARFORMAT.format(trend
 					.getStartDate());
 
@@ -711,6 +727,8 @@ public class DashboardView extends ViewImpl implements
 
 		boxDatePick.setDateString(displayName);
 
+		filter.setStartDate(startDate);
+		filter.setEndDate(endDate);
 		filter.setFormatedStartDate(DateUtils.SHORTTIMESTAMP.format(startDate));
 		filter.setFormatedEndDate(DateUtils.SHORTTIMESTAMP.format(endDate));
 
@@ -734,5 +752,29 @@ public class DashboardView extends ViewImpl implements
 
 	public HasValueChangeHandlers<TillDTO> getLstTills() {
 		return lstTills;
+	}
+
+	@Override
+	public void setSummary(List<SummaryDTO> summaries) {
+		for (SummaryDTO summary : summaries) {
+			spnMoneyIn.setInnerText(NumberUtils.CURRENCYFORMAT.format(summary
+					.getTotalAmount()));
+
+			if (summary.getMerchantBalance() != null) {
+				Double moneyOut = summary.getTotalAmount()
+						- summary.getMerchantBalance();
+				spnMoneyOut.setInnerText(Double.toString(moneyOut));
+				spnBalance.setInnerText(Double.toString(summary
+						.getMerchantBalance()));
+			}
+			spnCustomers.setInnerText(NumberUtils.NUMBERFORMAT.format(summary
+					.getUniqueCustomers()));
+			spnCustomerAvg.setInnerText(NumberUtils.CURRENCYFORMAT
+					.format(summary.getCustomerAverage()));
+			spnMerchant.setInnerText(NumberUtils.NUMBERFORMAT.format(summary
+					.getUniqueMerchants()));
+			spnMerchantAvg.setInnerText(NumberUtils.CURRENCYFORMAT
+					.format(summary.getMerchantAverage()));
+		}
 	}
 }

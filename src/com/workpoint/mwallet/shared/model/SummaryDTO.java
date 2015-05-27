@@ -3,7 +3,7 @@ package com.workpoint.mwallet.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TrendDTO implements Serializable {
+public class SummaryDTO implements Serializable {
 	/**
 	 * 
 	 */
@@ -15,18 +15,20 @@ public class TrendDTO implements Serializable {
 	private Integer uniqueCustomers;
 	private Double customerAverage;
 	private Double merchantAverage;
+	private Double merchantBalance;
 	private Date startDate;
 	private Date endDate;
 
 	private Integer totalTrxs;
 
-	public TrendDTO() {
+	public SummaryDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TrendDTO(Long monthId, Integer totalTrxs, Double totalAmount, Integer uniqueMerchants,
-			Integer uniqueCustomers, Double customerAverage,
-			Double merchantAverage, Date startDate, Date endDate) {
+	public SummaryDTO(Long monthId, Integer totalTrxs, Double totalAmount,
+			Integer uniqueMerchants, Integer uniqueCustomers,
+			Double customerAverage, Double merchantAverage, Date startDate,
+			Date endDate) {
 		this.monthId = monthId;
 		this.setTotalTrxs(totalTrxs);
 		this.totalAmount = totalAmount;
@@ -36,6 +38,17 @@ public class TrendDTO implements Serializable {
 		this.merchantAverage = merchantAverage;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+
+	public SummaryDTO(Integer totalTrxs2, Double totalAmount2,
+			Integer uniqueMerchants2, Double merchantAverage2,
+			Integer uniqueCustomers2, Double customerAverage2) {
+		totalTrxs = totalTrxs2;
+		totalAmount = totalAmount2;
+		uniqueMerchants = uniqueMerchants2;
+		merchantAverage = merchantAverage2;
+		uniqueCustomers = uniqueCustomers2;
+		customerAverage = customerAverage2;
 	}
 
 	public Long getMonthId() {
@@ -108,6 +121,14 @@ public class TrendDTO implements Serializable {
 
 	public void setTotalTrxs(Integer totalTrxs) {
 		this.totalTrxs = totalTrxs;
+	}
+
+	public Double getMerchantBalance() {
+		return merchantBalance;
+	}
+
+	public void setMerchantBalance(Double merchantBalance) {
+		this.merchantBalance = merchantBalance;
 	}
 
 }

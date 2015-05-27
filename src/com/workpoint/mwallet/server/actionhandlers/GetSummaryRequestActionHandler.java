@@ -10,26 +10,26 @@ import com.workpoint.mwallet.server.dao.model.CategoryModel;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.server.helper.session.SessionHelper;
 import com.workpoint.mwallet.shared.model.SearchFilter;
-import com.workpoint.mwallet.shared.model.TrendDTO;
+import com.workpoint.mwallet.shared.model.SummaryDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
-import com.workpoint.mwallet.shared.requests.GetTrendRequest;
+import com.workpoint.mwallet.shared.requests.GetSummaryRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
-import com.workpoint.mwallet.shared.responses.GetTrendRequestResult;
+import com.workpoint.mwallet.shared.responses.GetSummaryRequestResult;
 
-public class GetTrendRequestActionHandler extends
-		BaseActionHandler<GetTrendRequest, GetTrendRequestResult> {
+public class GetSummaryRequestActionHandler extends
+		BaseActionHandler<GetSummaryRequest, GetSummaryRequestResult> {
 
 	@Inject
-	public GetTrendRequestActionHandler() {
+	public GetSummaryRequestActionHandler() {
 	}
 
 	@Override
-	public Class<GetTrendRequest> getActionType() {
-		return GetTrendRequest.class;
+	public Class<GetSummaryRequest> getActionType() {
+		return GetSummaryRequest.class;
 	}
 
 	@Override
-	public void execute(GetTrendRequest action, BaseResponse actionResult,
+	public void execute(GetSummaryRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		DashboardDao dao = new DashboardDao(DB.getEntityManager());
 		SearchFilter filter = action.getFilter();
@@ -40,11 +40,18 @@ public class GetTrendRequestActionHandler extends
 		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
 				&& currentUser.isAdmin();
 
-		List<TrendDTO> trends = dao.getTrend(filter, isSuperUser,
+		List<SummaryDTO> trends = dao.getTrend(filter, isSuperUser,
 				currentUser.getUserId());
 
-		((GetTrendRequestResult) actionResult).setTrends(trends);
+		if (currentUser.getPhoneNo() != null) {
+			List<SummaryDTO> balanceSummary = dao
+					.getMerchantBalance(currentUser.getPhoneNo());
+		}
+
+		List<SummaryDTO> summaries = dao.getSummary(filter, isSuperUser);
+
+		((GetSummaryRequestResult) actionResult).setSummary(summaries);
+		((GetSummaryRequestResult) actionResult).setTrends(trends);
 
 	}
-
 }

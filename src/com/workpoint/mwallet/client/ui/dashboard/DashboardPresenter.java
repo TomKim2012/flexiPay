@@ -23,14 +23,14 @@ import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.TrendDTO;
+import com.workpoint.mwallet.shared.model.SummaryDTO;
 import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
-import com.workpoint.mwallet.shared.requests.GetTrendRequest;
+import com.workpoint.mwallet.shared.requests.GetSummaryRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.responses.GetGradeCountRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
-import com.workpoint.mwallet.shared.responses.GetTrendRequestResult;
+import com.workpoint.mwallet.shared.responses.GetSummaryRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class DashboardPresenter extends
@@ -40,7 +40,7 @@ public class DashboardPresenter extends
 
 		void setGradeCount(List<GradeCountDTO> gradeCount);
 
-		void setTrend(List<TrendDTO> trends);
+		void setTrend(List<SummaryDTO> trends);
 
 		HasChangeHandlers getPeriodDropDown();
 
@@ -50,6 +50,8 @@ public class DashboardPresenter extends
 		void setTills(List<TillDTO> tills);
 
 		HasValueChangeHandlers<TillDTO> getLstTills();
+
+		void setSummary(List<SummaryDTO> summary);
 	}
 
 	@Inject
@@ -102,7 +104,7 @@ public class DashboardPresenter extends
 			action.addRequest(new GetTillsRequest());
 		}
 		action.addRequest(new GetGradeCountRequest(filter));
-		action.addRequest(new GetTrendRequest(filter));
+		action.addRequest(new GetSummaryRequest(filter));
 
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -122,8 +124,9 @@ public class DashboardPresenter extends
 						getView().setGradeCount(
 								dashboardResponse.getGradeCount());
 
-						GetTrendRequestResult trendResponse = (GetTrendRequestResult) aResponse
+						GetSummaryRequestResult trendResponse = (GetSummaryRequestResult) aResponse
 								.get(i++);
+						getView().setSummary(trendResponse.getSummary());
 						getView().setTrend(trendResponse.getTrends());
 						fireEvent(new ProcessingCompletedEvent());
 					}

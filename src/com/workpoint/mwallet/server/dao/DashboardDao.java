@@ -2,7 +2,9 @@ package com.workpoint.mwallet.server.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -10,7 +12,7 @@ import javax.persistence.Query;
 import com.workpoint.mwallet.shared.model.GradeCountDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TillDTO;
-import com.workpoint.mwallet.shared.model.TrendDTO;
+import com.workpoint.mwallet.shared.model.SummaryDTO;
 
 public class DashboardDao extends BaseDaoImpl {
 
@@ -18,7 +20,99 @@ public class DashboardDao extends BaseDaoImpl {
 		super(em);
 	}
 
-	public List<TrendDTO> getTrend(SearchFilter filter, boolean isSU,
+	public List<SummaryDTO> getSummary(SearchFilter filter, boolean isSU) {
+		if (filter == null) {
+			filter = new SearchFilter();
+		}
+
+		StringBuffer jpql = new StringBuffer(
+				"select COUNT(*) as totalTrxs,SUM(mpesa_amt) as totalAmount,"
+						+ "COUNT(DISTINCT business_number ) uniqueMerchants,"
+						+ "(SUM(mpesa_amt))/( COUNT(DISTINCT business_number )) "
+						+ "as  merchantAverage ,COUNT(DISTINCT mpesa_msisdn) as "
+						+ "uniqueCustomers,(SUM(mpesa_amt))/ (COUNT(DISTINCT mpesa_msisdn)) "
+						+ "as customerAvg from LipaNaMpesaIPN i");
+		Map<String, Object> params = appendParameters(filter, jpql);
+
+		Query query = em.createNativeQuery(jpql.toString());
+
+		for (String key : params.keySet()) {
+			query.setParameter(key, params.get(key));
+		}
+
+		List<Object[]> rows = getResultList(query);
+		List<SummaryDTO> summaries = new ArrayList<SummaryDTO>();
+
+		for (Object[] row : rows) {
+			int i = 0;
+			Object value = null;
+
+			Integer totalTrxs = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			Double totalAmount = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			Integer uniqueMerchants = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			Double merchantAverage = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+			Integer uniqueCustomers = (value = row[i++]) == null ? null
+					: new Integer(value.toString());
+			Double customerAverage = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+
+			SummaryDTO summary = new SummaryDTO(totalTrxs, totalAmount,
+					uniqueMerchants, merchantAverage, uniqueCustomers,
+					customerAverage);
+			summaries.add(summary);
+		}
+
+		return summaries;
+	}
+
+	public List<SummaryDTO> getMerchantBalance(String phoneNo) {
+		
+		System.err.println("phoneNo:"+phoneNo);
+		
+		StringBuffer jpql = new StringBuffer(
+				"select clcode,MergeFinals.dbo.SP_GetBalances(clcode,2) from MergeFinals.dbo.client "
+						+ "where phone=:phoneNo");
+
+		Query query = em.createNativeQuery(jpql.toString()).setParameter(
+				"phoneNo", phoneNo);
+
+		List<Object[]> rows = getResultList(query);
+		List<SummaryDTO> summaries = new ArrayList<SummaryDTO>();
+
+		for (Object[] row : rows) {
+			int i = 0;
+			Object value = null;
+
+			String clcode = (value = row[i++]) == null ? null : value.toString();
+			Double merchantBalance = (value = row[i++]) == null ? null
+					: new Double(value.toString());
+
+			SummaryDTO summary = new SummaryDTO();
+			summary.setMerchantBalance(merchantBalance);
+
+			summaries.add(summary);
+		}
+		return summaries;
+	}
+
+	private String getTillString(List<TillDTO> allTills) {
+		String tillsList = "";
+		int counter = 1;
+		for (TillDTO till : allTills) {
+			tillsList = tillsList + till.getTillNo();
+			if (allTills.size() != counter) {
+				tillsList += ",";
+			}
+			counter++;
+		}
+		return tillsList;
+	}
+
+	public List<SummaryDTO> getTrend(SearchFilter filter, boolean isSU,
 			String userId) {
 
 		if (filter == null) {
@@ -31,11 +125,12 @@ public class DashboardDao extends BaseDaoImpl {
 				"select * from TrendView tv where userId=:userId "
 						+ "and :isSU='Y' ");
 
-		Query query = em.createNativeQuery(jpql.toString()).setParameter(
-				"isSU", isSU ? "Y" : "N").setParameter("userId", userId);
+		Query query = em.createNativeQuery(jpql.toString())
+				.setParameter("isSU", isSU ? "Y" : "N")
+				.setParameter("userId", userId);
 
 		List<Object[]> rows = getResultList(query);
-		List<TrendDTO> trends = new ArrayList<TrendDTO>();
+		List<SummaryDTO> trends = new ArrayList<SummaryDTO>();
 
 		for (Object[] row : rows) {
 			int i = 0;
@@ -59,9 +154,9 @@ public class DashboardDao extends BaseDaoImpl {
 			Date startDate = (value = row[i++]) == null ? null : (Date) value;
 			Date endDate = (value = row[i++]) == null ? null : (Date) value;
 
-			TrendDTO summary = new TrendDTO(monthId, totalTrxs, totalAmount,
-					uniqueMerchants, uniqueCustomers, customerAverage,
-					merchantAverage, startDate, endDate);
+			SummaryDTO summary = new SummaryDTO(monthId, totalTrxs,
+					totalAmount, uniqueMerchants, uniqueCustomers,
+					customerAverage, merchantAverage, startDate, endDate);
 
 			trends.add(summary);
 		}
@@ -155,33 +250,65 @@ public class DashboardDao extends BaseDaoImpl {
 	}
 
 	public void updateGetTrendView(SearchFilter filter, String userId) {
-		String tillsList = "";
-		int counter = 1;
+		String tillsLists = "";
 		if (filter.getTills() != null) {
-			for (TillDTO till : filter.getTills()) {
-				tillsList = tillsList + till.getTillNo();
-				if (filter.getTills().size() != counter) {
-					tillsList += ",";
-				}
-				counter++;
-			}
+			tillsLists = getTillString(filter.getTills());
 		} else {
-			tillsList = "ALL";
+			tillsLists = "ALL";
 		}
 
 		if (filter.getFormatedStartDate() != null
-				&& filter.getFormatedEndDate() != null && filter.getViewBy() !=null) {
+				&& filter.getFormatedEndDate() != null
+				&& filter.getViewBy() != null) {
 
 			String sqlBuffer = "EXEC dbo.sp_GetTrends '"
 					+ filter.getFormatedStartDate() + "','"
-					+ filter.getFormatedEndDate() + "','" + tillsList + "','"
-					+ userId + "','"+filter.getViewBy()+"'";
+					+ filter.getFormatedEndDate() + "','" + tillsLists + "','"
+					+ userId + "','" + filter.getViewBy() + "'";
 
 			System.err.println(sqlBuffer);
 
 			int viewQuery = em.createNativeQuery(sqlBuffer.toString())
 					.executeUpdate();
 		}
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param filter
+	 * @param sqlQuery
+	 * @return Filter parameter values
+	 */
+	private Map<String, Object> appendParameters(SearchFilter filter,
+			StringBuffer sqlQuery) {
+		boolean isFirst = true;
+		Map<String, Object> params = new HashMap<>();
+
+		if (filter.getStartDate() != null) {
+			sqlQuery.append(isFirst ? " Where" : " And");
+			sqlQuery.append(" i.tstamp>=:startDate");
+			params.put("startDate", filter.getStartDate());
+			// System.out.println("Start Date>>" + filter.getStartDate());
+			isFirst = false;
+		}
+
+		if (filter.getEndDate() != null) {
+			sqlQuery.append(isFirst ? " Where" : " And");
+			sqlQuery.append(" i.tstamp<=:endDate");
+			params.put("endDate", filter.getEndDate());
+			// System.out.println("End Date >>" + filter.getEndDate());
+			isFirst = false;
+		}
+
+		if (filter.getTills() != null) {
+			sqlQuery.append(isFirst ? " Where" : " And");
+			String tillsLists = getTillString(filter.getTills());
+			sqlQuery.append(" i.business_number IN (:tillLists)");
+			params.put("tillLists", tillsLists);
+		}
+
+		return params;
 	}
 
 }

@@ -44,7 +44,7 @@
 		</g:HTMLPanel>
 
 
-		<div class="row-fluid top-section section hide">
+		<div class="row-fluid top-section section">
 			<div class="span4">
 				<a class="dashboard-stat tertiary">
 					<div class="visual">
@@ -52,8 +52,7 @@
 					</div> <!-- /.visual -->
 
 					<div class="details">
-						<span class="value" ui:field="spnTotalFunding">
-							10,500
+						<span class="value" ui:field="spnMoneyIn">
 						</span>
 						<span class="content-block">Money In</span>
 					</div> <!-- /.details -->
@@ -69,10 +68,9 @@
 					</div> <!-- /.visual -->
 
 					<div class="details">
-						<span class="value" ui:field="spnActual">
-							24
+						<span class="value" ui:field="spnMoneyOut">
 						</span>
-						<span class="content-block">Total Transactions</span>
+						<span class="content-block">Money Out</span>
 					</div> <!-- /.details -->
 
 				</a> <!-- /.dashboard-stat -->
@@ -86,10 +84,81 @@
 					</div> <!-- /.visual -->
 
 					<div class="details">
-						<span class="value" ui:field="spnRemaining">
-							15
+						<span class="value" ui:field="spnBalance">
 						</span>
-						<span class="content-block">Merchants</span>
+						<span class="content-block">Balance</span>
+					</div> <!-- /.details -->
+
+					<!-- <i class="icon-play-circle more"></i> -->
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+			
+			<div class="span4">
+				<a class="dashboard-stat secondary">
+					<div class="visual">
+						<!-- <i class="icon-certificate"></i> -->
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="value" ui:field="spnCustomers">
+						</span>
+						<span class="content-block">Customer Served</span>
+					</div> <!-- /.details -->
+
+					<!-- <i class="icon-play-circle more"></i> -->
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+			
+			<div class="span4">
+				<a class="dashboard-stat secondary">
+					<div class="visual">
+						<!-- <i class="icon-certificate"></i> -->
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="value" ui:field="spnCustomerAvg">
+						</span>
+						<span class="content-block">Customer Average</span>
+					</div> <!-- /.details -->
+
+					<!-- <i class="icon-play-circle more"></i> -->
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+			
+			<div class="span4">
+				<a class="dashboard-stat secondary">
+					<div class="visual">
+						<!-- <i class="icon-certificate"></i> -->
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="value" ui:field="spnMerchant">
+						</span>
+						<span class="content-block">Merchant</span>
+					</div> <!-- /.details -->
+
+					<!-- <i class="icon-play-circle more"></i> -->
+
+				</a> <!-- /.dashboard-stat -->
+
+			</div> <!-- /.col-md-3 -->
+			
+			<div class="span4">
+				<a class="dashboard-stat secondary">
+					<div class="visual">
+						<!-- <i class="icon-certificate"></i> -->
+					</div> <!-- /.visual -->
+
+					<div class="details">
+						<span class="value" ui:field="spnMerchantAvg">
+						</span>
+						<span class="content-block">Merchant Average</span>
 					</div> <!-- /.details -->
 
 					<!-- <i class="icon-play-circle more"></i> -->
@@ -116,7 +185,8 @@
 				</b:NavPills>
 			</div>
 
-			<b:ButtonGroup toggle="radio" ui:field='btnViewBy' styleName="hide">
+			<b:ButtonGroup toggle="radio" ui:field='btnViewBy'
+				styleName="hide">
 				<b:Button ui:field="btnDay">DAYS</b:Button>
 				<b:Button ui:field="btnWeek">WEEKS</b:Button>
 				<b:Button active="true" ui:field="btnMonth">MONTH</b:Button>

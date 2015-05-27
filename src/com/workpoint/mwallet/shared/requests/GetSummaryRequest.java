@@ -5,17 +5,17 @@ import com.workpoint.mwallet.shared.requests.BaseRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.GetGradeCountRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTransactionsRequestResult;
-import com.workpoint.mwallet.shared.responses.GetTrendRequestResult;
+import com.workpoint.mwallet.shared.responses.GetSummaryRequestResult;
 
-public class GetTrendRequest extends
-		BaseRequest<GetTrendRequestResult> {
+public class GetSummaryRequest extends
+		BaseRequest<GetSummaryRequestResult> {
 
 	private SearchFilter filter;
 
-	public GetTrendRequest() {
+	public GetSummaryRequest() {
 	}
 	
-	public GetTrendRequest(SearchFilter filter) {
+	public GetSummaryRequest(SearchFilter filter) {
 		this.filter = filter;
 	}
 	
@@ -25,6 +25,6 @@ public class GetTrendRequest extends
 
 	@Override
 	public BaseResponse createDefaultActionResponse() {
-		return new GetTrendRequestResult(null);
+		return new GetSummaryRequestResult(null);
 	}
 }
