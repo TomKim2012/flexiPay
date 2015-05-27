@@ -115,23 +115,23 @@ public class TransactionDao extends BaseDaoImpl {
 		if (filter == null) {
 			filter = new SearchFilter();
 		}
-		StringBuffer sqlBuffer = new StringBuffer(
-				"select i.mpesa_sender,i.mpesa_msisdn, "
-						+ "i.mpesa_amt, i.mpesa_code, "
-						+ "i.tstamp,i.business_number,"
-						+ "i.mpesa_acc,i.isprocessed,i.ipaddress,i.isapproved,t.businessName,s.status "
-						+ "from LipaNaMpesaIPN i "
-						+ "left join TillModel t on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
-						+ "left join BUser u on (u.userId = t.salesPersonId) "
-						+ "left join BUser u2 on (u2.userId = t.ownerId) "
-						+ "left join SMSModel s on (i.smsStatus_FK = s.id)"
-						+ "where "
-						+ "("
-						+ "((t.categoryid=:categoryId or :isMerchant='Y') "
-						+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
-						+ "or :isSU='Y') ");
-
-		Map<String, Object> params = appendParameters(filter, sqlBuffer);
+		StringBuffer sqlBuffer = new StringBuffer("select i.mpesa_sender,i.mpesa_msisdn, "
+				+ "i.mpesa_amt, i.mpesa_code, "
+				+ "i.tstamp,i.business_number,"
+				+ "i.mpesa_acc,i.isprocessed,i.ipaddress,i.isapproved,t.businessName,s.status "
+				+ "from LipaNaMpesaIPN i "
+				+ "left join TillModel t on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
+				+ "left join BUser u on (u.userId = t.salesPersonId) "
+				+ "left join BUser u2 on (u2.userId = t.ownerId) "
+				+ "left join SMSModel s on (i.smsStatus_FK = s.id) "
+				+ "left join Verifications v on (i.id=v.transaction_id) "
+				+ "where "
+				+ "("
+				+ "((t.categoryid=:categoryId or :isMerchant='Y') "
+				+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
+				+ "or :isSU='Y') ");
+		
+		Map<String, Object> params = appendParameters(filter,sqlBuffer);
 		sqlBuffer.append(" order by i.id desc");
 
 		Query query = em.createNativeQuery(sqlBuffer.toString())
