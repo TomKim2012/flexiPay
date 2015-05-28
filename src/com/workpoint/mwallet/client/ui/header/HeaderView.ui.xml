@@ -24,7 +24,7 @@
 
 			<g:Anchor styleName="brand brand-text" href="#home"
 				ui:field="aBrand">
-				| E-Wallet
+				| <img src="img/flexiPay_Logo.png"></img>
 			</g:Anchor>
 
 			<ul class="nav pull-right">

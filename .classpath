@@ -42,6 +42,5 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-chart.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-legacy.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt.material.design.15.4.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

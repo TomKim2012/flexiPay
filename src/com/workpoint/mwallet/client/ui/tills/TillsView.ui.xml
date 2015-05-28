@@ -35,7 +35,7 @@
 								<i class="icon-trash icon-button"></i>
 							</d:ActionLink>
 						</div>
-						
+
 						<div class="span3">
 							<d:ActionLink ui:field="aConfigure" styleName="btn btn-default"
 								dataToggle="tooltip" title="Configure Columns">
@@ -73,17 +73,6 @@
 
 
 			<div class="row-fluid full-page content-body">
-
-				<g:HTMLPanel ui:field="divNoContent" styleName="hidden">
-					<i class="icon-warning-sign helper-font-16"></i>
-					<span class="helper-font-16">
-						No Programs Added. Click
-						<a>Create Program</a>
-						to get started
-					</span>
-				</g:HTMLPanel>
-
-
 				<g:HTMLPanel ui:field="divMiddleContent"
 					styleName="tabbable tabs-below full-page overflow-y">
 					<d:MyHTMLPanel styleName="tab-content" ui:field="divContentTable">
@@ -94,31 +83,6 @@
 							</div>
 						</g:HTMLPanel>
 					</d:MyHTMLPanel>
-
-					<g:HTMLPanel styleName="row-fluid tab-body hide"
-						ui:field="divContentBottom">
-						<div class="span2 controllers hide">
-							<d:ActionLink ui:field="aShow" styleName="span3">
-								<span class="icon-align-justify helper-font-16"></span>
-							</d:ActionLink>
-						</div>
-
-						<div class="span10 tabs-container">
-							<d:BulletListPanel ui:field="listPanel"
-								styleName="nav nav-tabs">
-							</d:BulletListPanel>
-						</div>
-						<div class="span2 controllers">
-							<d:ActionLink ui:field="aLeft" styleName="span3"
-								dataPlacement="top" title="Scroll Left">
-								<span class="icon-caret-left helper-font-16"></span>
-							</d:ActionLink>
-							<d:ActionLink ui:field="aRight" styleName="span3"
-								dataPlacement="top" title="Scroll Right">
-								<span class="icon-caret-right helper-font-16"></span>
-							</d:ActionLink>
-						</div>
-					</g:HTMLPanel>
 				</g:HTMLPanel>
 			</div>
 

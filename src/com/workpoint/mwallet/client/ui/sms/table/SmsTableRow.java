@@ -67,8 +67,10 @@ public class SmsTableRow extends RowWidget {
 			bindText(divDestination, smsLog.getDestination());
 			bindText(divtCode, smsLog.gettCode());
 			bindText(divRetries, Integer.toString(smsLog.getRetries()));
-			bindText(divCost,
-					NumberUtils.CURRENCYFORMAT.format(smsLog.getCost()));
+			if (smsLog.getCost() != null) {
+				bindText(divCost,
+						NumberUtils.CURRENCYFORMAT.format(smsLog.getCost()));
+			}
 			setStatus(SmsStatus.getStatus(smsLog.getStatus()));
 		}
 	}

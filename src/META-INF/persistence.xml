@@ -12,13 +12,13 @@ http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistenc
 			<property name="hibernate.connection.driver_class"
 				value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 			<property name="hibernate.connection.url"
-				value="jdbc:sqlserver://localhost:1433;databaseName=mobileBanking" />
+				value="jdbc:sqlserver://197.248.2.44:1433;databaseName=mobileBanking" />
 
-			<!-- 197.248.2.44:1433 -->
+			<!-- 197.248.2.44 -->
 			<property name="hibernate.connection.username" value="TomKim" />
 			<property name="hibernate.connection.password" value="g11taru09!" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="eclipselink.logging.parameters" value="true" />
 		</properties>
 	</persistence-unit>

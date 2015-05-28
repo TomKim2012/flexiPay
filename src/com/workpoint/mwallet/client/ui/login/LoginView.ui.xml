@@ -18,7 +18,6 @@
 				</div>
 			</div>
 
-			<p class="hide">M-Wallet</p>
 			<g:HTMLPanel styleName="span4 box" ui:field="loadingbox">
 				<div class="content-wrap">
 					<h6>Log in</h6>
@@ -37,7 +36,13 @@
 					</div>
 					<g:Anchor ui:field="aLogin" styleName="btn-glow primary login">Log in</g:Anchor>
 				</div>
+				<br />
 			</g:HTMLPanel>
+			<div style="background-color:#fff;width: 450px;margin: 0px auto;">
+				Powered by:
+				<br />
+				<img src="img/flexiPay_Logo.png"></img>
+			</div>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder>

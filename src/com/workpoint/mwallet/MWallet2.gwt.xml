@@ -18,8 +18,7 @@
 	<inherits name='com.gwtplatform.dispatch.Dispatch' />
 	<inherits name="gwtupload.GWTUpload" />
 	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
-	<inherits name="gwt.material.design.Gwt_material_design" />
-
+	<!-- <inherits name="gwt.material.design.Gwt_material_design" /> -->
 
 	<!-- Override the blue theme -->
 	<inherits name="com.sencha.gxt.theme.gray.Gray" />

@@ -12,13 +12,12 @@ import org.junit.Test;
 
 import com.workpoint.mwallet.server.dao.ClientDao;
 import com.workpoint.mwallet.server.dao.DashboardDao;
-import com.workpoint.mwallet.server.dao.SMSLogDao;
+import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
 import com.workpoint.mwallet.shared.model.SearchFilter;
-import com.workpoint.mwallet.shared.model.SmsDTO;
 import com.workpoint.mwallet.shared.model.SummaryDTO;
 import com.workpoint.mwallet.shared.model.TillDTO;
 
@@ -40,39 +39,39 @@ public class TestTills {
 		System.err.println("Client Code >>" + model.getClientcode());
 	}
 
-	@Ignore
+	@Test
 	public void search() {
 
 		SearchFilter filter = new SearchFilter();
+		filter.setTill(new TillDTO("895484"));
 
 		// boolean status = new TillDao(em).updateGradesView("2014-01-01",
 		// "2015-04-30");
-		// List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim",
-		// true, false, 9L);
+		List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim",
+				true, false, 9L);
 
-		List<SmsDTO> sms = new SMSLogDao(em).getSMSLog("TomKim", true, false,
-				9L);
+		// List<SmsDTO> sms = new SMSLogDao(em).getSMSLog("TomKim", true, false,
+		// 9L);
 
-		// for (TillDTO till : tills) {
-		// System.err.println("Till Id:"+till.getId()+"Grade:");
-		// }
-		//
+		for (TillDTO till : tills) {
+			System.err.println("Till Id:" + till.getId() + "Grade:");
+		}
 
 		// List<TransactionDTO> trxs = new TransactionDao(em).getAll(null,
 		// "TomKim", true, false,9L);
-		System.err.println(sms.size() + " ");
+		// System.err.println(sms.size() + " ");
 
 	}
 
-	@Test
+	@Ignore
 	public void search2() {
 
 		DashboardDao dao = new DashboardDao(em);
 
-		 SearchFilter filter = new SearchFilter();
-		 filter.setFormatedStartDate("2015-01-01");
-		 filter.setFormatedEndDate("2015-02-20");
-		 filter.setTills(Arrays.asList(new TillDTO("893512")));
+		SearchFilter filter = new SearchFilter();
+		filter.setFormatedStartDate("2015-01-01");
+		filter.setFormatedEndDate("2015-02-20");
+		filter.setTills(Arrays.asList(new TillDTO("893512")));
 		// filter.setTills(Arrays.asList(new TillDTO("893512"), new
 		// TillDTO("893513")));
 		// dao.updateGetTrendView(filter,"TomKim");
