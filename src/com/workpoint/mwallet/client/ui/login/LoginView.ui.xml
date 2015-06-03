@@ -41,7 +41,7 @@
 			<div style="background-color:#fff;width: 450px;margin: 0px auto;">
 				Powered by:
 				<br />
-				<img src="img/flexiPay_Logo.png"></img>
+				<img src="img/flexiPay_Logo.png" class="hide"></img>
 			</div>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

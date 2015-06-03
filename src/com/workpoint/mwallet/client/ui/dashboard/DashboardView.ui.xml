@@ -15,14 +15,14 @@
 				<span>Dashboard</span>
 			</h3>
 		</div>
-		<div class="row-fluid hide">
+		<div class="row-fluid">
 			<div class="alert alert-block alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				Dashboard is under Construction and will be launched soon..
+				Dashboard will be launched soon..
 			</div>
 		</div>
 
-		<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
+		<g:HTMLPanel styleName="content-top hide" ui:field="divContentTop">
 			<!--Action Buttons -->
 			<div class="action-buttons row-fluid">
 				<div class="span6 till-box">
@@ -167,7 +167,7 @@
 
 			</div> <!-- /.col-md-3 -->
 		</div>
-		<g:HTMLPanel styleName="selection-section">
+		<g:HTMLPanel styleName="selection-section hide ">
 			<div class="span2">
 				<strong> Compare:</strong>
 			</div>
@@ -195,7 +195,7 @@
 		</g:HTMLPanel>
 
 
-		<g:HTMLPanel ui:field="panelTrends" styleName="row-fluid span12">
+		<g:HTMLPanel ui:field="panelTrends" styleName="row-fluid span12 hide">
 		</g:HTMLPanel>
 
 		<!-- <div class="row-fluid"> -->
