@@ -66,6 +66,8 @@ public class WebsiteClientPresenter
 
 	private String referenceId;
 
+	private Object parameters;
+
 
 	@Inject
 	public WebsiteClientPresenter(final EventBus eventBus, final MyView view,
@@ -186,6 +188,7 @@ public class WebsiteClientPresenter
 		submittedAmount = request.getParameter("amount", "");
 		String orgName = request.getParameter("orgName", "");
 		referenceId = request.getParameter("refId", "");
+		parameters = request.getParameter("parameters", "");
 
 		getView().setParameters(submittedBusinessNo, submittedAccountNo,
 				submittedAmount, orgName);
