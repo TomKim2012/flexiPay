@@ -19,13 +19,12 @@
 
 		<div class="navbar-inner">
 			<a href="#home" class="brand">
-				<g:Image ui:field="imgLogo" url="img/Pioneer_Logo.png"></g:Image>
+				<g:Image ui:field="imgLogo" url="img/flexiPay_Logo.png"></g:Image>
 			</a>
 
-			<g:Anchor styleName="brand brand-text" href="#home"
-				ui:field="aBrand">
-				| E-Wallet
-			</g:Anchor>
+			<a class="brand brand-text hide" href="#home" ui:field="aBrand">
+				<g:Image ui:field="imgLogo2" url="img/ICPAK_Logo.png"></g:Image>
+			</a>
 
 			<ul class="nav pull-right">
 				<li class="notification-dropdown">

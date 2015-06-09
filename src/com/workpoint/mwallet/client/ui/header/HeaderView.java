@@ -29,8 +29,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 	Anchor aNavbarToggle;
 	@UiField
 	Image imgLogo;
-	@UiField
-	Anchor aBrand;
+	
 	@UiField
 	Dropdown DropDownUser;
 	@UiField
@@ -48,12 +47,10 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 
 	boolean isSelected = false;
 
-
 	@Inject
 	public HeaderView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 	}
-
 
 	@Override
 	public Widget asWidget() {
@@ -85,7 +82,7 @@ public class HeaderView extends ViewImpl implements HeaderPresenter.IHeaderView 
 		} else {
 			DropDownUser.setText("");
 		}
-		
+
 		divUserContainer.setValues(user_names, userGroups);
 	}
 

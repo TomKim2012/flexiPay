@@ -10,7 +10,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -43,6 +47,8 @@ public class WebsiteClientPresenter
 		HasClickHandlers getCompleteButton();
 
 		String getVerification();
+
+		void showSuccessPanel(boolean show);
 	}
 
 	@ProxyCodeSplit
@@ -68,7 +74,6 @@ public class WebsiteClientPresenter
 
 	private Object parameters;
 
-
 	@Inject
 	public WebsiteClientPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
@@ -90,7 +95,7 @@ public class WebsiteClientPresenter
 			@Override
 			public void onClick(ClickEvent event) {
 				if (getView().getVerification() != null) {
-					MaterialLoader.showProgress(true);
+					MaterialLoader.showLoading(true);
 					submitRequest(getView().getVerification());
 				}
 			}
@@ -111,6 +116,7 @@ public class WebsiteClientPresenter
 							GetVerificationRequestResult aResponse) {
 						getResults(aResponse.getTransactions());
 						MaterialLoader.showProgress(false);
+						getView().showSuccessPanel(false);
 					}
 				});
 	}
@@ -120,12 +126,13 @@ public class WebsiteClientPresenter
 		if (trxs.size() >= 1) {
 			// Confirm amounts here;
 			TransactionDTO trx = trxs.get(0);
-			
-			if(submittedAmount.isEmpty()){
+
+			if (submittedAmount.isEmpty()) {
+				MaterialLoader.showLoading(false);
 				MaterialToast.alert("No values submitted by merchant");
 				return;
 			}
-			
+
 			boolean isAmountCorrect = String.valueOf(
 					NumberUtils.NUMBERFORMAT.format(trx.getAmount())).equals(
 					NumberUtils.NUMBERFORMAT.format(Double
@@ -146,36 +153,64 @@ public class WebsiteClientPresenter
 					.equals(readAccountNo);
 
 			System.err.println("<<isAmountCorrect>>"
-					+ isAmountCorrect + 
-					"\nsubmittedAmt::"+submittedAmount+
-					"\nReadAmt::"+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
-							.getAmount())) 
-					+ "\n<<isBusinessNoCorrect>>"
-					+ isBusinessNoCorrect + 
-					"\nisAccountNoCorrect>>"+ isAccountNoCorrect+
-					"\nsubmittedAccountNo::"+ submittedAccountNo + 
-					"\nreadAccountNo::"+readAccountNo);
+					+ isAmountCorrect
+					+ "\nsubmittedAmt::"
+					+ submittedAmount
+					+ "\nReadAmt::"
+					+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
+							.getAmount())) + "\n<<isBusinessNoCorrect>>"
+					+ isBusinessNoCorrect + "\nisAccountNoCorrect>>"
+					+ isAccountNoCorrect + "\nsubmittedAccountNo::"
+					+ submittedAccountNo + "\nreadAccountNo::" + readAccountNo);
 			if (isAmountCorrect && isBusinessNoCorrect && isAccountNoCorrect) {
-				MaterialToast
-						.alert("Your payment has been confirmed. You will be directed to the next step in a short while");
-
-				System.err.println("IPN Address"+trx.getIpnAddress());
+				// MaterialToast
+				// .alert("Your payment has been confirmed. You will be directed to the next step in a short while");
 				// Do necessary re-direction
 				if (trx.getIpnAddress() != null) {
-					Window.Location.replace(trx.getIpnAddress() + "&refId="
-							+ referenceId + "&status=COMPLETED");
-				}else{
-					MaterialToast
-					.alert("No callback set by merchant.");
+					MaterialLoader.showLoading(false);
+					String url = trx.getIpnAddress() + "&refId=" + referenceId
+							+ "&status=COMPLETED";
+					doGet(url);
+				} else {
+					MaterialLoader.showLoading(false);
+					MaterialToast.alert("No callback set by merchant.");
 				}
 
 			} else {
+				MaterialLoader.showLoading(false);
 				MaterialToast
 						.alert("Transaction exist but the parameters entered did not match with the Merchants Request");
 			}
 		} else {
+			MaterialLoader.showLoading(false);
 			MaterialToast
 					.alert("Verification entered doesn't exist. Kindly retry");
+		}
+	}
+
+	public static final int STATUS_CODE_OK = 200;
+
+	public void doGet(String url) {
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			Request response = builder.sendRequest(null, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					getView().showSuccessPanel(false);
+					MaterialToast
+							.alert("Error occured while sending callBack::"
+									+ exception.getMessage());
+				}
+
+				public void onResponseReceived(Request request,
+						Response response) {
+					getView().showSuccessPanel(true);
+					MaterialToast.alert("Callback sent successfully..");
+				}
+			});
+
+		} catch (RequestException e) {
+			MaterialToast.alert("Exception occured while sending callBack::"
+					+ e.getStackTrace());
 		}
 	}
 

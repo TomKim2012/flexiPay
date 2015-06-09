@@ -8,7 +8,17 @@
 
 	<g:HTMLPanel>
 
-		<m:MaterialRow>
+		<g:HTMLPanel>
+			<g:HTMLPanel styleName="row-fluid container hide" ui:field="panelSuccess">
+				<br />
+				<div class="alert alert-success">
+					<i class="icon icon-ok"></i>
+					Your payment has successfully been verified and confirmed. Press NEXT to continue.
+				</div>
+			</g:HTMLPanel>
+		</g:HTMLPanel>
+
+		<m:MaterialRow ui:field="panelPayment">
 			<m:MaterialTabs color="blue" textColor="white"
 				indicatorColor="yellow" waves="yellow">
 				<m:tab>
@@ -87,13 +97,14 @@
 										2. Enter the verification code in the textBox
 										below and Press
 										the
-										<strong>Complete Button</strong>
+										<strong>Verify</strong>
 										.
 									</li>
 								</ul>
 								<m:MaterialTextBox placeholder="Verification Code"
-									ui:field="txtVerification"/>
-								<b:Button text="Complete" ui:field="btnComplete" type="PRIMARY"> </b:Button>
+									ui:field="txtVerification" />
+								<b:Button text="Verify" ui:field="btnComplete" type="PRIMARY">
+								</b:Button>
 
 								<!-- <m:MaterialButton text="Re-send" waves="light" ui:field="btnResend" 
 									color="grey" /> -->
@@ -103,11 +114,11 @@
 				</m:content>
 				<m:content>
 					<m:MaterialTopNav padding="5" title="VISA Payments"
-						description="Stay Tuned. Coming Soon" color="green" textColor="white" />
+						description="Stay Tuned. Coming Soon...." color="green" textColor="white" />
 				</m:content>
 				<m:content>
 					<m:MaterialTopNav padding="5" title="MasterCard Payments"
-						description="Stay Tuned. Content Coming Soon" color="green"
+						description="Stay Tuned. Content Coming Soon..." color="green"
 						textColor="white" />
 				</m:content>
 			</m:MaterialTabs>

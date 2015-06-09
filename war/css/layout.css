@@ -6,7 +6,7 @@
 }
 
 .main-body .top-header {
-	height: 48px;
+	height: 50px;
 	position: absolute;
 	width: 100%;
 	top: 0px;
@@ -1844,12 +1844,12 @@ ul.icons-list.text-xl {
 }
 
 .mytext-field input.gwt-TextBox {
-	width: 23%;
-	margin: 10px 0px 10px 05px;
-	background-color: transparent;
-	border: none;
-	border-bottom: 1px solid #9e9e9e;
-	border-radius: 0;
+	width:50%;
+	/* margin: 10px 0px 10px 05px; */
+	/* background-color: transparent; */
+	/* border: none; */
+	/* border-bottom: 1px solid #9e9e9e; */
+	/* border-radius: 0; */
 	outline: none;
 	height: 3rem;
 	font-size: 1rem;

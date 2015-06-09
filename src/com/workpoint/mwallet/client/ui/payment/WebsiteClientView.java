@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -32,11 +33,18 @@ public class WebsiteClientView extends ViewImpl implements
 	Element spnOrgName;
 	@UiField
 	Element spnAmount;
-	
-	@UiField 
+
+	@UiField
+	HTMLPanel panelSuccess;
+
+	@UiField
+	MaterialRow panelPayment;
+
+	@UiField
 	MaterialTextBox txtVerification;
-	
-	@UiField MaterialRow myRow;
+
+	@UiField
+	MaterialRow myRow;
 
 	public interface Binder extends UiBinder<Widget, WebsiteClientView> {
 	}
@@ -75,17 +83,29 @@ public class WebsiteClientView extends ViewImpl implements
 			spnAccountNo.setInnerHTML("5. Enter Account Number:" + accountNo);
 		}
 	}
-	
+
 	@Override
-	public HasClickHandlers getCompleteButton(){
+	public HasClickHandlers getCompleteButton() {
 		return btnComplete;
 	}
-	
-	public String getVerification(){
-		if(!txtVerification.getText().isEmpty()){
+
+	public String getVerification() {
+		if (!txtVerification.getText().isEmpty()) {
 			return txtVerification.getText();
 		}
 		return null;
+	}
+
+	public void showSuccessPanel(boolean show) {
+
+		if (show) {
+			panelPayment.addStyleName("hide");
+			panelSuccess.removeStyleName("hide");
+		} else {
+			panelPayment.removeStyleName("hide");
+			panelSuccess.addStyleName("hide");
+		}
+
 	}
 
 }

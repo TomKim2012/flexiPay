@@ -12,7 +12,7 @@
 				<div class="navbar-inner">
 					<div class="container">
 						<a class="brand" href="index.html">
-							<g:Image ui:field="imgLogo" url="img/Pioneer_Logo.png"></g:Image>
+							<g:Image ui:field="imgLogo" url="img/flexiPay_Logo.png"></g:Image>
 						</a>
 					</div>
 				</div>
