@@ -17,7 +17,6 @@
 	<inherits name='com.gwtplatform.mvp.Mvp' />
 	<inherits name='com.gwtplatform.dispatch.Dispatch' />
 	<inherits name="gwtupload.GWTUpload" />
-	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
 	<inherits name="gwt.material.design.Gwt_material_design" />
 
 

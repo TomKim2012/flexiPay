@@ -6,13 +6,9 @@ import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.gwtplatform.dispatch.client.gin.DispatchAsyncModule;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.workpoint.mwallet.client.ui.MainPagePresenter;
-import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
-import com.workpoint.mwallet.client.ui.header.HeaderPresenter;
-import com.workpoint.mwallet.client.ui.home.HomePresenter;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.login.LoginPresenter;
-import com.workpoint.mwallet.client.ui.payment.WebsiteClientPresenter;
+import com.workpoint.mwallet.client.ui.template.TemplatePresenter;
 
 @GinModules({ DispatchAsyncModule.class, ClientModule.class })
 public interface ClientGinjector extends Ginjector {
@@ -23,16 +19,8 @@ public interface ClientGinjector extends Ginjector {
 
 	LoginGateKeeper getLoggedInGateKeeper();
 
-	AsyncProvider<MainPagePresenter> getMainPagePresenter();
-
-	AsyncProvider<HeaderPresenter> getHeaderPresenter();
-
-	AsyncProvider<HomePresenter> getHomePresenter();
-	
-	AsyncProvider<WebsiteClientPresenter> getWebsiteClientPresenter();
-
 	AsyncProvider<LoginPresenter> getLoginPresenter();
-	
-	AsyncProvider<DashboardPresenter> getDashboardPresenter();
+
+	AsyncProvider<TemplatePresenter> getTemplatePresenter();
 
 }

@@ -8,6 +8,7 @@ public class NameTokens {
 	public static final String home = "home";
 	public static final String usermgt = "usermgt";
 	public static final String websiteClient = "websiteClient";
+	public static final String template = "template";
 	
 	
 	public static String getError404() {

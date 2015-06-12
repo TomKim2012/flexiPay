@@ -16,6 +16,12 @@ public class TextField extends TextBox{
 		getElement().setAttribute("type", type);
 	}
 	
+	public void setRequired(boolean isRequired){
+		if(isRequired){
+			getElement().setAttribute("required", "required");
+		}
+	}
+	
 	public void setDisabled(Boolean isDisabled){
 		if(isDisabled){
 			getElement().setAttribute("disabled", "disabled");

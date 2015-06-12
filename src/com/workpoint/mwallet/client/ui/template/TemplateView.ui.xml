@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:m="urn:import:gwt.material.design.client.ui"
+	ui:generateLocales='default'>
+
+	<g:HTMLPanel styleName="col-sm-12">
+		<div class="row">
+			<h3>
+				Manage Your Text Messages
+				<br />
+			</h3>
+		</div>
+
+
+		<div class="row">
+			<div class="col-sm-6">
+				<label for="firstname" class="col-sm-6 control-label">Select KeyWord:</label>
+				<div class="col-sm-6">
+					<d:DropDownList ui:field="dropDownPackages">
+					</d:DropDownList>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<g:TextArea ui:field="txtComposeArea" width="50%" height="60px"/>
+		</div>
+		<div class="row">
+			<g:Button text="Save" ui:field="saveButton" />
+		</div>
+	</g:HTMLPanel>
+
+</ui:UiBinder>
