@@ -28,6 +28,7 @@ import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
 import com.workpoint.mwallet.client.ui.settings.SettingsPresenter;
 import com.workpoint.mwallet.client.ui.sms.SmsPresenter;
+import com.workpoint.mwallet.client.ui.template.TemplatePresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.transactions.TransactionsPresenter;
 import com.workpoint.mwallet.client.ui.users.UserPresenter;
@@ -81,6 +82,7 @@ public class HomePresenter extends
 	private IndirectProvider<SmsPresenter> smsLogFactory;
 	private IndirectProvider<TillsPresenter> tillFactory;
 	private IndirectProvider<ProfilePresenter> profileFactory;
+	private IndirectProvider<TemplatePresenter> templateFactory;
 	private IndirectProvider<SettingsPresenter> settingsFactory;
 
 	@Inject
@@ -92,7 +94,8 @@ public class HomePresenter extends
 			Provider<TillsPresenter> tillProvider,
 			Provider<SmsPresenter> smsProvider,
 			Provider<ProfilePresenter> profileProvider,
-			Provider<SettingsPresenter> settingsProvider) {
+			Provider<SettingsPresenter> settingsProvider,
+			Provider<TemplatePresenter> templateProvider) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(
 				dashboardProvider);
@@ -104,6 +107,8 @@ public class HomePresenter extends
 		profileFactory = new StandardProvider<ProfilePresenter>(profileProvider);
 		settingsFactory = new StandardProvider<SettingsPresenter>(
 				settingsProvider);
+		templateFactory = new StandardProvider<TemplatePresenter>(
+				templateProvider);
 	}
 
 	@Override
@@ -188,6 +193,17 @@ public class HomePresenter extends
 				}
 			});
 			getView().setSelectedTab("SmsLog");
+		} else if (page != null && page.equals("Templates")
+				&& isCurrentUserAllowed(page)) {
+			Window.setTitle("Template");
+			templateFactory.get(new ServiceCallback<TemplatePresenter>() {
+				@Override
+				public void processResult(TemplatePresenter aResponse) {
+					aResponse.loadData();
+					setInSlot(ACTIVITIES_SLOT, aResponse);
+				}
+			});
+			getView().setSelectedTab("Template");
 		} else if (page != null && page.equals("profile")) {
 			Window.setTitle("User Profile");
 			profileFactory.get(new ServiceCallback<ProfilePresenter>() {
@@ -218,15 +234,16 @@ public class HomePresenter extends
 			UserDTO user = AppContext.getContextUser();
 			boolean isMerchant = user.hasGroup("Merchant");
 			boolean isSalesPerson = user.hasGroup("SalesPerson");
-			boolean isCategoryAdmin = user.isAdmin() && !user.getCategory().getCategoryName().equals('*');
-			
-			
+			boolean isCategoryAdmin = user.isAdmin()
+					&& !user.getCategory().getCategoryName().equals('*');
+
 			boolean isDashboardPage = page.equals("dashboard");
 			boolean isTransactionPage = page.equals("transactions");
+			boolean isTemplatePage = page.equals("Template");
 			boolean isTillsPage = page.equals("tills");
 			boolean isSmsPage = page.equals("smsLog");
 			boolean isUsersPage = page.equals("users");
-			
+
 			// DEFINATIONS
 			boolean isMerchantAllowed = (isMerchant && isDashboardPage)
 					|| (isMerchant && isTransactionPage)
@@ -235,16 +252,18 @@ public class HomePresenter extends
 					|| (isSalesPerson && isTillsPage)
 					|| (isSalesPerson && isTransactionPage)
 					|| (isSalesPerson && isSmsPage);
-			
-			boolean isCategoryAdminAllowed =(isCategoryAdmin && isDashboardPage)
+
+			boolean isCategoryAdminAllowed = (isCategoryAdmin && isDashboardPage)
 					|| (isCategoryAdmin && isTillsPage)
 					|| (isCategoryAdmin && isTransactionPage)
 					|| (isCategoryAdmin && isSmsPage)
-					|| (isCategoryAdmin && isUsersPage); 
-			
-			////System.err.println("isSalesPerson Allowed:"+isSalesPersonAllowed);
+					|| (isCategoryAdmin && isTemplatePage)
+					|| (isCategoryAdmin && isUsersPage);
 
-			if (isSuperUser || isMerchantAllowed || isSalesPersonAllowed || isCategoryAdminAllowed) {
+			// //System.err.println("isSalesPerson Allowed:"+isSalesPersonAllowed);
+
+			if (isSuperUser || isMerchantAllowed || isSalesPersonAllowed
+					|| isCategoryAdminAllowed) {
 				return true;
 			} else {
 				Window.alert("You are not allowed to view this Page");

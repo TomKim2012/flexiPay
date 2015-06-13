@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
@@ -28,7 +27,6 @@ import com.workpoint.mwallet.client.ui.events.SearchEvent;
 import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
-import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.SmsDTO;
@@ -71,8 +69,7 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 	List<SmsDTO> logs = new ArrayList<SmsDTO>();
 
 	@Inject
-	public SmsPresenter(final EventBus eventBus, final IActivitiesView view,
-			Provider<CreateTillPresenter> tillProvider) {
+	public SmsPresenter(final EventBus eventBus, final IActivitiesView view) {
 		super(eventBus, view);
 	}
 

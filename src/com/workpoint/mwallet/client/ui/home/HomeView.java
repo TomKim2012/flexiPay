@@ -41,6 +41,9 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 	LIElement liTransactions;
 
 	@UiField
+	LIElement liTemplate;
+
+	@UiField
 	LIElement liUsers;
 
 	@UiField
@@ -142,16 +145,17 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		showTab(liUsers, false);
 		showTab(liSmsLog, false);
 		showTab(liSettings, false);
+		showTab(liTemplate, false);
 		if (group.equals("Merchant")) {
 			showTab(liDashboard, true);
 			showTab(liSmsLog, true);
 			showTab(liTransactions, true);
 		} else if (group.equals("SalesPerson")) {
 			showTab(liDashboard, true);
-			showTab(liTills,true);
+			showTab(liTills, true);
 			showTab(liTransactions, true);
-			showTab(liSmsLog,true);
-			
+			showTab(liSmsLog, true);
+
 		} else if (group.equals("Admin")) {
 			showTab(liDashboard, true);
 			showTab(liTills, true);
@@ -159,6 +163,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			showTab(liUsers, true);
 			showTab(liSmsLog, true);
 			showTab(liSettings, true);
+			showTab(liTemplate, true);
 		}
 	}
 
@@ -181,6 +186,10 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 			setActive(liSmsLog, true);
 		} else if (page.equals("Settings")) {
 			setActive(liSettings, true);
+		} else if (page.equals("Settings")) {
+			setActive(liSettings, true);
+		} else if (page.equals("Template")) {
+			setActive(liTemplate, true);
 		}
 	}
 

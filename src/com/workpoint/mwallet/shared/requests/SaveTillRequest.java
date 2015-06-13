@@ -13,8 +13,8 @@ public class SaveTillRequest extends BaseRequest<SaveTillResponse> {
 	private SaveTillRequest(){
 		
 	}
-	public SaveTillRequest(TillDTO till, boolean isDelete) {
-		this.till = till;
+	public SaveTillRequest(TillDTO tillDTO, boolean isDelete) {
+		this.till = tillDTO;
 		this.isDelete = isDelete;
 	}
 

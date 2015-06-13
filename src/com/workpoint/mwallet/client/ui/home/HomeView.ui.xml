@@ -52,6 +52,13 @@
 						</a>
 					</li>
 
+					<li ui:field="liTemplate">
+						<a href='#home;page=Templates'>
+							<i class="icon-file-text"></i>
+							SMS Template
+						</a>
+					</li>
+
 					<li ui:field="liUsers">
 						<a href='#home;page=users'>
 							<i class="icon-group"></i>

@@ -365,7 +365,7 @@ public class TillsPresenter extends
 	protected void saveTill(final TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
 
-		SaveTillRequest saveRequest = new SaveTillRequest(tillDTO, isDelete);
+		SaveTillRequest saveRequest = new SaveTillRequest(tillDTO, false);
 		requestHelper.execute(saveRequest,
 				new TaskServiceCallback<SaveTillResponse>() {
 					@Override

@@ -126,15 +126,19 @@ public class TillsTableRow extends RowWidget {
 
 			String maxValue = "";
 			String range = "";
-			String minValue = NumberFormat.getCurrencyFormat("KES").format(
-					till.getMinValue());
-			
+			String minValue = "";
+
+			if (till.getMinValue() != null) {
+				minValue = NumberFormat.getCurrencyFormat("KES").format(
+						till.getMinValue());
+			}
+
 			if (till.getMaxValue() != null) {
 				maxValue = NumberFormat.getCurrencyFormat("KES").format(
 						till.getMaxValue());
 				range = minValue + "-" + maxValue;
 			} else {
-				range = "Above "+ minValue;
+				range = "Above " + minValue;
 			}
 
 			setGrade(till.getGradeDesc(), till.getTillGrade(),

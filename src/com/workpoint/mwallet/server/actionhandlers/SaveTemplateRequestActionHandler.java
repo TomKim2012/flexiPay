@@ -28,13 +28,13 @@ public class SaveTemplateRequestActionHandler extends
 		TemplateModel templateModel = new TemplateModel();
 
 		if (!action.isDelete()) {
-			
 			System.err.println("Callled up to here!");
 			if (template.getId() != null) {
-				templateModel = dao.getById(TemplateModel.class, template.getId());
+				templateModel = dao.getById(TemplateModel.class,
+						template.getId());
 			}
 			templateModel.setMessage(template.getMessage());
-			
+
 			dao.saveTemplate(templateModel);
 
 			SaveTemplateResponse response = (SaveTemplateResponse) actionResult;

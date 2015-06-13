@@ -44,8 +44,8 @@ public class GetSummaryRequestActionHandler extends
 				currentUser.getUserId());
 
 		if (currentUser.getPhoneNo() != null) {
-			List<SummaryDTO> balanceSummary = dao
-					.getMerchantBalance(currentUser.getPhoneNo());
+			// List<SummaryDTO> balanceSummary = dao
+			// .getMerchantBalance(currentUser.getPhoneNo());
 		}
 
 		List<SummaryDTO> summaries = dao.getSummary(filter, isSuperUser);
