@@ -8,28 +8,43 @@ public class TemplateModel extends PO {
 	private static final long serialVersionUID = 1L;
 	
 	private String message;
-	private int isDefaultAutomatic;
-	private int isDefaultCustom;
+	private String type;
+	private String name;
+	private int isDefault;
 	private int tillModel_Id;
 	
+	/*
+
+	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE}, optional=false)
+	@JoinColumn(name="tillModel_Id", referencedColumnName="userId",nullable=false)
+	
+	
+	*/
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public int getIsDefaultAutomatic() {
-		return isDefaultAutomatic;
+	public String getName() {
+		return name;
 	}
-	public void setIsDefaultAutomatic(int isDefaultAutomatic) {
-		this.isDefaultAutomatic = isDefaultAutomatic;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public int getIsDefaultCustom() {
-		return isDefaultCustom;
+	public int getIsDefault() {
+		return isDefault;
 	}
-	public void setIsDefaultCustom(int isDefaultCustom) {
-		this.isDefaultCustom = isDefaultCustom;
+	public void setIsDefault(int isDefault) {
+		this.isDefault = isDefault;
 	}
+	
 	public int getTillModel_Id() {
 		return tillModel_Id;
 	}

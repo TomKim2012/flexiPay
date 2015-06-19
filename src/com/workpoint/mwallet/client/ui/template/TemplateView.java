@@ -5,30 +5,56 @@ import java.util.List;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.workpoint.mwallet.client.ui.component.ActionLink;
 import com.workpoint.mwallet.client.ui.component.DropDownList;
+import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
+import com.workpoint.mwallet.client.ui.component.TableHeader;
+import com.workpoint.mwallet.client.ui.component.TableView;
+import com.workpoint.mwallet.client.ui.template.table.TemplateTable;
+import com.workpoint.mwallet.client.ui.template.table.TemplateTableRow;
+import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.Listable;
+import com.workpoint.mwallet.shared.model.TemplateDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 
 	private final Widget widget;
 
 	@UiField
-	DropDownList<Packages> dropDownPackages;
+	HTMLPanel divContentTop;
 
 	@UiField
-	TextArea txtComposeArea;
+	HTMLPanel divMiddleContent;
 
 	@UiField
-	Button saveButton;
+	HTMLPanel divMainContainer;
+
+	@UiField
+	TemplateTable tblView;
+
+	@UiField
+	ActionLink aCreate;
+
+	@UiField
+	ActionLink aEdit;
+
+	@UiField
+	ActionLink aDelete;
 
 	private List<LIElement> liElements = new ArrayList<LIElement>();
 	private List<DivElement> divElements = new ArrayList<DivElement>();
@@ -41,81 +67,94 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 	@Inject
 	public TemplateView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-
-		List<Packages> lstPackage = new ArrayList<>();
-		lstPackage.add(new Packages("#firstName", "1"));
-		lstPackage.add(new Packages("#lastName", "2"));
-		lstPackage.add(new Packages("#surName", "3"));
-		lstPackage.add(new Packages("#amount", "4"));
-		lstPackage.add(new Packages("#time", "5"));
-		lstPackage.add(new Packages("#date", "6"));
-		lstPackage.add(new Packages("#Business", "7"));
-
-		dropDownPackages.setItems(lstPackage);
-
-		dropDownPackages
-				.addValueChangeHandler(new ValueChangeHandler<TemplateView.Packages>() {
-					@Override
-					public void onValueChange(ValueChangeEvent<Packages> event) {
-						Packages package1 = event.getValue();
-						// Integer convertedPackage = Integer.parseInt(package1
-						// .getName());
-						txtComposeArea.setText(txtComposeArea.getText() + " "
-								+ package1.getDisplayName());
-
-					}
-				});
-
+		
+		initControlButtons();
 	}
 
 	@Override
 	public Widget asWidget() {
 		return widget;
 	}
+	
 
-	public TextArea getComposeTextArea() {
-		return txtComposeArea;
+	@Override
+	public HasClickHandlers getAddButton() {
+		return aCreate;
 	}
 
-	public void setComposeTextArea(TextArea composeTextArea) {
-		this.txtComposeArea = composeTextArea;
+	@Override
+	public HasClickHandlers getEditButton() {
+		return aEdit;
 	}
 
-	public Button getSaveButton() {
-		return saveButton;
+	@Override
+	public HasClickHandlers getDeleteButton() {
+		return aDelete;
 	}
 
-	public void setSaveButton(Button saveButton) {
-		this.saveButton = saveButton;
+	@Override
+	public void presentData(TemplateDTO template) {
+		tblView.createRow(new TemplateTableRow(template));
 	}
 
-	public class Packages implements Listable {
-		private String name;
-		private String value;
+	@Override
+	public void setHeaders(List<TableHeader> tableHeaders) {
+		tblView.createHeader(tableHeaders);
+	}
 
-		public Packages(String name, String value) {
-			this.name = name;
-			this.value = value;
+	@Override
+	public void setSelection(boolean show) {
+		if (show) {
+			show(aCreate, false);
+			show(aEdit, true);
+			show(aDelete, true);
+		} else {
+			show(aCreate, true);
+			show(aEdit, false);
+			show(aDelete, false);
 		}
+	}
 
-		@Override
-		public String getName() {
-			return value;
-		}
-
-		@Override
-		public String getDisplayName() {
-			return name;
+	private void show(Anchor aAnchor, boolean show) {
+		if (show) {
+			aAnchor.getElement().getParentElement().removeClassName("hide");
+		} else {
+			aAnchor.getElement().getParentElement().addClassName("hide");
 		}
 	}
 
 	@Override
-	public String getTemplateText() {
-		if (!txtComposeArea.getText().isEmpty()) {
-			return txtComposeArea.getText();
-		} else {
-			return null;
+	public void setAllowedButtons(UserDTO userGroup, boolean selection) {
+		CategoryDTO category = userGroup.getCategory();
+		boolean isSuperUser = category.getCategoryName().equals("*")
+				&& userGroup.isAdmin();
+
+		if (isSuperUser) {
+			setSelection(selection);
 		}
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		tblView.clear();
+
+	}
+
+	public void setMiddleHeight() {
+		int totalHeight = divMainContainer.getElement().getOffsetHeight();
+		int topHeight = divContentTop.getElement().getOffsetHeight();
+		int middleHeight = totalHeight - topHeight - 10;
+
+		if (middleHeight > 0) {
+			divMiddleContent.setHeight(middleHeight + "px");
+		}
+	}
+
+	@Override
+	public void initControlButtons() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -44,6 +44,7 @@ public class CreateTillPresenter extends
 		PresenterWidget<CreateTillPresenter.MyView> implements LoadUsersHandler {
 
 	public interface MyView extends View {
+		
 		boolean isValid();
 
 		void setTill(TillDTO tillSelected);

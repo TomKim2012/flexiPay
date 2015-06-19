@@ -358,6 +358,7 @@ public class TillsPresenter extends
 				}
 			}
 		};
+		
 		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
 				tillPopUp.getWidget(), saveOptionControl, "Save", "Cancel");
 	}

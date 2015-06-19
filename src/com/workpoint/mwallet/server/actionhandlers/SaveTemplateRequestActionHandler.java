@@ -1,5 +1,6 @@
 package com.workpoint.mwallet.server.actionhandlers;
 
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.shared.ActionException;
@@ -20,26 +21,35 @@ public class SaveTemplateRequestActionHandler extends
 
 	@Override
 	public void execute(SaveTemplateRequest action, BaseResponse actionResult,
-			ExecutionContext execContext) throws ActionException {
+			ExecutionContext execContext)  {
 
 		TemplateDao dao = new TemplateDao(DB.getEntityManager());
 		TemplateDTO template = action.getTemplate();
-
 		TemplateModel templateModel = new TemplateModel();
 
 		if (!action.isDelete()) {
-			System.err.println("Callled up to here!");
 			if (template.getId() != null) {
 				templateModel = dao.getById(TemplateModel.class,
 						template.getId());
 			}
+
 			templateModel.setMessage(template.getMessage());
+			templateModel.setType(template.getType());
+			templateModel.setName(template.getName());
+			templateModel.setIsDefault(template.getIsDefault());
+			templateModel.setTillModel_Id(template.getTillModel_Id());
 
 			dao.saveTemplate(templateModel);
 
 			SaveTemplateResponse response = (SaveTemplateResponse) actionResult;
 			response.setSaved(true);
 		} else {
+			if (template.getId() != null) {
+				templateModel = dao.getById(TemplateModel.class,
+						template.getId());
+
+			}
+			dao.delete(templateModel);
 		}
 
 	}

@@ -1,8 +1,19 @@
 package com.workpoint.mwallet.server.dao;
 
-import javax.persistence.EntityManager;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import com.google.gwt.resources.css.ast.CssProperty.StringValue;
+import com.google.gwt.user.client.Window;
 import com.workpoint.mwallet.server.dao.model.TemplateModel;
+import com.workpoint.mwallet.shared.model.SearchFilter;
+import com.workpoint.mwallet.shared.model.TemplateDTO;
 
 public class TemplateDao extends BaseDaoImpl {
 
@@ -11,32 +22,32 @@ public class TemplateDao extends BaseDaoImpl {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	public List<getAllTemplates> getAllTemplates(SearchFilter filter,
-			String userId, boolean isSU, boolean isCategoryAdmin) {
+	public List<TemplateDTO> getAllTemplates(SearchFilter filter,
+			String userId, boolean isSU, boolean isCategoryAdmin,
+			Long categoryId) {
 		if (filter == null) {
 			filter = new SearchFilter();
 		}
 
 		StringBuffer jpql = new StringBuffer(
-				"select t.id, t.message, t.isDefaultAutomatic,"
-						+ "t.isDefaultCustom, t.tillModel_Id"
-						+ "from TemplateModel t"
-						+ "where "
-						+ "("
-						+ "(t.categoryid=:categoryId "
-						+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
-						+ "or :isSU='Y') ");
-
-		// Map<String, Object> params = appendParameters(filter, jpql);
+				"select temp.id, temp.message, temp.type, temp.name, temp.isDefault, temp.tillModel_id from "
+						+ "TemplateModel temp " 
+		//				+ "left join TillModel tm  "
+						+ "where :isAdmin='Y'  ");
+		/*
+		 * "select t.id, t.message, t.type," +
+		 * "t.name, t.isDefault, t.tillModel_Id" + "from TemplateModel t" +
+		 * "where " + " (u.userId=:userId or u2.userId=:userId or :isAdmin='Y' "
+		 * + ":isSU='Y' ");
+		 */Map<String, Object> params = appendParameters(filter, jpql);
 
 		Query query = em.createNativeQuery(jpql.toString())
-				.setParameter("userId", userId)
-				.setParameter("isAdmin", isCategoryAdmin ? "Y" : "N")
-				.setParameter("isSU", isSU ? "Y" : "N");
+		// .setParameter("userId", userId)
+			.setParameter("isAdmin", isCategoryAdmin ? "Y" : "N");
+		// .setParameter("isSU", isSU ? "Y" : "N");
 
 		List<Object[]> rows = getResultList(query);
-		List<TemplateDTO> tills = new ArrayList<>();
+		List<TemplateDTO> templates = new ArrayList<>();
 
 		byte boolTrue = 1;
 
@@ -45,36 +56,36 @@ public class TemplateDao extends BaseDaoImpl {
 			int i = 0;
 			Object value = null;
 
-			int id = (value = row[i++]) == null ? null : (int) value;
+			Long id = (value = row[i++]) == null ? null : new Long(
+					value.toString());
+//			String businessName = (value = row[i++]) == null ? null : value.toString();
 			String message = (value = row[i++]) == null ? null : value
 					.toString();
-			int isDefaultAutomatic = (value = row[i++]) == null ? null
-					: (int) value;
-			int isDefaultCustom = (value = row[i++]) == null ? null
-					: (int) value;
+			String type = (value = row[i++]) == null ? null : value.toString();
+			String name = (value = row[i++]) == null ? null : value.toString();
+			int isDefault = (value = row[i++]) == null ? null : (int) value;
 			int tillModel_Id = (value = row[i++]) == null ? null : (int) value;
+			
+			TemplateDTO summary = new TemplateDTO(id, message, type, name,
+					isDefault, tillModel_Id);
 
-			TemplateDTO summary = new TemplateDTO(id, message,
-					isDefaultAutomatic, isDefaultCustom, tillModel_Id);
-
-			tills.add(summary);
+			templates.add(summary);
 
 		}
 
-		return tills;
+		return templates;
 	}
 
-**/
 	public void saveTemplate(TemplateModel template) {
 		save(template);
 	}
-/**
+
 	private Map<String, Object> appendParameters(SearchFilter filter,
 			StringBuffer sqlQuery) {
 		boolean isFirst = false;
 		Map<String, Object> params = new HashMap<>();
 
-		if (filter.get != null) {
+		if (filter.getTemplates() != null) {
 			sqlQuery.append(isFirst ? " Where" : " And");
 			sqlQuery.append(" t.business_number = :tillNumber");
 			params.put("tillNumber", filter.getTill().getTillNo());
@@ -90,35 +101,8 @@ public class TemplateDao extends BaseDaoImpl {
 			isFirst = false;
 		}
 
-		if (filter.getStartDate() != null && filter.getEndDate() != null) {
-
-			String startDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
-					.getStartDate());
-			String endDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
-					.getEndDate());
-
-			updateGradesView(startDate, endDate);
-		}
-
-		if (filter.getOwner() != null) {
-			sqlQuery.append(isFirst ? " Where " : " And ");
-			sqlQuery.append("t.ownerId = :ownerId");
-			params.put("ownerId", filter.getOwner().getUserId());
-			isFirst = false;
-		}
-
-		if (filter.getSalesPerson() != null) {
-			sqlQuery.append(isFirst ? " Where " : " And ");
-			sqlQuery.append("t.salesPersonId = :salesPersonId");
-			params.put("salesPersonId", filter.getSalesPerson().getUserId());
-			isFirst = false;
-		}
-
 		return params;
 
 	}
-
-**/
-
 
 }

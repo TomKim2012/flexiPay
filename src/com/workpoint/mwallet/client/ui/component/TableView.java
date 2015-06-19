@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
+import com.workpoint.mwallet.client.ui.template.table.TemplateTableRow;
 
 public class TableView extends Composite {
 
@@ -256,11 +257,12 @@ public class TableView extends Composite {
 			if (header.getStyleName() != null) {
 				th.addStyleName(header.getStyleName());
 			}
-			
-			//isDiplayed
+
+			// isDiplayed
 			if (header.getisDisplayed()) {
 				panelHeader.add(th);
 			}
 		}
 	}
+
 }

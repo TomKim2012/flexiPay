@@ -10,8 +10,10 @@ public class SearchFilter implements Serializable {
 
 	private String phrase;
 	private TillDTO till;
+	private TemplateDTO template;
 	private String verificationCode;
 	private List<TillDTO> tills;
+	private List<TemplateDTO> templates;
 	private UserDTO owner;
 	private UserDTO salesPerson;
 	private UserDTO cashier;
@@ -21,6 +23,10 @@ public class SearchFilter implements Serializable {
 	private String viewBy;
 	private Date endDate;
 	private boolean isSu;
+
+	public void setTemplate(TemplateDTO template) {
+		this.template = template;
+	}
 
 	public SearchFilter() {
 	}
@@ -55,6 +61,10 @@ public class SearchFilter implements Serializable {
 
 	public void setTill(TillDTO till) {
 		this.till = till;
+	}
+	
+	public TemplateDTO getTemplate() {
+		return template;
 	}
 
 	public boolean isEmpty() {
@@ -98,6 +108,14 @@ public class SearchFilter implements Serializable {
 
 	public void setTills(List<TillDTO> tills) {
 		this.tills = tills;
+	}
+
+	public List<TemplateDTO> getTemplates() {
+		return templates;
+	}
+
+	public void setTemplates(List<TemplateDTO> templates) {
+		this.templates = templates;
 	}
 
 	public boolean isSu() {
