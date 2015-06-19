@@ -11,7 +11,7 @@ public class TemplateModel extends PO {
 	private String type;
 	private String name;
 	private int isDefault;
-	private int tillModel_Id;
+	private String tillModel_Id;
 	
 	/*
 
@@ -45,11 +45,11 @@ public class TemplateModel extends PO {
 		this.isDefault = isDefault;
 	}
 	
-	public int getTillModel_Id() {
+	public String getTillModel_Id() {
 		return tillModel_Id;
 	}
-	public void setTillModel_Id(int tillModel_Id) {
-		this.tillModel_Id = tillModel_Id;
+	public void setTillModel_Id(String string) {
+		this.tillModel_Id = string;
 	}
 		
 	

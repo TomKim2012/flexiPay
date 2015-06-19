@@ -12,7 +12,7 @@ public class TemplateDTO implements Serializable {
 	private String type;
 	private String name;
 	private int isDefault;
-	private int tillModel_Id;
+	private String tillModel_Id;
 
 	private int isActive;
 
@@ -28,12 +28,12 @@ public class TemplateDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TemplateDTO(int tillModel_Id) {
+	public TemplateDTO(String tillModel_Id) {
 		this.tillModel_Id = tillModel_Id;
 	}
 
 	public TemplateDTO(Long id, String message, String type, String name,
-			int isDefault, int tillModel_Id) {
+			int isDefault, String tillModel_Id) {
 		this.id = id;
 		this.message = message;
 		this.type =type;
@@ -83,11 +83,11 @@ public class TemplateDTO implements Serializable {
 		this.isDefault = isDefault;
 	}
 
-	public int getTillModel_Id() {
+	public String getTillModel_Id() {
 		return tillModel_Id;
 	}
 
-	public void setTillModel_Id(int tillModel_Id) {
+	public void setTillModel_Id(String tillModel_Id) {
 		this.tillModel_Id = tillModel_Id;
 	}
 

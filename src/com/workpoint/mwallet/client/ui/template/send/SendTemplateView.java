@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.template.save;
+package com.workpoint.mwallet.client.ui.template.send;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +23,12 @@ import com.workpoint.mwallet.client.ui.component.tabs.TabPanel;
 import com.workpoint.mwallet.shared.model.Listable;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 
-public class CreateTemplateView extends ViewImpl implements
-		CreateTemplatePresenter.MyView {
+public class SendTemplateView extends ViewImpl implements
+		SendTemplatePresenter.MyView {
 
 	private final Widget widget;
 
-	public interface Binder extends UiBinder<Widget, CreateTemplateView> {
+	public interface Binder extends UiBinder<Widget, SendTemplateView> {
 	}
 
 	@UiField
@@ -59,7 +59,7 @@ public class CreateTemplateView extends ViewImpl implements
 */
 
 	@Inject
-	public CreateTemplateView(final Binder binder) {
+	public SendTemplateView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		setTabPanel();
 

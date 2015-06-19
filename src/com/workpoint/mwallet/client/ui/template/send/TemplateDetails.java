@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.template.save;
+package com.workpoint.mwallet.client.ui.template.send;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

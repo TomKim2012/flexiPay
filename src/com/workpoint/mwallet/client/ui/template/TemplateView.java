@@ -55,6 +55,9 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 
 	@UiField
 	ActionLink aDelete;
+	
+	@UiField
+	ActionLink aSend;
 
 	private List<LIElement> liElements = new ArrayList<LIElement>();
 	private List<DivElement> divElements = new ArrayList<DivElement>();
@@ -91,6 +94,11 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 	public HasClickHandlers getDeleteButton() {
 		return aDelete;
 	}
+	
+	@Override
+	public HasClickHandlers getSendButton() {
+		return aSend;
+	}
 
 	@Override
 	public void presentData(TemplateDTO template) {
@@ -108,10 +116,12 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 			show(aCreate, false);
 			show(aEdit, true);
 			show(aDelete, true);
+			show(aSend, true);
 		} else {
 			show(aCreate, true);
 			show(aEdit, false);
 			show(aDelete, false);
+			show(aSend, false);
 		}
 	}
 

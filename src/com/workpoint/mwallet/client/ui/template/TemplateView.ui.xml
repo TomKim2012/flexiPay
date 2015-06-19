@@ -30,6 +30,13 @@
 						<i class="icon-trash icon-button"></i>
 					</d:ActionLink>
 				</div>
+
+				<div class="span3">
+					<d:ActionLink ui:field="aSend" styleName="btn btn-primary"
+						dataToggle="tooltip">
+						Send Messages
+					</d:ActionLink>
+				</div>
 			</g:HTMLPanel>
 
 			<g:HTMLPanel ui:field="divMiddleContent" styleName="row-fluid">

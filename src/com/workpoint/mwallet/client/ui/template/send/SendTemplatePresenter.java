@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.template.save;
+package com.workpoint.mwallet.client.ui.template.send;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.TextArea;
@@ -17,8 +17,8 @@ import com.workpoint.mwallet.shared.model.TemplateDTO;
 import com.workpoint.mwallet.shared.requests.SaveTemplateRequest;
 import com.workpoint.mwallet.shared.responses.SaveTemplateResponse;
 
-public class CreateTemplatePresenter extends
-		PresenterWidget<CreateTemplatePresenter.MyView> {
+public class SendTemplatePresenter extends
+		PresenterWidget<SendTemplatePresenter.MyView> {
 
 	public interface MyView extends View {
 		boolean isValid();
@@ -51,7 +51,7 @@ public class CreateTemplatePresenter extends
 	
 
 	@Inject
-	public CreateTemplatePresenter(final EventBus eventBus, final MyView view) {
+	public SendTemplatePresenter(final EventBus eventBus, final MyView view) {
 		super(eventBus, view);
 
 	}

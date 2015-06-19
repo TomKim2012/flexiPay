@@ -64,7 +64,7 @@ public class TemplateDao extends BaseDaoImpl {
 			String type = (value = row[i++]) == null ? null : value.toString();
 			String name = (value = row[i++]) == null ? null : value.toString();
 			int isDefault = (value = row[i++]) == null ? null : (int) value;
-			int tillModel_Id = (value = row[i++]) == null ? null : (int) value;
+			String tillModel_Id = (value = row[i++]) == null ? null : value.toString();
 			
 			TemplateDTO summary = new TemplateDTO(id, message, type, name,
 					isDefault, tillModel_Id);

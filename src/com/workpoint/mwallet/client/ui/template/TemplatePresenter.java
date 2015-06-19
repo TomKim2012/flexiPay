@@ -1,4 +1,3 @@
-
 package com.workpoint.mwallet.client.ui.template;
 
 import java.util.ArrayList;
@@ -34,6 +33,8 @@ import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.template.save.CreateTemplatePresenter;
+import com.workpoint.mwallet.client.ui.template.send.SendTemplatePresenter;
+import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -48,7 +49,7 @@ import com.workpoint.mwallet.shared.responses.SaveTemplateResponse;
 
 public class TemplatePresenter extends
 		PresenterWidget<TemplatePresenter.MyView> implements
-		ActivitySelectionChangedHandler{
+		ActivitySelectionChangedHandler {
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
@@ -68,6 +69,7 @@ public class TemplatePresenter extends
 
 	private OptionControl saveOptionControl;
 	private OptionControl deleteOptionControl;
+	private OptionControl sendOptionCOntrol;
 
 	public interface MyView extends View {
 
@@ -90,6 +92,8 @@ public class TemplatePresenter extends
 		HasClickHandlers getEditButton();
 
 		HasClickHandlers getDeleteButton();
+
+		HasClickHandlers getSendButton();
 	}
 
 	@ContentSlot
@@ -104,7 +108,7 @@ public class TemplatePresenter extends
 
 	private TemplateDTO selected;
 
-	//private List<UserDTO> users = new ArrayList<UserDTO>();
+	// private List<UserDTO> users = new ArrayList<UserDTO>();
 
 	@Inject
 	public TemplatePresenter(final EventBus eventBus, final MyView view,
@@ -131,6 +135,7 @@ public class TemplatePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				showPopUp();
+				//showTemplatePopUp(false);
 			}
 		});
 
@@ -150,10 +155,20 @@ public class TemplatePresenter extends
 				showDeletePopup();
 			}
 		});
+		
+		getView().getSendButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+
+				showSendPopup();
+			}
+		});
 
 	}
 
 	protected void showTemplatePopUp(boolean edit) {
+
 		createTemplatePopup.get(new ServiceCallback<CreateTemplatePresenter>() {
 			@Override
 			public void processResult(CreateTemplatePresenter aResponse) {
@@ -170,21 +185,40 @@ public class TemplatePresenter extends
 			public void onSelect(String name) {
 				if (name.equals("Save")) {
 					if (templatePopUp.getView().isValid()) {
-						saveTemplate(templatePopUp.getView().getTemplateDTO(),
-								false);
+						saveTemplate(templatePopUp.getView().getTemplateDTO(), false);
 					}
 				} else {
-					
-					
 					hide();
 				}
 			}
 		};
-
+		
 		AppManager.showPopUp(edit ? "Edit Template" : "Create Template",
 				templatePopUp.getWidget(), saveOptionControl, "Save", "Cancel");
-	}
 
+	}
+	public void showSendPopup() {
+		sendOptionCOntrol = new OptionControl() {
+			@Override
+			public void onSelect(String name) {
+				if (name.equals("Send")) {
+					templatePopUp.sendMessages();
+					hide();
+					loadData();
+				} else {
+					hide();
+				}
+			}
+		};
+		createTemplatePopup.get(new ServiceCallback<SendTemplatePresenter>() {
+			@Override
+			public void processResult(SendTemplatePresenter aResponse) {
+				templatePopup = aResponse;
+				AppManager.showPopUp("Send Messages", aResponse.getWidget(),
+						sendOptionCOntrol, "Send", "Cancel");
+			}
+		});
+	}
 
 	protected void showPopUp() {
 		saveOptionControl = new OptionControl() {
@@ -223,8 +257,8 @@ public class TemplatePresenter extends
 			}
 		};
 		AppManager.showPopUp("Confirm Delete",
-				"Confirm that you want to Delete", 
-				deleteOptionControl, "Confirm", "Cancel");
+				"Confirm that you want to Delete", deleteOptionControl,
+				"Confirm", "Cancel");
 
 	}
 
@@ -264,7 +298,6 @@ public class TemplatePresenter extends
 	public void loadData() {
 
 		fireEvent(new ProcessingEvent("Loading.."));
-
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetTemplateRequest(filter));
 
