@@ -12,16 +12,13 @@
 		<!-- Issues -->
 		<d:IssuesPanel ui:field="issues">
 		</d:IssuesPanel>
-		
-		
-		<!-- Tabs 
-		<t:TabPanel ui:field="divTabs">
-		</t:TabPanel>
-		-->
-	
+
+
+		<!-- Tabs <t:TabPanel ui:field="divTabs"> </t:TabPanel> -->
+
 		<div class="row-fluid">
 			<h3>
-				Manage Your Text Messages
+				Send Text Messages
 				<br />
 			</h3>
 			<hr />
@@ -29,7 +26,7 @@
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label for="keyword" class="span6 control-label">Select KeyWord:</label>
+				<label for="keyword" class="span6 control-label">Select Template:</label>
 				<div class="span6">
 					<d:DropDownList ui:field="dropDownPackages">
 					</d:DropDownList>
@@ -37,51 +34,25 @@
 			</div>
 		</div>
 
+
 		<div class="row-fluid">
-			<label for="Message" class="span6 control-label">Message</label>
+			<div class="span6">
+				<label for="keyword" class="span6 control-label">Select Contacts</label>
+				<div class="span6">
+					<d:DropDownList ui:field="dropDownContacts">
+					</d:DropDownList>
+				</div>
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<label for="Message" class="span6 control-label">Contacts</label>
 			<div class="span6">
 				<g:TextArea ui:field="txtComposeArea" width="50%" height="60px" />
 			</div>
 		</div>
 
-		<div class="row-fluid">
-			<div class="span6">
-				<label for="Message" class="span6 control-label">Type</label>
-				<div class="span6">
-					<g:TextBox ui:field="txtType" />
-				</div>
-			</div>
-		</div>
-
-		<div class="row-fluid">
-			<div class="span6">
-				<label for="Message" class="span6 control-label">Name</label>
-				<div class="span6">
-					<g:TextBox ui:field="txtName" />
-				</div>
-			</div>
-		</div>
 		
-		
-		<div class="row-fluid">
-			<div class="span6">
-				<label for="Message" class="span6 control-label">Default?</label>
-				<div class="span6">
-					<g:CheckBox ui:field="txtDefault" />
-				</div>
-			</div>
-		</div>
-		
-		
-		<div class="row-fluid">
-			<div class="span6">
-				<label for="Message" class="span6 control-label">Till</label>
-				<div class="span6">
-					<g:TextBox ui:field="txtTill" />
-				</div>
-			</div>
-		</div>
-		 
 
 	</g:HTMLPanel>
 

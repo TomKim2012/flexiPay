@@ -42,17 +42,6 @@ public class SendTemplateView extends ViewImpl implements
 	@UiField
 	TextArea txtComposeArea;
 	
-	@UiField
-	TextBox txtType;
-	
-	@UiField
-	TextBox txtName;
-	
-	@UiField
-	CheckBox txtDefault;	
-	
-	@UiField
-	TextBox txtTill;
 	/*	
 	@UiField
 	TabPanel divTabs;
@@ -167,38 +156,6 @@ public class SendTemplateView extends ViewImpl implements
 	}
 	
 	
-	@Override
-	public String getTemplateType() {
-		if (!txtType.getText().isEmpty()) {
-			return txtType.getText();
-		} else {
-			return null;
-		}
-	}
-	
-	@Override
-	public String getTemplateName() {
-		if (!txtName.getText().isEmpty()) {
-			return txtName.getText();
-		} else {
-			return null;
-		}
-	}
-	
-	@Override
-	public int getTemplateDefault() {		
-		if (txtDefault.isChecked()) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
-	}
-	
-	@Override
-	public String getTemplateTill() {
-			return txtTill.getValue();
-	}
 
 
 }

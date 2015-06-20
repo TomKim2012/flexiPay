@@ -25,19 +25,19 @@ public class CreateTemplatePresenter extends
 
 		//public TextArea getComposeTextArea();
 
-		public String getTemplateText();
+		//public String getTemplateText();
 
 		void setTemplate(TemplateDTO templateSelected);
 
 		TemplateDTO getTemplateDTO();
 
-		String getTemplateType();
+		/*String getTemplateType();
 
 		String getTemplateName();
 
 		int getTemplateDefault();
 
-		String getTemplateTill();
+		String getTemplateTill();*/
 
 	}
 
@@ -66,16 +66,18 @@ public class CreateTemplatePresenter extends
 
 		fireEvent(new ProcessingEvent());
 
-		String message = getView().getTemplateText();
-
 		fireEvent(new ProcessingEvent("Saving ..."));
 
 		TemplateDTO template = new TemplateDTO();
+
+		/*
+		String message = getView().getTemplateText();
+
 		template.setMessage(message);
 		template.setType(getView().getTemplateType());
 		template.setName(getView().getTemplateName());
 		template.setTillModel_Id(getView().getTemplateTill());
-		template.setIsDefault(getView().getTemplateDefault());
+		template.setIsDefault(getView().getTemplateDefault());*/
 
 		SaveTemplateRequest saveRequest = new SaveTemplateRequest(template,
 				false);
@@ -95,5 +97,7 @@ public class CreateTemplatePresenter extends
 		this.selected = selected;
 		getView().setTemplate(selected);
 	}
+
+
 
 }

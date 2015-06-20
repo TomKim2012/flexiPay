@@ -1,5 +1,7 @@
 package com.workpoint.mwallet.client.ui.template;
 
+import static com.workpoint.mwallet.client.ui.tills.TillsPresenter.FILTER_SLOT;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,13 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 		tblView.createHeader(tableHeaders);
 	}
 
+	public void initControlButtons() {		
+		/*
+		show(aCreate, true);
+		show(aEdit, false);
+		show(aDelete, false);
+*/	}
+	
 	@Override
 	public void setSelection(boolean show) {
 		if (show) {
@@ -123,6 +132,17 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 			show(aDelete, false);
 			show(aSend, false);
 		}
+	}
+	
+
+	@Override
+	public void setInSlot(Object slot, Widget content) {
+		if (slot == FILTER_SLOT) {
+			
+		} else {
+			super.setInSlot(slot, content);
+		}
+
 	}
 
 	private void show(Anchor aAnchor, boolean show) {
@@ -159,12 +179,6 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 		if (middleHeight > 0) {
 			divMiddleContent.setHeight(middleHeight + "px");
 		}
-	}
-
-	@Override
-	public void initControlButtons() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

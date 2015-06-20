@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -27,14 +28,11 @@ import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.ActivitySelectionChangedHandler;
-import com.workpoint.mwallet.client.ui.events.HidePanelBoxEvent.HidePanelBoxHandler;
-import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.template.save.CreateTemplatePresenter;
 import com.workpoint.mwallet.client.ui.template.send.SendTemplatePresenter;
-import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
@@ -66,6 +64,10 @@ public class TemplatePresenter extends
 	private IndirectProvider<CreateTemplatePresenter> createTemplatePopup;
 
 	private CreateTemplatePresenter templatePopUp;
+	
+	private SendTemplatePresenter sendPopUp;
+	
+	private IndirectProvider<SendTemplatePresenter> sendTemplatePopUp;
 
 	private OptionControl saveOptionControl;
 	private OptionControl deleteOptionControl;
@@ -112,10 +114,13 @@ public class TemplatePresenter extends
 
 	@Inject
 	public TemplatePresenter(final EventBus eventBus, final MyView view,
-			Provider<CreateTemplatePresenter> templateProvider) {
+	//		Provider<SendTemplatePresenter> sendTemplateProvider,
+			Provider<CreateTemplatePresenter> templateProvider)
+			{
 		super(eventBus, view);
 		createTemplatePopup = new StandardProvider<CreateTemplatePresenter>(
 				templateProvider);
+	//	sendTemplatePopUp = new StandardProvider<SendTemplatePresenter>(sendTemplateProvider);
 
 	}
 
@@ -161,7 +166,7 @@ public class TemplatePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 
-				showSendPopup();
+	//			showSendPopup();
 			}
 		});
 
@@ -173,19 +178,28 @@ public class TemplatePresenter extends
 			@Override
 			public void processResult(CreateTemplatePresenter aResponse) {
 				templatePopUp = aResponse;
+				
 			}
 		});
 
 		if (edit) {
 			templatePopUp.setTemplateDetails(selected);
 		}
-
+		
+		
+		AppManager.showPopUp(edit ? "Edit Template" : "Create Template",
+				templatePopUp.getWidget(), saveOptionControl, "Save", "Cancel");
+		
+		
 		saveOptionControl = new OptionControl() {
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Save")) {
 					if (templatePopUp.getView().isValid()) {
 						saveTemplate(templatePopUp.getView().getTemplateDTO(), false);
+						
+
+						Window.alert("Reached at template popup..");
 					}
 				} else {
 					hide();
@@ -193,8 +207,9 @@ public class TemplatePresenter extends
 			}
 		};
 		
-		AppManager.showPopUp(edit ? "Edit Template" : "Create Template",
-				templatePopUp.getWidget(), saveOptionControl, "Save", "Cancel");
+		
+		
+		
 
 	}
 	public void showSendPopup() {
@@ -202,7 +217,7 @@ public class TemplatePresenter extends
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Send")) {
-					templatePopUp.sendMessages();
+					sendPopUp.sendMessages();
 					hide();
 					loadData();
 				} else {
@@ -210,10 +225,10 @@ public class TemplatePresenter extends
 				}
 			}
 		};
-		createTemplatePopup.get(new ServiceCallback<SendTemplatePresenter>() {
+		sendTemplatePopUp.get(new ServiceCallback<SendTemplatePresenter>() {
 			@Override
 			public void processResult(SendTemplatePresenter aResponse) {
-				templatePopup = aResponse;
+				sendPopUp = aResponse;
 				AppManager.showPopUp("Send Messages", aResponse.getWidget(),
 						sendOptionCOntrol, "Send", "Cancel");
 			}
@@ -234,11 +249,16 @@ public class TemplatePresenter extends
 				}
 			}
 		};
-
+		
 		createTemplatePopup.get(new ServiceCallback<CreateTemplatePresenter>() {
 			@Override
 			public void processResult(CreateTemplatePresenter aResponse) {
 				templatePopUp = aResponse;
+				
+
+				Window.alert("Reached at template popup..");
+				
+				
 				AppManager.showPopUp("Create Template", aResponse.getWidget(),
 						saveOptionControl, "Save", "Cancel");
 

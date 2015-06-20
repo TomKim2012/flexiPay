@@ -31,13 +31,6 @@ public class SendTemplatePresenter extends
 
 		TemplateDTO getTemplateDTO();
 
-		String getTemplateType();
-
-		String getTemplateName();
-
-		int getTemplateDefault();
-
-		String getTemplateTill();
 
 	}
 
@@ -62,33 +55,10 @@ public class SendTemplatePresenter extends
 
 	}
 
-	public void submitData() {
 
-		fireEvent(new ProcessingEvent());
-
-		String message = getView().getTemplateText();
-
-		fireEvent(new ProcessingEvent("Saving ..."));
-
-		TemplateDTO template = new TemplateDTO();
-		template.setMessage(message);
-		template.setType(getView().getTemplateType());
-		template.setName(getView().getTemplateName());
-		template.setTillModel_Id(getView().getTemplateTill());
-		template.setIsDefault(getView().getTemplateDefault());
-
-		SaveTemplateRequest saveRequest = new SaveTemplateRequest(template,
-				false);
-		requestHelper.execute(saveRequest,
-				new TaskServiceCallback<SaveTemplateResponse>() {
-					@Override
-					public void processResult(SaveTemplateResponse aResponse) {
-						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new ActivitySavedEvent("Template "
-								+ " successfully saved"));
-					}
-				});
-
+	public void sendMessages() {
+		// to add code here
+		
 	}
 
 	public void setTemplateDetails(TemplateDTO selected) {

@@ -31,39 +31,39 @@ public class CreateTemplateView extends ViewImpl implements
 	public interface Binder extends UiBinder<Widget, CreateTemplateView> {
 	}
 
-	@UiField
-	IssuesPanel issues;
-	@UiField
-	DropDownList<Packages> dropDownPackages;
-	
 	private TemplateDetails templateDetails;
 
+	@UiField
+	IssuesPanel issues;
+
+	/*@UiField
+	DropDownList<Packages> dropDownPackages;
 
 	@UiField
 	TextArea txtComposeArea;
-	
+
 	@UiField
 	TextBox txtType;
-	
+
 	@UiField
 	TextBox txtName;
+
+	@UiField
+	CheckBox txtDefault;
+
+	@UiField
+	TextBox txtTill;*/
+
 	
-	@UiField
-	CheckBox txtDefault;	
-	
-	@UiField
-	TextBox txtTill;
-	/*	
-	@UiField
-	TabPanel divTabs;
-*/
+	@UiField TabPanel divTabs;
+
 
 	@Inject
 	public CreateTemplateView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		setTabPanel();
 
-		List<Packages> lstPackage = new ArrayList<>();
+		/*List<Packages> lstPackage = new ArrayList<>();
 		lstPackage.add(new Packages("#firstName", "1"));
 		lstPackage.add(new Packages("#lastName", "2"));
 		lstPackage.add(new Packages("#surName", "3"));
@@ -85,19 +85,19 @@ public class CreateTemplateView extends ViewImpl implements
 								+ package1.getDisplayName());
 
 					}
-				});
+				});*/
 
 	}
 
 	public void setTabPanel() {
 		issues.clear();
-		//templateDetails = new TemplateDetails();
-		
-		//divTabs.setHeaders(Arrays.asList(new TabHeader("Till Details", true,
-		//		"till_details")));
-		
-		//divTabs.setContent(Arrays.asList(new TabContent(templateDetails,
-		//		"template details", true)));
+		templateDetails = new TemplateDetails();
+
+		 divTabs.setHeaders(Arrays.asList(new TabHeader("Template Details", true,
+		 "till_details")));
+
+		 divTabs.setContent(Arrays.asList(new TabContent(templateDetails,
+		 "template details", true)));
 	}
 
 	@Override
@@ -109,11 +109,10 @@ public class CreateTemplateView extends ViewImpl implements
 	public void setTemplate(TemplateDTO templateSelected) {
 		templateDetails.setTemplateInfo(templateSelected);
 	}
-	
-	
-	public TemplateDTO getTemplateDTO(){
+
+	public TemplateDTO getTemplateDTO() {
 		TemplateDTO templateDetail = templateDetails.getTemplateInfo();
-		
+
 		return templateDetail;
 	}
 
@@ -128,14 +127,14 @@ public class CreateTemplateView extends ViewImpl implements
 			return true;
 		}
 	}
-
+/*
 	public TextArea getTxtComposeArea() {
 		return txtComposeArea;
 	}
 
 	public void setTxtComposeArea(TextArea txtComposeArea) {
 		this.txtComposeArea = txtComposeArea;
-	}
+	}*/
 
 	public class Packages implements Listable {
 		private String name;
@@ -157,7 +156,7 @@ public class CreateTemplateView extends ViewImpl implements
 		}
 	}
 
-	@Override
+	/*@Override
 	public String getTemplateText() {
 		if (!txtComposeArea.getText().isEmpty()) {
 			return txtComposeArea.getText();
@@ -165,8 +164,7 @@ public class CreateTemplateView extends ViewImpl implements
 			return null;
 		}
 	}
-	
-	
+
 	@Override
 	public String getTemplateType() {
 		if (!txtType.getText().isEmpty()) {
@@ -175,7 +173,7 @@ public class CreateTemplateView extends ViewImpl implements
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String getTemplateName() {
 		if (!txtName.getText().isEmpty()) {
@@ -184,21 +182,19 @@ public class CreateTemplateView extends ViewImpl implements
 			return null;
 		}
 	}
-	
+
 	@Override
-	public int getTemplateDefault() {		
+	public int getTemplateDefault() {
 		if (txtDefault.isChecked()) {
 			return 1;
-		}
-		else {
+		} else {
 			return 0;
 		}
 	}
-	
+
 	@Override
 	public String getTemplateTill() {
-			return txtTill.getValue();
-	}
-
+		return txtTill.getValue();
+	}*/
 
 }

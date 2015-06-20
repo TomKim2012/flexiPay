@@ -9,7 +9,7 @@
 				<span class="mandatory" title="Required Field">*</span> </div> </div> -->
 
 			<div class="control-group">
-				<div class="control-label" ui:field="divMessage">Type</div>
+				<div class="control-label" ui:field="divMessage">Message</div>
 				<div class="controls">
 					<g:TextBox ui:field="txtmessage" styleName="input-xlarge"></g:TextBox>
 				</div>
