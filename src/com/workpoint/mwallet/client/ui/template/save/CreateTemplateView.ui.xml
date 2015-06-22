@@ -15,8 +15,7 @@
 		
 		<t:TabPanel ui:field="divTabs">
 		</t:TabPanel>
-		
-	
+			
 		<div class="row-fluid">
 			<h3>
 				Manage Your Text Messages
@@ -25,7 +24,7 @@
 			<hr />
 		</div>
 
-<!-- 
+
 		<div class="row-fluid">
 			<div class="span6">
 				<label for="keyword" class="span6 control-label">Select KeyWord:</label>
@@ -81,7 +80,7 @@
 			</div>
 		</div>
 		 
- -->
+ 
 	</g:HTMLPanel>
 
 </ui:UiBinder>

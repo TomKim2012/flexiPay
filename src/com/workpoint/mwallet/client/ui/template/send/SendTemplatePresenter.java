@@ -1,5 +1,7 @@
 package com.workpoint.mwallet.client.ui.template.send;
 
+import java.util.List;
+
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.inject.Inject;
@@ -12,6 +14,7 @@ import com.workpoint.mwallet.client.ui.MainPagePresenter;
 import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
+import com.workpoint.mwallet.client.ui.template.send.SendTemplateView.Packages;
 import com.workpoint.mwallet.client.ui.users.save.UserSavePresenter;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 import com.workpoint.mwallet.shared.requests.SaveTemplateRequest;
@@ -30,6 +33,9 @@ public class SendTemplatePresenter extends
 		void setTemplate(TemplateDTO templateSelected);
 
 		TemplateDTO getTemplateDTO();
+
+		void setTemplates(List<TemplateDTO> templates);
+
 
 
 	}

@@ -1,7 +1,6 @@
 package com.workpoint.mwallet.client.ui.template.send;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.google.gwt.dom.client.Style.Display;
@@ -9,19 +8,15 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.DropDownList;
 import com.workpoint.mwallet.client.ui.component.IssuesPanel;
-import com.workpoint.mwallet.client.ui.component.tabs.TabContent;
-import com.workpoint.mwallet.client.ui.component.tabs.TabHeader;
-import com.workpoint.mwallet.client.ui.component.tabs.TabPanel;
 import com.workpoint.mwallet.shared.model.Listable;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
+import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class SendTemplateView extends ViewImpl implements
 		SendTemplatePresenter.MyView {
@@ -34,13 +29,14 @@ public class SendTemplateView extends ViewImpl implements
 	@UiField
 	IssuesPanel issues;
 	@UiField
-	DropDownList<Packages> dropDownPackages;
+	DropDownList<TemplateDTO> lstTemplates;
+	@UiField
+	DropDownList<Packages> dropDownContacts;
+	@UiField
+	TextArea txtComposeArea;	
 	
 	private TemplateDetails templateDetails;
 
-
-	@UiField
-	TextArea txtComposeArea;
 	
 	/*	
 	@UiField
@@ -61,9 +57,9 @@ public class SendTemplateView extends ViewImpl implements
 		lstPackage.add(new Packages("#date", "6"));
 		lstPackage.add(new Packages("#Business", "7"));
 
-		dropDownPackages.setItems(lstPackage);
+		lstTemplates.setItems(lstPackage);
 
-		dropDownPackages
+		lstTemplates
 				.addValueChangeHandler(new ValueChangeHandler<Packages>() {
 					@Override
 					public void onValueChange(ValueChangeEvent<Packages> event) {
@@ -153,6 +149,11 @@ public class SendTemplateView extends ViewImpl implements
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	public void setTemplates(List<Packages> templates) {
+		lstTemplates.setItems(templates);
 	}
 	
 	

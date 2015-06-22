@@ -64,6 +64,7 @@ public class TemplateTableRow extends RowWidget {
 		chkSelect.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				System.err.println("Template:" + template.getId());
 				AppContext.fireEvent(new ActivitySelectionChangedEvent(
 						TemplateTableRow.this.template, event.getValue()));
 			}
@@ -87,7 +88,7 @@ public class TemplateTableRow extends RowWidget {
 			bindText(divType, template.getType());
 			bindText(divIsDefault, String.valueOf(template.getIsDefault()));
 			bindText(divTillModel, String.valueOf(template.getTillModel_Id()));
-	
+
 			String modifiedDate = template.getLastModified() == null ? ""
 					: DateUtils.CREATEDFORMAT
 							.format(template.getLastModified());

@@ -33,7 +33,6 @@ public class ActivitySelectionChangedEvent extends
 
 	public ActivitySelectionChangedEvent(TemplateDTO templateDetail,
 			Boolean isSelected) {
-
 		this.setTemplate(templateDetail);
 		this.isSelected = isSelected();
 

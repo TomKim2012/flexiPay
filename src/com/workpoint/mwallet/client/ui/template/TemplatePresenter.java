@@ -9,7 +9,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -61,13 +60,14 @@ public class TemplatePresenter extends
 
 	private SearchFilter filter = new SearchFilter();
 
-	private IndirectProvider<CreateTemplatePresenter> createTemplatePopup;
+	private IndirectProvider<CreateTemplatePresenter> createTemplatePopup;	
+
+	private IndirectProvider<SendTemplatePresenter> sendTemplatePopUp;
 
 	private CreateTemplatePresenter templatePopUp;
-	
+
 	private SendTemplatePresenter sendPopUp;
-	
-	private IndirectProvider<SendTemplatePresenter> sendTemplatePopUp;
+
 
 	private OptionControl saveOptionControl;
 	private OptionControl deleteOptionControl;
@@ -114,13 +114,12 @@ public class TemplatePresenter extends
 
 	@Inject
 	public TemplatePresenter(final EventBus eventBus, final MyView view,
-	//		Provider<SendTemplatePresenter> sendTemplateProvider,
-			Provider<CreateTemplatePresenter> templateProvider)
-			{
+			Provider<SendTemplatePresenter> sendTemplateProvider,
+			Provider<CreateTemplatePresenter> templateProvider) {
 		super(eventBus, view);
 		createTemplatePopup = new StandardProvider<CreateTemplatePresenter>(
 				templateProvider);
-	//	sendTemplatePopUp = new StandardProvider<SendTemplatePresenter>(sendTemplateProvider);
+		sendTemplatePopUp = new StandardProvider<SendTemplatePresenter>(sendTemplateProvider);
 
 	}
 
@@ -140,7 +139,8 @@ public class TemplatePresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				showPopUp();
-				//showTemplatePopUp(false);
+				// showTemplatePopUp(false);
+
 			}
 		});
 
@@ -160,13 +160,13 @@ public class TemplatePresenter extends
 				showDeletePopup();
 			}
 		});
-		
+
 		getView().getSendButton().addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 
-	//			showSendPopup();
+			 showSendPopup();
 			}
 		});
 
@@ -178,40 +178,36 @@ public class TemplatePresenter extends
 			@Override
 			public void processResult(CreateTemplatePresenter aResponse) {
 				templatePopUp = aResponse;
-				
 			}
 		});
 
 		if (edit) {
 			templatePopUp.setTemplateDetails(selected);
 		}
-		
-		
+
 		AppManager.showPopUp(edit ? "Edit Template" : "Create Template",
 				templatePopUp.getWidget(), saveOptionControl, "Save", "Cancel");
-		
-		
+
 		saveOptionControl = new OptionControl() {
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Save")) {
 					if (templatePopUp.getView().isValid()) {
-						saveTemplate(templatePopUp.getView().getTemplateDTO(), false);
-						
 
-						Window.alert("Reached at template popup..");
+						// templatePopUp.submitData();
+
+						saveTemplate(templatePopUp.getView().getTemplateDTO(),
+								false);
+
 					}
 				} else {
 					hide();
 				}
 			}
 		};
-		
-		
-		
-		
 
 	}
+
 	public void showSendPopup() {
 		sendOptionCOntrol = new OptionControl() {
 			@Override
@@ -249,16 +245,12 @@ public class TemplatePresenter extends
 				}
 			}
 		};
-		
+
 		createTemplatePopup.get(new ServiceCallback<CreateTemplatePresenter>() {
 			@Override
 			public void processResult(CreateTemplatePresenter aResponse) {
 				templatePopUp = aResponse;
-				
 
-				Window.alert("Reached at template popup..");
-				
-				
 				AppManager.showPopUp("Create Template", aResponse.getWidget(),
 						saveOptionControl, "Save", "Cancel");
 
@@ -360,8 +352,10 @@ public class TemplatePresenter extends
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
 			this.selected = event.getTemplate();
-			// System.err.println("Category Id at Presenter>>>"+
-			// selected.getCategory().getId());
+			
+		 System.err.println("Category Id at Presenter>>>"+ selected.getId());
+		 
+		 
 			getView().setAllowedButtons(AppContext.getContextUser(), true);
 		} else {
 			getView().setAllowedButtons(AppContext.getContextUser(), false);

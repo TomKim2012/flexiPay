@@ -36,7 +36,7 @@ public class CreateTemplateView extends ViewImpl implements
 	@UiField
 	IssuesPanel issues;
 
-	/*@UiField
+	@UiField
 	DropDownList<Packages> dropDownPackages;
 
 	@UiField
@@ -52,18 +52,17 @@ public class CreateTemplateView extends ViewImpl implements
 	CheckBox txtDefault;
 
 	@UiField
-	TextBox txtTill;*/
+	TextBox txtTill;
 
-	
-	@UiField TabPanel divTabs;
-
+	@UiField
+	TabPanel divTabs;
 
 	@Inject
 	public CreateTemplateView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		setTabPanel();
 
-		/*List<Packages> lstPackage = new ArrayList<>();
+		List<Packages> lstPackage = new ArrayList<>();
 		lstPackage.add(new Packages("#firstName", "1"));
 		lstPackage.add(new Packages("#lastName", "2"));
 		lstPackage.add(new Packages("#surName", "3"));
@@ -85,19 +84,21 @@ public class CreateTemplateView extends ViewImpl implements
 								+ package1.getDisplayName());
 
 					}
-				});*/
+				});
 
 	}
 
 	public void setTabPanel() {
 		issues.clear();
-		templateDetails = new TemplateDetails();
-
-		 divTabs.setHeaders(Arrays.asList(new TabHeader("Template Details", true,
-		 "till_details")));
-
-		 divTabs.setContent(Arrays.asList(new TabContent(templateDetails,
-		 "template details", true)));
+		/*
+		 * templateDetails = new TemplateDetails();
+		 * 
+		 * divTabs.setHeaders(Arrays.asList(new TabHeader("Template Details",
+		 * true, "till_details")));
+		 * 
+		 * divTabs.setContent(Arrays.asList(new TabContent(templateDetails,
+		 * "template details", true)));
+		 */
 	}
 
 	@Override
@@ -127,14 +128,14 @@ public class CreateTemplateView extends ViewImpl implements
 			return true;
 		}
 	}
-/*
+
 	public TextArea getTxtComposeArea() {
 		return txtComposeArea;
 	}
 
 	public void setTxtComposeArea(TextArea txtComposeArea) {
 		this.txtComposeArea = txtComposeArea;
-	}*/
+	}
 
 	public class Packages implements Listable {
 		private String name;
@@ -154,9 +155,10 @@ public class CreateTemplateView extends ViewImpl implements
 		public String getDisplayName() {
 			return name;
 		}
+
 	}
 
-	/*@Override
+	@Override
 	public String getTemplateText() {
 		if (!txtComposeArea.getText().isEmpty()) {
 			return txtComposeArea.getText();
@@ -195,6 +197,6 @@ public class CreateTemplateView extends ViewImpl implements
 	@Override
 	public String getTemplateTill() {
 		return txtTill.getValue();
-	}*/
+	}
 
 }

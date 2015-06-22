@@ -28,7 +28,7 @@
 			<div class="span6">
 				<label for="keyword" class="span6 control-label">Select Template:</label>
 				<div class="span6">
-					<d:DropDownList ui:field="dropDownPackages">
+					<d:DropDownList ui:field="lstTemplates">
 					</d:DropDownList>
 				</div>
 			</div>

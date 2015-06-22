@@ -5907,8 +5907,8 @@ a.waves-effect .waves-ripple {
   z-index: -1; }
 
 .modal {
-  display: none;
-  position: fixed;
+/*   display: none;
+ */  position: fixed;
   left: 0;
   right: 0;
   background-color: #eee;
@@ -5927,7 +5927,7 @@ a.waves-effect .waves-ripple {
   -ms-transform: translate(0);
   -o-transform: translate(0);
   transform: translate(0);
-  will-change: top, opacity; }
+  will-change: top, opacity;  }
   @media only screen and (max-width : 992px) {
     .modal {
       width: 80%; } }

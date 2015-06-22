@@ -2,7 +2,6 @@ package com.workpoint.mwallet.client.ui.tills;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -191,7 +190,7 @@ public class TillsPresenter extends
 
 	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
-		//Collections.sort(tills);
+		// Collections.sort(tills);
 
 		for (TillDTO till : tills) {
 			getView().presentData(till);
@@ -358,7 +357,7 @@ public class TillsPresenter extends
 				}
 			}
 		};
-		
+
 		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
 				tillPopUp.getWidget(), saveOptionControl, "Save", "Cancel");
 	}
