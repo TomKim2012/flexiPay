@@ -167,8 +167,7 @@ public class WebsiteClientPresenter
 				// .alert("Your payment has been confirmed. You will be directed to the next step in a short while");
 				// Do necessary re-direction
 				if (trx.getIpnAddress() != null) {
-					MaterialLoader.showLoading(false);
-					String url = trx.getIpnAddress() + "&refId=" + referenceId
+					String url = trx.getIpnAddress() + "?refId=" + referenceId
 							+ "&status=COMPLETED";
 					doGet(url);
 				} else {
@@ -191,6 +190,8 @@ public class WebsiteClientPresenter
 	public static final int STATUS_CODE_OK = 200;
 
 	public void doGet(String url) {
+		System.err.println("CallBack URL:" + url);
+		MaterialLoader.showLoading(false);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
 			Request response = builder.sendRequest(null, new RequestCallback() {

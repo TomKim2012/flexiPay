@@ -3,7 +3,7 @@ package com.workpoint.mwallet.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
+public class TransactionDTO implements Serializable, Comparable<TransactionDTO> {
 
 	/**
 	 * 
@@ -28,24 +28,26 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 
 	public TransactionDTO() {
 	}
-	
+
 	public TransactionDTO(String mpesaSender, String mpesa_msisdn,
 			Double mpesa_amt, String mpesa_code, Date tstamp,
 			String business_number, String mpesa_acc, boolean isprocessed,
-			String ipaddress, boolean isapproved, String businessName, String smsStatus, String ipnAddress) {
-		
-		this.customerName= mpesaSender;
-		this.phone=mpesa_msisdn;
-		this.amount=mpesa_amt;
-		this.referenceId=mpesa_code;
-		this.trxDate=tstamp;
+			String ipaddress, boolean isapproved, String businessName,
+			String smsStatus, String ipAddress, String ipnAddress) {
+
+		this.customerName = mpesaSender;
+		this.phone = mpesa_msisdn;
+		this.amount = mpesa_amt;
+		this.referenceId = mpesa_code;
+		this.trxDate = tstamp;
 		this.businessNumber = business_number;
 		this.accountNumber = mpesa_acc;
-		this.status= isprocessed;
+		this.status = isprocessed;
 		this.ipAddress = ipaddress;
 		this.isApproved = isapproved;
 		this.businessName = businessName;
 		this.smsStatus = smsStatus;
+		this.ipAddress = ipAddress;
 		this.ipnAddress = ipnAddress;
 	}
 
@@ -104,6 +106,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+
 	public boolean isApproved() {
 		return isApproved;
 	}
@@ -119,7 +122,7 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-	
+
 	@Override
 	public int compareTo(TransactionDTO transaction) {
 		if (getTrxDate() == null || transaction.getTrxDate() == null)
@@ -161,12 +164,10 @@ public class TransactionDTO implements Serializable,Comparable<TransactionDTO> {
 
 	@Override
 	public String toString() {
-		return "{trxDate:"+trxDate+","
-				+ "trxNo:"+referenceId+","
-				+"customerName:"+customerName+","
-				+"businessno:"+businessNumber+","
-				+ "accountNo:"+accountNumber+","
-						+ "isApproved="+isApproved+"}";
+		return "{trxDate:" + trxDate + "," + "trxNo:" + referenceId + ","
+				+ "customerName:" + customerName + "," + "businessno:"
+				+ businessNumber + "," + "accountNo:" + accountNumber + ","
+				+ "isApproved=" + isApproved + "}";
 	}
 
 	public Double getCommission() {
