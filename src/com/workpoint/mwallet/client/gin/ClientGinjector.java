@@ -34,5 +34,6 @@ public interface ClientGinjector extends Ginjector {
 	AsyncProvider<LoginPresenter> getLoginPresenter();
 
 	AsyncProvider<DashboardPresenter> getDashboardPresenter();
+	
 
 }

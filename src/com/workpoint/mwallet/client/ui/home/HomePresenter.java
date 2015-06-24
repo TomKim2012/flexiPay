@@ -23,6 +23,7 @@ import com.workpoint.mwallet.client.place.NameTokens;
 import com.workpoint.mwallet.client.service.ServiceCallback;
 import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.MainPagePresenter;
+import com.workpoint.mwallet.client.ui.customer.CustomerPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.login.LoginGateKeeper;
 import com.workpoint.mwallet.client.ui.profile.ProfilePresenter;
@@ -83,6 +84,7 @@ public class HomePresenter extends
 	private IndirectProvider<TillsPresenter> tillFactory;
 	private IndirectProvider<ProfilePresenter> profileFactory;
 	private IndirectProvider<TemplatePresenter> templateFactory;
+	private IndirectProvider<CustomerPresenter> customerFactory;
 	private IndirectProvider<SettingsPresenter> settingsFactory;
 
 	@Inject
@@ -95,6 +97,7 @@ public class HomePresenter extends
 			Provider<SmsPresenter> smsProvider,
 			Provider<ProfilePresenter> profileProvider,
 			Provider<SettingsPresenter> settingsProvider,
+			Provider<CustomerPresenter> customerProvider,
 			Provider<TemplatePresenter> templateProvider) {
 		super(eventBus, view, proxy);
 		dashboardFactory = new StandardProvider<DashboardPresenter>(
@@ -109,6 +112,8 @@ public class HomePresenter extends
 				settingsProvider);
 		templateFactory = new StandardProvider<TemplatePresenter>(
 				templateProvider);
+		customerFactory = new StandardProvider<CustomerPresenter>(
+				customerProvider);
 	}
 
 	@Override
@@ -155,6 +160,7 @@ public class HomePresenter extends
 			});
 
 			getView().setSelectedTab("Tills");
+			
 
 		} else if (page != null && page.equals("transactions")
 				&& isCurrentUserAllowed(page)) {
@@ -204,6 +210,19 @@ public class HomePresenter extends
 				}
 			});
 			getView().setSelectedTab("Template");
+			
+		} else if (page != null && page.equals("Customers")
+				&& isCurrentUserAllowed(page)) {
+			Window.setTitle("Customers");
+			customerFactory.get(new ServiceCallback<CustomerPresenter>() {
+				@Override
+				public void processResult(CustomerPresenter aResponse) {
+					aResponse.loadData();
+					setInSlot(ACTIVITIES_SLOT, aResponse);					
+				}
+			});
+
+			getView().setSelectedTab("Customers");
 		} else if (page != null && page.equals("profile")) {
 			Window.setTitle("User Profile");
 			profileFactory.get(new ServiceCallback<ProfilePresenter>() {

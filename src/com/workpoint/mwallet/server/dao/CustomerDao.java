@@ -8,18 +8,17 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.workpoint.mwallet.server.dao.model.TemplateModel;
+import com.workpoint.mwallet.shared.model.CustomerDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
-import com.workpoint.mwallet.shared.model.TemplateDTO;
 
-public class TemplateDao extends BaseDaoImpl {
+public class CustomerDao extends BaseDaoImpl {
 
-	public TemplateDao(EntityManager em) {
+	public CustomerDao(EntityManager em) {
 		super(em);
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<TemplateDTO> getAllTemplates(SearchFilter filter,
+	public List<CustomerDTO> getAllCustomers(SearchFilter filter,
 			String userId, boolean isSU, boolean isCategoryAdmin,
 			Long categoryId) {
 		if (filter == null) {
@@ -27,8 +26,8 @@ public class TemplateDao extends BaseDaoImpl {
 		}
 
 		StringBuffer jpql = new StringBuffer(
-				"select temp.id, temp.message, temp.type, temp.name, temp.isDefault, temp.tillModel_id from "
-						+ "TemplateModel temp " 
+				"select temp.custId, temp.firstName, temp.lastName, temp.surName, temp.phoneNo, temp.tillModel_id from "
+						+ "Customers temp " 
 		//				+ "left join TillModel tm  "
 						+ "where :isAdmin='Y'  ");
 		/*
@@ -36,7 +35,8 @@ public class TemplateDao extends BaseDaoImpl {
 		 * "t.name, t.isDefault, t.tillModel_Id" + "from TemplateModel t" +
 		 * "where " + " (u.userId=:userId or u2.userId=:userId or :isAdmin='Y' "
 		 * + ":isSU='Y' ");
-		 */Map<String, Object> params = appendParameters(filter, jpql);
+		 */
+		Map<String, Object> params = appendParameters(filter, jpql);
 
 		Query query = em.createNativeQuery(jpql.toString())
 		// .setParameter("userId", userId)
@@ -44,7 +44,7 @@ public class TemplateDao extends BaseDaoImpl {
 		// .setParameter("isSU", isSU ? "Y" : "N");
 
 		List<Object[]> rows = getResultList(query);
-		List<TemplateDTO> templates = new ArrayList<>();
+		List<CustomerDTO> customers = new ArrayList<>();
 
 		byte boolTrue = 1;
 
@@ -53,29 +53,28 @@ public class TemplateDao extends BaseDaoImpl {
 			int i = 0;
 			Object value = null;
 
-			Long id = (value = row[i++]) == null ? null : new Long(
+			Long custId = (value = row[i++]) == null ? null : new Long(
 					value.toString());
-//			String businessName = (value = row[i++]) == null ? null : value.toString();
-			String message = (value = row[i++]) == null ? null : value
+			String firstName = (value = row[i++]) == null ? null : value.toString();
+			String lastName = (value = row[i++]) == null ? null : value
 					.toString();
-			String type = (value = row[i++]) == null ? null : value.toString();
-			String name = (value = row[i++]) == null ? null : value.toString();
-			int isDefault = (value = row[i++]) == null ? null : (int) value;
+			String surName = (value = row[i++]) == null ? null : value.toString();
+			String phoneNo = (value = row[i++]) == null ? null : value.toString();
 			String tillModel_Id = (value = row[i++]) == null ? null : value.toString();
 			
-			TemplateDTO summary = new TemplateDTO(id, message, type, name,
-					isDefault, tillModel_Id);
+			CustomerDTO summary = new CustomerDTO(custId, firstName, lastName, surName,
+					phoneNo, tillModel_Id);
 
-			templates.add(summary);
+			customers.add(summary);
 
 		}
 
-		return templates;
+		return customers;
 	}
 
-	public void saveTemplate(TemplateModel template) {
+	/*public void saveCustomer(CustomerModel template) {
 		save(template);
-	}
+	}*/
 
 	private Map<String, Object> appendParameters(SearchFilter filter,
 			StringBuffer sqlQuery) {

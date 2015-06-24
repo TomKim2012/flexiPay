@@ -3,7 +3,7 @@ package com.workpoint.mwallet.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TemplateDTO implements Serializable {
+public class TemplateDTO implements Serializable , Listable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -122,6 +122,11 @@ public class TemplateDTO implements Serializable {
 	@Override
 	public String toString() {
 		return tillNo;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return name + " - " + message;
 	}
 
 }

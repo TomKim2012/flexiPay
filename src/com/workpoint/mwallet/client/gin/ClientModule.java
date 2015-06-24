@@ -13,6 +13,8 @@ import com.workpoint.mwallet.client.ui.category.CategoryPresenter;
 import com.workpoint.mwallet.client.ui.category.CategoryView;
 import com.workpoint.mwallet.client.ui.category.save.CreateCategoryPresenter;
 import com.workpoint.mwallet.client.ui.category.save.CreateCategoryView;
+import com.workpoint.mwallet.client.ui.customer.CustomerPresenter;
+import com.workpoint.mwallet.client.ui.customer.CustomerView;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardPresenter;
 import com.workpoint.mwallet.client.ui.dashboard.DashboardView;
 import com.workpoint.mwallet.client.ui.dashboard.charts.PieChartPresenter;
@@ -43,6 +45,8 @@ import com.workpoint.mwallet.client.ui.template.TemplatePresenter;
 import com.workpoint.mwallet.client.ui.template.TemplateView;
 import com.workpoint.mwallet.client.ui.template.save.CreateTemplatePresenter;
 import com.workpoint.mwallet.client.ui.template.save.CreateTemplateView;
+import com.workpoint.mwallet.client.ui.template.send.SendTemplatePresenter;
+import com.workpoint.mwallet.client.ui.template.send.SendTemplateView;
 import com.workpoint.mwallet.client.ui.tills.TillsPresenter;
 import com.workpoint.mwallet.client.ui.tills.TillsView;
 import com.workpoint.mwallet.client.ui.tills.save.CreateTillPresenter;
@@ -117,9 +121,16 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(TemplatePresenter.class,
 				TemplatePresenter.MyView.class, TemplateView.class);
+
+		bindPresenterWidget(CustomerPresenter.class,
+				CustomerPresenter.MyView.class, CustomerView.class);
 		
 		bindPresenterWidget(CreateTemplatePresenter.class,
 				CreateTemplatePresenter.MyView.class, CreateTemplateView.class);
+		
+		bindPresenterWidget(SendTemplatePresenter.class,
+				SendTemplatePresenter.MyView.class, SendTemplateView.class);
+
 
 		bindPresenterWidget(SmsPresenter.class,
 				SmsPresenter.IActivitiesView.class, SmsView.class);

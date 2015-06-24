@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.workpoint.mwallet.client.ui.component"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+	<g:HTMLPanel styleName="tr" ui:field="row">
+		<g:HTMLPanel styleName="td">
+			<g:CheckBox ui:field="chkSelect"></g:CheckBox>
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divFirstName">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divlasttName">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divSurName">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divPhoneNo">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divTillModel">
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divStatus">
+			<span class="label label-success" ui:field="spnStatus"></span>
+		</g:HTMLPanel>
+		<g:HTMLPanel styleName="td" ui:field="divlastModified">
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

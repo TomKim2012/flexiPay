@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.template;
+package com.workpoint.mwallet.client.ui.customer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,8 +7,6 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -26,7 +24,6 @@ import com.workpoint.mwallet.client.service.TaskServiceCallback;
 import com.workpoint.mwallet.client.ui.AppManager;
 import com.workpoint.mwallet.client.ui.OptionControl;
 import com.workpoint.mwallet.client.ui.component.TableHeader;
-import com.workpoint.mwallet.client.ui.events.ActivitySavedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent.ActivitySelectionChangedHandler;
 import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
@@ -36,19 +33,19 @@ import com.workpoint.mwallet.client.ui.template.save.CreateTemplatePresenter;
 import com.workpoint.mwallet.client.ui.template.send.SendTemplatePresenter;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
+import com.workpoint.mwallet.shared.model.CustomerDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
-import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.GetCustomerRequest;
 import com.workpoint.mwallet.shared.requests.GetTemplateRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
-import com.workpoint.mwallet.shared.requests.SaveTemplateRequest;
+import com.workpoint.mwallet.shared.responses.GetCustomerRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTemplateRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
-import com.workpoint.mwallet.shared.responses.SaveTemplateResponse;
 
-public class TemplatePresenter extends
-		PresenterWidget<TemplatePresenter.MyView> implements
+public class CustomerPresenter extends
+		PresenterWidget<CustomerPresenter.MyView> implements
 		ActivitySelectionChangedHandler {
 
 	@ContentSlot
@@ -79,7 +76,7 @@ public class TemplatePresenter extends
 
 		void clear();
 
-		void presentData(TemplateDTO template);
+		void presentData(CustomerDTO customer);
 
 		void setHeaders(List<TableHeader> tableHeaders);
 
@@ -90,8 +87,6 @@ public class TemplatePresenter extends
 		void setMiddleHeight();
 
 		void initControlButtons();
-
-		HasClickHandlers getAddButton();
 
 		HasClickHandlers getEditButton();
 
@@ -110,22 +105,20 @@ public class TemplatePresenter extends
 	@Inject
 	PlaceManager placeManager;
 
-	private TemplateDTO selected;
+	private CustomerDTO selected;
+
+	protected List<CustomerDTO> customers;
 
 	protected List<TemplateDTO> templates;
-
-	// private List<UserDTO> users = new ArrayList<UserDTO>();
-
+	
 	@Inject
-	public TemplatePresenter(final EventBus eventBus, final MyView view,
-//			Provider<SendTemplatePresenter> sendTemplateProvider,
-			Provider<CreateTemplatePresenter> templateProvider) {
+	public CustomerPresenter(final EventBus eventBus, final MyView view,
+			Provider<SendTemplatePresenter> sendTemplateProvider) {
 		super(eventBus, view);
-		createTemplatePopup = new StandardProvider<CreateTemplatePresenter>(
-				templateProvider);
-/*		sendTemplatePopUp = new StandardProvider<SendTemplatePresenter>(
+
+		sendTemplatePopUp = new StandardProvider<SendTemplatePresenter>(
 				sendTemplateProvider);
-*/
+
 	}
 
 	public void loadAll() {
@@ -139,21 +132,11 @@ public class TemplatePresenter extends
 
 		addRegisteredHandler(ActivitySelectionChangedEvent.TYPE, this);
 
-		getView().getAddButton().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				showPopUp();
-				// showTemplatePopUp(false);
-
-			}
-		});
-
 		getView().getEditButton().addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				showTemplatePopUp(true);
+				//showTemplatePopUp(true);
 			}
 		});
 
@@ -170,49 +153,14 @@ public class TemplatePresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-//				showSendPopup();
+
+				showSendPopup();
 			}
 		});
 
 	}
 
-	protected void showTemplatePopUp(boolean edit) {
-
-		createTemplatePopup.get(new ServiceCallback<CreateTemplatePresenter>() {
-			@Override
-			public void processResult(CreateTemplatePresenter aResponse) {
-				templatePopUp = aResponse;
-			}
-		});
-
-		if (edit) {
-			templatePopUp.setTemplateDetails(selected);
-		}
-
-		AppManager.showPopUp(edit ? "Edit Template" : "Create Template",
-				templatePopUp.getWidget(), saveOptionControl, "Save", "Cancel");
-
-		saveOptionControl = new OptionControl() {
-			@Override
-			public void onSelect(String name) {
-				if (name.equals("Save")) {
-					if (templatePopUp.getView().isValid()) {
-
-						// templatePopUp.submitData();
-
-						saveTemplate(templatePopUp.getView().getTemplateDTO(),
-								false);
-
-					}
-				} else {
-					hide();
-				}
-			}
-		};
-
-	}
-
-/*	public void showSendPopup() {
+	public void showSendPopup() {
 		sendOptionControl = new OptionControl() {
 			@Override
 			public void onSelect(String name) {
@@ -230,39 +178,37 @@ public class TemplatePresenter extends
 			@Override
 			public void processResult(SendTemplatePresenter aResponse) {
 				sendPopUp = aResponse;
-				sendPopUp.setTemplates(templates);
 				
+				//sendPopUp.setTemplates(templates);
+
+				sendPopUp.setTemplates(loadTemplates());
+
 				AppManager.showPopUp("Send Messages", aResponse.getWidget(),
 						sendOptionControl, "Send", "Cancel");
 			}
 		});
-	}*/
+	}
+	
+	public List<TemplateDTO> loadTemplates() {
 
-	protected void showPopUp() {
-		saveOptionControl = new OptionControl() {
-			@Override
-			public void onSelect(String name) {
-				if (name.equals("Save")) {
-					templatePopUp.submitData();
-					hide();
-					loadData();
+		fireEvent(new ProcessingEvent("Loading.."));
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetTemplateRequest(filter));
 
-				} else {
-					hide();
-				}
-			}
-		};
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
 
-		createTemplatePopup.get(new ServiceCallback<CreateTemplatePresenter>() {
-			@Override
-			public void processResult(CreateTemplatePresenter aResponse) {
-				templatePopUp = aResponse;
+						GetTemplateRequestResult tResponse = (GetTemplateRequestResult) aResponse
+								.get(i++);
+						templates= tResponse.getTemplates();
 
-				AppManager.showPopUp("Create Template", aResponse.getWidget(),
-						saveOptionControl, "Save", "Cancel");
-
-			}
-		});
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
+		return templates;
 
 	}
 
@@ -271,7 +217,7 @@ public class TemplatePresenter extends
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Confirm")) {
-					saveTemplate(selected, true);
+				//	saveTemplate(selected, true);
 				}
 			}
 		};
@@ -283,23 +229,23 @@ public class TemplatePresenter extends
 
 	private void addRegisteredHandler(
 			Type<ActivitySelectionChangedHandler> tYPE,
-			TemplatePresenter templatePresenter) {
+			CustomerPresenter customerPresenter) {
 
 	}
 
-	protected void bindTemplates(List<TemplateDTO> templates) {
+	protected void bindTemplates(List<CustomerDTO> customers) {
 		getView().clear();
 		// Collections.sort(tills);
 
-		for (TemplateDTO template : templates) {
-			getView().presentData(template);
+		for (CustomerDTO customer : customers) {
+			getView().presentData(customer);
 		}
 
 		tableHeaders = Arrays.asList(new TableHeader("", true),
-				new TableHeader("Message", true),
-				new TableHeader("Type", true), new TableHeader("Name", true),
-				new TableHeader("Default", true), new TableHeader("Till id",
-						true), new TableHeader("Status", true));
+				new TableHeader("First Name", true), new TableHeader(
+						"Last Name", true), new TableHeader("SurName", true),
+				new TableHeader("Phone No.", true), new TableHeader("Till id",
+						true), new TableHeader("Status", false));
 
 		getView().setHeaders(tableHeaders);
 
@@ -318,7 +264,7 @@ public class TemplatePresenter extends
 
 		fireEvent(new ProcessingEvent("Loading.."));
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetTemplateRequest(filter));
+		action.addRequest(new GetCustomerRequest(filter));
 
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -326,32 +272,12 @@ public class TemplatePresenter extends
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
 
-						GetTemplateRequestResult tResponse = (GetTemplateRequestResult) aResponse
+						GetCustomerRequestResult tResponse = (GetCustomerRequestResult) aResponse
 								.get(i++);
-						templates= tResponse.getTemplates();
-						bindTemplates(tResponse.getTemplates());
+						customers = tResponse.getCustomers();
+						bindTemplates(tResponse.getCustomers());
 
 						fireEvent(new ProcessingCompletedEvent());
-					}
-				});
-
-	}
-
-	protected void saveTemplate(final TemplateDTO templateDTO, boolean isDelete) {
-		fireEvent(new ProcessingEvent("Saving ..."));
-
-		SaveTemplateRequest saveRequest = new SaveTemplateRequest(templateDTO,
-				false);
-		requestHelper.execute(saveRequest,
-				new TaskServiceCallback<SaveTemplateResponse>() {
-					@Override
-					public void processResult(SaveTemplateResponse aResponse) {
-						loadData();
-						getView().initControlButtons();
-						saveOptionControl.hide();
-						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new ActivitySavedEvent("Template "
-								+ templateDTO.getName() + " successfully saved"));
 					}
 				});
 
@@ -359,10 +285,10 @@ public class TemplatePresenter extends
 
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
-			this.selected = event.getTemplate();
+			this.selected = event.getCustomer();
 
-			System.err
-					.println("Category Id at Presenter>>>" + selected.getId());
+			System.err.println("Category Id at Presenter>>>"
+					+ selected.getCustId());
 
 			getView().setAllowedButtons(AppContext.getContextUser(), true);
 		} else {

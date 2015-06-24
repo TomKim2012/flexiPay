@@ -1,9 +1,9 @@
 package com.workpoint.mwallet.shared.responses;
 
-public class SaveTemplateResponse extends BaseResponse{
+public class SendTemplateResponse extends BaseResponse{
 	
 	boolean isSent=false;
-	public SaveTemplateResponse() {
+	public SendTemplateResponse() {
 	}
 	
 	public void setSaved(boolean isSent){
