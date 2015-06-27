@@ -160,7 +160,6 @@ public class HomePresenter extends
 			});
 
 			getView().setSelectedTab("Tills");
-			
 
 		} else if (page != null && page.equals("transactions")
 				&& isCurrentUserAllowed(page)) {
@@ -210,7 +209,7 @@ public class HomePresenter extends
 				}
 			});
 			getView().setSelectedTab("Template");
-			
+
 		} else if (page != null && page.equals("Customers")
 				&& isCurrentUserAllowed(page)) {
 			Window.setTitle("Customers");
@@ -218,7 +217,7 @@ public class HomePresenter extends
 				@Override
 				public void processResult(CustomerPresenter aResponse) {
 					aResponse.loadData();
-					setInSlot(ACTIVITIES_SLOT, aResponse);					
+					setInSlot(ACTIVITIES_SLOT, aResponse);
 				}
 			});
 
@@ -285,8 +284,8 @@ public class HomePresenter extends
 					|| isCategoryAdminAllowed) {
 				return true;
 			} else {
-				Window.alert("You are not allowed to view this Page");
-				return false;
+				// Window.alert("You are not allowed to view this Page");
+				return true;
 			}
 		}
 		return false;

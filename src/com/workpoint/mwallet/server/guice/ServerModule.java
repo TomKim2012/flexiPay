@@ -5,6 +5,7 @@ import com.gwtplatform.dispatch.shared.SecurityCookie;
 import com.workpoint.mwallet.server.ServerConstants;
 import com.workpoint.mwallet.server.actionhandlers.GetCategoriesRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetContextRequestActionHandler;
+import com.workpoint.mwallet.server.actionhandlers.GetCreditRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetCustomerRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetGradeCountRequestActionHandler;
 import com.workpoint.mwallet.server.actionhandlers.GetGroupsRequestActionHandler;
@@ -28,6 +29,7 @@ import com.workpoint.mwallet.server.actionhandlers.SendTemplateRequestActionHand
 import com.workpoint.mwallet.server.actionvalidator.SessionValidator;
 import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetContextRequest;
+import com.workpoint.mwallet.shared.requests.GetCreditRequest;
 import com.workpoint.mwallet.shared.requests.GetCustomerRequest;
 import com.workpoint.mwallet.shared.requests.GetGradeCountRequest;
 import com.workpoint.mwallet.shared.requests.GetGroupsRequest;
@@ -70,6 +72,9 @@ public class ServerModule extends HandlerModule {
 		
 		bindHandler(GetCustomerRequest.class,
 				GetCustomerRequestActionHandler.class, SessionValidator.class);
+		
+		bindHandler(GetCreditRequest.class,
+				GetCreditRequestActionHandler.class, SessionValidator.class);
 
 
 		bindHandler(SaveCategoryRequest.class,

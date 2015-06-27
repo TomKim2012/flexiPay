@@ -90,15 +90,6 @@ public class CreateTemplateView extends ViewImpl implements
 
 	public void setTabPanel() {
 		issues.clear();
-		/*
-		 * templateDetails = new TemplateDetails();
-		 * 
-		 * divTabs.setHeaders(Arrays.asList(new TabHeader("Template Details",
-		 * true, "till_details")));
-		 * 
-		 * divTabs.setContent(Arrays.asList(new TabContent(templateDetails,
-		 * "template details", true)));
-		 */
 	}
 
 	@Override

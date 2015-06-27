@@ -29,31 +29,29 @@ public class SendTemplateView extends ViewImpl implements
 	IssuesPanel issues;
 
 	@UiField
-	TextArea txtComposeArea;
+	TextArea txtContactArea;
+	@UiField
+	TextArea txtMessageArea;
 	@UiField
 	DropDownList<TemplateDTO> lstTemplates;
 
-	private TemplateDetails templateDetails;
+	private SendTemplateDetails sendTemplateDetails;
 
 	@Inject
 	public SendTemplateView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 		setTabPanel();
-		
-		lstTemplates.addValueChangeHandler(new ValueChangeHandler<TemplateDTO>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<TemplateDTO> event) {
-	
-				Window.alert(event.getValue().toString());
-				Window.alert(lstTemplates.getValue().toString());
-				
 
-				
-				//txtComposeArea.setValue(event.getValue().toString());
-				
-			}
-		});
+		lstTemplates
+				.addValueChangeHandler(new ValueChangeHandler<TemplateDTO>() {
+
+					@Override
+					public void onValueChange(
+							ValueChangeEvent<TemplateDTO> event) {
+						txtMessageArea.setValue(event.getValue().getMessage());
+
+					}
+				});
 	}
 
 	public void setTabPanel() {
@@ -68,11 +66,11 @@ public class SendTemplateView extends ViewImpl implements
 
 	@Override
 	public void setTemplate(TemplateDTO templateSelected) {
-		templateDetails.setTemplateInfo(templateSelected);
+		sendTemplateDetails.setTemplateInfo(templateSelected);
 	}
 
 	public TemplateDTO getTemplateDTO() {
-		TemplateDTO templateDetail = templateDetails.getTemplateInfo();
+		TemplateDTO templateDetail = sendTemplateDetails.getTemplateInfo();
 
 		return templateDetail;
 	}
@@ -81,7 +79,7 @@ public class SendTemplateView extends ViewImpl implements
 	public boolean isValid() {
 		issues.clear();
 
-		if (!templateDetails.isValid(issues)) {
+		if (!sendTemplateDetails.isValid(issues)) {
 			issues.getElement().getStyle().setDisplay(Display.BLOCK);
 			return false;
 		} else {
@@ -90,17 +88,17 @@ public class SendTemplateView extends ViewImpl implements
 	}
 
 	public TextArea getTxtComposeArea() {
-		return txtComposeArea;
+		return txtContactArea;
 	}
 
 	public void setTxtComposeArea(TextArea txtComposeArea) {
-		this.txtComposeArea = txtComposeArea;
+		this.txtContactArea = txtComposeArea;
 	}
 
 	@Override
 	public String getTemplateText() {
-		if (!txtComposeArea.getText().isEmpty()) {
-			return txtComposeArea.getText();
+		if (!txtContactArea.getText().isEmpty()) {
+			return txtContactArea.getText();
 		} else {
 			return null;
 		}

@@ -64,7 +64,7 @@ public class CustomerTableRow extends RowWidget {
 		chkSelect.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				System.err.println("Template:" + customer.getCustId());
+				System.err.println("CustomerID:" + customer.getCustId());
 				AppContext.fireEvent(new ActivitySelectionChangedEvent(
 						CustomerTableRow.this.customer, event.getValue()));
 			}
@@ -87,10 +87,7 @@ public class CustomerTableRow extends RowWidget {
 			bindText(divlasttName, customer.getLastName());
 			bindText(divSurName, customer.getSurName());
 			bindText(divPhoneNo, customer.getPhoneNo());
-			bindText(divTillModel, customer.getTillModel_Id());
-			bindText(divSurName, customer.getSurName());
-			
-			bindText(divTillModel, String.valueOf(customer.getTillModel_Id()));
+			bindText(divTillModel, customer.getTillModel_Id());			
 
 		}
 	}

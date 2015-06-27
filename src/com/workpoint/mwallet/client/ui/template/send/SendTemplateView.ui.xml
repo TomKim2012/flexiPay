@@ -27,7 +27,7 @@
 		<div class="row-fluid">
 			<label for="Message" class="span6 control-label">Contacts</label>
 			<div class="span6">
-				<g:TextArea ui:field="txtComposeArea" width="100%" height="60px" />
+				<g:TextArea ui:field="txtContactArea" width="100%" height="60px" />
 			</div>
 		</div>
 

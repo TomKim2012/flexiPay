@@ -28,8 +28,8 @@ public class TemplateDTO implements Serializable , Listable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TemplateDTO(String tillModel_Id) {
-		this.tillModel_Id = tillModel_Id;
+	public TemplateDTO(Long id) {
+		this.id = id;
 	}
 
 	public TemplateDTO(Long id, String message, String type, String name,

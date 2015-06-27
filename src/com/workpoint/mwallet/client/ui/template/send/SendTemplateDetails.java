@@ -12,7 +12,7 @@ import com.workpoint.mwallet.client.ui.component.IssuesPanel;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 
-public class TemplateDetails extends Composite {
+public class SendTemplateDetails extends Composite {
 
 	private static TemplateDetailsUiBinder uiBinder = GWT
 			.create(TemplateDetailsUiBinder.class);
@@ -40,10 +40,10 @@ public class TemplateDetails extends Composite {
 
 	private CategoryDTO category;
 
-	interface TemplateDetailsUiBinder extends UiBinder<Widget, TemplateDetails> {
+	interface TemplateDetailsUiBinder extends UiBinder<Widget, SendTemplateDetails> {
 	}
 
-	public TemplateDetails() {
+	public SendTemplateDetails() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 	}

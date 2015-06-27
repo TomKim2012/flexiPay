@@ -21,6 +21,7 @@ import com.workpoint.mwallet.client.ui.customer.table.CustomerTable;
 import com.workpoint.mwallet.client.ui.customer.table.CustomerTableRow;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
 import com.workpoint.mwallet.shared.model.CustomerDTO;
+import com.workpoint.mwallet.shared.model.TemplateDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 
 public class CustomerView extends ViewImpl implements CustomerPresenter.MyView {

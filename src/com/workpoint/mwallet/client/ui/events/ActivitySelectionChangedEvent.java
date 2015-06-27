@@ -41,17 +41,11 @@ public class ActivitySelectionChangedEvent extends
 	public ActivitySelectionChangedEvent(TemplateDTO templateDetail,
 			Boolean isSelected) {
 		this.template = templateDetail;
-		//this.setTemplate(templateDetail);
 		this.isSelected = isSelected();
-
 	}
 
 	public TillDTO gettillDetail() {
 		return till;
-	}
-
-	public TemplateDTO getTemplate() {
-		return template;
 	}
 	
 	public TemplateDTO getTemplateDetail() {
@@ -67,10 +61,10 @@ public class ActivitySelectionChangedEvent extends
 	}
 
 
-
+/*
 	public void setTemplate(TemplateDTO template) {
 		this.template = template;
-	}
+	}*/
 
 	public CategoryDTO getCategory() {
 		return category;

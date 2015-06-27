@@ -8,6 +8,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,13 +36,19 @@ public class TemplateTable extends Composite {
 		@Override
 		public void onValueChange(ValueChangeEvent<Boolean> event) {
 			boolean isSelected = event.getValue();
-			if (isSelected) {
+
+			Window.alert("not sure if selected  "+ event.getValue().toString());
+			if (isSelected) {				
+
 				if (selected != null) {
 					selected.setValue(false);
 				}
 				selected = (CheckBox) event.getSource();
+
+				Window.alert("isSelected!!! "+ event.getValue().toString());
 			} else {
 				selected = null;
+				Window.alert("isNotSelected "+ event.getValue().toString());
 			}
 		}
 	};

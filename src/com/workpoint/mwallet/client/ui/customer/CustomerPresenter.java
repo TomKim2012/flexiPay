@@ -33,13 +33,16 @@ import com.workpoint.mwallet.client.ui.template.save.CreateTemplatePresenter;
 import com.workpoint.mwallet.client.ui.template.send.SendTemplatePresenter;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
+import com.workpoint.mwallet.shared.model.CreditDTO;
 import com.workpoint.mwallet.shared.model.CustomerDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.GetCreditRequest;
 import com.workpoint.mwallet.shared.requests.GetCustomerRequest;
 import com.workpoint.mwallet.shared.requests.GetTemplateRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
+import com.workpoint.mwallet.shared.responses.GetCreditRequestResult;
 import com.workpoint.mwallet.shared.responses.GetCustomerRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTemplateRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
@@ -52,7 +55,7 @@ public class CustomerPresenter extends
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
 
 	@Inject
-	FilterPresenter filterPresenter;
+	FilterPresenter filterCustomer;
 
 	protected List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
 
@@ -93,11 +96,13 @@ public class CustomerPresenter extends
 		HasClickHandlers getDeleteButton();
 
 		HasClickHandlers getSendButton();
+
 	}
 
-	@ContentSlot
-	public static final Type<RevealContentHandler<?>> DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
-
+	/*
+	 * @ContentSlot public static final Type<RevealContentHandler<?>>
+	 * DOCPOPUP_SLOT = new Type<RevealContentHandler<?>>();
+	 */
 	@Inject
 	DispatchAsync dispatcher;
 	@Inject
@@ -110,7 +115,7 @@ public class CustomerPresenter extends
 	protected List<CustomerDTO> customers;
 
 	protected List<TemplateDTO> templates;
-	
+
 	@Inject
 	public CustomerPresenter(final EventBus eventBus, final MyView view,
 			Provider<SendTemplatePresenter> sendTemplateProvider) {
@@ -136,7 +141,7 @@ public class CustomerPresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-				//showTemplatePopUp(true);
+				// showTemplatePopUp(true);
 			}
 		});
 
@@ -178,17 +183,19 @@ public class CustomerPresenter extends
 			@Override
 			public void processResult(SendTemplatePresenter aResponse) {
 				sendPopUp = aResponse;
-				
-				//sendPopUp.setTemplates(templates);
 
 				sendPopUp.setTemplates(loadTemplates());
+				// sendPopUp.setTemplates(templates);
+
+				//sendPopUp.setTemplates(loadTemplates());
+				
 
 				AppManager.showPopUp("Send Messages", aResponse.getWidget(),
 						sendOptionControl, "Send", "Cancel");
 			}
 		});
 	}
-	
+
 	public List<TemplateDTO> loadTemplates() {
 
 		fireEvent(new ProcessingEvent("Loading.."));
@@ -203,7 +210,7 @@ public class CustomerPresenter extends
 
 						GetTemplateRequestResult tResponse = (GetTemplateRequestResult) aResponse
 								.get(i++);
-						templates= tResponse.getTemplates();
+						templates = tResponse.getTemplates();
 
 						fireEvent(new ProcessingCompletedEvent());
 					}
@@ -217,7 +224,7 @@ public class CustomerPresenter extends
 			@Override
 			public void onSelect(String name) {
 				if (name.equals("Confirm")) {
-				//	saveTemplate(selected, true);
+					// saveTemplate(selected, true);
 				}
 			}
 		};
@@ -233,7 +240,7 @@ public class CustomerPresenter extends
 
 	}
 
-	protected void bindTemplates(List<CustomerDTO> customers) {
+	protected void bindCustomers(List<CustomerDTO> customers) {
 		getView().clear();
 		// Collections.sort(tills);
 
@@ -256,7 +263,7 @@ public class CustomerPresenter extends
 	protected void onReset() {
 		super.onReset();
 		getView().setMiddleHeight();
-		setInSlot(FILTER_SLOT, filterPresenter);
+		setInSlot(FILTER_SLOT, filterCustomer);
 
 	}
 
@@ -264,7 +271,8 @@ public class CustomerPresenter extends
 
 		fireEvent(new ProcessingEvent("Loading.."));
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetCustomerRequest(filter));
+		action.addRequest(new GetCustomerRequest());
+//		action.addRequest(new GetTemplateRequest(filter));
 
 		requestHelper.execute(action,
 				new TaskServiceCallback<MultiRequestActionResult>() {
@@ -272,23 +280,30 @@ public class CustomerPresenter extends
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
 
-						GetCustomerRequestResult tResponse = (GetCustomerRequestResult) aResponse
+						GetCustomerRequestResult customerResponse = (GetCustomerRequestResult) aResponse
 								.get(i++);
-						customers = tResponse.getCustomers();
-						bindTemplates(tResponse.getCustomers());
-
+						customers = customerResponse.getCustomers();
+						bindCustomers(customerResponse.getCustomers());
+						
+/*						GetTemplateRequestResult templateResponse = (GetTemplateRequestResult) aResponse
+								.get(i++);
+						templates = templateResponse.getTemplates();	
+						showSendPopup(templates);
+*/						
 						fireEvent(new ProcessingCompletedEvent());
 					}
 				});
+		
+		loadTemplates();
 
 	}
 
+	@Override
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
 			this.selected = event.getCustomer();
 
-			System.err.println("Category Id at Presenter>>>"
-					+ selected.getCustId());
+			System.err.println("Category Id at Cust>>>" + selected.getCustId());
 
 			getView().setAllowedButtons(AppContext.getContextUser(), true);
 		} else {

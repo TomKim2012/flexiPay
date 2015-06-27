@@ -7,10 +7,9 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -33,16 +32,17 @@ import com.workpoint.mwallet.client.ui.events.ProcessingCompletedEvent;
 import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.template.save.CreateTemplatePresenter;
-import com.workpoint.mwallet.client.ui.template.send.SendTemplatePresenter;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
+import com.workpoint.mwallet.shared.model.CreditDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
-import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
+import com.workpoint.mwallet.shared.requests.GetCreditRequest;
 import com.workpoint.mwallet.shared.requests.GetTemplateRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveTemplateRequest;
+import com.workpoint.mwallet.shared.responses.GetCreditRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTemplateRequestResult;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveTemplateResponse;
@@ -65,19 +65,17 @@ public class TemplatePresenter extends
 
 	private IndirectProvider<CreateTemplatePresenter> createTemplatePopup;
 
-	private IndirectProvider<SendTemplatePresenter> sendTemplatePopUp;
-
 	private CreateTemplatePresenter templatePopUp;
-
-	private SendTemplatePresenter sendPopUp;
 
 	private OptionControl saveOptionControl;
 	private OptionControl deleteOptionControl;
-	private OptionControl sendOptionControl;
 
 	public interface MyView extends View {
 
 		void clear();
+
+		void presentSummary(String totalCredit, String totalSpent,
+				String totalBalance);
 
 		void presentData(TemplateDTO template);
 
@@ -97,7 +95,6 @@ public class TemplatePresenter extends
 
 		HasClickHandlers getDeleteButton();
 
-		HasClickHandlers getSendButton();
 	}
 
 	@ContentSlot
@@ -112,25 +109,81 @@ public class TemplatePresenter extends
 
 	private TemplateDTO selected;
 
-	protected List<TemplateDTO> templates;
+	protected List<TemplateDTO> credits;
 
-	// private List<UserDTO> users = new ArrayList<UserDTO>();
+	protected List<CreditDTO> credit;
 
 	@Inject
 	public TemplatePresenter(final EventBus eventBus, final MyView view,
-//			Provider<SendTemplatePresenter> sendTemplateProvider,
 			Provider<CreateTemplatePresenter> templateProvider) {
 		super(eventBus, view);
 		createTemplatePopup = new StandardProvider<CreateTemplatePresenter>(
 				templateProvider);
-/*		sendTemplatePopUp = new StandardProvider<SendTemplatePresenter>(
-				sendTemplateProvider);
-*/
+
 	}
 
 	public void loadAll() {
 		loadData();
 		getView().setAllowedButtons(AppContext.getContextUser(), false);
+	}
+
+	public void loadData() {
+
+		fireEvent(new ProcessingEvent("Loading.."));
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetTemplateRequest(filter));
+		action.addRequest(new GetCreditRequest(filter));
+
+		requestHelper.execute(action,
+				new TaskServiceCallback<MultiRequestActionResult>() {
+					@Override
+					public void processResult(MultiRequestActionResult aResponse) {
+						int i = 0;
+
+						GetTemplateRequestResult tResponse = (GetTemplateRequestResult) aResponse
+								.get(i++);
+						bindTemplates(tResponse.getTemplates());
+
+						GetCreditRequestResult creditResponse = (GetCreditRequestResult) aResponse
+								.get(i++);
+						setCreditInfo(creditResponse.getCredit());
+						fireEvent(new ProcessingCompletedEvent());
+					}
+				});
+
+	}
+
+	protected void setCreditInfo(List<CreditDTO> credits) {
+		String totalCredit = "";
+		String totalSpent = "";
+		String totalBalance = "";
+
+		for (CreditDTO credit : credits) {
+
+			totalCredit = String.valueOf(credit.getTopup_amt());
+			totalBalance = String.valueOf(credit.getCredit_amt());
+			Double balance = credit.getTopup_amt() - credit.getCredit_amt();
+			totalSpent = String.valueOf(balance);
+		}
+
+		getView().presentSummary(totalCredit, totalSpent, totalBalance);
+	}
+
+	protected void bindTemplates(List<TemplateDTO> templates) {
+		getView().clear();
+		// Collections.sort(tills);
+
+		for (TemplateDTO template : templates) {
+			getView().presentData(template);
+		}
+
+		tableHeaders = Arrays.asList(new TableHeader("", true),
+				new TableHeader("Message", true),
+				new TableHeader("Type", true), new TableHeader("Name", true),
+				new TableHeader("Default", true), new TableHeader("Till id",
+						true), new TableHeader("Status", true));
+
+		getView().setHeaders(tableHeaders);
 	}
 
 	@Override
@@ -145,7 +198,6 @@ public class TemplatePresenter extends
 			public void onClick(ClickEvent event) {
 				showPopUp();
 				// showTemplatePopUp(false);
-
 			}
 		});
 
@@ -161,19 +213,9 @@ public class TemplatePresenter extends
 
 			@Override
 			public void onClick(ClickEvent event) {
-
 				showDeletePopup();
 			}
 		});
-
-		getView().getSendButton().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-//				showSendPopup();
-			}
-		});
-
 	}
 
 	protected void showTemplatePopUp(boolean edit) {
@@ -211,32 +253,6 @@ public class TemplatePresenter extends
 		};
 
 	}
-
-/*	public void showSendPopup() {
-		sendOptionControl = new OptionControl() {
-			@Override
-			public void onSelect(String name) {
-				if (name.equals("Send")) {
-					sendPopUp.sendMessages();
-					hide();
-					loadData();
-				} else {
-					hide();
-				}
-			}
-		};
-
-		sendTemplatePopUp.get(new ServiceCallback<SendTemplatePresenter>() {
-			@Override
-			public void processResult(SendTemplatePresenter aResponse) {
-				sendPopUp = aResponse;
-				sendPopUp.setTemplates(templates);
-				
-				AppManager.showPopUp("Send Messages", aResponse.getWidget(),
-						sendOptionControl, "Send", "Cancel");
-			}
-		});
-	}*/
 
 	protected void showPopUp() {
 		saveOptionControl = new OptionControl() {
@@ -281,59 +297,11 @@ public class TemplatePresenter extends
 
 	}
 
-	private void addRegisteredHandler(
-			Type<ActivitySelectionChangedHandler> tYPE,
-			TemplatePresenter templatePresenter) {
-
-	}
-
-	protected void bindTemplates(List<TemplateDTO> templates) {
-		getView().clear();
-		// Collections.sort(tills);
-
-		for (TemplateDTO template : templates) {
-			getView().presentData(template);
-		}
-
-		tableHeaders = Arrays.asList(new TableHeader("", true),
-				new TableHeader("Message", true),
-				new TableHeader("Type", true), new TableHeader("Name", true),
-				new TableHeader("Default", true), new TableHeader("Till id",
-						true), new TableHeader("Status", true));
-
-		getView().setHeaders(tableHeaders);
-
-		// getView().presentSummary(NumberUtils.NUMBERFORMAT.format(templates.size()));
-	}
-
 	@Override
 	protected void onReset() {
 		super.onReset();
 		getView().setMiddleHeight();
 		setInSlot(FILTER_SLOT, filterPresenter);
-
-	}
-
-	public void loadData() {
-
-		fireEvent(new ProcessingEvent("Loading.."));
-		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetTemplateRequest(filter));
-
-		requestHelper.execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult aResponse) {
-						int i = 0;
-
-						GetTemplateRequestResult tResponse = (GetTemplateRequestResult) aResponse
-								.get(i++);
-						templates= tResponse.getTemplates();
-						bindTemplates(tResponse.getTemplates());
-
-						fireEvent(new ProcessingCompletedEvent());
-					}
-				});
 
 	}
 
@@ -357,9 +325,11 @@ public class TemplatePresenter extends
 
 	}
 
+	@Override
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
+		Window.alert("Event called!" + event.isSelected());
 		if (event.isSelected()) {
-			this.selected = event.getTemplate();
+			this.selected = event.getTemplateDetail();
 
 			System.err
 					.println("Category Id at Presenter>>>" + selected.getId());

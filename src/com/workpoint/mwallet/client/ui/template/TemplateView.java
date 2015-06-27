@@ -7,29 +7,21 @@ import java.util.List;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.LIElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.workpoint.mwallet.client.ui.component.ActionLink;
-import com.workpoint.mwallet.client.ui.component.DropDownList;
-import com.workpoint.mwallet.client.ui.component.MyHTMLPanel;
 import com.workpoint.mwallet.client.ui.component.TableHeader;
-import com.workpoint.mwallet.client.ui.component.TableView;
+import com.workpoint.mwallet.client.ui.sms.SmsHeader;
 import com.workpoint.mwallet.client.ui.template.table.TemplateTable;
 import com.workpoint.mwallet.client.ui.template.table.TemplateTableRow;
 import com.workpoint.mwallet.shared.model.CategoryDTO;
-import com.workpoint.mwallet.shared.model.Listable;
+import com.workpoint.mwallet.shared.model.CreditDTO;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 
@@ -59,8 +51,8 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 	ActionLink aDelete;
 	
 	@UiField
-	ActionLink aSend;
-
+	TemplateHeader headerContainer;
+	
 	private List<LIElement> liElements = new ArrayList<LIElement>();
 	private List<DivElement> divElements = new ArrayList<DivElement>();
 
@@ -96,11 +88,6 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 	public HasClickHandlers getDeleteButton() {
 		return aDelete;
 	}
-	
-	@Override
-	public HasClickHandlers getSendButton() {
-		return aSend;
-	}
 
 	@Override
 	public void presentData(TemplateDTO template) {
@@ -113,11 +100,10 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 	}
 
 	public void initControlButtons() {		
-		/*
-		show(aCreate, true);
+		/*show(aCreate, true);
 		show(aEdit, false);
 		show(aDelete, false);
-*/	}
+	*/}
 	
 	@Override
 	public void setSelection(boolean show) {
@@ -125,12 +111,10 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 			show(aCreate, false);
 			show(aEdit, true);
 			show(aDelete, true);
-			show(aSend, true);
 		} else {
 			show(aCreate, true);
 			show(aEdit, false);
 			show(aDelete, false);
-			show(aSend, false);
 		}
 	}
 	
@@ -180,5 +164,14 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 			divMiddleContent.setHeight(middleHeight + "px");
 		}
 	}
+
+	@Override
+	public void presentSummary(String totalCredit, String totalSpent,
+			String totalBalance) {
+		
+		headerContainer.setSummary(totalCredit,totalSpent, totalBalance);
+		
+	}
+
 
 }

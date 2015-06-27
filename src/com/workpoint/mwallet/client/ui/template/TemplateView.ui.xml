@@ -4,12 +4,18 @@
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:programs='urn:import:com.workpoint.mwallet.client.ui.template'
+	xmlns:template='urn:import:com.workpoint.mwallet.client.ui.template'
 	xmlns:table='urn:import:com.workpoint.mwallet.client.ui.template.table'
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel styleName="activities-page">
 		<g:HTMLPanel styleName="full-page" ui:field="divMainContainer">
-			<g:HTMLPanel styleName="content-top" ui:field="divContentTop">
+			<g:HTMLPanel styleName="content-top" ui:field="divContentTop">			
+			
+				<div class="row-fluid">
+					<template:TemplateHeader ui:field="headerContainer"></template:TemplateHeader>
+				</div>
+			
 				<div class="span3">
 					<d:ActionLink ui:field="aCreate" styleName="btn btn-primary"
 						dataToggle="tooltip">
@@ -31,19 +37,14 @@
 					</d:ActionLink>
 				</div>
 
-				<div class="span3">
-					<d:ActionLink ui:field="aSend" styleName="btn btn-primary"
-						dataToggle="tooltip">
-						Send Messages
-					</d:ActionLink>
-				</div>
-			</g:HTMLPanel>
+				<g:HTMLPanel ui:field="divMiddleContent" styleName="row-fluid">
+					<div ui:field="divTab1Content" class="tab-pane fade in active">
+						<table:TemplateTable ui:field="tblView">
+						</table:TemplateTable>
+					</div>
+				</g:HTMLPanel>
 
-			<g:HTMLPanel ui:field="divMiddleContent" styleName="row-fluid">
-				<div ui:field="divTab1Content" class="tab-pane fade in active">
-					<table:TemplateTable ui:field="tblView">
-					</table:TemplateTable>
-				</div>
+
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 	</g:HTMLPanel>

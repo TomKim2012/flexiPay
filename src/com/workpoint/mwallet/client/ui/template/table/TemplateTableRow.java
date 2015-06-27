@@ -64,14 +64,15 @@ public class TemplateTableRow extends RowWidget {
 		chkSelect.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				System.err.println("Template:" + template.getId());
+
+				System.err.println("Template:" + template.getId()+ ">>>Value"+event.getValue());
+				
 				AppContext.fireEvent(new ActivitySelectionChangedEvent(
 						TemplateTableRow.this.template, event.getValue()));
 			}
 		});
 
 	}
-
 	ValueChangeHandler<Boolean> selectionHandler;
 
 	public void setSelectionChangeHandler(ValueChangeHandler<Boolean> handler) {

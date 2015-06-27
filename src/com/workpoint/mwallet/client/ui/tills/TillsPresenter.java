@@ -218,7 +218,6 @@ public class TillsPresenter extends
 		super.onReset();
 		getView().setMiddleHeight();
 		setInSlot(FILTER_SLOT, filterPresenter);
-
 	}
 
 	@Override

@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'>
+
+	<g:HTMLPanel styleName="activities-page">
+		<div class="row-fluid summary-container">
+
+			<div class="span4">
+				<div class="big-text">
+					<span ui:field="spnSent" title="Total number of SMS Sent"></span>
+				</div>
+				<div class="bold muted helper-font-small">CREDIT AMOUNT</div>
+			</div>
+
+			<div class="span4">
+				<div class="big-text">
+					<span class="" ui:field="spnCost" title="Total Cost for sending the sms"></span>
+				</div>
+				<div class="bold muted helper-font-small">AMOUNT SPENT</div>
+			</div>
+
+			<div class="span4 no-border">
+				<div class="big-text">
+					<span class="" ui:field="spnAverage" title="Average Cost for the SMS sent">
+					</span>
+				</div>
+				<div class="bold muted helper-font-small">CREDIT BALANCE</div>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 
