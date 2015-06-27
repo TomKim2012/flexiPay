@@ -50,6 +50,7 @@ public class TemplateTable extends Composite {
 				selected = null;
 				Window.alert("isNotSelected "+ event.getValue().toString());
 			}
+			
 		}
 	};
 	private List<TemplateTableRow> rows = new ArrayList<TemplateTableRow>();

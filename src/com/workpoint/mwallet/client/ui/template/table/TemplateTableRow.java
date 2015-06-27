@@ -9,6 +9,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -90,13 +91,13 @@ public class TemplateTableRow extends RowWidget {
 			bindText(divIsDefault, String.valueOf(template.getIsDefault()));
 			bindText(divTillModel, String.valueOf(template.getTillModel_Id()));
 
-			String modifiedDate = template.getLastModified() == null ? ""
+			/*String modifiedDate = template.getLastModified() == null ? ""
 					: DateUtils.CREATEDFORMAT
 							.format(template.getLastModified());
 			bindText(divlastModified, modifiedDate,
 					template.getLastModifiedBy());
 
-			setActive(template.isActive());
+			setActive(template.isActive());*/
 
 		}
 	}

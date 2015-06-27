@@ -327,8 +327,12 @@ public class TemplatePresenter extends
 
 	@Override
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
-		Window.alert("Event called!" + event.isSelected());
+		//Window.alert("Event called!" + event.isSelected());
 		if (event.isSelected()) {
+			
+			Window.alert("Event called!" + event.isSelected());
+			
+			
 			this.selected = event.getTemplateDetail();
 
 			System.err
@@ -337,6 +341,9 @@ public class TemplatePresenter extends
 			getView().setAllowedButtons(AppContext.getContextUser(), true);
 		} else {
 			getView().setAllowedButtons(AppContext.getContextUser(), false);
+			
+			Window.alert("Event was not called" + event.isSelected());
+			
 		}
 	}
 

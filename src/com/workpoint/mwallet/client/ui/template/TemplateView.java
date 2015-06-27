@@ -140,9 +140,11 @@ public class TemplateView extends ViewImpl implements TemplatePresenter.MyView {
 	@Override
 	public void setAllowedButtons(UserDTO userGroup, boolean selection) {
 		CategoryDTO category = userGroup.getCategory();
-		boolean isSuperUser = category.getCategoryName().equals("*")
+		
+		boolean isSuperUser = true; 
+		/*boolean isSuperUser = category.getCategoryName().equals("*")
 				&& userGroup.isAdmin();
-
+*/
 		if (isSuperUser) {
 			setSelection(selection);
 		}

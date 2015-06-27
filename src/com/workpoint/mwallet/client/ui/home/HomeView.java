@@ -42,7 +42,7 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 
 	@UiField
 	LIElement liTemplate;
-	
+
 	@UiField
 	LIElement liCustomers;
 
@@ -179,6 +179,9 @@ public class HomeView extends ViewImpl implements HomePresenter.MyView {
 		setActive(liUsers, false);
 		setActive(liSmsLog, false);
 		setActive(liSettings, false);
+		setActive(liCustomers, false);
+		setActive(liTemplate, false);
+
 		if (page.equals("Dashboard")) {
 			setActive(liDashboard, true);
 		} else if (page.equals("Tills")) {
