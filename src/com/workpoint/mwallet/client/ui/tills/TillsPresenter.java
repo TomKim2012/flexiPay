@@ -203,7 +203,7 @@ public class TillsPresenter extends
 						"Business No", true), new TableHeader("Account No",
 						false), new TableHeader("Phone No", false),
 				new TableHeader("Owner", true), new TableHeader("Acquirer",
-						true), new TableHeader("Category", false),
+						false), new TableHeader("Category", false),
 				new TableHeader("Status", false), new TableHeader("Grade("
 						+ gradeDate + ")", true), new TableHeader(
 						"Last Modified", false));
