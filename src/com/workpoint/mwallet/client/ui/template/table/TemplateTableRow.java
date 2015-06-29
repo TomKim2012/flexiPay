@@ -2,22 +2,18 @@ package com.workpoint.mwallet.client.ui.template.table;
 
 import java.util.List;
 
-import com.github.gwtbootstrap.client.ui.Popover;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.workpoint.mwallet.client.ui.component.RowWidget;
 import com.workpoint.mwallet.client.ui.component.TableHeader;
 import com.workpoint.mwallet.client.ui.events.ActivitySelectionChangedEvent;
-import com.workpoint.mwallet.client.ui.util.DateUtils;
 import com.workpoint.mwallet.client.util.AppContext;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 
@@ -48,7 +44,6 @@ public class TemplateTableRow extends RowWidget {
 	HTMLPanel divTillModel;
 	@UiField
 	SpanElement spnStatus;
-
 	@UiField
 	HTMLPanel divlastModified;
 
@@ -66,14 +61,15 @@ public class TemplateTableRow extends RowWidget {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 
-				System.err.println("Template:" + template.getId()+ ">>>Value"+event.getValue());
-				
+				// System.err.println("Template:" + template.getId()+
+				// ">>>Value"+event.getValue());
+
 				AppContext.fireEvent(new ActivitySelectionChangedEvent(
 						TemplateTableRow.this.template, event.getValue()));
 			}
 		});
-
 	}
+
 	ValueChangeHandler<Boolean> selectionHandler;
 
 	public void setSelectionChangeHandler(ValueChangeHandler<Boolean> handler) {
@@ -90,15 +86,6 @@ public class TemplateTableRow extends RowWidget {
 			bindText(divType, template.getType());
 			bindText(divIsDefault, String.valueOf(template.getIsDefault()));
 			bindText(divTillModel, String.valueOf(template.getTillModel_Id()));
-
-			/*String modifiedDate = template.getLastModified() == null ? ""
-					: DateUtils.CREATEDFORMAT
-							.format(template.getLastModified());
-			bindText(divlastModified, modifiedDate,
-					template.getLastModifiedBy());
-
-			setActive(template.isActive());*/
-
 		}
 	}
 
@@ -135,5 +122,4 @@ public class TemplateTableRow extends RowWidget {
 	public void bindText(HTMLPanel panel, String text) {
 		bindText(panel, text, null);
 	}
-
 }

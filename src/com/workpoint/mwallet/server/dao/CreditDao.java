@@ -26,7 +26,7 @@ public class CreditDao extends BaseDaoImpl {
 
 		StringBuffer jpql = new StringBuffer(
 				"select temp.id, temp.credit_amt, temp.tillModel_Id, temp.topup_amt from "
-						+ "Credit temp "
+						+ "CreditModel temp "
 						// + "left join TillModel tm  "
 						+ "where :isAdmin='Y'  ");
 		/*

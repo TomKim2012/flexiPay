@@ -26,7 +26,6 @@ public class TemplateTable extends Composite {
 	@UiField
 	TableView tblView;
 	CheckBox selected = null;
-	
 
 	public TemplateTable() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -36,28 +35,20 @@ public class TemplateTable extends Composite {
 		@Override
 		public void onValueChange(ValueChangeEvent<Boolean> event) {
 			boolean isSelected = event.getValue();
-
-			Window.alert("not sure if selected  "+ event.getValue().toString());
 			if (isSelected) {				
-
 				if (selected != null) {
 					selected.setValue(false);
 				}
 				selected = (CheckBox) event.getSource();
-
-				Window.alert("isSelected!!! "+ event.getValue().toString());
 			} else {
 				selected = null;
-				Window.alert("isNotSelected "+ event.getValue().toString());
 			}
-			
 		}
 	};
 	private List<TemplateTableRow> rows = new ArrayList<TemplateTableRow>();
 
 	public void createHeader(List<TableHeader> headers) {
 		tblView.setTableHeaders(headers);
-
 		for(TemplateTableRow row: rows){
 			row.reconfigure(headers);
 		}
@@ -77,5 +68,4 @@ public class TemplateTable extends Composite {
 	public void clear() {
 		tblView.clearRows();
 	}
-
 }

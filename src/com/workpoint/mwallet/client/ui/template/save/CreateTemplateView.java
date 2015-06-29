@@ -9,6 +9,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -43,7 +44,7 @@ public class CreateTemplateView extends ViewImpl implements
 	TextArea txtComposeArea;
 
 	@UiField
-	TextBox txtType;
+	DropDownList<Packages> dropDownType;
 
 	@UiField
 	TextBox txtName;
@@ -62,6 +63,9 @@ public class CreateTemplateView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 		setTabPanel();
 
+		txtDefault.setVisible(false);
+		txtTill.setVisible(false);
+		
 		List<Packages> lstPackage = new ArrayList<>();
 		lstPackage.add(new Packages("#firstName", "1"));
 		lstPackage.add(new Packages("#lastName", "2"));
@@ -86,6 +90,32 @@ public class CreateTemplateView extends ViewImpl implements
 					}
 				});
 
+		
+		List<Packages> typePackage = new ArrayList<>();
+		typePackage.add(new Packages("Custom: To communicate with customer", "1"));
+		typePackage.add(new Packages("Transaction: After customer transaction", "2"));
+		
+		dropDownType.setItems(typePackage);
+		dropDownType.setValue(typePackage.get(0));
+		dropDownType.addValueChangeHandler(new ValueChangeHandler<Packages>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Packages> event) {
+
+				Packages packages = event.getValue();	
+				if (packages.getName() == "2"){				
+				/*	lstPackage.add(new Packages("#amount", "4"));
+					lstPackage.add(new Packages("#time", "5"));
+					lstPackage.add(new Packages("#date", "6"));*/
+					txtDefault.setVisible(true);
+					txtTill.setVisible(true);
+				}
+				else if (packages.getName() == "1") {
+					txtDefault.setVisible(false);
+					txtTill.setVisible(false);
+				}
+			}
+		});
+		
 	}
 
 	public void setTabPanel() {
@@ -160,8 +190,8 @@ public class CreateTemplateView extends ViewImpl implements
 
 	@Override
 	public String getTemplateType() {
-		if (!txtType.getText().isEmpty()) {
-			return txtType.getText();
+		if (!dropDownType.getValue().getName().isEmpty()) {
+			return dropDownType.getValue().getDisplayName();
 		} else {
 			return null;
 		}
