@@ -3,7 +3,7 @@ package com.workpoint.mwallet.shared.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CustomerDTO implements Serializable {
+public class CustomerDTO implements Serializable, Listable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,6 +81,20 @@ public class CustomerDTO implements Serializable {
 
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+
+	@Override
+	public String getName() {
+		return custId.toString();
+	}
+	
+	public String getFullName(){
+		return firstName +" "+ lastName;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return getFullName();
 	}
 
 }

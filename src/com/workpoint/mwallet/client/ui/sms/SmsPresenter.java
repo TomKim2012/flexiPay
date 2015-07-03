@@ -28,10 +28,15 @@ import com.workpoint.mwallet.client.ui.events.SearchEvent.SearchHandler;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter;
 import com.workpoint.mwallet.client.ui.filter.FilterPresenter.SearchType;
 import com.workpoint.mwallet.client.ui.util.NumberUtils;
+import com.workpoint.mwallet.shared.model.CreditDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.SmsDTO;
+import com.workpoint.mwallet.shared.requests.GetCreditRequest;
 import com.workpoint.mwallet.shared.requests.GetSMSLogRequest;
+import com.workpoint.mwallet.shared.requests.MultiRequestAction;
+import com.workpoint.mwallet.shared.responses.GetCreditRequestResult;
 import com.workpoint.mwallet.shared.responses.GetSMSLogRequestResult;
+import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 
 public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 		implements SearchHandler {
@@ -75,7 +80,27 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 
 	public void loadData() {
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(new GetSMSLogRequest(),
+		MultiRequestAction action = new MultiRequestAction();
+		action.addRequest(new GetSMSLogRequest());
+		action.addRequest(new GetCreditRequest());
+		
+		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResponse) {
+				int i = 0;
+				GetSMSLogRequestResult smsLogRequestResult = (GetSMSLogRequestResult) aResponse.get(i++);
+				logs = smsLogRequestResult.getLogs();
+				//bindLogs();
+				
+				GetCreditRequestResult creditResponse = (GetCreditRequestResult) aResponse
+						.get(i++);
+				setCreditInfo(creditResponse.getCredit());
+
+				fireEvent(new ProcessingCompletedEvent());
+			}
+		});
+		
+		/*requestHelper.execute(new GetSMSLogRequest(),
 				new TaskServiceCallback<GetSMSLogRequestResult>() {
 					@Override
 					public void processResult(GetSMSLogRequestResult aResponse) {
@@ -83,8 +108,24 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 						bindLogs();
 						fireEvent(new ProcessingCompletedEvent());
 					}
-				});
+				});*/
 
+	}
+	
+	protected void setCreditInfo(List<CreditDTO> credits) {
+		String totalCredit = "";
+		String totalSpent = "";
+		String totalBalance = "";
+
+		for (CreditDTO credit : credits) {
+
+			totalCredit = String.valueOf(credit.getTopup_amt());
+			totalBalance = String.valueOf(credit.getCredit_amt());
+			Double balance = credit.getTopup_amt() - credit.getCredit_amt();
+			totalSpent = String.valueOf(balance);
+		}
+
+		getView().presentSummary(totalCredit, totalSpent, totalBalance);
 	}
 
 	protected void bindLogs() {
@@ -105,7 +146,9 @@ public class SmsPresenter extends PresenterWidget<SmsPresenter.IActivitiesView>
 		String formattedTotal = NumberUtils.NUMBERFORMAT.format(tSize);
 		String formattedSmsCost = NumberUtils.CURRENCYFORMAT.format(smsCost);
 		String averageCost = NumberUtils.NUMBERFORMAT.format(smsCost/tSize);
-		getView().presentSummary(formattedTotal, formattedSmsCost, averageCost);
+		
+		
+		//getView().presentSummary(formattedTotal, formattedSmsCost, averageCost);
 	}
 
 	@Override

@@ -180,8 +180,8 @@ public class TemplatePresenter extends
 		tableHeaders = Arrays.asList(new TableHeader("", true),
 				new TableHeader("Message", true),
 				new TableHeader("Type", true), new TableHeader("Name", true),
-				new TableHeader("Default", true), new TableHeader("Till id",
-						true), new TableHeader("Status", true));
+				new TableHeader("Default", false), new TableHeader("Till id",
+						false), new TableHeader("Status", false));
 
 		getView().setHeaders(tableHeaders);
 	}
@@ -262,7 +262,6 @@ public class TemplatePresenter extends
 					templatePopUp.submitData();
 					hide();
 					loadData();
-
 				} else {
 					hide();
 				}
@@ -273,9 +272,10 @@ public class TemplatePresenter extends
 			@Override
 			public void processResult(CreateTemplatePresenter aResponse) {
 				templatePopUp = aResponse;
+				templatePopUp.loadAll();
 
 				AppManager.showPopUp("Create Template", aResponse.getWidget(),
-						saveOptionControl, "Save", "Cancel");
+						saveOptionControl, "Save", "Send", "Cancel");
 
 			}
 		});

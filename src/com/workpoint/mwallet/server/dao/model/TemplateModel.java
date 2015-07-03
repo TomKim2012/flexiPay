@@ -1,6 +1,17 @@
 package com.workpoint.mwallet.server.dao.model;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class TemplateModel extends PO {
@@ -13,13 +24,16 @@ public class TemplateModel extends PO {
 	private int isDefault;
 	private String tillModel_Id;
 	
-	/*
-
-	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE}, optional=false)
-	@JoinColumn(name="tillModel_Id", referencedColumnName="userId",nullable=false)
+	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name="template_Till",
+    joinColumns=@JoinColumn(name="templateId"),
+    inverseJoinColumns=@JoinColumn(name="tillId"))
+    //private Set<Role> roles = new HashSet<Role>();	
+	private Collection<TillModel> templateTill = new HashSet<>();
 	
+	@OneToMany(mappedBy = "id", fetch=FetchType.LAZY)
+	private Set<CustomerModel> templateCustomers = new HashSet<CustomerModel>();	
 	
-	*/
 	public String getType() {
 		return type;
 	}

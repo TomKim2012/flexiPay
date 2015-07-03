@@ -18,7 +18,7 @@
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label for="Message" class="span6 control-label">Choose Template Type </label>
+				<label for="Message" class="span6 control-label">Choose Type </label>
 				<div class="span6">
 					<d:DropDownList ui:field="dropDownType">
 					</d:DropDownList>
@@ -35,22 +35,42 @@
 			</div>
 		</div>
 
-		<div class="row-fluid">
-			<!-- <div class="span6"> <label for="keyword" class="span6 control-label">Select 
-				KeyWord:</label> <div class="span6"> <d:DropDownList ui:field="dropDownPackages"> 
-				</d:DropDownList> </div> </div> -->
-		</div>
+		<!-- <div class="row-fluid"> <div class="span6"> <label for="keyword" class="span6 
+			control-label">Select KeyWord:</label> <div class="span6"> <d:DropDownList 
+			ui:field="dropDownPackages"> </d:DropDownList> </div> </div> </div> -->
+
+		<!-- <div class="row-fluid"> <div class="span6"> <label for="Customers" 
+			class="span6 control-label">Customers</label> <div class="span6"> <g:TextArea 
+			ui:field="txtCustomers"/> </div> </div> </div> -->
+
+		<g:HTMLPanel ui:field="customerPanel">
+			<div class="control-group">
+				<div class="control-label" ui:field="divCustomer">Customers:</div>
+				<div class="controls">
+					<a:AutoCompleteField ui:field="aCustomers" />
+				</div>
+			</div>
+		</g:HTMLPanel>
+
+		<g:HTMLPanel ui:field="tillPanel">
+			<div class="control-group">
+				<div class="control-label" ui:field="divTill">Tills:</div>
+				<div class="controls">
+					<a:AutoCompleteField ui:field="aTills" />
+				</div>
+			</div>
+		</g:HTMLPanel>
 
 		<div class="row-fluid">
 
 			<div class="span12">
-				<div class="span6">
+				<div class="span5">
 					<label for="Message" class="span6 control-label">Compose Template</label>
 				</div>
 
-				<div class="span6">
-					<label for="keyword" class="span6 control-label">Select KeyWord:</label>
-					<div class="span3">
+				<div class="span5">
+					<label for="keyword" class="span6 control-label">KeyWords:</label>
+					<div class="span2">
 						<d:DropDownList ui:field="dropDownPackages">
 						</d:DropDownList>
 					</div>
@@ -63,25 +83,16 @@
 			</div>
 		</div>
 
-		<div class="row-fluid">
-			<div class="span6">
-				<label for="Message" class="span6 control-label">Default?</label>
+		<g:HTMLPanel ui:field="defaultPanel">
+			<div class="row-fluid">
 				<div class="span6">
-					<g:CheckBox ui:field="txtDefault" />
+					<label for="Message" class="span6 control-label">Default?</label>
+					<div class="span6">
+						<g:CheckBox ui:field="chkDefault" />
+					</div>
 				</div>
 			</div>
-		</div>
-
-
-		<div class="row-fluid">
-			<div class="span6">
-				<label for="Message" class="span6 control-label">Till</label>
-				<div class="span6">
-					<g:TextBox ui:field="txtTill" />
-				</div>
-			</div>
-		</div>
-
+		</g:HTMLPanel>
 
 	</g:HTMLPanel>
 

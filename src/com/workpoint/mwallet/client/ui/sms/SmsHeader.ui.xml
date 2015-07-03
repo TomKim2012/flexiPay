@@ -8,14 +8,14 @@
 				<div class="big-text">
 					<span ui:field="spnSent" title="Total number of SMS Sent"></span>
 				</div>
-				<div class="bold muted helper-font-small">SMS SENT</div>
+				<div class="bold muted helper-font-small">CREDIT AMOUNT</div>
 			</div>
 
 			<div class="span4">
 				<div class="big-text">
 					<span class="" ui:field="spnCost" title="Total Cost for sending the sms"></span>
 				</div>
-				<div class="bold muted helper-font-small">TOTAL COST</div>
+				<div class="bold muted helper-font-small">AMOUNT SPENT</div>
 			</div>
 
 			<div class="span4 no-border">
@@ -23,7 +23,7 @@
 					<span class="" ui:field="spnAverage" title="Average Cost for the SMS sent">
 					</span>
 				</div>
-				<div class="bold muted helper-font-small">AVERAGE AMOUNT</div>
+				<div class="bold muted helper-font-small">CREDIT BALANCE</div>
 			</div>
 		</div>
 	</g:HTMLPanel>
