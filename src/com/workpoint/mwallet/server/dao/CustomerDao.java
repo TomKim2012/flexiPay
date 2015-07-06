@@ -27,7 +27,7 @@ public class CustomerDao extends BaseDaoImpl {
 
 		StringBuffer jpql = new StringBuffer(
 				"select temp.custId, temp.firstName, temp.lastName, temp.surName, temp.phoneNo, temp.tillModel_id from "
-						+ "CustomersModel temp " 
+						+ "CustomerModel temp " 
 		//				+ "left join TillModel tm  "
 						+ "where :isAdmin='Y'  ");
 		/*

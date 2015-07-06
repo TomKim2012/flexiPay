@@ -2,6 +2,7 @@ package com.workpoint.mwallet.shared.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TemplateDTO implements Serializable , Listable {
 
@@ -12,7 +13,8 @@ public class TemplateDTO implements Serializable , Listable {
 	private String type;
 	private String name;
 	private int isDefault;
-	private String tillModel_Id;
+	private List<TillDTO> tillModel_Id;
+	private List<CustomerDTO> customers;
 
 	private int isActive;
 
@@ -22,7 +24,7 @@ public class TemplateDTO implements Serializable , Listable {
 
 	private String tillNo;
 
-	private String businessName;
+	//private String businessName;
 
 	public TemplateDTO() {
 		// TODO Auto-generated constructor stub
@@ -33,14 +35,14 @@ public class TemplateDTO implements Serializable , Listable {
 	}
 
 	public TemplateDTO(Long id, String message, String type, String name,
-			int isDefault, String tillModel_Id) {
+			int isDefault/*, List<TillDTO> tillModel_Id*/) {
 		this.id = id;
 		this.message = message;
 		this.type =type;
 		this.name=name;
 //		this.businessName = businessName;
 		this.isDefault=isDefault;
-		this.tillModel_Id = tillModel_Id;
+//		this.tillModel_Id = tillModel_Id;
 	}
 
 	public Long getId() {
@@ -83,12 +85,12 @@ public class TemplateDTO implements Serializable , Listable {
 		this.isDefault = isDefault;
 	}
 
-	public String getTillModel_Id() {
+	public List<TillDTO> getTillModel_Id() {
 		return tillModel_Id;
 	}
 
-	public void setTillModel_Id(String tillModel_Id) {
-		this.tillModel_Id = tillModel_Id;
+	public void setTillModel_Id(List<TillDTO> list) {
+		this.tillModel_Id = list;
 	}
 
 	public int getIsActive() {
@@ -127,6 +129,15 @@ public class TemplateDTO implements Serializable , Listable {
 	@Override
 	public String getDisplayName() {
 		return name + " - " + message;
+	}
+
+	public void setCustomers(List<CustomerDTO> customers) {
+		this.customers = customers;
+	}
+	
+
+	public List<CustomerDTO> getCustomers() {
+		return customers;
 	}
 
 }

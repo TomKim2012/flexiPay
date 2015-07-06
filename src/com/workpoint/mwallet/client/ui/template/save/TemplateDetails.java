@@ -80,7 +80,7 @@ public class TemplateDetails extends Composite {
 			txtName.setValue(templateSelected.getName());
 			chckisDefault.setValue(templateSelected.getIsDefault() == 1 ? true
 					: false);
-			txttillModel_Id.setValue(templateSelected.getTillModel_Id());
+			//txttillModel_Id.setValue(templateSelected.getTillModel_Id());
 			// txttillModel_Id.getElement().setAttribute("readonly", "true");
 			// chckEnable.setValue(templateSelected.isActive() == 1 ? true :
 			// false);
@@ -96,7 +96,7 @@ public class TemplateDetails extends Composite {
 		templateSelected.setMessage(txtComposeArea.getValue());
 		templateSelected.setType(txtType.getValue());
 		templateSelected.setName(txtName.getValue());
-		templateSelected.setTillModel_Id(txttillModel_Id.getValue());
+		//templateSelected.setTillModel_Id(txttillModel_Id.getValue());
 		templateSelected.setIsDefault(chckisDefault.getValue() ? 1 : 0);
 
 		return templateSelected;

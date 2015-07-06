@@ -17,7 +17,6 @@ public class CustomerDTO implements Serializable, Listable {
 	private String businessName;
 
 	public CustomerDTO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public CustomerDTO(String tillModel_Id) {

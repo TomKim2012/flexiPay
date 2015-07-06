@@ -16,6 +16,7 @@ import com.workpoint.mwallet.client.ui.events.ProcessingEvent;
 import com.workpoint.mwallet.shared.model.CustomerDTO;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
 import com.workpoint.mwallet.shared.model.TillDTO;
+import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetCustomerRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
@@ -119,16 +120,16 @@ public class CreateTemplatePresenter extends
 
 		fireEvent(new ProcessingEvent("Saving ..."));
 
-		TemplateDTO template = new TemplateDTO();
+		TemplateDTO template = new TemplateDTO();		
 
 		String message = getView().getTemplateText();
-
+		
 		template.setMessage(message);
 		template.setType(getView().getTemplateType());
 		template.setName(getView().getTemplateName());
 		//template.setTillModel_Id(getView().getTemplateTill());
 		template.setIsDefault(getView().getTemplateDefault());
-		//template.setCustomers(getView().getCustomers());
+		template.setCustomers(getView().getCustomers());
 
 		SaveTemplateRequest saveRequest = new SaveTemplateRequest(template,
 				false);

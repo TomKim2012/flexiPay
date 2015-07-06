@@ -36,7 +36,8 @@ public class SaveTemplateRequestActionHandler extends
 			templateModel.setType(template.getType());
 			templateModel.setName(template.getName());
 			templateModel.setIsDefault(template.getIsDefault());
-			templateModel.setTillModel_Id(template.getTillModel_Id());
+			//templateModel.setTillModel_Id(template.getTillModel_Id());
+			//templateModel.setCustomers(template.getCustomers());			
 
 			dao.saveTemplate(templateModel);
 

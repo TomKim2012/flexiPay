@@ -55,7 +55,7 @@ public class SendTemplateDetails extends Composite {
 			txtType.setValue(templateSelected.getType());
 			txtName.setValue(templateSelected.getName());			
 			txtisDefault.setValue(templateSelected.getIsDefault()== 1 ? true : false);
-			txttillModel_Id.setValue(templateSelected.getTillModel_Id());
+			//txttillModel_Id.setValue(templateSelected.getTillModel_Id());
 //			txttillModel_Id.getElement().setAttribute("readonly", "true");
 //			chckEnable.setValue(templateSelected.isActive() == 1 ? true : false);
 //			lstCategoryType.setValue(category);

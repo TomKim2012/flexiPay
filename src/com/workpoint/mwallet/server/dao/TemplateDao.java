@@ -9,8 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.workpoint.mwallet.server.dao.model.TemplateModel;
+import com.workpoint.mwallet.shared.model.CustomerDTO;
 import com.workpoint.mwallet.shared.model.SearchFilter;
 import com.workpoint.mwallet.shared.model.TemplateDTO;
+import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TemplateDao extends BaseDaoImpl {
 
@@ -27,10 +29,11 @@ public class TemplateDao extends BaseDaoImpl {
 		}
 
 		StringBuffer jpql = new StringBuffer(
-				"select temp.id, temp.message, temp.type, temp.name, temp.isDefault, temp.tillModel_id from "
-						+ "TemplateModel temp " 
-		//				+ "left join TillModel tm  "
-						+ "where :isAdmin='Y'  ");
+				"select temp.id, temp.message, temp.type, temp.name, temp.isDefault from "
+						+ "TemplateModel temp "
+						// + "left join TillModel tm  "
+						+ "where :isAdmin='Y' ");
+						
 		/*
 		 * "select t.id, t.message, t.type," +
 		 * "t.name, t.isDefault, t.tillModel_Id" + "from TemplateModel t" +
@@ -40,7 +43,7 @@ public class TemplateDao extends BaseDaoImpl {
 
 		Query query = em.createNativeQuery(jpql.toString())
 		// .setParameter("userId", userId)
-			.setParameter("isAdmin", isCategoryAdmin ? "Y" : "N");
+				.setParameter("isAdmin", isCategoryAdmin ? "Y" : "N");
 		// .setParameter("isSU", isSU ? "Y" : "N");
 
 		List<Object[]> rows = getResultList(query);
@@ -55,17 +58,25 @@ public class TemplateDao extends BaseDaoImpl {
 
 			Long id = (value = row[i++]) == null ? null : new Long(
 					value.toString());
-//			String businessName = (value = row[i++]) == null ? null : value.toString();
+			// String businessName = (value = row[i++]) == null ? null :
+			// value.toString();
 			String message = (value = row[i++]) == null ? null : value
 					.toString();
 			String type = (value = row[i++]) == null ? null : value.toString();
 			String name = (value = row[i++]) == null ? null : value.toString();
 			int isDefault = (value = row[i++]) == null ? null : (int) value;
-			String tillModel_Id = (value = row[i++]) == null ? null : value.toString();
-			
-			TemplateDTO summary = new TemplateDTO(id, message, type, name,
-					isDefault, tillModel_Id);
+			// List<TillDTO> tillModel_Id = (value = row[i++]) == null ? null :
+			// value;
 
+			TemplateDTO summary = new TemplateDTO(id, message, type, name,
+					isDefault/* , tillModel_Id */);
+
+/*			summary.setCustomers(new CustomerDTO(id, firstName, lastName,
+					surName, phoneNo, tillModel_Id));
+
+			summary.setTillModel_Id(new TillDTO(tillId, businessName,
+					businessNumber, mpesaAcc, phoneNo, tillGrade, tillAverage,
+					gradeDesc, minValue, maxValue));*/
 			templates.add(summary);
 
 		}
