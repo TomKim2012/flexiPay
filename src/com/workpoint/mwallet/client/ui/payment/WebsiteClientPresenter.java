@@ -15,6 +15,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -149,9 +150,6 @@ public class WebsiteClientPresenter
 				readAccountNo = "Null";
 			}
 
-			boolean isAccountNoCorrect = submittedAccountNo
-					.equals(readAccountNo);
-
 			System.err.println("<<isAmountCorrect>>"
 					+ isAmountCorrect
 					+ "\nsubmittedAmt::"
@@ -160,15 +158,17 @@ public class WebsiteClientPresenter
 					+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
 							.getAmount())) + "\n<<isBusinessNoCorrect>>"
 					+ isBusinessNoCorrect + "\nisAccountNoCorrect>>"
-					+ isAccountNoCorrect + "\nsubmittedAccountNo::"
 					+ submittedAccountNo + "\nreadAccountNo::" + readAccountNo);
-			if (isAmountCorrect && isBusinessNoCorrect && isAccountNoCorrect) {
+			if (isAmountCorrect && isBusinessNoCorrect) {
 				// MaterialToast
 				// .alert("Your payment has been confirmed. You will be directed to the next step in a short while");
 				// Do necessary re-direction
 				if (trx.getIpnAddress() != null) {
 					String url = trx.getIpnAddress() + "?refId=" + referenceId
-							+ "&status=COMPLETED";
+							+ "&status=COMPLETED" + "&accountNo="
+							+ trx.getAccountNumber() + "&trxNumber="
+							+ trx.getReferenceId() + "&paymentMode=MPESA"
+							+ "&businessNo=" + trx.getBusinessNumber();
 					doGet(url);
 				} else {
 					MaterialLoader.showLoading(false);
@@ -179,6 +179,16 @@ public class WebsiteClientPresenter
 				MaterialLoader.showLoading(false);
 				MaterialToast
 						.alert("Transaction exist but the parameters entered did not match with the Merchants Request");
+//				Window.alert("<<isAmountCorrect>>"
+//						+ isAmountCorrect
+//						+ "\nsubmittedAmt::"
+//						+ submittedAmount
+//						+ "\nReadAmt::"
+//						+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
+//								.getAmount())) + "\n<<isBusinessNoCorrect>>"
+//						+ isBusinessNoCorrect + "\nisAccountNoCorrect>>"
+//						+ submittedAccountNo + "\nreadAccountNo::"
+//						+ readAccountNo);
 			}
 		} else {
 			MaterialLoader.showLoading(false);
@@ -204,8 +214,16 @@ public class WebsiteClientPresenter
 
 				public void onResponseReceived(Request request,
 						Response response) {
-					getView().showSuccessPanel(true);
-					MaterialToast.alert("Callback sent successfully..");
+					Window.alert("Response received with error:::"
+							+ response.getStatusText()
+							+ response.getStatusCode());
+					if (response.getStatusCode() == STATUS_CODE_OK) {
+						getView().showSuccessPanel(true);
+						MaterialToast.alert("Callback sent successfully..");
+					} else {
+						MaterialToast.alert("Response received with error:::"
+								+ response.getStatusText());
+					}
 				}
 			});
 

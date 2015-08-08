@@ -121,7 +121,7 @@ public class TransactionDao extends BaseDaoImpl {
 						+ "i.tstamp,i.business_number,"
 						+ "i.mpesa_acc,i.isprocessed,i.ipaddress,ipn.ipn_address,i.isapproved,t.businessName,s.status "
 						+ "from LipaNaMpesaIPN i "
-						+ "left join TillModel t on (i.mpesa_acc=t.mpesa_acc and i.business_number=t.business_number) "
+						+ "left join TillModel t on (i.business_number=t.business_number) "
 						+ "left join BUser u on (u.userId = t.salesPersonId) "
 						+ "left join BUser u2 on (u2.userId = t.ownerId) "
 						+ "left join SMSModel s on (i.smsStatus_FK = s.id) "

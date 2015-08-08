@@ -54,6 +54,16 @@ public class WebsiteClientView extends ViewImpl implements
 		widget = binder.createAndBindUi(this);
 		txtVerification.addStyleName("mytext-field");
 		myRow.addStyleName("my-row");
+
+		// txtVerification.ad(new TextChangeListener() {
+		// @Override
+		// public void textChange(TextChangeEvent event) {
+		// String text = event.getText();
+		// field.setValue(text.toUpperCase());
+		//
+		// // TODO: do some actions if needed
+		// }
+		// });
 	}
 
 	@Override
@@ -80,7 +90,8 @@ public class WebsiteClientView extends ViewImpl implements
 		} else {
 			spnServiceLabel.setInnerText("Pay Bill");
 			spnBusinessLabel.getElement().setInnerHTML("Paybill Number");
-			spnAccountNo.setInnerHTML("5. Enter Account Number:" + accountNo);
+			spnAccountNo.setInnerHTML("5. Enter Account Number:<strong>"
+					+ accountNo + "</strong>");
 		}
 	}
 

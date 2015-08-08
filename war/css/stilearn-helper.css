@@ -44,19 +44,19 @@
 		format('woff');
 }
 /** end google font **/
-
 /*My reseter classes*/
-html{
+html {
 	height: 100%;
 	width: 100%;
 }
+
 body {
 	overflow-y: hidden;
 	height: 100%;
 	width: 100%;
 }
 
-h1,h2,h3,h4,h5 {
+h1, h2, h3, h4, h5 {
 	margin: 0;
 	line-height: inherit;
 	color: #29323d;
@@ -67,9 +67,13 @@ a {
 	cursor: pointer;
 }
 
-a,a.btn:visited,a:hover {
+a, a.btn:visited, a:hover {
 	text-decoration: none;
 	/* color: #ffffff; */
+}
+
+.upMeBro {
+	text-transform: uppercase;
 }
 
 input:focus {
@@ -83,7 +87,6 @@ input:focus {
 }
 
 /*End of my reseter classes*/
-
 /*My Utility Helper classes*/
 #loading-text {
 	text-align: center;
@@ -104,8 +107,9 @@ input:focus {
 	z-index: 10;
 	margin-left: -100px;
 }
-.hide{
-	display:none !important;
+
+.hide {
+	display: none !important;
 }
 
 .full-page {
@@ -129,7 +133,7 @@ input:focus {
 	font-weight: bold;
 	width: 255px;
 	transition: reveal .2s ease-out;
-   -moz-transition: reveal .2s ease-out;
+	-moz-transition: reveal .2s ease-out;
 	-webkit-transition: reveal .2s ease-out;
 }
 
@@ -137,122 +141,132 @@ body .main-body .alert a {
 	text-decoration: underline;
 	color: #999999;
 }
+
 .working-request {
 	background: #ffffff;
 	opacity: .4;
 }
 
-.breadcrumb .divider{
+.breadcrumb .divider {
 	font-size: 14px;
 	margin: 7px;
 }
-.breadcrumb{
+
+.breadcrumb {
 	background-color: #ffffff;
 	margin-bottom: 0px;
 	background-image: none;
 	padding-left: 0px;
 }
-body .breadcrumb a,a:hover{
-	 color:grey;
-}
-.breadcrumb .active{
-	font-weight:bold;
+
+body .breadcrumb a, a:hover {
+	color: grey;
 }
 
-.action-buttons{
-	margin-bottom:10px;
+.breadcrumb .active {
+	font-weight: bold;
 }
 
-.action-buttons a i.icon-button{
+.action-buttons {
+	margin-bottom: 10px;
+}
+
+.action-buttons a i.icon-button {
 	font-size: 15px;
 	padding-left: 20px;
 	padding-right: 20px;
 	opacity: 0.6;
 }
 
-.action-buttons a:hover i.icon-button{
+.action-buttons a:hover i.icon-button {
 	opacity: 1;
 }
 
-.main-container .action-buttons .span3{
+.main-container .action-buttons .span3 {
 	margin-right: 20px;
 	width: initial;
 	margin-left: 0px;
 }
 
-.overflow-y{
-	overflow-y:auto;
-	overflow-x:hidden;
+.overflow-y {
+	overflow-y: auto;
+	overflow-x: hidden;
 	/* max-height: 91%; */
 }
 
-.overflow-x{
-	overflow-x:auto;
-	overflow-y:hidden;
+.overflow-x {
+	overflow-x: auto;
+	overflow-y: hidden;
 }
 
-.no-overflow-x{
-	overflow-x:hidden;
+.no-overflow-x {
+	overflow-x: hidden;
 }
 
-.no-overflow-y{
-	overflow-y:hidden;
+.no-overflow-y {
+	overflow-y: hidden;
 }
 
-.no-margin-left{
-	margin-left:0px !important;
+.no-margin-left {
+	margin-left: 0px !important;
 }
-.container{
+
+.container {
 	/* padding-top: 20px; */
+	
 }
-.table,table{
-	width:100%;
+
+.table, table {
+	width: 100%;
 }
-.modal .input-group .form-control{
+
+.modal .input-group .form-control {
 	width: 96%;
 }
 
 /*Move widget Style*/
-.modal-body .gwt-Tree{
-    width: 100%;	
-    border: 1px solid #cccccc;
-    border-radius: 7px;
-    padding-left: 8px;
+.modal-body .gwt-Tree {
+	width: 100%;
+	border: 1px solid #cccccc;
+	border-radius: 7px;
+	padding-left: 8px;
 }
 
-.modal-body .gwt-Tree .gwt-TreeItem{
-    /* border-bottom: 1px solid #ccc; */
-    display: inline-block !important;
-    padding: 4px;
-    width: 100%;
+.modal-body .gwt-Tree .gwt-TreeItem {
+	/* border-bottom: 1px solid #ccc; */
+	display: inline-block !important;
+	padding: 4px;
+	width: 100%;
 }
 
-.modal-body .gwt-Tree table{
-	width:auto;
+.modal-body .gwt-Tree table {
+	width: auto;
 }
 
-.modal-body .gwt-Tree table .gwt-TreeItem{
-	width:250px
+.modal-body .gwt-Tree table .gwt-TreeItem {
+	width: 250px
 }
 
-.modal-body div.small-container{
+.modal-body div.small-container {
 	width: 10%;
 	padding-top: 4px;
 }
 
-.modal-body .gwt-TreeItem div.strip-container{
+.modal-body .gwt-TreeItem div.strip-container {
 	width: 35px;
 }
-.modal-body div.strip-container{
+
+.modal-body div.strip-container {
 	width: 16%;
 	padding-top: 1px;
 	text-align: center;
 }
 
-.modal-body div.strip-container .color-strip-new{
+.modal-body div.strip-container .color-strip-new {
 	margin-top: 4px;
 }
-.modal-body div.name-container{
+
+.modal-body div.name-container {
 	padding-left: 0px;
 	padding-top: 6px;
 	width: 70%;
@@ -260,12 +274,12 @@ body .breadcrumb a,a:hover{
 }
 
 /*End of my Utility helpers*/
-
 /** font size helper **/
 .helper-font-small {
 	font-size: 12px;
 	line-height: 1.2em;
 }
+
 .helper-font-16 {
 	font-size: 18px;
 	line-height: 1.2em;
@@ -275,6 +289,7 @@ body .breadcrumb a,a:hover{
 	font-size: 18px;
 	line-height: 1.2em;
 }
+
 .helper-font-24 {
 	font-size: 24px;
 	line-height: 1.2em;
@@ -550,9 +565,11 @@ body .breadcrumb a,a:hover{
 .bold {
 	font-weight: bold;
 }
+
 .italic {
 	font-style: italic;
 }
+
 .underline {
 	text-decoration: underline;
 }
@@ -561,7 +578,8 @@ body .breadcrumb a,a:hover{
 .no-border {
 	border: 0 none !important;
 }
-.relative{
+
+.relative {
 	position: relative;
 
 	/*top: -74px;
@@ -595,7 +613,7 @@ input[type="color"]:focus,
 }
 */
 /** nav-pills active **/
-.nav-pills>.active>a,.nav-pills>.active>a:hover {
+.nav-pills>.active>a, .nav-pills>.active>a:hover {
 	color: #ffffff;
 	background-color: #008299;
 }
@@ -646,22 +664,25 @@ input[type="color"]:focus,
 }
 
 /** nav-pills active **/
-.accordion-heading .accordion-toggle.bg-black:hover,.accordion-heading .accordion-toggle.bg-blue:hover,.accordion-heading .accordion-toggle.bg-green:hover,.accordion-heading .accordion-toggle.bg-orange:hover,.accordion-heading .accordion-toggle.bg-purple:hover,.accordion-heading .accordion-toggle.bg-purple-dark:hover,.accordion-heading .accordion-toggle.bg-red:hover,.accordion-heading .accordion-toggle.bg-sky:hover,.accordion-heading .accordion-toggle.bg-teal:hover,.accordion-heading .accordion-toggle.bg-win8:hover
+.accordion-heading .accordion-toggle.bg-black:hover, .accordion-heading .accordion-toggle.bg-blue:hover,
+	.accordion-heading .accordion-toggle.bg-green:hover, .accordion-heading .accordion-toggle.bg-orange:hover,
+	.accordion-heading .accordion-toggle.bg-purple:hover,
+	.accordion-heading .accordion-toggle.bg-purple-dark:hover,
+	.accordion-heading .accordion-toggle.bg-red:hover, .accordion-heading .accordion-toggle.bg-sky:hover,
+	.accordion-heading .accordion-toggle.bg-teal:hover, .accordion-heading .accordion-toggle.bg-win8:hover
 	{
 	color: #f1f1f1;
 }
 /** end bootstrap hack helper **/
-
-
 /*Google Icons */
-.icon-google-back{
+.icon-google-back {
 	background: no-repeat url(../img/gmail-icons.png) 12px -393px;
 	height: 21px;
 	padding-right: 2px;
 	width: 13px;
 }
 
-.icon-google-share{
+.icon-google-share {
 	background: no-repeat url(../img/drive-icons.png) -36px -195px;
 	background-size: 220px 241px;
 	width: 21px;

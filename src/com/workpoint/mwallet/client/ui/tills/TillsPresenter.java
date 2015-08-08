@@ -191,7 +191,7 @@ public class TillsPresenter extends
 
 	protected void bindTills(List<TillDTO> tills) {
 		getView().clear();
-		//Collections.sort(tills);
+		// Collections.sort(tills);
 
 		for (TillDTO till : tills) {
 			getView().presentData(till);
@@ -386,8 +386,6 @@ public class TillsPresenter extends
 	public void onActivitySelectionChanged(ActivitySelectionChangedEvent event) {
 		if (event.isSelected()) {
 			this.selected = event.gettillDetail();
-			// System.err.println("Category Id at Presenter>>>"+
-			// selected.getCategory().getId());
 			getView().setAllowedButtons(AppContext.getContextUser(), true);
 		} else {
 			getView().setAllowedButtons(AppContext.getContextUser(), false);
