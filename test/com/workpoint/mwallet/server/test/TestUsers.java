@@ -22,6 +22,7 @@ import com.workpoint.mwallet.shared.model.ClientDTO;
 public class TestUsers {
 
 	EntityManager em;
+	
 
 	@Before
 	public void setupDB() {
@@ -31,9 +32,8 @@ public class TestUsers {
 	}
 	
 	
-	@Test
+	@Ignore
 	public void saveUser(){
-		
 		UserGroupDaoImpl dao = new UserGroupDaoImpl(em);
 		Group group = dao.getGroup("Merchant");
 		User user =  new User();
@@ -42,6 +42,11 @@ public class TestUsers {
 		user.setUserId("TomKim");
 		user.setGroups(Arrays.asList(group));
 		dao.saveUser(user);
+	}
+	
+	@Test
+	public void getUsers(){
+		
 	}
 	
 
