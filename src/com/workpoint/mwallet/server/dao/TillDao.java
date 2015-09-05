@@ -24,6 +24,7 @@ public class TillDao extends BaseDaoImpl {
 
 	public List<TillDTO> getAllTills(SearchFilter filter, String userId,
 			boolean isSU, boolean isCategoryAdmin, Long categoryId) {
+		
 		if (filter == null) {
 			filter = new SearchFilter();
 		}
@@ -60,6 +61,7 @@ public class TillDao extends BaseDaoImpl {
 				.setParameter("isSU", isSU ? "Y" : "N");
 
 		for (String key : params.keySet()) {
+			System.err.println("");
 			query.setParameter(key, params.get(key));
 		}
 
@@ -156,7 +158,8 @@ public class TillDao extends BaseDaoImpl {
 			sqlQuery.append(isFirst ? " Where" : " And");
 			sqlQuery.append(" t.business_number = :tillNumber");
 			params.put("tillNumber", filter.getTill().getTillNo());
-			System.err.println("param::" + params.get("tillNumber"));
+			
+			//System.err.println("param::" + params.get("tillNumber"));
 			isFirst = false;
 		}
 
@@ -168,16 +171,7 @@ public class TillDao extends BaseDaoImpl {
 			params.put("phrase", "%" + filter.getPhrase() + "%");
 			isFirst = false;
 		}
-
-		if (filter.getStartDate() != null && filter.getEndDate() != null) {
-
-			String startDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
-					.getStartDate());
-			String endDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
-					.getEndDate());
-
-			updateGradesView(startDate, endDate);
-		}
+		
 
 		if (filter.getOwner() != null) {
 			sqlQuery.append(isFirst ? " Where " : " And ");
@@ -192,6 +186,17 @@ public class TillDao extends BaseDaoImpl {
 			params.put("salesPersonId", filter.getSalesPerson().getUserId());
 			isFirst = false;
 		}
+
+		if (filter.getStartDate() != null && filter.getEndDate() != null) {
+
+			String startDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
+					.getStartDate());
+			String endDate = new SimpleDateFormat("yyyy-MM-dd").format(filter
+					.getEndDate());
+
+			updateGradesView(startDate, endDate);
+		}
+
 
 		String orderBy = "ORDER BY tg.tillAverage DESC";
 		sqlQuery.append(orderBy);
