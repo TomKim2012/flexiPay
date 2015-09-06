@@ -1,10 +1,12 @@
 package com.workpoint.mwallet.client.ui.payment;
 
 import gwt.material.design.client.ui.MaterialLoader;
+import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialToast;
 
 import java.util.List;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -16,6 +18,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -42,14 +45,18 @@ public class WebsiteClientPresenter
 
 	public interface MyView extends View {
 
-		void setParameters(String businessNo, String accountNo, String amount,
-				String orgName);
+		void setMobileParameters(String businessNo, String accountNo,
+				String amount, String orgName);
 
-		HasClickHandlers getCompleteButton();
-
-		String getVerification();
+		Button getCompleteButton();
 
 		void showSuccessPanel(boolean show);
+
+		void setCardsParameters(String url);
+
+		void showSuccessPanel(boolean b, String string);
+
+		void showErrorMessage(String message);
 	}
 
 	@ProxyCodeSplit
@@ -73,7 +80,9 @@ public class WebsiteClientPresenter
 
 	private String referenceId;
 
-	private Object parameters;
+	private String ipAddress = "";
+	public static final int STATUS_CODE_OK = 200;
+	private String orgName;
 
 	@Inject
 	public WebsiteClientPresenter(final EventBus eventBus, final MyView view,
@@ -95,18 +104,15 @@ public class WebsiteClientPresenter
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (getView().getVerification() != null) {
-					MaterialLoader.showLoading(true);
-					submitRequest(getView().getVerification());
-				}
+				MaterialLoader.showLoading(true);
+				submitRequest(submittedAccountNo);
 			}
 		});
 	}
 
-	protected void submitRequest(String verification) {
-
+	protected void submitRequest(String submittedAccountNo) {
 		SearchFilter filter = new SearchFilter();
-		filter.setVerificationCode(verification);
+		filter.setVerificationCode(submittedAccountNo);
 
 		GetVerificationRequest action = new GetVerificationRequest(filter);
 
@@ -130,7 +136,7 @@ public class WebsiteClientPresenter
 
 			if (submittedAmount.isEmpty()) {
 				MaterialLoader.showLoading(false);
-				MaterialToast.alert("No values submitted by merchant");
+				MaterialToast.alert("The amount cannot be Zero!");
 				return;
 			}
 
@@ -143,26 +149,20 @@ public class WebsiteClientPresenter
 
 			String readAccountNo = trx.getAccountNumber();
 
-			System.err.println("Submitted Account Number::"
-					+ submittedAccountNo);
-
 			if (submittedAccountNo.equals("Null")) {
 				readAccountNo = "Null";
 			}
 
-			System.err.println("<<isAmountCorrect>>"
-					+ isAmountCorrect
-					+ "\nsubmittedAmt::"
-					+ submittedAmount
-					+ "\nReadAmt::"
-					+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
-							.getAmount())) + "\n<<isBusinessNoCorrect>>"
-					+ isBusinessNoCorrect + "\nisAccountNoCorrect>>"
-					+ submittedAccountNo + "\nreadAccountNo::" + readAccountNo);
+			// System.err.println("<<isAmountCorrect>>"
+			// + isAmountCorrect
+			// + "\nsubmittedAmt::"
+			// + submittedAmount
+			// + "\nReadAmt::"
+			// + String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
+			// .getAmount())) + "\n<<isBusinessNoCorrect>>"
+			// + isBusinessNoCorrect + "\nisAccountNoCorrect>>"
+			// + submittedAccountNo + "\nreadAccountNo::" + readAccountNo);
 			if (isAmountCorrect && isBusinessNoCorrect) {
-				// MaterialToast
-				// .alert("Your payment has been confirmed. You will be directed to the next step in a short while");
-				// Do necessary re-direction
 				if (trx.getIpnAddress() != null) {
 					String url = trx.getIpnAddress() + "?refId=" + referenceId
 							+ "&status=COMPLETED" + "&accountNo="
@@ -179,25 +179,16 @@ public class WebsiteClientPresenter
 				MaterialLoader.showLoading(false);
 				MaterialToast
 						.alert("Transaction exist but the parameters entered did not match with the Merchants Request");
-//				Window.alert("<<isAmountCorrect>>"
-//						+ isAmountCorrect
-//						+ "\nsubmittedAmt::"
-//						+ submittedAmount
-//						+ "\nReadAmt::"
-//						+ String.valueOf(NumberUtils.NUMBERFORMAT.format(trx
-//								.getAmount())) + "\n<<isBusinessNoCorrect>>"
-//						+ isBusinessNoCorrect + "\nisAccountNoCorrect>>"
-//						+ submittedAccountNo + "\nreadAccountNo::"
-//						+ readAccountNo);
 			}
 		} else {
 			MaterialLoader.showLoading(false);
-			MaterialToast
-					.alert("Verification entered doesn't exist. Kindly retry");
+			getView().getCompleteButton().setText("Retry");
+			getView().showErrorMessage(
+					"Payment not received. Kindly await for a SMS from "
+							+ orgName
+							+ " confirming the payment then try again..");
 		}
 	}
-
-	public static final int STATUS_CODE_OK = 200;
 
 	public void doGet(String url) {
 		System.err.println("CallBack URL:" + url);
@@ -240,12 +231,39 @@ public class WebsiteClientPresenter
 		submittedBusinessNo = request.getParameter("businessNo", "");
 		submittedAccountNo = request.getParameter("accountNo", "");
 		submittedAmount = request.getParameter("amount", "");
-		String orgName = request.getParameter("orgName", "");
+		orgName = request.getParameter("orgName", "");
 		referenceId = request.getParameter("refId", "");
-		parameters = request.getParameter("parameters", "");
+		String mode = request.getParameter("mode", "");
+		String result = request.getParameter("result", "");
 
-		getView().setParameters(submittedBusinessNo, submittedAccountNo,
-				submittedAmount, orgName);
+		if (mode != null && !mode.equals("cards")) {
+			getView().setMobileParameters(submittedBusinessNo,
+					submittedAccountNo, submittedAmount, orgName);
+
+			String p2 = "https://www.jambopay.com/PreviewCart.aspx?business=demo@webtribe.co.ke"
+					+ "&order_id="
+					+ referenceId
+					+ "&type=cart&amount1="
+					+ submittedAmount
+					+ "&amount2=0&amount5=0&"
+					+ "payee=customer@webtribe.co.ke&rurl=http://197.248.4.221/cards_response.php?result=success"
+					+ "&curl=http://197.248.4.221/cards_response.php?result=cancelled"
+					+ "&furl=http://197.248.4.221/cards_response.php?result=failed&"
+					+ "&jp_channels=234&item=What you are paying for&target=_parent";
+
+			getView().setCardsParameters(p2);
+		} else {
+			if (result != null && result.equals("success")) {
+				getView().showSuccessPanel(true);
+				String url = ipAddress + "?refId=" + referenceId
+						+ "&status=COMPLETED" + "&paymentMode=CARDS";
+				doGet(url);
+			} else {
+				getView()
+						.showSuccessPanel(true,
+								"We could not process your payment,Consult Customer Care for help");
+			}
+		}
 	}
 
 	@Override

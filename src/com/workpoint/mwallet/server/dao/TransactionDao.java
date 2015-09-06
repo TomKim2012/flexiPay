@@ -125,7 +125,6 @@ public class TransactionDao extends BaseDaoImpl {
 						+ "left join BUser u on (u.userId = t.salesPersonId) "
 						+ "left join BUser u2 on (u2.userId = t.ownerId) "
 						+ "left join SMSModel s on (i.smsStatus_FK = s.id) "
-						+ "left join Verifications v on (i.id=v.transaction_id) "
 						+ "left join IPN_details ipn on (t.id=ipn.tillModel_id)"
 						+ "where "
 						+ "("
@@ -152,7 +151,6 @@ public class TransactionDao extends BaseDaoImpl {
 
 		byte boolTrue = 1;
 		for (Object[] row : rows) {
-			// programId,id,parentid,type,startdate,enddate,status
 			int i = 0;
 			Object value = null;
 			String mpesaSender = (value = row[i++]) == null ? null : value
@@ -243,7 +241,7 @@ public class TransactionDao extends BaseDaoImpl {
 		if (filter.getVerificationCode() != null) {
 			String verificationCode = filter.getVerificationCode().trim();
 			sqlQuery.append(isFirst ? " Where" : " And");
-			sqlQuery.append(" (v.verification_code = :verificationCode)");
+			sqlQuery.append(" (i.mpesa_acc = :verificationCode)");
 			params.put("verificationCode", verificationCode);
 			isFirst = false;
 		}
