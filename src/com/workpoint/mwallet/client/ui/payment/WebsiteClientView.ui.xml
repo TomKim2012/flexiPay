@@ -12,10 +12,10 @@
 			<g:HTMLPanel styleName="row-fluid container hide"
 				ui:field="panelSuccess">
 				<br />
-				<div class="alert alert-success">
+				<div class="alert alert-success" ui:field="panelMessage">
 					<i class="icon icon-ok"></i>
-					Your payment has successfully been verified and confirmed. Press
-					NEXT to continue.
+					Your payment has successfully been received and posted into your
+					account. Click FINISH to complete
 				</div>
 			</g:HTMLPanel>
 		</g:HTMLPanel>
@@ -24,13 +24,14 @@
 			<m:MaterialTabs color="blue" textColor="white"
 				indicatorColor="yellow" waves="yellow">
 				<m:tab>
-					<g:Image url="img/Mpesa_Logo.png"></g:Image>
+					<g:HTMLPanel>
+						<g:Label>Pay with Mobile Money(MPESA,Airtel Money,Orange Money)</g:Label>
+					</g:HTMLPanel>
 				</m:tab>
 				<m:tab>
-					<g:Image url="img/Visa_Logo.png" />
-				</m:tab>
-				<m:tab>
-					<g:Image url="img/Mastercard_Logo.png" />
+					<g:HTMLPanel>
+						<g:Label>Pay with Credit Card(Visa,MasterCard, Kenswitch)</g:Label>
+					</g:HTMLPanel>
 				</m:tab>
 				<m:content>
 					<!-- <m:MaterialTopNav padding="5" title="Sample 1" -->
@@ -40,7 +41,8 @@
 						<m:MaterialRow>
 							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
 								<h5>
-									<g:InlineLabel>A: Payment Instructions</g:InlineLabel>
+									<g:InlineLabel>A: Payment by </g:InlineLabel>
+									<g:Image url="img/Mpesa_Logo.png"></g:Image>
 								</h5>
 								<ul>
 									<li>
@@ -76,52 +78,48 @@
 									<li>8. You will receive a confirmation SMS from M-PESA with a
 										Confirmation
 										Code</li>
-								</ul>
-							</m:MaterialColumn>
-						</m:MaterialRow>
-
-						<m:MaterialRow ui:field="myRow">
-							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
-								<h5>
-									<g:InlineLabel>B:Verification</g:InlineLabel>
-								</h5>
-
-								<ul>
 									<li>
-										1. You will receive a confirmation SMS on your mobile number
+										9. You will receive a confirmation SMS on the number you paid
+										with
 										from
 										<Strong ui:field="spnOrgName">
 											ICPAK.
 										</Strong>
-										containing a 5-digit code.
+										confirming that your payment has received.
 									</li>
+
 									<li>
-										2. Enter the verification code in the textBox
-										below and Press
-										the
-										<strong>Verify</strong>
-										.
+										10.Click on
+										<strong>Complete Payment</strong>
+										Button Below to finish your payment
 									</li>
 								</ul>
-								<m:MaterialTextBox placeholder="Verification Code"
-									ui:field="txtVerification"/>
-								<b:Button text="Verify" ui:field="btnComplete" type="PRIMARY">
-								</b:Button>
+							</m:MaterialColumn>
+						</m:MaterialRow>
 
-								<!-- <m:MaterialButton text="Re-send" waves="light" ui:field="btnResend" 
-									color="grey" /> -->
+						<m:MaterialRow>
+							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
+								<div class="alert alert-danger hide" ui:field="panelErrorMessage">
+									<i class="icon icon-warning-sign"></i>
+									<span ui:field="spnErrorMessage">Your payment has successfully been received
+										and posted into
+										your</span>
+								</div>
+							</m:MaterialColumn>
+						</m:MaterialRow>
+
+						<m:MaterialRow ui:field="verificationRow">
+							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
+								<b:Button text="Complete Payment" ui:field="btnComplete"
+									type="PRIMARY">
+								</b:Button>
 							</m:MaterialColumn>
 						</m:MaterialRow>
 					</g:HTMLPanel>
 				</m:content>
 				<m:content>
-					<m:MaterialTopNav padding="5" title="VISA Payments"
-						description="Stay Tuned. Coming Soon...." color="green" textColor="white" />
-				</m:content>
-				<m:content>
-					<m:MaterialTopNav padding="5" title="MasterCard Payments"
-						description="Stay Tuned. Content Coming Soon..." color="green"
-						textColor="white" />
+					<g:Frame ui:field="jamboPayIframe" height="590px" width="100%">
+					</g:Frame>
 				</m:content>
 			</m:MaterialTabs>
 		</m:MaterialRow>
