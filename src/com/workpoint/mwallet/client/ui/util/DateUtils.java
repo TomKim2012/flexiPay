@@ -22,8 +22,11 @@ public class DateUtils {
 	static String monthShortPattern = "MMM";
 	static String dayShortPattern = "d";
 	static String monthYearPattern = "MMM, yyyy";
+	static String monthPattern = "MMM (MM)";
 	static String Time = "hh:mm a";
 	static String monthDayHourPattern = "MMM d " + Time;
+	static String monthOnlyPattern = "MM";
+	static String yearpattern = "yyyy";
 
 	public static final DateTimeFormat CREATEDFORMAT = DateTimeFormat
 			.getFormat(createdpattern);
@@ -43,7 +46,6 @@ public class DateUtils {
 			.getFormat(monthDayPattern);
 	public static final DateTimeFormat MONTHDAYHOURFORMAT = DateTimeFormat
 			.getFormat(monthDayHourPattern);
-
 	public static final DateTimeFormat MONTHSHORTFORMAT = DateTimeFormat
 			.getFormat(monthShortPattern);
 
@@ -53,7 +55,14 @@ public class DateUtils {
 			.getFormat(monthYearPattern);
 	public static final DateTimeFormat TIMEFORMAT12HR = DateTimeFormat
 			.getFormat(Time);
-
+	public static final DateTimeFormat MONTHFORMAT = DateTimeFormat
+			.getFormat(monthPattern);
+	public static final DateTimeFormat MONTHONLYFORMAT = DateTimeFormat
+			.getFormat(monthOnlyPattern);
+	public static final DateTimeFormat YEARFORMAT = DateTimeFormat
+			.getFormat(yearpattern);
+	
+	
 	static long dayInMillis = 24 * 3600 * 1000;
 	static long hourInMillis = 3600 * 1000;
 	static long minInMillis = 60 * 1000;
@@ -180,17 +189,17 @@ public class DateUtils {
 		case THISMONTH:
 			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
-			
+
 		case LASTMONTH:
 			CalendarUtil.addMonthsToDate(today, -1);
 			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
-			
+
 		case THISQUARTER:
 			CalendarUtil.addMonthsToDate(today, -3);
 			CalendarUtil.setToFirstDayOfMonth(today);
 			return setToMidnight(today);
-			
+
 		case HALFYEAR:
 			CalendarUtil.addMonthsToDate(today, -6);
 			CalendarUtil.setToFirstDayOfMonth(today);

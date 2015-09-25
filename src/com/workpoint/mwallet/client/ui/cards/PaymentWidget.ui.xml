@@ -1,0 +1,65 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component'>
+	<g:HTMLPanel>
+		<form class="form-horizontal" role="form">
+			<fieldset>
+				<legend>Payment</legend>
+				<d:IssuesPanel ui:field="issuesPanel" styleName="hide alert alert-danger"></d:IssuesPanel>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Amount To Paid:</label>
+					<div class="col-sm-9">
+						<g:InlineLabel styleName="form-control" ui:field="spnAmount">
+						</g:InlineLabel>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="card-holder-name">Name on Card:</label>
+					<div class="col-sm-9">
+						<d:TextField class="form-control" ui:field="txtCardHolderName"
+							placeholder="Card Holder's Name">
+						</d:TextField>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="card-number">Card Number:</label>
+					<div class="col-sm-9">
+						<d:TextField class="form-control" placeholder="Debit/Credit Card Number"
+							ui:field="txtCardNumber">
+						</d:TextField>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="expiry-month">Expiration Date:</label>
+					<div class="col-sm-9">
+						<div class="row">
+							<div class="col-xs-3">
+								<d:DropDownList styleName="form-control col-sm-2"
+									ui:field="lstMonths">
+								</d:DropDownList>
+							</div>
+
+							<div class="col-xs-3">
+								<d:DropDownList styleName="form-control"
+									ui:field="lstYears">
+								</d:DropDownList>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="cvv">Card CVV:</label>
+					<div class="col-sm-3">
+						<d:TextField styleName="form-control" ui:field="txtCvv"
+							placeholder="Security Code"></d:TextField>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-9">
+						<d:ActionLink ui:field="aPay" styleName="btn btn-success btn-fill">Pay Now</d:ActionLink>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</g:HTMLPanel>
+</ui:UiBinder> 
