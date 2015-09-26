@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module rename-to='mwallet2'>
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+
+	<inherits name='com.google.gwt.resources.Resources' />
+
+	<!-- Inherit the default GWT style sheet. You can change -->
+	<!-- the theme of your GWT application by uncommenting -->
+	<!-- any one of the following lines. -->
+
+	<!-- Include GWTUpload library -->
+	<inherits name="gwtupload.GWTUpload" />
+	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
+	<inherits name="gwt.material.design.GwtMaterialDesign" />
+	<inherits name="com.google.common.collect.Collect" />
+
+	<!-- Other module inherits -->
+	<inherits name='com.sencha.gxt.ui.GXT' />
+	<inherits name='com.sencha.gxt.chart.Chart' />
+
+	<inherits name='com.gwtplatform.dispatch.rpc.DispatchRpc' />
+	<inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+	<!-- GinUiBinder allows injecting widgets in UiBinder -->
+	<inherits name="com.google.gwt.uibinder.GinUiBinder" />
+
+
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+
+	<!-- Generated Gin Injector will extend WiraInjector -->
+	<extend-configuration-property name='gin.ginjector.extensions'
+		value='com.workpoint.mwallet.client.gin.FlexiPayGinjector' />
+
+	<!-- Gin Module add -->
+	<extend-configuration-property name="gin.ginjector.modules"
+		value="com.workpoint.mwallet.client.gin.ClientModule" />
+
+	<set-configuration-property name="gwtp.bootstrapper"
+		value="com.workpoint.mwallet.client.FlexipayImpl" />
+
+</module>

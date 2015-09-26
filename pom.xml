@@ -4,6 +4,7 @@
 	<groupId>com.workpoint.mwallet</groupId>
 	<artifactId>flexipay</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>flexiPay</name>
 	<description>Payment Intergration App by Workpoint Ltd</description>
 
@@ -22,9 +23,8 @@
 
 		<!-- maven -->
 		<gwt-maven-plugin.version>2.7.0</gwt-maven-plugin.version>
-		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
-		<maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-		<maven-war-plugin.version>2.5</maven-war-plugin.version>
+		<maven-surefire-plugin.version>2.6</maven-surefire-plugin.version>
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-processor-plugin.version>2.0.5</maven-processor-plugin.version>
 		<maven-build-helper-plugin.version>1.7</maven-build-helper-plugin.version>
@@ -41,6 +41,13 @@
 		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<!--configuration> <packagingExcludes>WEB-INF/lib/javassist*.jar</packagingExcludes> 
+					</configuration -->
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
@@ -48,15 +55,6 @@
 					<source>${target.jdk}</source>
 					<target>${target.jdk}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${maven-war-plugin.version}</version>
-				<configuration>
-					<archiveClasses>true</archiveClasses>
 				</configuration>
 			</plugin>
 
@@ -84,16 +82,18 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>${gwt-maven-plugin.version}</version>
+				<version>${gwt.version}</version>
 				<configuration>
 					<!-- With multiple tests use GwtTestSuite.java for speed -->
 					<includes>**/*GwtTest.java</includes>
-					<extraJvmArgs>-Xss1024K -Xmx1024M -XX:MaxPermSize=256M</extraJvmArgs>
+					<!-- <bindAddress></bindAddress> -->
+					<logLevel>INFO</logLevel>
 					<copyWebapp>true</copyWebapp>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
-					<runTarget>mWallet2.html</runTarget>
+					<gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
+					<runTarget>flexipay.html</runTarget>
 					<modules>
-						<module>com.workpoint.mwallet.client.Mwallet2</module>
+						<module>com.workpoint.mwallet.flexipay</module>
 					</modules>
 				</configuration>
 				<executions>
@@ -105,6 +105,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 
@@ -284,7 +285,6 @@
 			<artifactId>commons-pool</artifactId>
 			<version>1.5.4</version>
 		</dependency>
-
 
 		<!-- JAXRS JARXWS APIS -->
 		<dependency>
@@ -477,6 +477,12 @@
 			<version>1.9.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+
 
 
 		<!-- GWT-GIN DEPENDENCIES -->
@@ -518,10 +524,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.github.gwtbootstrap</groupId>
+			<artifactId>gwt-bootstrap</artifactId>
+			<version>2.3.2.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.gwtplatform</groupId>
 			<artifactId>gwtp-all</artifactId>
 			<version>1.2.1</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>com.gwtplatform</groupId>
@@ -529,23 +542,22 @@
 			<version>1.2.1</version>
 		</dependency>
 
+		<!-- GXT -->
 		<dependency>
 			<groupId>com.sencha.gxt</groupId>
 			<artifactId>gxt</artifactId>
-			<version>3.0.1</version>
+			<version>3.1.1</version>
 		</dependency>
 
+
+		<!-- Charts -->
 		<dependency>
 			<groupId>com.sencha.gxt</groupId>
 			<artifactId>gxt-chart</artifactId>
-			<version>3.0.1</version>
+			<version>3.1.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.sencha.gxt</groupId>
-			<artifactId>gxt-legacy</artifactId>
-			<version>3.0.1</version>
-		</dependency>
+
 
 		<!--JTA/ HIBERNATE PERSISTENCE -->
 		<dependency>
@@ -658,8 +670,6 @@
 			<artifactId>maven-artifact</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-
-
 
 		<dependency>
 			<groupId>rome</groupId>
@@ -812,6 +822,7 @@
 		</dependency>
 
 		<!-- Test -->
+		<!-- Unit Tests -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
