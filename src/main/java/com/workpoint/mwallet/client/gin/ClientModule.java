@@ -66,7 +66,7 @@ public class ClientModule extends AbstractPresenterModule {
 	@Override
 	protected void configure() {
 
-		install(new RpcDispatchAsyncModule()); // binds DispatchAsync to
+		install(new RpcDispatchAsyncModule.Builder().build()); // binds DispatchAsync to
 												// RpcDispatchAsync
 		install(new DefaultModule.Builder().placeManager(
 				ClientPlaceManager.class).build());

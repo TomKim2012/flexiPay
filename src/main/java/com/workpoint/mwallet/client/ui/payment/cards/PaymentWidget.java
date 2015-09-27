@@ -1,4 +1,4 @@
-package com.workpoint.mwallet.client.ui.cards;
+package com.workpoint.mwallet.client.ui.payment.cards;
 
 import static com.workpoint.mwallet.client.ui.util.StringUtils.isNullOrEmpty;
 

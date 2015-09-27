@@ -8,7 +8,6 @@ import java.util.List;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -17,6 +16,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -48,8 +48,6 @@ public class WebsiteClientPresenter
 		Button getCompleteButton();
 
 		void showSuccessPanel(boolean show);
-
-		void setCardsParameters(String url);
 
 		void showSuccessPanel(boolean b, String string);
 
@@ -236,7 +234,6 @@ public class WebsiteClientPresenter
 		if (mode != null && !mode.equals("cards")) {
 			getView().setMobileParameters(submittedBusinessNo,
 					submittedAccountNo, submittedAmount, orgName);
-
 			String p2 = "https://www.jambopay.com/PreviewCart.aspx?business=demo@webtribe.co.ke"
 					+ "&order_id="
 					+ referenceId
@@ -248,7 +245,6 @@ public class WebsiteClientPresenter
 					+ "&furl=http://197.248.4.221/cards_response.php?result=failed&"
 					+ "&jp_channels=234&item=What you are paying for&target=_parent";
 
-			getView().setCardsParameters(p2);
 		} else {
 			if (result != null && result.equals("success")) {
 				getView().showSuccessPanel(true);

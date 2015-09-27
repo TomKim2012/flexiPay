@@ -4,7 +4,6 @@
 	<g:HTMLPanel>
 		<form class="form-horizontal" role="form">
 			<fieldset>
-				<legend>Payment</legend>
 				<d:IssuesPanel ui:field="issuesPanel" styleName="hide alert alert-danger"></d:IssuesPanel>
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Amount To Paid:</label>

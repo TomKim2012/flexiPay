@@ -24,7 +24,6 @@ public class ClientPlaceManager extends PlaceManagerImpl {
 
 	@Override
 	public void revealDefaultPlace() {
-		Window.alert("HomePage Called!!");
 		revealPlace(defaultPlaceRequest, true);
 	}
 

@@ -1,29 +1,27 @@
 package com.workpoint.mwallet.client.ui.payment;
 
 import gwt.material.design.client.ui.MaterialRow;
-import gwt.material.design.client.ui.MaterialTextBox;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.SpanElement;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.workpoint.mwallet.client.ui.payment.cards.PaymentWidget;
 
 public class WebsiteClientView extends ViewImpl implements
 		WebsiteClientPresenter.MyView {
 
 	private final Widget widget;
-	@UiField
-	Button btnComplete;
+	// @UiField
+	// Button btnComplete;
 	@UiField
 	Element spnServiceLabel;
 	@UiField
@@ -47,12 +45,14 @@ public class WebsiteClientView extends ViewImpl implements
 	DivElement panelErrorMessage;
 	@UiField
 	SpanElement spnErrorMessage;
-
 	@UiField
 	MaterialRow panelPayment;
 
 	@UiField
-	Frame jamboPayIframe;
+	PaymentWidget panelCreditCard;
+
+	// @UiField
+	// Frame jamboPayIframe;
 
 	@UiField
 	MaterialRow verificationRow;
@@ -97,7 +97,7 @@ public class WebsiteClientView extends ViewImpl implements
 
 	@Override
 	public Button getCompleteButton() {
-		return btnComplete;
+		return new Button();
 	}
 
 	public void showSuccessPanel(boolean show) {
@@ -115,10 +115,6 @@ public class WebsiteClientView extends ViewImpl implements
 		showSuccessPanel(show);
 		panelMessage.setClassName("alert alert-danger");
 		panelMessage.setInnerText(message);
-	}
-
-	public void setCardsParameters(String url) {
-		jamboPayIframe.setUrl(url);
 	}
 
 	@Override

@@ -3,7 +3,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
 	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:c="urn:import:com.workpoint.mwallet.client.ui.payment.cards"
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
@@ -25,12 +25,12 @@
 				indicatorColor="yellow" waves="yellow">
 				<m:tab>
 					<g:HTMLPanel>
-						<g:Label>Pay with Mobile Money(MPESA,Airtel Money,Orange Money)</g:Label>
+						<g:Label>Pay with Mobile Money</g:Label>
 					</g:HTMLPanel>
 				</m:tab>
 				<m:tab>
 					<g:HTMLPanel>
-						<g:Label>Pay with Credit Card(Visa,MasterCard, Kenswitch)</g:Label>
+						<g:Label>Pay with Credit/Debit Card</g:Label>
 					</g:HTMLPanel>
 				</m:tab>
 				<m:content>
@@ -110,16 +110,15 @@
 
 						<m:MaterialRow ui:field="verificationRow">
 							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
-								<b:Button text="Complete Payment" ui:field="btnComplete"
-									type="PRIMARY">
-								</b:Button>
+								<d:ActionLink text="Complete Payment" ui:field="btnComplete"
+									styleName="btn btn-primary">
+								</d:ActionLink>
 							</m:MaterialColumn>
 						</m:MaterialRow>
 					</g:HTMLPanel>
 				</m:content>
 				<m:content>
-					<g:Frame ui:field="jamboPayIframe" height="590px" width="100%">
-					</g:Frame>
+					<c:PaymentWidget ui:field="panelCreditCard"></c:PaymentWidget>
 				</m:content>
 			</m:MaterialTabs>
 		</m:MaterialRow>

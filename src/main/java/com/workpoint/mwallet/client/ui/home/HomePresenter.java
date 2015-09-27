@@ -264,7 +264,7 @@ public class HomePresenter extends
 	@Override
 	protected void onReset() {
 		super.onReset();
-		Window.alert("HomePage Called!!");
+		// Window.alert("HomePage Called!!");
 
 		if (AppContext.getContextUser() == null
 				|| AppContext.getContextUser().getGroups() == null) {
