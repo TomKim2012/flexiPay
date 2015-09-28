@@ -1,7 +1,5 @@
 package com.workpoint.mwallet.client.ui.payment;
 
-import gwt.material.design.client.ui.MaterialRow;
-
 import com.github.gwtbootstrap.client.ui.Button;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
@@ -41,12 +39,13 @@ public class WebsiteClientView extends ViewImpl implements
 	@UiField
 	DivElement panelMessage;
 
+	// @UiField
+	// DivElement panelErrorMessage;
+
+	// @UiField
+	// SpanElement spnErrorMessage;
 	@UiField
-	DivElement panelErrorMessage;
-	@UiField
-	SpanElement spnErrorMessage;
-	@UiField
-	MaterialRow panelPayment;
+	HTMLPanel panelPayment;
 
 	@UiField
 	PaymentWidget panelCreditCard;
@@ -54,21 +53,23 @@ public class WebsiteClientView extends ViewImpl implements
 	// @UiField
 	// Frame jamboPayIframe;
 
-	@UiField
-	MaterialRow verificationRow;
-
 	public interface Binder extends UiBinder<Widget, WebsiteClientView> {
 	}
 
 	@Inject
 	public WebsiteClientView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
-		verificationRow.addStyleName("my-row");
 	}
 
 	@Override
 	public Widget asWidget() {
 		return widget;
+	}
+
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		initWidgets();
 	}
 
 	@Override
@@ -119,8 +120,13 @@ public class WebsiteClientView extends ViewImpl implements
 
 	@Override
 	public void showErrorMessage(String message) {
-		panelErrorMessage.removeClassName("hide");
-		spnErrorMessage.setInnerText(message);
+		// panelErrorMessage.removeClassName("hide");
+		// spnErrorMessage.setInnerText(message);
 	}
+
+	public static native void initWidgets()/*-{
+											alert("called");
+											$wnd.jQuery("ul.tabs").tabs();
+											}-*/;
 
 }

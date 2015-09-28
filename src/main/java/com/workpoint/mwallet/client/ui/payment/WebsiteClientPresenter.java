@@ -1,8 +1,5 @@
 package com.workpoint.mwallet.client.ui.payment;
 
-import gwt.material.design.client.ui.MaterialLoader;
-import gwt.material.design.client.ui.MaterialToast;
-
 import java.util.List;
 
 import com.github.gwtbootstrap.client.ui.Button;
@@ -99,7 +96,7 @@ public class WebsiteClientPresenter
 
 			@Override
 			public void onClick(ClickEvent event) {
-				MaterialLoader.showLoading(true);
+				// MaterialLoader.showLoading(true);
 				submitRequest(submittedAccountNo);
 			}
 		});
@@ -117,7 +114,7 @@ public class WebsiteClientPresenter
 					public void processResult(
 							GetVerificationRequestResult aResponse) {
 						getResults(aResponse.getTransactions());
-						MaterialLoader.showProgress(false);
+//						MaterialLoader.showProgress(false);
 						getView().showSuccessPanel(false);
 					}
 				});
@@ -130,8 +127,8 @@ public class WebsiteClientPresenter
 			TransactionDTO trx = trxs.get(0);
 
 			if (submittedAmount.isEmpty()) {
-				MaterialLoader.showLoading(false);
-				MaterialToast.alert("The amount cannot be Zero!");
+//				MaterialLoader.showLoading(false);
+//				MaterialToast.alert("The amount cannot be Zero!");
 				return;
 			}
 
@@ -166,17 +163,17 @@ public class WebsiteClientPresenter
 							+ "&businessNo=" + trx.getBusinessNumber();
 					doGet(url);
 				} else {
-					MaterialLoader.showLoading(false);
-					MaterialToast.alert("No callback set by merchant.");
+//					MaterialLoader.showLoading(false);
+//					MaterialToast.alert("No callback set by merchant.");
 				}
 
 			} else {
-				MaterialLoader.showLoading(false);
-				MaterialToast
-						.alert("Transaction exist but the parameters entered did not match with the Merchants Request");
+//				MaterialLoader.showLoading(false);
+//				MaterialToast
+//						.alert("Transaction exist but the parameters entered did not match with the Merchants Request");
 			}
 		} else {
-			MaterialLoader.showLoading(false);
+//			MaterialLoader.showLoading(false);
 			getView().getCompleteButton().setText("Retry");
 			getView().showErrorMessage(
 					"Payment not received. Kindly await for a SMS from "
@@ -187,15 +184,15 @@ public class WebsiteClientPresenter
 
 	public void doGet(String url) {
 		System.err.println("CallBack URL:" + url);
-		MaterialLoader.showLoading(false);
+//		MaterialLoader.showLoading(false);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
 			Request response = builder.sendRequest(null, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					getView().showSuccessPanel(false);
-					MaterialToast
-							.alert("Error occured while sending callBack::"
-									+ exception.getMessage());
+//					MaterialToast
+//							.alert("Error occured while sending callBack::"
+//									+ exception.getMessage());
 				}
 
 				public void onResponseReceived(Request request,
@@ -205,17 +202,17 @@ public class WebsiteClientPresenter
 							+ response.getStatusCode());
 					if (response.getStatusCode() == STATUS_CODE_OK) {
 						getView().showSuccessPanel(true);
-						MaterialToast.alert("Callback sent successfully..");
+//						MaterialToast.alert("Callback sent successfully..");
 					} else {
-						MaterialToast.alert("Response received with error:::"
-								+ response.getStatusText());
+//						MaterialToast.alert("Response received with error:::"
+//								+ response.getStatusText());
 					}
 				}
 			});
 
 		} catch (RequestException e) {
-			MaterialToast.alert("Exception occured while sending callBack::"
-					+ e.getStackTrace());
+			// MaterialToast.alert("Exception occured while sending callBack::"
+			// + e.getStackTrace());
 		}
 	}
 

@@ -59,7 +59,7 @@
 				</excludes>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -852,10 +852,10 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.github.gwtmaterialdesign</groupId>
-			<artifactId>gwt-material</artifactId>
-			<version>1.3.3</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>com.github.gwtmaterialdesign</groupId> -->
+		<!-- <artifactId>gwt-material</artifactId> -->
+		<!-- <version>1.3.3</version> -->
+		<!-- </dependency> -->
 	</dependencies>
 </project>

@@ -2,8 +2,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
-	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:c="urn:import:com.workpoint.mwallet.client.ui.payment.cards"
+	xmlns:d='urn:import:com.workpoint.mwallet.client.ui.component' xmlns:c="urn:import:com.workpoint.mwallet.client.ui.payment.cards"
 	ui:generateLocales='default'>
 
 	<g:HTMLPanel>
@@ -20,108 +19,91 @@
 			</g:HTMLPanel>
 		</g:HTMLPanel>
 
-		<m:MaterialRow ui:field="panelPayment">
-			<m:MaterialTabs color="blue" textColor="white"
-				indicatorColor="yellow" waves="yellow">
-				<m:tab>
-					<g:HTMLPanel>
-						<g:Label>Pay with Mobile Money</g:Label>
-					</g:HTMLPanel>
-				</m:tab>
-				<m:tab>
-					<g:HTMLPanel>
-						<g:Label>Pay with Credit/Debit Card</g:Label>
-					</g:HTMLPanel>
-				</m:tab>
-				<m:content>
-					<!-- <m:MaterialTopNav padding="5" title="Sample 1" -->
-					<!-- description="This is sample 1" color="blue" textColor="white" /> -->
 
-					<g:HTMLPanel>
-						<m:MaterialRow>
-							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
-								<h5>
-									<g:InlineLabel>A: Payment by </g:InlineLabel>
-									<g:Image url="img/Mpesa_Logo.png"></g:Image>
-								</h5>
-								<ul>
-									<li>
-										1. Go to
-										<Strong>M-PESA</Strong>
-										option on your phone
-									</li>
-									<li>
-										2. Select the
-										<Strong>Lipa Na M-PESA</Strong>
-									</li>
-									<li>
-										3. Select
-										<strong ui:field="spnServiceLabel">Buy Goods and Services</strong>
-										option
-									</li>
-									<li>
-										4. Enter
-										<g:InlineLabel ui:field="spnBusinessLabel">Business number</g:InlineLabel>
-										<strong ui:field="spnBusinessNo">220220</strong>
-									</li>
-									<li ui:field="spnAccountNo">
-										5. Enter Account no.
-										<strong>ICPAK34567</strong>
-									</li>
-									<li>
-										6. Enter the Amount KES
-										<strong ui:field="spnAmount">Ksh. 2,500/=</strong>
-									</li>
-									<li>
-										7. Enter your M-PESA PIN and Press Send
-									</li>
-									<li>8. You will receive a confirmation SMS from M-PESA with a
-										Confirmation
-										Code</li>
-									<li>
-										9. You will receive a confirmation SMS on the number you paid
-										with
-										from
-										<Strong ui:field="spnOrgName">
-											ICPAK.
-										</Strong>
-										confirming that your payment has received.
-									</li>
 
-									<li>
-										10.Click on
-										<strong>Complete Payment</strong>
-										Button Below to finish your payment
-									</li>
-								</ul>
-							</m:MaterialColumn>
-						</m:MaterialRow>
+		<g:HTMLPanel styleName="row" ui:field="panelPayment">
+			<div class="col s12">
+				<ul class="tabs">
+					<li class="tab col s3">
+						<a href="#test1">Pay with Mobile Money</a>
+					</li>
+					<li class="tab col s3">
+						<a class="active" href="#test2">Pay with Credit/Debit Card</a>
+					</li>
+				</ul>
+			</div>
+			<div id="test1" class="col s12">
+				<div class="row">
+					<div class="col s6 myColumn">
+						<h5>
+							<g:InlineLabel>A: Payment by </g:InlineLabel>
+							<g:Image url="img/Mpesa_Logo.png"></g:Image>
+						</h5>
+						<ul>
+							<li>
+								1. Go to
+								<Strong>M-PESA</Strong>
+								option on your phone
+							</li>
+							<li>
+								2. Select the
+								<Strong>Lipa Na M-PESA</Strong>
+							</li>
+							<li>
+								3. Select
+								<strong ui:field="spnServiceLabel">Buy Goods and Services</strong>
+								option
+							</li>
+							<li>
+								4. Enter
+								<g:InlineLabel ui:field="spnBusinessLabel">Business number</g:InlineLabel>
+								<strong ui:field="spnBusinessNo">220220</strong>
+							</li>
+							<li ui:field="spnAccountNo">
+								5. Enter Account no.
+								<strong>ICPAK34567</strong>
+							</li>
+							<li>
+								6. Enter the Amount KES
+								<strong ui:field="spnAmount">Ksh. 2,500/=</strong>
+							</li>
+							<li>
+								7. Enter your M-PESA PIN and Press Send
+							</li>
+							<li>8. You will receive a confirmation SMS from M-PESA with a
+								Confirmation
+								Code</li>
+							<li>
+								9. You will receive a confirmation SMS on the number you paid
+								with
+								from
+								<Strong ui:field="spnOrgName">
+									ICPAK.
+								</Strong>
+								confirming that your payment has received.
+							</li>
 
-						<m:MaterialRow>
-							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
-								<div class="alert alert-danger hide" ui:field="panelErrorMessage">
-									<i class="icon icon-warning-sign"></i>
-									<span ui:field="spnErrorMessage">Your payment has successfully been received
-										and posted into
-										your</span>
-								</div>
-							</m:MaterialColumn>
-						</m:MaterialRow>
+							<li>
+								10.Click on
+								<strong>Complete Payment</strong>
+								Button Below to finish your payment
+							</li>
+						</ul>
+					</div>
+				</div>
 
-						<m:MaterialRow ui:field="verificationRow">
-							<m:MaterialColumn grid="s6" addStyleNames="myColumn">
-								<d:ActionLink text="Complete Payment" ui:field="btnComplete"
-									styleName="btn btn-primary">
-								</d:ActionLink>
-							</m:MaterialColumn>
-						</m:MaterialRow>
-					</g:HTMLPanel>
-				</m:content>
-				<m:content>
-					<c:PaymentWidget ui:field="panelCreditCard"></c:PaymentWidget>
-				</m:content>
-			</m:MaterialTabs>
-		</m:MaterialRow>
+				<div class="row my-row">
+					<div class="col s6 myColumn">
+						<d:ActionLink text="Complete Payment" ui:field="btnComplete"
+							styleName="btn btn-primary">
+						</d:ActionLink>
+					</div>
+				</div>
+			</div>
+			<div id="test2" class="col s12">
+				<c:PaymentWidget ui:field="panelCreditCard"></c:PaymentWidget>
+			</div>
+		</g:HTMLPanel>
 	</g:HTMLPanel>
 
 </ui:UiBinder>
