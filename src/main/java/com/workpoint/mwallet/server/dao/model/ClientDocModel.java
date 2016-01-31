@@ -5,24 +5,23 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="MergeFinals.dbo.clientdoc")
+@Table(name = "MergeFinalss.dbo.clientdoc")
 public class ClientDocModel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name="Recid")
+	@Column(name = "Recid")
 	private Long id;
-	
-	@Column(name="clientcode")
+
+	@Column(name = "clientcode")
 	private String clientcode;
-	
-	@Column(name="docnum")
+
+	@Column(name = "docnum")
 	private String docnum;
 
 	public Long getId() {
