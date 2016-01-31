@@ -49,13 +49,11 @@ public class TillDao extends BaseDaoImpl {
 						+ "and (u.userId=:userId or u2.userId=:userId or :isAdmin='Y')) "
 						+ "or :isSU='Y') ");
 
-		String orderBy = "ORDER BY tg.tillAverage DESC";
-		jpql.append(orderBy);
-
-		// or :isAdmin='Y'
-		// or :isSU='Y'
 		Map<String, Object> params = appendParameters(filter, jpql);
 
+		String orderBy = " ORDER BY tg.tillAverage DESC";
+		jpql.append(orderBy);
+		// or :isSU='Y'
 		Query query = em.createNativeQuery(jpql.toString())
 				.setParameter("categoryId", categoryId)
 				.setParameter("userId", userId)
@@ -159,6 +157,8 @@ public class TillDao extends BaseDaoImpl {
 			sqlQuery.append(isFirst ? " Where" : " And");
 			sqlQuery.append(" t.business_number = :tillNumber");
 			params.put("tillNumber", filter.getTill().getTillNo());
+
+			System.err.println("param::" + params.get("tillNumber"));
 			isFirst = false;
 		}
 

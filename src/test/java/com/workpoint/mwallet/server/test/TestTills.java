@@ -10,9 +10,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.inject.Inject;
 import com.workpoint.mwallet.server.dao.ClientDao;
 import com.workpoint.mwallet.server.dao.DashboardDao;
 import com.workpoint.mwallet.server.dao.SMSLogDao;
+import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
@@ -25,6 +27,9 @@ import com.workpoint.mwallet.shared.model.TillDTO;
 public class TestTills {
 
 	EntityManager em;
+
+	@javax.inject.Inject
+	TillDao tillDao;
 
 	@Before
 	public void setupDB() {
@@ -65,14 +70,23 @@ public class TestTills {
 	}
 
 	@Test
+	public void testFindTill() {
+		SearchFilter filter = new SearchFilter();
+		filter.setTill(new TillDTO("893512"));
+		
+		TillDao tillDao = new TillDao(em);
+		tillDao.getAllTills(filter, "TomKim", true, true, 1L);
+	}
+
+	@Ignore
 	public void search2() {
 
 		DashboardDao dao = new DashboardDao(em);
 
-		 SearchFilter filter = new SearchFilter();
-		 filter.setFormatedStartDate("2015-01-01");
-		 filter.setFormatedEndDate("2015-02-20");
-		 filter.setTills(Arrays.asList(new TillDTO("893512")));
+		SearchFilter filter = new SearchFilter();
+		filter.setFormatedStartDate("2015-01-01");
+		filter.setFormatedEndDate("2015-02-20");
+		filter.setTills(Arrays.asList(new TillDTO("893512")));
 		// filter.setTills(Arrays.asList(new TillDTO("893512"), new
 		// TillDTO("893513")));
 		// dao.updateGetTrendView(filter,"TomKim");

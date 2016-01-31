@@ -12,7 +12,6 @@
 	<!-- Include GWTUpload library -->
 	<inherits name="gwtupload.GWTUpload" />
 	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
-	<!-- <inherits name="gwt.material.design.GwtMaterialDesign" /> -->
 	<inherits name="com.google.common.collect.Collect" />
 
 	<!-- Other module inherits -->
