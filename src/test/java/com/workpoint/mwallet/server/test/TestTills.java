@@ -75,7 +75,7 @@ public class TestTills {
 		filter.setTill(new TillDTO("893512"));
 		
 		TillDao tillDao = new TillDao(em);
-		tillDao.getAllTills(filter, "TomKim", true, true, 1L);
+		tillDao.getAllTills(null, "TomKim", true, true, 1L);
 	}
 
 	@Ignore

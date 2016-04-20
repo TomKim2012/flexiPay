@@ -2,7 +2,6 @@ package com.workpoint.mwallet.client.ui.tills;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,10 +11,10 @@ import com.google.gwt.event.dom.client.HasKeyDownHandlers;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
 import com.gwtplatform.common.client.StandardProvider;
 import com.gwtplatform.dispatch.rpc.shared.DispatchAsync;
@@ -52,12 +51,10 @@ import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
-import com.workpoint.mwallet.shared.requests.GetUsersRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.responses.GetCategoriesRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
-import com.workpoint.mwallet.shared.responses.GetUsersResponse;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
@@ -158,7 +155,7 @@ public class TillsPresenter extends
 		getView().setDates(DateRange.THISQUARTER);
 
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetUsersRequest(true));
+		// action.addRequest(new GetUsersRequest(true));
 		action.addRequest(new GetTillsRequest(filter));
 		action.addRequest(new GetCategoriesRequest());
 		requestHelper.execute(action,
@@ -168,10 +165,11 @@ public class TillsPresenter extends
 						int i = 0;
 
 						// UsersResponse
-						GetUsersResponse uResponse = (GetUsersResponse) aResponse
-								.get(i++);
-						users = uResponse.getUsers();
-						filterPresenter.setFilter(SearchType.Till, users);
+						// GetUsersResponse uResponse = (GetUsersResponse)
+						// aResponse
+						// .get(i++);
+						// users = uResponse.getUsers();
+						// filterPresenter.setFilter(SearchType.Till, users);
 
 						// Tills Response
 						GetTillsRequestResult tResponse = (GetTillsRequestResult) aResponse

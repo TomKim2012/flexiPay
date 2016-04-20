@@ -30,6 +30,9 @@ public class TillModel extends PO {
 	@Column(name="mpesa_acc")
 	private String accountNo;
 	
+	@Column(name="store_number")
+	private String storeNumber;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="categoryid")
 	private CategoryModel categoryModel;
@@ -110,6 +113,14 @@ public class TillModel extends PO {
 
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
+	}
+
+	public String getStoreNumber() {
+		return storeNumber;
+	}
+
+	public void setStoreNumber(String storeNumber) {
+		this.storeNumber = storeNumber;
 	}
 	
 }

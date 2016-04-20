@@ -31,16 +31,12 @@ public class GetTillsRequestActionHandler extends
 	public void execute(GetTillsRequest action, BaseResponse actionResult,
 			ExecutionContext execContext) throws ActionException {
 		TillDao dao = new TillDao(DB.getEntityManager());
-
 		UserDTO currentUser = SessionHelper.getCurrentUser();
 		CategoryModel categoryModel = SessionHelper.getUserCategory();
-
 		String userId = currentUser.getUserId();
-
 		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
 				&& currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
-
 
 		List<TillDTO> dtos = dao.getAllTills(action.getFilter(), userId,
 				isSuperUser, isAdmin, categoryModel.getId());

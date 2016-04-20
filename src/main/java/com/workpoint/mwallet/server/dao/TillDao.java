@@ -29,7 +29,7 @@ public class TillDao extends BaseDaoImpl {
 		}
 
 		StringBuffer jpql = new StringBuffer(
-				"select t.id, t.businessName, t.business_number, "
+				"select TOP 20 t.id, t.businessName, t.business_number, "
 						+ "t.mpesa_acc,t.phoneNo,t.status,t.isactive,t.created,t.updated,t.updatedBy,t.createdBy,"
 						+ "u.userId salesperson_userid,u.firstname salesperson_firstname, u.lastname salesperson_lastname, "
 						+ "u2.userId owner_userid,u2.firstname owner_firstname, u2.lastname owner_lastname, "
