@@ -133,7 +133,7 @@ public class TransactionDao extends BaseDaoImpl {
 						+ "or :isSU='Y') ");
 
 		Map<String, Object> params = appendParameters(filter, sqlBuffer);
-		sqlBuffer.append(" order by i.id desc");
+		sqlBuffer.append(" order by i.tstamp desc");
 
 		Query query = em.createNativeQuery(sqlBuffer.toString())
 				.setParameter("categoryId", categoryId)

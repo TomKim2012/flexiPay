@@ -51,10 +51,12 @@ import com.workpoint.mwallet.shared.model.TillDTO;
 import com.workpoint.mwallet.shared.model.UserDTO;
 import com.workpoint.mwallet.shared.requests.GetCategoriesRequest;
 import com.workpoint.mwallet.shared.requests.GetTillsRequest;
+import com.workpoint.mwallet.shared.requests.GetUsersRequest;
 import com.workpoint.mwallet.shared.requests.MultiRequestAction;
 import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.responses.GetCategoriesRequestResult;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
+import com.workpoint.mwallet.shared.responses.GetUsersResponse;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
@@ -155,7 +157,7 @@ public class TillsPresenter extends
 		getView().setDates(DateRange.THISQUARTER);
 
 		MultiRequestAction action = new MultiRequestAction();
-		// action.addRequest(new GetUsersRequest(true));
+		action.addRequest(new GetUsersRequest(true));
 		action.addRequest(new GetTillsRequest(filter));
 		action.addRequest(new GetCategoriesRequest());
 		requestHelper.execute(action,
@@ -164,12 +166,12 @@ public class TillsPresenter extends
 					public void processResult(MultiRequestActionResult aResponse) {
 						int i = 0;
 
-						// UsersResponse
-						// GetUsersResponse uResponse = (GetUsersResponse)
-						// aResponse
-						// .get(i++);
-						// users = uResponse.getUsers();
-						// filterPresenter.setFilter(SearchType.Till, users);
+						 //Users Response
+						 GetUsersResponse uResponse = (GetUsersResponse)
+						 aResponse
+						 .get(i++);
+						 users = uResponse.getUsers();
+						 filterPresenter.setFilter(SearchType.Till, users);
 
 						// Tills Response
 						GetTillsRequestResult tResponse = (GetTillsRequestResult) aResponse
