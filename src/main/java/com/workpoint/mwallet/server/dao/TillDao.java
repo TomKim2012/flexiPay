@@ -188,7 +188,7 @@ public class TillDao extends BaseDaoImpl {
 			params.put("tillNumber", filter.getTill().getBusinessNo());
 
 			System.err.println("param::" + params.get("tillNumber"));
-			isFirst = false;
+			isFirst = true;
 		}
 
 		if (filter.getPhrase() != null) {
