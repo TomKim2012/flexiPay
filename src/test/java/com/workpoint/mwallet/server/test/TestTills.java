@@ -39,8 +39,7 @@ public class TestTills {
 
 	@Ignore
 	public void searchClientByTill() {
-		ClientDocModel model = new ClientDao(em)
-				.getClientByTillCode("80576000");
+		ClientDocModel model = new ClientDao(em).getClientByTillCode("80576000");
 
 		System.err.println("Client Code >>" + model.getClientcode());
 	}
@@ -55,8 +54,7 @@ public class TestTills {
 		// List<TillDTO> tills = new TillDao(em).getAllTills(filter, "TomKim",
 		// true, false, 9L);
 
-		List<SmsDTO> sms = new SMSLogDao(em).getSMSLog("TomKim", true, false,
-				9L);
+		List<SmsDTO> sms = new SMSLogDao(em).getSMSLog("TomKim", true, false, 9L);
 
 		// for (TillDTO till : tills) {
 		// System.err.println("Till Id:"+till.getId()+"Grade:");
@@ -71,11 +69,13 @@ public class TestTills {
 
 	@Test
 	public void testFindTill() {
-		SearchFilter filter = new SearchFilter();
-		filter.setTill(new TillDTO("893512"));
-		
+		// SearchFilter filter = new SearchFilter();
+		// filter.setTill(new TillDTO("893512"));
+
 		TillDao tillDao = new TillDao(em);
-		tillDao.getAllTills(null, "TomKim", true, true, 1L);
+		List<TillDTO> allTills = tillDao.getAllTillsSimplified(null, "TomKim", true, true, 1L);
+		System.err.println("Size of Tills>>>" + allTills.size());
+
 	}
 
 	@Ignore

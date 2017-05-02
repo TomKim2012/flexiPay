@@ -13,12 +13,16 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	private Long id;
 
 	private String businessName;
-	private String tillNo;
+	private String tillNo; // This should be deleted in future
+	private String businessNo;
+	private String storeNo;
 	private String accountNo;
 	private String phoneNo;
 	private UserDTO owner;
 	private UserDTO salesPerson;
 	private List<UserDTO> cashiers;
+	private Date createdDate;
+	private String createdBy;
 	private Date lastModified;
 	private String lastModifiedBy;
 	private int isActive;
@@ -36,15 +40,12 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 	}
 
 	public TillDTO(String tillNo) {
-		this.tillNo = tillNo;
 	}
-	
-	public TillDTO(Long tillId, String businessName, String businessNumber,
-			String mpesaAcc, String phoneNo, String tillGrade,
-			Double tillAverage, String gradeDesc, Double minValue, Double maxValue) {
+
+	public TillDTO(Long tillId, String businessName, String businessNumber, String mpesaAcc, String phoneNo,
+			String tillGrade, Double tillAverage, String gradeDesc, Double minValue, Double maxValue) {
 		this.id = tillId;
 		this.businessName = businessName;
-		this.tillNo = businessNumber;
 		this.accountNo = mpesaAcc;
 		this.phoneNo = phoneNo;
 		this.setMinValue(minValue);
@@ -90,13 +91,6 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 		this.businessName = businessName;
 	}
 
-	public String getTillNo() {
-		return tillNo;
-	}
-
-	public void setTillNo(String tillNo) {
-		this.tillNo = tillNo;
-	}
 
 	public String getPhoneNo() {
 		return phoneNo;
@@ -118,12 +112,36 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 		this.salesPerson = salesPerson;
 	}
 
+	public String getBusinessNo() {
+		return businessNo;
+	}
+
+	public void setBusinessNo(String businessNo) {
+		this.businessNo = businessNo;
+	}
+
+	public String getStoreNo() {
+		return storeNo;
+	}
+
+	public void setStoreNo(String storeNo) {
+		this.storeNo = storeNo;
+	}
+
 	public UserDTO getOwner() {
 		return owner;
 	}
 
 	public void setOwner(UserDTO owner) {
 		this.owner = owner;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public int isActive() {
@@ -152,12 +170,12 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	@Override
 	public String getName() {
-		return tillNo;
+		return businessNo;
 	}
 
 	@Override
 	public String getDisplayName() {
-		return businessName + " - " + tillNo;
+		return businessName + " - " + businessNo;
 	}
 
 	@Override
@@ -169,7 +187,7 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 
 	@Override
 	public String toString() {
-		return tillNo;
+		return businessNo;
 	}
 
 	public String getAccountNo() {
@@ -212,12 +230,28 @@ public class TillDTO implements Serializable, Listable, Comparable<TillDTO> {
 		this.maxValue = maxValue;
 	}
 
+	public String getTillNo() {
+		return tillNo;
+	}
+
+	public void setTillNo(String tillNo) {
+		this.tillNo = tillNo;
+	}
+
 	public String getLastModifiedBy() {
 		return lastModifiedBy;
 	}
 
 	public void setLastModifiedBy(String lastModifiedBy) {
 		this.lastModifiedBy = lastModifiedBy;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 }

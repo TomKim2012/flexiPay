@@ -60,9 +60,8 @@ import com.workpoint.mwallet.shared.responses.GetUsersResponse;
 import com.workpoint.mwallet.shared.responses.MultiRequestActionResult;
 import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
-public class TillsPresenter extends
-		PresenterWidget<TillsPresenter.IActivitiesView> implements
-		ActivitySelectionChangedHandler, SearchHandler, HidePanelBoxHandler {
+public class TillsPresenter extends PresenterWidget<TillsPresenter.IActivitiesView>
+		implements ActivitySelectionChangedHandler, SearchHandler, HidePanelBoxHandler {
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> FILTER_SLOT = new Type<RevealContentHandler<?>>();
@@ -137,8 +136,7 @@ public class TillsPresenter extends
 	public TillsPresenter(final EventBus eventBus, final IActivitiesView view,
 			Provider<CreateTillPresenter> tillProvider) {
 		super(eventBus, view);
-		createTillPopUp = new StandardProvider<CreateTillPresenter>(
-				tillProvider);
+		createTillPopUp = new StandardProvider<CreateTillPresenter>(tillProvider);
 	}
 
 	public void loadAll() {
@@ -159,33 +157,23 @@ public class TillsPresenter extends
 		MultiRequestAction action = new MultiRequestAction();
 		action.addRequest(new GetUsersRequest(true));
 		action.addRequest(new GetTillsRequest(filter));
-		action.addRequest(new GetCategoriesRequest());
-		requestHelper.execute(action,
-				new TaskServiceCallback<MultiRequestActionResult>() {
-					@Override
-					public void processResult(MultiRequestActionResult aResponse) {
-						int i = 0;
+		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
+			@Override
+			public void processResult(MultiRequestActionResult aResponse) {
+				int i = 0;
 
-						 //Users Response
-						 GetUsersResponse uResponse = (GetUsersResponse)
-						 aResponse
-						 .get(i++);
-						 users = uResponse.getUsers();
-						 filterPresenter.setFilter(SearchType.Till, users);
+				// Users Response
+				GetUsersResponse uResponse = (GetUsersResponse) aResponse.get(i++);
+				users = uResponse.getUsers();
+				filterPresenter.setFilter(SearchType.Till, users);
 
-						// Tills Response
-						GetTillsRequestResult tResponse = (GetTillsRequestResult) aResponse
-								.get(i++);
-						bindTills(tResponse.getTills());
+				// Tills Response
+				GetTillsRequestResult tResponse = (GetTillsRequestResult) aResponse.get(i++);
+				bindTills(tResponse.getTills());
 
-						// Categories Response
-						GetCategoriesRequestResult cResponse = (GetCategoriesRequestResult) aResponse
-								.get(i++);
-						categories = cResponse.getCategories();
-
-						fireEvent(new ProcessingCompletedEvent());
-					}
-				});
+				fireEvent(new ProcessingCompletedEvent());
+			}
+		});
 
 	}
 
@@ -199,15 +187,11 @@ public class TillsPresenter extends
 
 		String gradeDate = setDateRange.getDisplayName();
 
-		tableHeaders = Arrays.asList(new TableHeader("", true),
-				new TableHeader("Business Name", true), new TableHeader(
-						"Business No", true), new TableHeader("Account No",
-						false), new TableHeader("Phone No", false),
-				new TableHeader("Owner", true), new TableHeader("Acquirer",
-						true), new TableHeader("Category", false),
-				new TableHeader("Status", false), new TableHeader("Grade("
-						+ gradeDate + ")", true), new TableHeader(
-						"Last Modified", false));
+		tableHeaders = Arrays.asList(new TableHeader("", true), new TableHeader("Business Name", true),
+				new TableHeader("Business No", true), new TableHeader("Account No", false),
+				new TableHeader("Phone No", false), new TableHeader("Owner", true), new TableHeader("Acquirer", true),
+				new TableHeader("Category", false), new TableHeader("Status", false),
+				new TableHeader("Grade(" + gradeDate + ")", true), new TableHeader("Last Modified", false));
 
 		getView().setHeaders(tableHeaders);
 
@@ -265,8 +249,7 @@ public class TillsPresenter extends
 			@Override
 			public void onClick(ClickEvent event) {
 				if (getView().getFilter() != null) {
-					GetTillsRequest request = new GetTillsRequest(getView()
-							.getFilter());
+					GetTillsRequest request = new GetTillsRequest(getView().getFilter());
 					performSearch(request);
 				}
 			}
@@ -287,8 +270,7 @@ public class TillsPresenter extends
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				GetTillsRequest request = new GetTillsRequest(getView()
-						.getFilter());
+				GetTillsRequest request = new GetTillsRequest(getView().getFilter());
 				performSearch(request);
 			}
 		}
@@ -312,8 +294,7 @@ public class TillsPresenter extends
 			}
 		};
 
-		AppManager.showPopUp("Configure Columns", tablePopUp.asWidget(),
-				configureOptionControl, "Save", "Cancel");
+		AppManager.showPopUp("Configure Columns", tablePopUp.asWidget(), configureOptionControl, "Save", "Cancel");
 	}
 
 	protected void showDeletePopup() {
@@ -325,10 +306,8 @@ public class TillsPresenter extends
 				}
 			}
 		};
-		AppManager
-				.showPopUp("Confirm Delete", "Confirm that you want to Delete "
-						+ selected.getBusinessName(), deleteOptionControl,
-						"Confirm", "Cancel");
+		AppManager.showPopUp("Confirm Delete", "Confirm that you want to Delete " + selected.getBusinessName(),
+				deleteOptionControl, "Confirm", "Cancel");
 
 	}
 
@@ -358,27 +337,24 @@ public class TillsPresenter extends
 				}
 			}
 		};
-		AppManager.showPopUp(edit ? "Edit Till" : "Create Till",
-				tillPopUp.getWidget(), saveOptionControl, "Save", "Cancel");
+		AppManager.showPopUp(edit ? "Edit Till" : "Create Till", tillPopUp.getWidget(), saveOptionControl, "Save",
+				"Cancel");
 	}
 
 	protected void saveTill(final TillDTO tillDTO, boolean isDelete) {
 		fireEvent(new ProcessingEvent("Saving ..."));
 
 		SaveTillRequest saveRequest = new SaveTillRequest(tillDTO, isDelete);
-		requestHelper.execute(saveRequest,
-				new TaskServiceCallback<SaveTillResponse>() {
-					@Override
-					public void processResult(SaveTillResponse aResponse) {
-						loadData();
-						getView().initControlButtons();
-						saveOptionControl.hide();
-						fireEvent(new ProcessingCompletedEvent());
-						fireEvent(new ActivitySavedEvent("Till "
-								+ tillDTO.getBusinessName()
-								+ " successfully saved"));
-					}
-				});
+		requestHelper.execute(saveRequest, new TaskServiceCallback<SaveTillResponse>() {
+			@Override
+			public void processResult(SaveTillResponse aResponse) {
+				loadData();
+				getView().initControlButtons();
+				saveOptionControl.hide();
+				fireEvent(new ProcessingCompletedEvent());
+				fireEvent(new ActivitySavedEvent("Till " + tillDTO.getBusinessName() + " successfully saved"));
+			}
+		});
 
 	}
 
@@ -403,14 +379,13 @@ public class TillsPresenter extends
 
 	public void performSearch(GetTillsRequest request) {
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(request,
-				new TaskServiceCallback<GetTillsRequestResult>() {
-					@Override
-					public void processResult(GetTillsRequestResult aResponse) {
-						bindTills(aResponse.getTills());
-						fireEvent(new ProcessingCompletedEvent());
-					};
-				});
+		requestHelper.execute(request, new TaskServiceCallback<GetTillsRequestResult>() {
+			@Override
+			public void processResult(GetTillsRequestResult aResponse) {
+				bindTills(aResponse.getTills());
+				fireEvent(new ProcessingCompletedEvent());
+			};
+		});
 	}
 
 	@Override

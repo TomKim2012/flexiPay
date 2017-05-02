@@ -74,7 +74,7 @@ public class DashboardDao extends BaseDaoImpl {
 		System.err.println("phoneNo:"+phoneNo);
 		
 		StringBuffer jpql = new StringBuffer(
-				"select clcode,MergeFinalss.dbo.SP_GetBalances(clcode,2) from MergeFinalss.dbo.client "
+				"select clcode,MergeFinalsss.dbo.SP_GetBalances(clcode,2) from MergeFinalsss.dbo.client "
 						+ "where phone=:phoneNo");
 
 		Query query = em.createNativeQuery(jpql.toString()).setParameter(

@@ -15,8 +15,7 @@ import com.workpoint.mwallet.shared.requests.GetTillsRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 
-public class GetTillsRequestActionHandler extends
-		BaseActionHandler<GetTillsRequest, GetTillsRequestResult> {
+public class GetTillsRequestActionHandler extends BaseActionHandler<GetTillsRequest, GetTillsRequestResult> {
 
 	@Inject
 	public GetTillsRequestActionHandler() {
@@ -28,18 +27,17 @@ public class GetTillsRequestActionHandler extends
 	}
 
 	@Override
-	public void execute(GetTillsRequest action, BaseResponse actionResult,
-			ExecutionContext execContext) throws ActionException {
+	public void execute(GetTillsRequest action, BaseResponse actionResult, ExecutionContext execContext)
+			throws ActionException {
 		TillDao dao = new TillDao(DB.getEntityManager());
 		UserDTO currentUser = SessionHelper.getCurrentUser();
 		CategoryModel categoryModel = SessionHelper.getUserCategory();
 		String userId = currentUser.getUserId();
-		boolean isSuperUser = categoryModel.getCategoryName().equals("*")
-				&& currentUser.isAdmin();
+		boolean isSuperUser = categoryModel.getCategoryName().equals("*") && currentUser.isAdmin();
 		boolean isAdmin = currentUser.isAdmin();
 
-		List<TillDTO> dtos = dao.getAllTills(action.getFilter(), userId,
-				isSuperUser, isAdmin, categoryModel.getId());
+		List<TillDTO> dtos = dao.getAllTillsSimplified(action.getFilter(), userId, isSuperUser, isAdmin,
+				categoryModel.getId());
 
 		((GetTillsRequestResult) actionResult).setTills(dtos);
 	}
