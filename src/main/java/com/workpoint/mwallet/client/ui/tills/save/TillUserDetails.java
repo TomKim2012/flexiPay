@@ -17,8 +17,7 @@ import com.workpoint.mwallet.shared.model.UserGroup;
 
 public class TillUserDetails extends Composite {
 
-	private static TillUserDetailsUiBinder uiBinder = GWT
-			.create(TillUserDetailsUiBinder.class);
+	private static TillUserDetailsUiBinder uiBinder = GWT.create(TillUserDetailsUiBinder.class);
 
 	@UiField
 	AutoCompleteField<UserDTO> aOwners;
@@ -54,8 +53,7 @@ public class TillUserDetails extends Composite {
 			if (tillSelected.getSalesPerson() != null) {
 				salesPerson.add(tillSelected.getSalesPerson());
 				aOwners.setValues(owners);
-				aSalesPersons.select(Arrays.asList(tillSelected
-						.getSalesPerson()));
+				aSalesPersons.select(Arrays.asList(tillSelected.getSalesPerson()));
 			}
 		}
 	}
@@ -81,24 +79,24 @@ public class TillUserDetails extends Composite {
 	}
 
 	public boolean isValid(IssuesPanel issues) {
-		if (aOwners.getSelectedItems().size() < 1) {
-			issues.addError("Please set an Owner for this till");
-			return false;
-		}
-
-		if (aOwners.getSelectedItems().size() > 1) {
-			issues.addError("Till can only have one owner");
-			return false;
-		}
-		if (aSalesPersons.getSelectedItems().size() < 1) {
-			issues.addError("Please set the SalesPerson for this till");
-			return false;
-		}
-
-		if (aSalesPersons.getSelectedItems().size() < 1) {
-			issues.addError("Till can only have one salesPerson");
-			return false;
-		}
+		// if (aOwners.getSelectedItems().size() < 1) {
+		// issues.addError("Please set an Owner for this till");
+		// return false;
+		// }
+		//
+		// if (aOwners.getSelectedItems().size() > 1) {
+		// issues.addError("Till can only have one owner");
+		// return false;
+		// }
+		// if (aSalesPersons.getSelectedItems().size() < 1) {
+		// issues.addError("Please set the SalesPerson for this till");
+		// return false;
+		// }
+		//
+		// if (aSalesPersons.getSelectedItems().size() < 1) {
+		// issues.addError("Till can only have one salesPerson");
+		// return false;
+		// }
 		return true;
 	}
 
@@ -149,8 +147,7 @@ public class TillUserDetails extends Composite {
 	}
 
 	public enum GroupType {
-		Merchant("Merchant"), SalesPerson("SalesPerson"), Cashier("Cashier"), Administrator(
-				"Administrator");
+		Merchant("Merchant"), SalesPerson("SalesPerson"), Cashier("Cashier"), Administrator("Administrator");
 
 		private String groupCode;
 

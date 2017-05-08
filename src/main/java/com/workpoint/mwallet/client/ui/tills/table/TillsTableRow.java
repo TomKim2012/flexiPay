@@ -23,11 +23,9 @@ import com.workpoint.mwallet.shared.model.TillDTO;
 
 public class TillsTableRow extends RowWidget {
 
-	private static ActivitiesTableRowUiBinder uiBinder = GWT
-			.create(ActivitiesTableRowUiBinder.class);
+	private static ActivitiesTableRowUiBinder uiBinder = GWT.create(ActivitiesTableRowUiBinder.class);
 
-	interface ActivitiesTableRowUiBinder extends
-			UiBinder<Widget, TillsTableRow> {
+	interface ActivitiesTableRowUiBinder extends UiBinder<Widget, TillsTableRow> {
 	}
 
 	@UiField
@@ -76,8 +74,7 @@ public class TillsTableRow extends RowWidget {
 		chkSelect.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				AppContext.fireEvent(new ActivitySelectionChangedEvent(
-						TillsTableRow.this.till, event.getValue()));
+				AppContext.fireEvent(new ActivitySelectionChangedEvent(TillsTableRow.this.till, event.getValue()));
 			}
 		});
 
@@ -104,13 +101,11 @@ public class TillsTableRow extends RowWidget {
 			bindText(divtillNo, till.getTillNo());
 			bindText(divphoneNo, till.getPhoneNo());
 
-			String ownerNames = till.getOwner() == null ? "" : till.getOwner()
-					.getFullName();
+			String ownerNames = till.getOwner() == null ? "" : till.getOwner().getFullName();
 
 			bindText(divAccount, till.getAccountNo());
 
-			String acquirerNames = till.getSalesPerson() == null ? "" : till
-					.getSalesPerson().getFullName();
+			String acquirerNames = till.getSalesPerson() == null ? "" : till.getSalesPerson().getFullName();
 
 			bindText(divOwner, ownerNames);
 			bindText(divAcquirer, acquirerNames);
@@ -118,25 +113,27 @@ public class TillsTableRow extends RowWidget {
 					: DateUtils.CREATEDFORMAT.format(till.getLastModified());
 			bindText(divlastModified, modifiedDate, till.getLastModifiedBy());
 
-			bindText(divCategory, till.getCategory().getCategoryName());
+			if (till.getCategory() != null) {
+				bindText(divCategory, till.getCategory().getCategoryName());
+			}
 
 			setActive(till.isActive());
 
 			String maxValue = "";
 			String range = "";
-			String minValue = NumberFormat.getCurrencyFormat("KES").format(
-					till.getMinValue());
+			String minValue = "";
+			if (till.getMinValue() != null) {
+				minValue = NumberFormat.getCurrencyFormat("KES").format(till.getMinValue());
+			}
 
 			if (till.getMaxValue() != null) {
-				maxValue = NumberFormat.getCurrencyFormat("KES").format(
-						till.getMaxValue());
+				maxValue = NumberFormat.getCurrencyFormat("KES").format(till.getMaxValue());
 				range = minValue + "-" + maxValue;
 			} else {
 				range = "Above " + minValue;
 			}
 
-			setGrade(till.getGradeDesc(), till.getTillGrade(),
-					till.getTillAverage(), range);
+			setGrade(till.getGradeDesc(), till.getTillGrade(), till.getTillAverage(), range);
 		}
 	}
 
@@ -153,19 +150,19 @@ public class TillsTableRow extends RowWidget {
 		}
 	}
 
-	private void setGrade(String gradeDesc, String tillGrade,
-			Double tillAverage, String range) {
+	private void setGrade(String gradeDesc, String tillGrade, Double tillAverage, String range) {
 		String html = "";
+		if(tillGrade==null){
+			return;
+		}
 		String tillGradeTrim = tillGrade.trim();
-		String average = NumberFormat.getCurrencyFormat("KES").format(
-				tillAverage);
+		String average = NumberFormat.getCurrencyFormat("KES").format(tillAverage);
 
-		html = "Till Grade: <strong>" + tillGrade + "</strong>" + "(" + range
-				+ ")<br/>" + "Till Average:<strong>" + average + "</strong>";
+		html = "Till Grade: <strong>" + tillGrade + "</strong>" + "(" + range + ")<br/>" + "Till Average:<strong>"
+				+ average + "</strong>";
 
 		isPerformer = ((tillGradeTrim.equals("A")) ? true : false);
-		isAverage = ((tillGradeTrim.equals("B")) || (tillGradeTrim.equals("C")) ? true
-				: false);
+		isAverage = ((tillGradeTrim.equals("B")) || (tillGradeTrim.equals("C")) ? true : false);
 		isPoor = (tillGradeTrim.equals("D") ? true : false);
 
 		// System.err.println("Till Debug>>" + till.getTillNo() + "-"

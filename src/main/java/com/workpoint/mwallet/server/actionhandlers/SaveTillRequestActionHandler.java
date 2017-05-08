@@ -16,16 +16,15 @@ import com.workpoint.mwallet.shared.requests.SaveTillRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.SaveTillResponse;
 
-public class SaveTillRequestActionHandler extends
-		BaseActionHandler<SaveTillRequest, SaveTillResponse> {
+public class SaveTillRequestActionHandler extends BaseActionHandler<SaveTillRequest, SaveTillResponse> {
 
 	@Inject
 	public SaveTillRequestActionHandler() {
 	}
 
 	@Override
-	public void execute(SaveTillRequest action, BaseResponse actionResult,
-			ExecutionContext execContext) throws ActionException {
+	public void execute(SaveTillRequest action, BaseResponse actionResult, ExecutionContext execContext)
+			throws ActionException {
 
 		TillDao dao = new TillDao(DB.getEntityManager());
 		TillDTO till = action.getTill();
@@ -40,13 +39,13 @@ public class SaveTillRequestActionHandler extends
 			tillModel.setTillNumber(till.getTillNo());
 			tillModel.setAccountNo(till.getAccountNo());
 			tillModel.setPhoneNo(till.getPhoneNo());
-			
-			
-			if (till.getCategory() != null){
+
+			if (till.getCategory() != null) {
 				CategoryModel catModel = dao.getById(CategoryModel.class, till.getCategory().getId());
 				tillModel.setCategory(catModel);
-				assert catModel!=null;
-				////System.err.println("Saved Category inside the model:"+ tillModel.getCategory().getCategoryName());
+				assert catModel != null;
+				//// System.err.println("Saved Category inside the model:"+
+				//// tillModel.getCategory().getCategoryName());
 			}
 
 			// Till Owner
@@ -58,14 +57,12 @@ public class SaveTillRequestActionHandler extends
 			List<UserDTO> cashiersDTO = till.getCashiers();
 			List<User> cashiersModel = new ArrayList<User>();
 			for (UserDTO cashier : cashiersDTO) {
-				User cashierModel = DB.getUserGroupDao().getUser(
-						cashier.getUserId());
+				User cashierModel = DB.getUserGroupDao().getUser(cashier.getUserId());
 				cashiersModel.add(cashierModel);
 			}
 
 			// Till SalesPerson
-			User salesPersonModel = DB.getUserGroupDao().getUser(
-					till.getSalesPerson().getUserId());
+			User salesPersonModel = DB.getUserGroupDao().getUser("TomKim");
 			tillModel.setSalesPerson(salesPersonModel);
 
 			tillModel.setIsActive(till.isActive());

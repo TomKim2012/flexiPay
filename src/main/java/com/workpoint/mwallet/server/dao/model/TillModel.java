@@ -21,32 +21,31 @@ public class TillModel extends PO {
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String businessName;
 
-	@Column(name="business_number")
+	@Column(name = "business_number")
 	private String tillNumber;
-	
-	@Column(name="mpesa_acc")
+
+	@Column(name = "mpesa_acc")
 	private String accountNo;
-	
-	@Column(name="store_number")
+
+	@Column(name = "store_number")
 	private String storeNumber;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="categoryid")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "categoryid")
 	private CategoryModel categoryModel;
-	
-	
-	@Column(length=10)
+
+	@Column(length = 10)
 	private String phoneNo;
-	
-	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE},optional=false)
-	@JoinColumn(name="ownerId", referencedColumnName="userId",nullable=false)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, optional = false)
+	@JoinColumn(name = "ownerId", referencedColumnName = "userId")
 	private User owner;
-	
-	@ManyToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE}, optional=false)
-	@JoinColumn(name="salesPersonId", referencedColumnName="userId",nullable=false)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, optional = false)
+	@JoinColumn(name = "salesPersonId", referencedColumnName = "userId")
 	private User salesPerson;
 
 	private boolean status;
@@ -122,5 +121,5 @@ public class TillModel extends PO {
 	public void setStoreNumber(String storeNumber) {
 		this.storeNumber = storeNumber;
 	}
-	
+
 }

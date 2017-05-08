@@ -124,7 +124,6 @@ public class CreateTillPresenter extends
 		}
 
 		getView().showImportProcessing(true);
-
 		// Step 1 :: Check Existance of Till
 		SearchFilter filter = new SearchFilter();
 		TillDTO till = new TillDTO();
@@ -235,9 +234,7 @@ public class CreateTillPresenter extends
 			public void processResult(final UserSavePresenter result) {
 				result.setType(type, user);
 				result.loadData();
-
 				mainPagePresenter.addToPopupSlot(result, false);
-
 			}
 		});
 	}
