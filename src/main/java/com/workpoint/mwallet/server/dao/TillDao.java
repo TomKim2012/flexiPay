@@ -179,7 +179,7 @@ public class TillDao extends BaseDaoImpl {
 	}
 
 	private Map<String, Object> appendParameters(SearchFilter filter, StringBuffer sqlQuery) {
-		boolean isFirst = false;
+		boolean isFirst = true;
 		Map<String, Object> params = new HashMap<>();
 
 		if (filter.getTill() != null) {
@@ -188,7 +188,7 @@ public class TillDao extends BaseDaoImpl {
 			params.put("tillNumber", filter.getTill().getBusinessNo());
 
 			System.err.println("param::" + params.get("tillNumber"));
-			isFirst = true;
+			isFirst = false;
 		}
 
 		if (filter.getPhrase() != null) {
