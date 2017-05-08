@@ -155,7 +155,7 @@ public class TillsPresenter extends PresenterWidget<TillsPresenter.IActivitiesVi
 		getView().setDates(DateRange.THISQUARTER);
 
 		MultiRequestAction action = new MultiRequestAction();
-		action.addRequest(new GetUsersRequest(true));
+		// action.addRequest(new GetUsersRequest(true));
 		action.addRequest(new GetTillsRequest(filter));
 		requestHelper.execute(action, new TaskServiceCallback<MultiRequestActionResult>() {
 			@Override
@@ -163,9 +163,10 @@ public class TillsPresenter extends PresenterWidget<TillsPresenter.IActivitiesVi
 				int i = 0;
 
 				// Users Response
-				GetUsersResponse uResponse = (GetUsersResponse) aResponse.get(i++);
-				users = uResponse.getUsers();
-				filterPresenter.setFilter(SearchType.Till, users);
+				// GetUsersResponse uResponse = (GetUsersResponse)
+				// aResponse.get(i++);
+				// users = uResponse.getUsers();
+				// filterPresenter.setFilter(SearchType.Till, users);
 
 				// Tills Response
 				GetTillsRequestResult tResponse = (GetTillsRequestResult) aResponse.get(i++);
