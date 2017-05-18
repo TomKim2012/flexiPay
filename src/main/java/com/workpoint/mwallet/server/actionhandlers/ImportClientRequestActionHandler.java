@@ -12,8 +12,7 @@ import com.workpoint.mwallet.shared.requests.ImportClientRequest;
 import com.workpoint.mwallet.shared.responses.BaseResponse;
 import com.workpoint.mwallet.shared.responses.ImportClientResponse;
 
-public class ImportClientRequestActionHandler extends
-		BaseActionHandler<ImportClientRequest, ImportClientResponse> {
+public class ImportClientRequestActionHandler extends BaseActionHandler<ImportClientRequest, ImportClientResponse> {
 
 	private ClientModel client;
 
@@ -22,14 +21,13 @@ public class ImportClientRequestActionHandler extends
 	}
 
 	@Override
-	public void execute(ImportClientRequest action, BaseResponse actionResult,
-			ExecutionContext execContext) throws ActionException {
+	public void execute(ImportClientRequest action, BaseResponse actionResult, ExecutionContext execContext)
+			throws ActionException {
 
 		ClientDao dao = new ClientDao(DB.getEntityManager());
 
 		if (action.getIsTillRequest()) {
-			ClientDocModel docModel = dao.getClientByTillCode(action
-					.getTillCode());
+			ClientDocModel docModel = dao.getClientByTillCode(action.getTillCode());
 			if (docModel == null) {
 				((ImportClientResponse) actionResult).setClient(null);
 				return;
@@ -41,14 +39,14 @@ public class ImportClientRequestActionHandler extends
 
 		if (client == null) {
 			((ImportClientResponse) actionResult).setClient(null);
+		} else {
+			ClientDTO clientDTO = new ClientDTO();
+			clientDTO.setFirstName(client.getFirstName());
+			clientDTO.setMiddleName(client.getMiddleName());
+			clientDTO.setSirName(client.getSirName());
+			clientDTO.setPhoneNo(client.getPhoneNo());
+			clientDTO.setClCode(client.getClCode());
 		}
-		ClientDTO clientDTO = new ClientDTO();
-
-		clientDTO.setFirstName(client.getFirstName());
-		clientDTO.setMiddleName(client.getMiddleName());
-		clientDTO.setSirName(client.getSirName());
-		clientDTO.setPhoneNo(client.getPhoneNo());
-		clientDTO.setClCode(client.getClCode());
 
 		((ImportClientResponse) actionResult).setClient(clientDTO);
 	}
