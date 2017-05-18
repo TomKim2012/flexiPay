@@ -37,10 +37,10 @@ public class ImportClientRequestActionHandler extends BaseActionHandler<ImportCl
 			client = dao.getClientByCode(action.getClCode());
 		}
 
+		ClientDTO clientDTO = new ClientDTO();
 		if (client == null) {
 			((ImportClientResponse) actionResult).setClient(null);
 		} else {
-			ClientDTO clientDTO = new ClientDTO();
 			clientDTO.setFirstName(client.getFirstName());
 			clientDTO.setMiddleName(client.getMiddleName());
 			clientDTO.setSirName(client.getSirName());
