@@ -53,4 +53,28 @@ public class ClientModel {
 	public String getClCode() {
 		return clCode;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public void setSirName(String sirName) {
+		this.sirName = sirName;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public void setClCode(String clCode) {
+		this.clCode = clCode;
+	}
 }

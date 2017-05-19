@@ -2,6 +2,8 @@ package com.workpoint.mwallet.server.test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
@@ -16,6 +18,7 @@ import com.workpoint.mwallet.server.dao.DashboardDao;
 import com.workpoint.mwallet.server.dao.SMSLogDao;
 import com.workpoint.mwallet.server.dao.TillDao;
 import com.workpoint.mwallet.server.dao.model.ClientDocModel;
+import com.workpoint.mwallet.server.dao.model.ClientModel;
 import com.workpoint.mwallet.server.dao.model.TillModel;
 import com.workpoint.mwallet.server.dao.model.User;
 import com.workpoint.mwallet.server.db.DB;
@@ -40,8 +43,8 @@ public class TestTills {
 	@Ignore
 	public void searchClientByTill() {
 		ClientDocModel model = new ClientDao(em).getClientByTillCode("80576000");
-
 		System.err.println("Client Code >>" + model.getClientcode());
+
 	}
 
 	@Ignore
@@ -73,8 +76,30 @@ public class TestTills {
 		// filter.setTill(new TillDTO("893512"));
 
 		TillDao tillDao = new TillDao(em);
-		List<TillDTO> allTills = tillDao.getAllTillsSimplified(null, "TomKim", true, true, 1L);
-		System.err.println("Size of Tills>>>" + allTills.size());
+
+		ClientDao dao = new ClientDao(em);
+		// List<TillDTO> allTills = tillDao.getAllTillsSimplified(null,
+		// "TomKim", true, true, 1L);
+		// System.err.println("Size of Tills>>>" + allTills.size());
+
+		ClientDocModel docModel = dao.getClientByTillCode("P739416");// 739255
+																		// //P739413
+		// 739255
+		System.err.println("docModel>>>>" + docModel.getClientcode());
+
+		// Logger logger =
+		// Logger.getLogger("com.microsoft.sqlserver.jdbc.Statement");
+		// logger.setLevel(Level.OFF);
+
+		ClientModel client = dao.getClientByCode(docModel.getClientcode().trim());
+		if (client != null) {
+			System.err.println(">>>" + client.getClCode());
+		}
+
+		System.err.println(">>>" + client.getClCode());
+
+		// PB/06141
+		// PG/00826
 
 	}
 

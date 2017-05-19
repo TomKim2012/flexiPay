@@ -32,9 +32,9 @@ public class ImportClientRequestActionHandler extends BaseActionHandler<ImportCl
 				((ImportClientResponse) actionResult).setClient(null);
 				return;
 			}
-			client = dao.getClientByCode(docModel.getClientcode());
+			client = dao.getClientByClientCodeNative(docModel.getClientcode());
 		} else {
-			client = dao.getClientByCode(action.getClCode());
+			client = dao.getClientByClientCodeNative(action.getClCode());
 		}
 
 		ClientDTO clientDTO = new ClientDTO();
