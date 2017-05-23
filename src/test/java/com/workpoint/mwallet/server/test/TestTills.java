@@ -82,7 +82,7 @@ public class TestTills {
 		// "TomKim", true, true, 1L);
 		// System.err.println("Size of Tills>>>" + allTills.size());
 
-		ClientDocModel docModel = dao.getClientByTillCode("P739416");// 739255
+		ClientDocModel docModel = dao.getClientByTillCode("P739423");// 739255
 																		// //P739413
 		// 739255
 		System.err.println("docModel>>>>" + docModel.getClientcode());

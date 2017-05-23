@@ -40,8 +40,7 @@ import com.workpoint.mwallet.shared.responses.GetTillsRequestResult;
 import com.workpoint.mwallet.shared.responses.GetUserRequestResult;
 import com.workpoint.mwallet.shared.responses.ImportClientResponse;
 
-public class CreateTillPresenter extends
-		PresenterWidget<CreateTillPresenter.MyView> implements LoadUsersHandler {
+public class CreateTillPresenter extends PresenterWidget<CreateTillPresenter.MyView> implements LoadUsersHandler {
 
 	public interface MyView extends View {
 		boolean isValid();
@@ -130,74 +129,68 @@ public class CreateTillPresenter extends
 		till.setTillNo(tillCode);
 		filter.setTill(till);
 
-		requestHelper.execute(new GetTillsRequest(filter),
-				new TaskServiceCallback<GetTillsRequestResult>() {
-					@Override
-					public void processResult(GetTillsRequestResult aResponse) {
-						List<TillDTO> tills = aResponse.getTills();
-						if (tills.size() > 0) {
-							getView().setSearchMessage("Till already exist!",
-									"text-error");
-							getView().showImportProcessing(false);
-						} else {
-							findTill(tillCode);
-						}
-					}
-				});
+		requestHelper.execute(new GetTillsRequest(filter), new TaskServiceCallback<GetTillsRequestResult>() {
+			@Override
+			public void processResult(GetTillsRequestResult aResponse) {
+				List<TillDTO> tills = aResponse.getTills();
+				if (tills.size() > 0) {
+					getView().setSearchMessage("Till already exist!", "text-error");
+					getView().showImportProcessing(false);
+				} else {
+					findTill(tillCode);
+				}
+			}
+		});
 	}
 
 	private void findTill(String tillCode) {
 		// Import Merchant from Till-Code
-		requestHelper.execute(new ImportClientRequest(tillCode, true),
-				new TaskServiceCallback<ImportClientResponse>() {
-					@Override
-					public void processResult(ImportClientResponse aResponse) {
-						client = aResponse.getClient();
-						if (client == null) {
-							getView().showImportProcessing(false);
-							getView()
-									.setSearchMessage(
-											"Merchant details not found!",
-											"text-error");
-						} else {
-							// Check for User Existence
-							checkUserExistence(client.getPhoneNo());
-						}
-					}
+		requestHelper.execute(new ImportClientRequest(tillCode, true), new TaskServiceCallback<ImportClientResponse>() {
+			@Override
+			public void processResult(ImportClientResponse aResponse) {
+				client = aResponse.getClient();
+				if (client == null) {
+					getView().showImportProcessing(false);
+					getView().setSearchMessage("Merchant details not found!", "text-error");
+				} else {
+					// Check for User Existence
+					checkUserExistence(client.getPhoneNo());
+				}
+			}
 
-				});
+		});
 
 	}
 
 	protected void checkUserExistence(String userId) {
 		GetUserRequest request = new GetUserRequest(userId);
 		fireEvent(new ProcessingEvent());
-		requestHelper.execute(request,
-				new TaskServiceCallback<GetUserRequestResult>() {
+		requestHelper.execute(request, new TaskServiceCallback<GetUserRequestResult>() {
 
-					@Override
-					public void processResult(GetUserRequestResult result) {
-						user = result.getUser();
-						if (user != null) {
-							showPopup(UserSavePresenter.TYPE.USER, user);
-						} else {
-							createUser();
-						}
+			@Override
+			public void processResult(GetUserRequestResult result) {
+				user = result.getUser();
+				if (user != null) {
+					showPopup(UserSavePresenter.TYPE.USER, user);
+				} else {
+					createUser();
+				}
 
-						getView().showImportProcessing(false);
-					}
-				});
+				getView().showImportProcessing(false);
+			}
+		});
 
 	}
 
 	private void createUser() {
 		user = new UserDTO();
 		String allNames = client.getFirstName().trim();
-		if (allNames != null) {
+		if (allNames != null && !allNames.isEmpty()) {
 			String[] first = allNames.split(" ");
-			user.setFirstName(first[0] == null?"":first[0]);
-			user.setLastName(first.length > 1 ? first[1] : "" + " "
-					+ (first.length > 2 ? first[2] : ""));
+			if (first != null) {
+				user.setFirstName(first[0] == null ? "" : first[0]);
+				user.setLastName(first.length > 1 ? first[1] : "" + " " + (first.length > 2 ? first[2] : ""));
+			}
 		}
 		user.setPhoneNo(client.getPhoneNo());
 		user.setUserId(client.getPhoneNo());
@@ -210,21 +203,20 @@ public class CreateTillPresenter extends
 	protected void getGroupFromName(final String groupName) {
 		GetGroupsRequest request = new GetGroupsRequest();
 
-		requestHelper.execute(request,
-				new TaskServiceCallback<GetGroupsResponse>() {
+		requestHelper.execute(request, new TaskServiceCallback<GetGroupsResponse>() {
 
-					@Override
-					public void processResult(GetGroupsResponse result) {
-						List<UserGroup> groups = result.getGroups();
+			@Override
+			public void processResult(GetGroupsResponse result) {
+				List<UserGroup> groups = result.getGroups();
 
-						for (UserGroup group : groups) {
-							if (group.getName().equals(groupName)) {
-								user.setGroups(Arrays.asList(group));
-							}
-						}
-						showPopup(UserSavePresenter.TYPE.USER, user);
+				for (UserGroup group : groups) {
+					if (group.getName().equals(groupName)) {
+						user.setGroups(Arrays.asList(group));
 					}
-				});
+				}
+				showPopup(UserSavePresenter.TYPE.USER, user);
+			}
+		});
 
 	}
 
@@ -249,8 +241,7 @@ public class CreateTillPresenter extends
 		importedTill.setActive(1);
 		importedTill.setOwner(user);
 		getView().setTill(importedTill);
-		getView().setSearchMessage("Merchant imported Successfully!",
-				"text-success");
+		getView().setSearchMessage("Merchant imported Successfully!", "text-success");
 
 	}
 
