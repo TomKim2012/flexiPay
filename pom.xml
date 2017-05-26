@@ -116,6 +116,7 @@
 					<modules>
 						<module>com.workpoint.mwallet.flexipay</module>
 					</modules>
+					<extraJvmArgs>-Xms768m -Xmx768m</extraJvmArgs>
 				</configuration>
 				<executions>
 					<execution>
@@ -630,7 +631,8 @@
 			<!--scope>provided</scope -->
 		</dependency>
 
-		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
+		<!--mvn install:install-file -Dfile=sqljdbc4.jar -DgroupId=com.microsoft.sqlserver 
+			-DartifactId=sqljdbc4 -Dversion=4.0 -Dpackaging=jar -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>

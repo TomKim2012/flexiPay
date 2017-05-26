@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="Client")
+@Table(name="MergeFinalsss.dbo.Client")
 public class ClientModel {
 	
 	@Id

@@ -220,10 +220,10 @@ public class UserSaveView extends PopupViewImpl implements
 			issues.addError("First Name is mandatory");
 		}
 
-		if (isNullOrEmpty(txtLastname.getValue())) {
+		/*if (isNullOrEmpty(txtLastname.getValue())) {
 			valid = false;
 			issues.addError("First Name is mandatory");
-		}
+		}*/
 
 		if (isNullOrEmpty(txtEmail.getValue())) {
 			// valid = false;

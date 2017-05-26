@@ -184,19 +184,22 @@ public class CreateTillPresenter extends PresenterWidget<CreateTillPresenter.MyV
 
 	private void createUser() {
 		user = new UserDTO();
-		String allNames = client.getFirstName().trim();
-		if (allNames != null && !allNames.isEmpty()) {
-			String[] first = allNames.split(" ");
-			if (first != null) {
-				user.setFirstName(first[0] == null ? "" : first[0]);
-				user.setLastName(first.length > 1 ? first[1] : "" + " " + (first.length > 2 ? first[2] : ""));
+
+		if (client != null && client.getFirstName() != null) {
+			String allNames = client.getFirstName().trim();
+			if (allNames != null && !allNames.isEmpty()) {
+				String[] first = allNames.split(" ");
+				if (first != null) {
+					user.setFirstName(first[0] == null ? "" : first[0]);
+					user.setLastName(first.length > 1 ? first[1] : "" + " " + (first.length > 2 ? first[2] : ""));
+				}
 			}
+			user.setPhoneNo(client.getPhoneNo());
+			user.setUserId(client.getPhoneNo());
+			user.setPassword("pass");
+			// Get Group where Code is "Merchant" then show User Popup
+			getGroupFromName("Merchant");
 		}
-		user.setPhoneNo(client.getPhoneNo());
-		user.setUserId(client.getPhoneNo());
-		user.setPassword("pass");
-		// Get Group where Code is "Merchant" then show User Popup
-		getGroupFromName("Merchant");
 
 	}
 
@@ -240,6 +243,7 @@ public class CreateTillPresenter extends PresenterWidget<CreateTillPresenter.MyV
 		importedTill.setTillNo(getView().getTillSearchCode());
 		importedTill.setActive(1);
 		importedTill.setOwner(user);
+		importedTill.setPhoneNo(user.getPhoneNo());
 		getView().setTill(importedTill);
 		getView().setSearchMessage("Merchant imported Successfully!", "text-success");
 

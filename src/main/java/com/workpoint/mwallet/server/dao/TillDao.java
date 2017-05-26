@@ -118,7 +118,7 @@ public class TillDao extends BaseDaoImpl {
 			filter = new SearchFilter();
 		}
 		StringBuffer sql = new StringBuffer(
-				"select TOP 20 t.id,t.created,t.createdBy, t.updated,t.updatedBy, t.businessName,"
+				"select TOP 30 t.id,t.created,t.createdBy, t.updated,t.updatedBy, t.businessName,"
 						+ "t.business_number,t.mpesa_acc,t.store_number,t.phoneNo,t.isactive from TillModel t");
 
 		Map<String, Object> params = appendParameters(filter, sql);
@@ -169,6 +169,7 @@ public class TillDao extends BaseDaoImpl {
 
 			till.setAccountNo(accountNo);
 			till.setStoreNo(storeNumber);
+			till.setTillNo(storeNumber);
 			till.setPhoneNo(phoneNo);
 			till.setIsActive(isActive);
 

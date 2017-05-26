@@ -98,7 +98,7 @@ public class TillsTableRow extends RowWidget {
 
 		if (till != null) {
 			bindText(divBusinessName, till.getBusinessName());
-			bindText(divtillNo, till.getTillNo());
+			bindText(divtillNo, till.getBusinessNo());
 			bindText(divphoneNo, till.getPhoneNo());
 
 			String ownerNames = till.getOwner() == null ? "" : till.getOwner().getFullName();
@@ -152,7 +152,7 @@ public class TillsTableRow extends RowWidget {
 
 	private void setGrade(String gradeDesc, String tillGrade, Double tillAverage, String range) {
 		String html = "";
-		if(tillGrade==null){
+		if (tillGrade == null) {
 			return;
 		}
 		String tillGradeTrim = tillGrade.trim();

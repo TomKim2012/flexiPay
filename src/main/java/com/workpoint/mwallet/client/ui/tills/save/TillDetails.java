@@ -68,7 +68,7 @@ public class TillDetails extends Composite {
 		this.tillSelected = tillSelected;
 		if (tillSelected != null) {
 			txtBusinessName.setValue(tillSelected.getBusinessName());
-			txtTillCode.setValue(tillSelected.getTillNo());
+			txtTillCode.setValue(tillSelected.getBusinessNo());
 			aPickTill.setVisible(false);
 			// txtTillCode.getElement().setAttribute("readonly", "true");
 			txtPhone.setValue(tillSelected.getPhoneNo());

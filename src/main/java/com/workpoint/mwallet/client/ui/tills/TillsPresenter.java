@@ -317,8 +317,8 @@ public class TillsPresenter extends PresenterWidget<TillsPresenter.IActivitiesVi
 			@Override
 			public void processResult(CreateTillPresenter aResponse) {
 				tillPopUp = aResponse;
-				tillPopUp.setUsers(users);
-				tillPopUp.setCategories(categories);
+				// tillPopUp.setUsers(users);
+				// tillPopUp.setCategories(categories);
 			}
 		});
 

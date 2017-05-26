@@ -175,11 +175,11 @@ public class TillsView extends ViewImpl implements
 	}
 
 	private void show(Anchor aAnchor, boolean show) {
-		if (show) {
-			aAnchor.getElement().getParentElement().removeClassName("hide");
-		} else {
-			aAnchor.getElement().getParentElement().addClassName("hide");
-		}
+//		if (show) {
+//			aAnchor.getElement().getParentElement().removeClassName("hide");
+//		} else {
+//			aAnchor.getElement().getParentElement().addClassName("hide");
+//		}
 	}
 
 	public void setMiddleHeight() {
