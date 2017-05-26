@@ -240,7 +240,7 @@ public class CreateTillPresenter extends PresenterWidget<CreateTillPresenter.MyV
 
 		TillDTO importedTill = new TillDTO();
 		importedTill.setBusinessName(client.getSirName().trim());
-		importedTill.setTillNo(getView().getTillSearchCode());
+		importedTill.setBusinessNo(getView().getTillSearchCode());
 		importedTill.setActive(1);
 		importedTill.setOwner(user);
 		importedTill.setPhoneNo(user.getPhoneNo());
