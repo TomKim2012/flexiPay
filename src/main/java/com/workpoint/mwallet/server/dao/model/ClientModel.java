@@ -5,29 +5,27 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="MergeFinalsss.dbo.Client")
+@Table(name = "PFSADB.dbo.Client")
 public class ClientModel {
-	
+
 	@Id
-	@Column(name="Recid")
+	@Column(name = "Recid")
 	private Long id;
-	
-	
-	@Column(name="clname")
+
+	@Column(name = "clname")
 	private String firstName;
-	
-	@Column(name="middlename")
+
+	@Column(name = "middlename")
 	private String middleName;
-	
-	@Column(name="clsurname")
+
+	@Column(name = "clsurname")
 	private String sirName;
-	
-	@Column(name="phone")
+
+	@Column(name = "phone")
 	private String phoneNo;
-	
-	@Column(name="clcode")
+
+	@Column(name = "clcode")
 	private String clCode;
 
 	public Long getId() {

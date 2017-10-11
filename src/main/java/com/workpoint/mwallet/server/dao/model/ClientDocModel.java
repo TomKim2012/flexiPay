@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "MergeFinalsss.dbo.clientdoc")
+@Table(name = "PFSADB.dbo.clientdoc")
 public class ClientDocModel {
 
 	/**
