@@ -50,14 +50,14 @@ public class SaveTillRequestActionHandler extends BaseActionHandler<SaveTillRequ
 
 			// Till Owner
 			UserDTO ownerDTO = till.getOwner();
-			User userModel = DB.getUserGroupDao().getUser(ownerDTO.getUserId());
+			User userModel = DB.getUserGroupDao().getUser("TomKim");
 			tillModel.setOwner(userModel);
 
 			// Till Cashiers
 			List<UserDTO> cashiersDTO = till.getCashiers();
 			List<User> cashiersModel = new ArrayList<User>();
 			for (UserDTO cashier : cashiersDTO) {
-				User cashierModel = DB.getUserGroupDao().getUser(cashier.getUserId());
+				User cashierModel = DB.getUserGroupDao().getUser("TomKim");
 				cashiersModel.add(cashierModel);
 			}
 
